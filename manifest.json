@@ -1,0 +1,24 @@
+{
+  "name": "Cities by Efdot x Diid",
+  "short_name": "Cities",
+  "description": "Explore the Cities generative art collection by Efdot x Diid on Art Blocks",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0910",
+  "theme_color": "#00E5CC",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
