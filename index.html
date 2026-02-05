@@ -5573,28 +5573,25 @@
             }
         }
 
-        // Hook into loadOutput to update mobile heart
-        const originalLoadOutput = loadOutput;
-        loadOutput = async function(tokenId, updateUrl = true) {
-            await originalLoadOutput(tokenId, updateUrl);
+        // Listen for image loads to update mobile heart state
+        previewImage.addEventListener('load', () => {
             updateMobileHeartState();
             preloadAdjacentImages();
-        };
+        });
 
-        // Update grid button state when grid opens/closes
-        const origOpenGridView = openGridView;
-        const origCloseGridView = closeGridView;
-        openGridView = function() {
-            origOpenGridView();
-            if (mobileGridBtn) mobileGridBtn.classList.add('active');
-            // Hide bottom bar in grid view, show different controls
-            if (mobileBottomBar) mobileBottomBar.style.display = 'none';
-        };
-        closeGridView = function() {
-            origCloseGridView();
-            if (mobileGridBtn) mobileGridBtn.classList.remove('active');
-            if (mobileBottomBar && window.innerWidth <= 768) mobileBottomBar.style.display = 'flex';
-        };
+        // Watch for grid panel open/close via mutation observer
+        const gridPanelObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    const isOpen = gridPanel.classList.contains('open');
+                    if (mobileGridBtn) mobileGridBtn.classList.toggle('active', isOpen);
+                    if (mobileBottomBar) {
+                        mobileBottomBar.style.display = (isOpen || window.innerWidth > 768) ? 'none' : 'flex';
+                    }
+                }
+            });
+        });
+        gridPanelObserver.observe(gridPanel, { attributes: true });
 
         // Preload adjacent images for smoother swiping
         function preloadAdjacentImages() {
