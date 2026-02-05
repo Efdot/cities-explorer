@@ -278,9 +278,9 @@
         .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 4px; }
 
         /* Favorites grid - clean, spacious layout */
-        .grid-items.favorites-grid { gap: 16px; padding: 20px; }
-        .grid-items.favorites-grid.grid-2-col { gap: 24px; max-width: 900px; margin: 0 auto; }
-        .grid-items.favorites-grid.grid-3-col { gap: 20px; max-width: 1100px; margin: 0 auto; }
+        .grid-items.favorites-grid { gap: 16px; padding: 20px; width: 100%; }
+        .grid-items.favorites-grid.grid-2-col { gap: 24px; }
+        .grid-items.favorites-grid.grid-3-col { gap: 20px; }
         .grid-items.favorites-grid.grid-4-col { gap: 16px; }
         .grid-items.favorites-grid .grid-item { border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
 
@@ -288,9 +288,8 @@
         .grid-mode-btn.collectors-btn { background: transparent; border-color: var(--border); color: var(--text-muted); opacity: 0.6; }
         .grid-mode-btn.collectors-btn:hover { background: rgba(255,255,255,0.03); border-color: var(--text-muted); color: var(--text-dim); opacity: 0.8; }
         .grid-mode-btn.collectors-btn.active { opacity: 0.25; border-color: transparent; color: var(--text-muted); background: transparent; }
-        .grid-fav-btn { width: 32px; height: 32px; padding: 0; border: none; border-radius: 50%; background: var(--bg-input); color: var(--text-muted); font-size: 14px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        .grid-fav-btn:hover { background: var(--bg-card); color: #FF6B4A; }
-        .grid-fav-btn.active { background: #FF6B4A; color: #fff; box-shadow: 0 2px 12px rgba(255, 107, 74, 0.4); }
+        .grid-mode-btn.favorites-active { background: #FF6B4A; border-color: #FF6B4A; color: #fff; }
+        .grid-mode-btn.favorites-active:hover { background: #ff8566; border-color: #ff8566; color: #fff; }
         /* Legacy size icon classes - kept for backwards compatibility */
         .size-small { width: 8px; height: 8px; display: block; background: currentColor; border-radius: 2px; }
         .size-medium { width: 12px; height: 12px; display: block; background: currentColor; border-radius: 2px; }
@@ -389,6 +388,8 @@
         }
         .frame-mockup-close { position: absolute; top: 24px; right: 24px; width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 20px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; }
         .frame-mockup-close:hover { background: #333; color: #fff; transform: scale(1.05); }
+        .frame-mockup-download { position: absolute; top: 24px; right: 80px; width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 20px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: bold; }
+        .frame-mockup-download:hover { background: var(--teal); color: #000; transform: scale(1.05); }
 
         hr { border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 12px 0; }
 
@@ -432,9 +433,9 @@
         .info-display { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); text-align: center; padding: 8px 16px; background: var(--bg-panel); border-radius: 12px; }
         .info-display .token-id { color: var(--teal); }
         .info-display .token-line { margin-bottom: 4px; }
-        .owner-display { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 8px; margin-bottom: 4px; }
-        .owner-display a { color: var(--text-muted); text-decoration: none; }
-        .owner-display a:hover { color: var(--text-dim); }
+        .owner-display { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 8px; margin-bottom: 4px; }
+        .owner-display a { color: var(--text); text-decoration: none; font-weight: 700; }
+        .owner-display a:hover { color: var(--teal); }
 
         /* Similar outputs */
         .similar-outputs { padding: 0; width: 100%; display: flex; flex-direction: column; align-items: center; opacity: 0.5; transition: opacity 0.3s ease; }
@@ -459,7 +460,7 @@
         .view-toggle-btn:first-child { margin-left: 0; }
         .view-toggle-btn:hover { background: var(--bg-card); color: var(--text); }
         .view-toggle-btn.grid-open { transform: rotate(45deg); }
-        .mint-toggle { display: flex; align-items: flex-end; text-decoration: none; padding: 4px 3px; flex-shrink: 0; gap: 1px; opacity: 0.6; transition: opacity 0.3s ease; margin-right: 8px; }
+        .mint-toggle { display: flex; align-items: flex-end; text-decoration: none; padding: 4px 3px; flex-shrink: 0; gap: 1px; opacity: 0.6; transition: opacity 0.3s ease; margin-right: 16px; }
         .mint-toggle:hover { opacity: 1; }
         .mint-letter { height: 20px; width: auto; display: block; transition: transform 0.15s ease, filter 0.3s ease; }
         .mint-toggle:hover .mint-letter { filter: brightness(1.1); animation: letterVibrate 0.3s ease-in-out infinite; }
@@ -607,17 +608,12 @@
         .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 20px; padding: 12px 18px; background: var(--bg-input); border-radius: 50px; }
         .collectors-stats strong { color: var(--teal); }
         .collectors-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-        .collector-pill { padding: 8px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer; transition: transform 0.2s ease-out, filter 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; }
+        .collector-pill { padding: 8px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer; transition: transform 0.2s ease-out, filter 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; white-space: nowrap; }
         .collector-pill::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.5s ease; }
         .collector-pill:hover::before { left: 100%; }
-        .collector-pill:hover { transform: scale(1.08) rotate(-1deg); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .collector-pill .pill-count { display: inline; opacity: 0.7; margin-left: 4px; font-size: 10px; transition: opacity 0.2s ease, max-width 0.3s ease; }
-        .collector-pill .pill-emoji { display: none; margin-left: 4px; font-size: 11px; letter-spacing: -1px; }
-        .collector-pill:hover .pill-count { display: none; }
-        .collector-pill:hover .pill-emoji { display: inline; }
-        /* Multi-collector special hover (2+ cities) - wiggle effect */
-        .collector-pill.multi-holder:hover .pill-emoji { display: inline-block; animation: multiWiggle 0.4s ease-in-out; }
-        @keyframes multiWiggle { 0%, 100% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(-4deg) scale(1.08); } 50% { transform: rotate(3deg) scale(1.05); } 75% { transform: rotate(-2deg) scale(1.03); } }
+        .collector-pill:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .collector-pill .pill-count { opacity: 0.7; margin-left: 4px; font-size: 10px; }
+        .collector-pill .pill-emoji { display: none; }
         @keyframes waterfallPulse {
             0%, 100% { filter: brightness(1); }
             50% { filter: brightness(1.15); }
@@ -735,7 +731,7 @@
         .grid-item-fav { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border: none; background: rgba(10, 9, 16, 0.7); color: rgba(255,255,255,0.6); font-size: 14px; cursor: pointer; border-radius: 50%; opacity: 0; transition: all 0.2s ease; z-index: 2; display: flex; align-items: center; justify-content: center; }
         .grid-item:hover .grid-item-fav { opacity: 1; }
         .grid-item-fav:hover { background: #fff; color: #333; transform: scale(1.15); }
-        .grid-item-fav.favorited { opacity: 0.9; color: #000; background: var(--spot-color, var(--yellow)); box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
+        .grid-item-fav.favorited { opacity: 0.9; color: var(--spot-text, #000); background: var(--spot-color, var(--yellow)); box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
         .grid-item-fav.favorited:hover { opacity: 1; background: #fff; color: #333; }
         .grid-item-rank { position: absolute; top: 6px; left: 6px; background: linear-gradient(135deg, var(--orange), var(--yellow)); color: #000; font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; z-index: 2; }
         .grid-item-tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--bg-card); border-radius: 10px; padding: 10px 12px; font-size: 9px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: 8px; }
@@ -749,17 +745,17 @@
         .grid-group { margin-bottom: 24px; }
         .grid-group-header { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: var(--bg-panel); border-radius: 50px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s; }
         .grid-group-header:hover { background: var(--bg-card); }
-        .grid-group-fav { width: 32px; height: 32px; border: none; background: transparent; color: var(--spot-color, var(--text-muted)); font-size: 22px; cursor: pointer; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center; opacity: 0.4; }
+        .grid-group-fav { width: 24px; height: 24px; border: none; background: transparent; color: var(--spot-color, var(--text-muted)); font-size: 16px; cursor: pointer; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center; opacity: 0.4; }
         .grid-group-fav:hover { background: rgba(255,255,255,0.1); color: var(--spot-color, var(--pink)); opacity: 1; }
         .grid-group-fav.favorited { color: var(--spot-color, var(--pink)); opacity: 1; }
-        .grid-group-shuffle { width: 28px; height: 28px; border: none; background: transparent; color: var(--text-muted); font-size: 13px; cursor: pointer; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .grid-group-shuffle { width: 24px; height: 24px; border: none; background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .grid-group-shuffle:hover { background: var(--bg-input); color: var(--teal); }
         .grid-group-color { width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0; }
-        .grid-group-swatches { display: flex; gap: 0; height: 20px; border-radius: 4px; overflow: hidden; transition: gap 0.3s ease; }
-        .grid-group-swatches span { width: 3px; height: 20px; border-radius: 0; transition: width 0.3s ease; }
+        .grid-group-swatches { display: flex; gap: 0; height: 24px; border-radius: 4px; overflow: hidden; transition: gap 0.3s ease; }
+        .grid-group-swatches span { width: 3px; height: 24px; border-radius: 0; transition: width 0.3s ease; }
         .grid-group-header:hover .grid-group-swatches { gap: 3px; }
         .grid-group-header:hover .grid-group-swatches span { width: 14px; border-radius: 3px; }
-        .grid-group-name { flex: 1; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); }
+        .grid-group-name { flex: 1; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); }
         .grid-group-count { font-size: 11px; font-weight: 700; color: var(--teal); }
         .grid-group-toggle { color: var(--text-muted); font-size: 14px; transition: transform 0.2s; }
         .grid-group.collapsed .grid-group-toggle { transform: rotate(-90deg); }
@@ -789,7 +785,7 @@
             .grid-group-items { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important; gap: 8px !important; }
             .grid-controls { flex-wrap: wrap; gap: 6px; justify-content: center; width: 100%; }
             .grid-mode-btn { padding: 10px 16px; font-size: 9px; border-width: 2px; }
-            .grid-fav-btn, .gallery-room-toggle, .grid-size-toggle { width: 36px; height: 36px; font-size: 14px; }
+            .gallery-room-toggle, .grid-size-toggle { width: 36px; height: 36px; font-size: 14px; }
             /* Palette headers on mobile */
             .grid-group-header { padding: 10px 12px; gap: 6px; flex-wrap: nowrap; }
             .grid-group-name { font-size: 10px; letter-spacing: 0.05em; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -1245,14 +1241,13 @@
                 </div>
             </div>
             <div class="grid-controls">
-                <button class="grid-fav-btn" id="gridFavoritesBtn" title="Show favorites only">♥</button>
-                <button class="gallery-room-toggle" id="galleryRoomToggle" title="Enter immersive gallery">👁</button>
                 <button class="grid-size-toggle" id="gridSizeToggle" title="Change grid size">
                     <span class="size-icon" id="sizeIcon"></span>
                 </button>
-                <button class="grid-mode-btn" data-mode="grid">ALL</button>
+                <button class="grid-mode-btn" data-mode="grid" id="gridAllFavBtn">ALL</button>
                 <button class="grid-mode-btn active" data-mode="palette" id="paletteColorToggle">BY PALETTE</button>
                 <button class="grid-mode-btn collectors-btn" id="gridCollectorsBtn">COLLECTORS</button>
+                <button class="gallery-room-toggle" id="galleryRoomToggle" title="Enter immersive gallery">👁</button>
             </div>
         </div>
         <div class="filter-toggle-bar" id="filterToggleBar"><span>FILTERS</span><span class="arrow">▼</span></div>
@@ -1319,12 +1314,13 @@
     <!-- Framed Mockup View -->
     <div class="frame-mockup" id="frameMockup">
         <div class="frame-mockup-content">
-            <div class="frame-wrapper">
+            <div class="frame-wrapper" id="frameWrapper">
                 <div class="frame-inner">
                     <img id="frameMockupImage" src="" alt="Framed city artwork">
                 </div>
             </div>
         </div>
+        <button class="frame-mockup-download" id="downloadFramed" title="Download framed image">↓</button>
         <button class="frame-mockup-close" id="closeFrameMockup">×</button>
     </div>
 
@@ -1334,7 +1330,6 @@
         <div class="gallery-room-wall" id="galleryRoomWall"></div>
         <div class="gallery-room-counter" id="galleryRoomCounter">12 Cities</div>
         <button class="gallery-room-close" id="galleryRoomClose">×</button>
-        <div class="gallery-room-info">ESC to exit · Click artwork to view</div>
         <div class="gallery-room-controls">
             <button class="gallery-room-btn" id="galleryPauseBtn" title="Pause/Play">⏸</button>
             <button class="gallery-room-btn" id="gallerySpeedBtn" title="Change speed">1×</button>
@@ -1934,9 +1929,19 @@
             const bgColor = paletteData?.bg || '#1a1a2e';
             const rawSpotColor = paletteData?.colors?.[10] || '#FFE135';
             const spotColor = getContrastingSpotColor(rawSpotColor, bgColor);
+            // Find a contrasting color from the palette for the heart icon
+            const colors = paletteData?.colors || [];
+            let spotTextColor = getLuminance(spotColor) > 0.5 ? '#000' : '#fff';
+            // Try to find a palette color that contrasts well with the spot color
+            for (const c of [colors[0], colors[1], colors[2], colors[3], bgColor, colors[11]]) {
+                if (c && getContrastRatio(c, spotColor) >= 3) {
+                    spotTextColor = c;
+                    break;
+                }
+            }
             const loadingAttr = eagerLoad ? 'eager' : 'lazy';
             return `
-                <div class="grid-item" data-token="${id}" style="background:${bgColor}; --spot-color:${spotColor};">
+                <div class="grid-item" data-token="${id}" style="background:${bgColor}; --spot-color:${spotColor}; --spot-text:${spotTextColor};">
                     <button class="grid-item-fav ${isCityFavorited(id) ? 'favorited' : ''}" data-token="${id}">♥</button>
                     <img src="${getSmallThumbnailUrl(id)}" alt="City ${id}" loading="${loadingAttr}" decoding="async">
                     <div class="grid-item-label">#${id}</div>
@@ -2844,6 +2849,118 @@
             document.getElementById('frameMockup').classList.remove('open');
         }
 
+        async function downloadFramedImage() {
+            const frameImage = document.getElementById('frameMockupImage');
+
+            // Wait for image to be loaded
+            if (!frameImage.complete) {
+                showStatus('LOADING...');
+                await new Promise(resolve => frameImage.onload = resolve);
+            }
+
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // 4:5 aspect ratio canvas (like Instagram portrait)
+                const canvasWidth = 1600;
+                const canvasHeight = 2000;
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+
+                // Light gray/white background
+                ctx.fillStyle = '#f5f5f5';
+                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+                // Load the image
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    img.src = frameImage.src;
+                });
+
+                // Calculate framed image size to fit nicely in 4:5 with margins
+                const imgAspect = img.naturalWidth / img.naturalHeight;
+                const maxFrameWidth = canvasWidth * 0.7;
+                const maxFrameHeight = canvasHeight * 0.75;
+
+                let frameWidth, frameHeight;
+                if (imgAspect > maxFrameWidth / maxFrameHeight) {
+                    frameWidth = maxFrameWidth;
+                    frameHeight = frameWidth / imgAspect;
+                } else {
+                    frameHeight = maxFrameHeight;
+                    frameWidth = frameHeight * imgAspect;
+                }
+
+                // Frame dimensions
+                const frameThickness = 24;
+                const matThickness = 8;
+                const totalFrameWidth = frameWidth + (frameThickness + matThickness) * 2;
+                const totalFrameHeight = frameHeight + (frameThickness + matThickness) * 2;
+
+                // Center the frame
+                const frameX = (canvasWidth - totalFrameWidth) / 2;
+                const frameY = (canvasHeight - totalFrameHeight) / 2;
+
+                // Draw shadow
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
+                ctx.shadowBlur = 40;
+                ctx.shadowOffsetX = 8;
+                ctx.shadowOffsetY = 12;
+
+                // Draw outer frame (white/light frame)
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(frameX, frameY, totalFrameWidth, totalFrameHeight);
+
+                // Reset shadow
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+
+                // Draw inner mat/border (slight gray)
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(
+                    frameX + frameThickness,
+                    frameY + frameThickness,
+                    totalFrameWidth - frameThickness * 2,
+                    totalFrameHeight - frameThickness * 2
+                );
+
+                // Draw the artwork
+                ctx.drawImage(img,
+                    frameX + frameThickness + matThickness,
+                    frameY + frameThickness + matThickness,
+                    frameWidth, frameHeight);
+
+                // Download
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `efdot-diid-cities-${currentTokenId}-framed.jpg`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showStatus('FRAMED IMAGE SAVED');
+                }, 'image/jpeg', 0.95);
+
+            } catch (e) {
+                console.error('Frame download error:', e);
+                showStatus('DOWNLOAD FAILED');
+            }
+        }
+
+        document.getElementById('downloadFramed').addEventListener('click', (e) => {
+            e.stopPropagation();
+            downloadFramedImage();
+        });
+
         // Close frame mockup when clicking outside the frame
         document.getElementById('frameMockup').addEventListener('click', (e) => {
             if (e.target.id === 'frameMockup' || e.target.classList.contains('frame-mockup-content')) {
@@ -2872,9 +2989,9 @@
             document.body.classList.toggle('fullscreen-mode', isFullscreen);
             // Handle image loading state for smooth fullscreen transition
             if (isFullscreen) {
-                // If image is already loaded, show it immediately
+                // If image is already loaded, show it after a brief delay for smooth transition
                 if (previewImage.complete && previewImage.naturalHeight !== 0) {
-                    previewImage.classList.add('loaded');
+                    setTimeout(() => previewImage.classList.add('loaded'), 100);
                 } else {
                     previewImage.classList.remove('loaded');
                 }
@@ -2886,7 +3003,7 @@
         let exploreTimeout = null;
         let exploreActive = false;
         let isFirstExplore = true;
-        const EXPLORE_DELAY_FIRST = 25000; // 25 seconds for first output
+        const EXPLORE_DELAY_FIRST = 12000; // 12 seconds for first output (after load)
         const EXPLORE_DELAY = 8000; // 8 seconds between subsequent cities
 
         function exploreNext() {
@@ -2909,12 +3026,13 @@
                 // Reset and restart the progress bar animation
                 const progressBar = document.querySelector('.explore-progress');
                 if (progressBar) {
-                    const duration = isFirstExplore ? 25 : 8;
+                    const duration = isFirstExplore ? 12 : 8;
                     progressBar.style.animation = 'none';
                     progressBar.offsetHeight; // Force reflow
                     progressBar.style.animation = `exploreCountdown ${duration}s linear forwards`;
                 }
-                scheduleNextExplore();
+                // Wait a moment after image loads before scheduling next
+                setTimeout(() => scheduleNextExplore(), 500);
             }
         });
 
@@ -2938,6 +3056,7 @@
                 if (isFullscreen) {
                     isFullscreen = false;
                     document.body.classList.remove('fullscreen-mode');
+                    previewImage.classList.remove('loaded');
                 }
                 showStatus('SHUFFLE STOPPED');
             } else {
@@ -2947,17 +3066,35 @@
                 btn.textContent = 'STOP';
                 // Remove animation class after it plays
                 setTimeout(() => btn.classList.remove('shuffling'), 500);
-                // Enter fullscreen mode for immersive viewing
-                if (!isFullscreen) {
-                    isFullscreen = true;
-                    document.body.classList.add('fullscreen-mode');
-                }
-                showStatus('FULLSCREEN');
-                // Preload images for when user navigates
+
+                // Preload images first
                 preloadRandomImages();
-                // Stay on current city - don't auto-advance, let user navigate with arrows
-                // The curated sequence is ready for when they use arrows or it auto-advances
-                scheduleNextExplore();
+
+                // Wait for current image to be ready, then enter fullscreen
+                const enterFullscreen = () => {
+                    if (!isFullscreen) {
+                        isFullscreen = true;
+                        document.body.classList.add('fullscreen-mode');
+                        // Show image after fullscreen transition
+                        if (previewImage.complete && previewImage.naturalHeight !== 0) {
+                            setTimeout(() => previewImage.classList.add('loaded'), 150);
+                        }
+                    }
+                    showStatus('FULLSCREEN');
+                    scheduleNextExplore();
+                };
+
+                // If image is already loaded, enter fullscreen after brief delay
+                if (previewImage.complete && previewImage.naturalHeight !== 0) {
+                    setTimeout(enterFullscreen, 300);
+                } else {
+                    // Wait for image to load first
+                    const onLoad = () => {
+                        previewImage.removeEventListener('load', onLoad);
+                        setTimeout(enterFullscreen, 300);
+                    };
+                    previewImage.addEventListener('load', onLoad);
+                }
             }
         }
 
@@ -3247,7 +3384,7 @@
 
         // Preload cache for explore mode
         let preloadedImages = [];
-        const PRELOAD_COUNT = 5;
+        const PRELOAD_COUNT = 8;
 
         function preloadAdjacentImages() {
             const matches = getFilteredTokens();
@@ -3938,15 +4075,13 @@
 
         gridModeBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                if (btn.id === 'gridCollectorsBtn' || btn.id === 'gridFavoritesBtn') return; // Handled separately
+                if (btn.id === 'gridCollectorsBtn' || btn.id === 'gridAllFavBtn') return; // Handled separately
                 if (btn.id === 'paletteColorToggle') {
                     // Cycle through palette -> color -> a-z -> rarity -> palette
                     paletteColorState = toggleStates[paletteColorState].next;
                     updateToggleStyle();
                 }
-                // Deactivate favorites button when switching modes
-                document.getElementById('gridFavoritesBtn').classList.remove('active');
-                gridModeBtns.forEach(b => { if (!b.classList.contains('collectors-btn')) b.classList.remove('active'); });
+                gridModeBtns.forEach(b => { if (!b.classList.contains('collectors-btn') && b.id !== 'gridAllFavBtn') b.classList.remove('active'); });
                 btn.classList.add('active');
                 gridMode = btn.dataset.mode;
                 gridPage = 1;
@@ -4013,12 +4148,14 @@
             document.getElementById('gridStatsBar').classList.toggle('visible');
         });
 
-        // Favorites button in grid - filter to show only favorites
+        // ALL/FAVS toggle button
         let showingFavoritesOnly = false;
-        document.getElementById('gridFavoritesBtn').addEventListener('click', () => {
-            const favBtn = document.getElementById('gridFavoritesBtn');
+        const gridAllFavBtn = document.getElementById('gridAllFavBtn');
+        gridAllFavBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             showingFavoritesOnly = !showingFavoritesOnly;
-            favBtn.classList.toggle('active', showingFavoritesOnly);
+            gridAllFavBtn.textContent = showingFavoritesOnly ? 'FAVS' : 'ALL';
+            gridAllFavBtn.classList.toggle('favorites-active', showingFavoritesOnly);
             gridPage = 1;
             renderGrid();
         });
@@ -5025,7 +5162,7 @@
         function getGalleryTokens() {
             if (showingFavoritesOnly) {
                 const favs = JSON.parse(localStorage.getItem('cities-favorites') || '[]');
-                return favs.filter(id => tokenTraits[id]);
+                return favs.map(f => f.tokenId).filter(id => tokenTraits[id]);
             }
             return getGridFilteredTokens();
         }
