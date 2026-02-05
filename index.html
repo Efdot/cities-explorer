@@ -1393,6 +1393,20 @@
 
     <button class="btn btn-secondary grid-toggle" id="toggleGrid" aria-label="Open grid view of all cities">GRID VIEW</button>
 
+    <!-- Mobile elements - must be before script -->
+    <div class="mobile-bottom-bar" id="mobileBottomBar">
+        <button id="mobileMenuBtn" title="Menu">☰</button>
+        <button id="mobilePrevBtn" title="Previous">◀</button>
+        <button id="mobileHeartBtn" class="mobile-heart-btn" title="Favorite">♥</button>
+        <button id="mobileNextBtn" title="Next">▶</button>
+        <button id="mobileGridBtn" title="Grid View">⊞</button>
+    </div>
+    <div class="pull-refresh-indicator" id="pullRefreshIndicator">
+        <span class="refresh-icon">↻</span>
+        <span class="refresh-text">Pull to shuffle</span>
+    </div>
+    <div class="double-tap-heart" id="doubleTapHeart">♥</div>
+
     <div class="grid-panel" id="gridPanel" role="dialog" aria-label="Cities grid view" aria-hidden="true">
         <div class="grid-header">
             <div class="grid-brand">
@@ -5499,6 +5513,285 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && galleryRoom.classList.contains('open')) {
                 closeGalleryRoom();
+            }
+        });
+
+        // ========== MOBILE ENHANCEMENTS ==========
+
+        // Haptic feedback helper (defined first so other code can use it)
+        function haptic(type = 'light') {
+            if ('vibrate' in navigator) {
+                const patterns = { light: 10, medium: 25, heavy: 50 };
+                navigator.vibrate(patterns[type] || 10);
+            }
+        }
+
+        // Preload adjacent images for smoother swiping
+        function preloadAdjacentImages() {
+            if (typeof currentTokenId === 'undefined' || typeof MAX_TOKEN === 'undefined') return;
+            const prevId = currentTokenId > 0 ? currentTokenId - 1 : MAX_TOKEN;
+            const nextId = currentTokenId < MAX_TOKEN ? currentTokenId + 1 : 0;
+            const prevImg = new Image();
+            prevImg.src = getPreviewUrl(prevId);
+            const nextImg = new Image();
+            nextImg.src = getPreviewUrl(nextId);
+        }
+
+        // Mobile bottom bar controls
+        const mobileBottomBar = document.getElementById('mobileBottomBar');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobilePrevBtn = document.getElementById('mobilePrevBtn');
+        const mobileHeartBtn = document.getElementById('mobileHeartBtn');
+        const mobileNextBtn = document.getElementById('mobileNextBtn');
+        const mobileGridBtn = document.getElementById('mobileGridBtn');
+
+        // Update mobile heart button state
+        function updateMobileHeartState() {
+            if (mobileHeartBtn && typeof currentTokenId !== 'undefined') {
+                mobileHeartBtn.classList.toggle('favorited', isCityFavorited(currentTokenId));
+            }
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                haptic('light');
+                document.querySelector('.mobile-menu-toggle')?.click();
+            });
+        }
+
+        if (mobilePrevBtn) {
+            mobilePrevBtn.addEventListener('click', () => {
+                haptic('light');
+                document.getElementById('prevToken')?.click();
+            });
+        }
+
+        if (mobileNextBtn) {
+            mobileNextBtn.addEventListener('click', () => {
+                haptic('light');
+                document.getElementById('nextToken')?.click();
+            });
+        }
+
+        if (mobileHeartBtn) {
+            mobileHeartBtn.addEventListener('click', () => {
+                haptic('medium');
+                document.getElementById('favBtn')?.click();
+                setTimeout(updateMobileHeartState, 50);
+            });
+        }
+
+        if (mobileGridBtn) {
+            mobileGridBtn.addEventListener('click', () => {
+                haptic('light');
+                if (gridPanel && gridPanel.classList.contains('open')) {
+                    closeGridView();
+                } else {
+                    openGridView();
+                }
+            });
+        }
+
+        // Listen for image loads to update mobile state
+        if (previewImage) {
+            previewImage.addEventListener('load', () => {
+                updateMobileHeartState();
+                preloadAdjacentImages();
+            });
+        }
+
+        // Watch for grid panel open/close
+        if (gridPanel) {
+            const gridPanelObserver = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'class') {
+                        const isOpen = gridPanel.classList.contains('open');
+                        if (mobileGridBtn) mobileGridBtn.classList.toggle('active', isOpen);
+                        if (mobileBottomBar) {
+                            mobileBottomBar.style.display = (isOpen || window.innerWidth > 768) ? 'none' : 'flex';
+                        }
+                    }
+                });
+            });
+            gridPanelObserver.observe(gridPanel, { attributes: true });
+        }
+
+        // Double-tap to favorite
+        const doubleTapHeart = document.getElementById('doubleTapHeart');
+        let lastTapTime = 0;
+        let lastTapX = 0;
+        let lastTapY = 0;
+
+        if (previewImage) {
+            previewImage.addEventListener('touchend', (e) => {
+                if (typeof isFullscreen !== 'undefined' && isFullscreen) return;
+
+                const currentTime = Date.now();
+                const touch = e.changedTouches[0];
+                if (!touch) return;
+
+                const tapX = touch.clientX;
+                const tapY = touch.clientY;
+                const timeDiff = currentTime - lastTapTime;
+                const distDiff = Math.sqrt(Math.pow(tapX - lastTapX, 2) + Math.pow(tapY - lastTapY, 2));
+
+                if (timeDiff < 300 && distDiff < 50) {
+                    haptic('heavy');
+
+                    if (doubleTapHeart) {
+                        doubleTapHeart.style.left = (tapX - 40) + 'px';
+                        doubleTapHeart.style.top = (tapY - 40) + 'px';
+                        doubleTapHeart.classList.remove('show');
+                        void doubleTapHeart.offsetWidth;
+                        doubleTapHeart.classList.add('show');
+                    }
+
+                    if (typeof currentTokenId !== 'undefined' && !isCityFavorited(currentTokenId)) {
+                        document.getElementById('favBtn')?.click();
+                        updateMobileHeartState();
+                    }
+                    lastTapTime = 0;
+                } else {
+                    lastTapTime = currentTime;
+                    lastTapX = tapX;
+                    lastTapY = tapY;
+                }
+            });
+        }
+
+        // Pull to refresh / shuffle
+        const pullRefreshIndicator = document.getElementById('pullRefreshIndicator');
+        const pullRefreshText = pullRefreshIndicator?.querySelector('.refresh-text');
+        let pullStartY = 0;
+        let pullCurrentY = 0;
+        let isPulling = false;
+        const pullThreshold = 100;
+
+        function isAtTop() {
+            const gridContent = document.getElementById('gridContent');
+            if (gridPanel && gridPanel.classList.contains('open') && gridContent) {
+                return gridContent.scrollTop <= 0;
+            }
+            return true;
+        }
+
+        function scramblePalettes() {
+            const gridContent = document.getElementById('gridContent');
+            if (!gridContent) return;
+            const groups = Array.from(gridContent.querySelectorAll('.grid-group'));
+            if (groups.length === 0) return;
+            for (let i = groups.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                gridContent.appendChild(groups[j]);
+            }
+            groups.forEach((group, i) => {
+                group.style.animation = 'none';
+                void group.offsetWidth;
+                group.style.animation = `fadeSlideIn 0.3s ease forwards ${i * 0.02}s`;
+            });
+        }
+
+        document.addEventListener('touchstart', (e) => {
+            if (isAtTop() && (typeof isFullscreen === 'undefined' || !isFullscreen)) {
+                pullStartY = e.touches[0]?.clientY || 0;
+                isPulling = true;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isPulling || !pullRefreshIndicator) return;
+            pullCurrentY = e.touches[0]?.clientY || 0;
+            const pullDistance = pullCurrentY - pullStartY;
+
+            if (pullDistance > 20 && isAtTop()) {
+                pullRefreshIndicator.classList.add('visible');
+                if (pullDistance > pullThreshold) {
+                    pullRefreshIndicator.classList.add('pulling');
+                    if (pullRefreshText) pullRefreshText.textContent = 'Release to shuffle';
+                } else {
+                    pullRefreshIndicator.classList.remove('pulling');
+                    if (pullRefreshText) pullRefreshText.textContent = 'Pull to shuffle';
+                }
+                const translateY = Math.min(pullDistance * 0.4, 60);
+                pullRefreshIndicator.style.transform = `translateX(-50%) translateY(${translateY}px)`;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', () => {
+            if (!isPulling || !pullRefreshIndicator) return;
+            const pullDistance = pullCurrentY - pullStartY;
+
+            if (pullDistance > pullThreshold && isAtTop()) {
+                haptic('heavy');
+                pullRefreshIndicator.classList.add('refreshing');
+                pullRefreshIndicator.classList.remove('pulling');
+                if (pullRefreshText) pullRefreshText.textContent = 'Shuffling...';
+
+                setTimeout(() => {
+                    if (gridPanel && gridPanel.classList.contains('open') && gridMode === 'palette') {
+                        scramblePalettes();
+                    } else if (gridPanel && gridPanel.classList.contains('open')) {
+                        renderGrid();
+                    } else {
+                        document.getElementById('randomFiltered')?.click();
+                    }
+                    setTimeout(() => {
+                        pullRefreshIndicator.classList.remove('visible', 'pulling', 'refreshing');
+                        pullRefreshIndicator.style.transform = 'translateX(-50%)';
+                        if (pullRefreshText) pullRefreshText.textContent = 'Pull to shuffle';
+                    }, 300);
+                }, 200);
+            } else {
+                pullRefreshIndicator.classList.remove('visible', 'pulling');
+                pullRefreshIndicator.style.transform = 'translateX(-50%)';
+            }
+            isPulling = false;
+            pullStartY = 0;
+            pullCurrentY = 0;
+        });
+
+        // Shake to scramble
+        if (window.DeviceMotionEvent) {
+            let shakeThreshold = 15;
+            let lastShakeTime = 0;
+            let lastX = 0, lastY = 0, lastZ = 0;
+
+            window.addEventListener('devicemotion', (e) => {
+                const acceleration = e.accelerationIncludingGravity;
+                if (!acceleration) return;
+
+                const currentTime = Date.now();
+                if (currentTime - lastShakeTime < 1000) return;
+
+                const deltaX = Math.abs(acceleration.x - lastX);
+                const deltaY = Math.abs(acceleration.y - lastY);
+                const deltaZ = Math.abs(acceleration.z - lastZ);
+
+                if ((deltaX > shakeThreshold && deltaY > shakeThreshold) ||
+                    (deltaX > shakeThreshold && deltaZ > shakeThreshold) ||
+                    (deltaY > shakeThreshold && deltaZ > shakeThreshold)) {
+                    lastShakeTime = currentTime;
+                    haptic('heavy');
+
+                    if (gridPanel && gridPanel.classList.contains('open') && gridMode === 'palette') {
+                        scramblePalettes();
+                        showStatus('SHUFFLED!');
+                    } else if (!gridPanel || !gridPanel.classList.contains('open')) {
+                        document.getElementById('randomFiltered')?.click();
+                    }
+                }
+
+                lastX = acceleration.x;
+                lastY = acceleration.y;
+                lastZ = acceleration.z;
+            });
+        }
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            if (mobileBottomBar) {
+                const isGridOpen = gridPanel && gridPanel.classList.contains('open');
+                mobileBottomBar.style.display = (window.innerWidth <= 768 && !isGridOpen) ? 'flex' : 'none';
             }
         });
 
