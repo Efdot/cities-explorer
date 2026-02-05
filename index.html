@@ -129,8 +129,10 @@
         .sidebar-note-area.active .note-counter { opacity: 0.4; }
 
         .studio-credit { margin-top: auto; padding-top: 12px; text-align: center; }
-        .studio-credit a { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); opacity: 0.4; text-decoration: none; transition: all 0.3s ease; }
-        .studio-credit a:hover { opacity: 0.8; color: var(--teal); }
+        .studio-credit a { display: inline-block; text-decoration: none; transition: all 0.3s ease; opacity: 0.4; }
+        .studio-credit a:hover { opacity: 0.8; }
+        .studio-credit img { height: 24px; width: auto; filter: brightness(0) invert(1); transition: all 0.3s ease; }
+        .studio-credit a:hover img { filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.3)); }
         .logo-x { font-size: 7px; color: var(--text-muted); font-weight: 300; opacity: 0.4; }
         .section-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 14px; margin-top: 6px; }
         .control-group { margin-bottom: 14px; }
@@ -327,6 +329,48 @@
         .palette-inspector-hex span { font-size: 10px; font-weight: 600; color: var(--text-muted); background: var(--bg-input); padding: 6px 10px; border-radius: 6px; font-family: monospace; }
         .btn-inspect { background: transparent; border: 1px solid var(--border); color: var(--text-dim); }
         .btn-inspect:hover { border-color: var(--teal); color: var(--teal); }
+
+        /* About Modal */
+        .about-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.97); z-index: 2500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(20px); overflow-y: auto; padding: 40px 20px; }
+        .about-modal.open { display: flex; }
+        .about-content { max-width: 560px; width: 100%; text-align: left; }
+        .about-title { font-size: 36px; font-weight: 700; text-transform: none; letter-spacing: 0.02em; margin-bottom: 8px; color: #fff; font-family: Helvetica, Arial, sans-serif; }
+        .about-collab { font-size: 11px; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.05em; text-transform: uppercase; }
+        .about-intro { font-size: 14px; line-height: 1.7; color: var(--text-dim); margin-bottom: 28px; text-wrap: balance; }
+        .about-video { position: relative; width: 100%; padding-bottom: 56.25%; margin-bottom: 28px; border-radius: 8px; overflow: hidden; }
+        .about-video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .about-section { border-top: 1px solid var(--border); }
+        .about-section-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; cursor: pointer; transition: color 0.2s ease; }
+        .about-section-header:hover { color: var(--text); }
+        .about-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: inherit; }
+        .about-section-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.2s ease; }
+        .about-section.open .about-section-arrow { transform: rotate(180deg); }
+        .about-section-content { display: none; padding-bottom: 18px; font-size: 14px; line-height: 1.7; color: var(--text-dim); }
+        .about-section.open .about-section-content { display: block; }
+        .about-footer { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
+        .about-footer-text { font-size: 14px; font-style: italic; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
+        .about-buttons { display: flex; gap: 40px; justify-content: center; align-items: center; }
+        .about-mint-link { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center; text-decoration: none; gap: 2px; opacity: 0.8; transition: opacity 0.3s ease; }
+        .about-mint-link:hover { opacity: 1; }
+        .about-mint-link .mint-letter { height: 18px; width: auto; display: block; transition: transform 0.15s ease, filter 0.3s ease; animation: letterBounce 2s ease-in-out infinite; }
+        .about-mint-link .mint-letter:nth-child(1) { animation-delay: 0s; }
+        .about-mint-link .mint-letter:nth-child(2) { animation-delay: 0.15s; }
+        .about-mint-link .mint-letter:nth-child(3) { animation-delay: 0.3s; }
+        .about-mint-link .mint-letter:nth-child(4) { animation-delay: 0.45s; }
+        .about-mint-link:hover .mint-letter { filter: brightness(1.1); animation: letterVibrate 0.3s ease-in-out infinite; }
+        .about-mint-link:hover .mint-letter:nth-child(2) { animation-delay: 0.06s; }
+        .about-mint-link:hover .mint-letter:nth-child(3) { animation-delay: 0.12s; }
+        .about-mint-link:hover .mint-letter:nth-child(4) { animation-delay: 0.18s; }
+        @keyframes letterBounce { 0%, 85%, 100% { transform: translateY(0); } 90% { transform: translateY(-3px); } 95% { transform: translateY(0); } }
+        .about-btn-essay { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; text-decoration: none; text-transform: uppercase; background: none; border: 0.5px dashed var(--text-muted); padding: 10px 24px; color: var(--text-muted); border-radius: 50px; }
+        .about-btn-essay:hover { color: var(--text); border-color: var(--text); }
+        .about-btn-explore { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; text-decoration: none; text-transform: uppercase; background: none; border: 0.5px dashed var(--text-muted); padding: 10px 24px; color: var(--text-muted); border-radius: 50px; }
+        .about-btn-explore:hover { color: var(--text); border-color: var(--text); }
+        @media (max-width: 768px) {
+            .about-modal { padding: 24px 16px; }
+            .about-title { font-size: 28px; }
+            .about-intro, .about-section-content, .about-footer-text { font-size: 13px; }
+        }
 
         /* Framed Mockup View - off-white wall with floater frame */
         .frame-mockup {
@@ -672,16 +716,20 @@
         .grid-artist-logo:hover { opacity: 0.9; filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(212, 165, 116, 0.5)); }
         .grid-artist-logo.ef-logo:hover { animation: logoWiggle 0.4s ease-in-out; }
         .grid-logo-x { font-size: 10px; color: var(--text-muted); opacity: 0.4; position: relative; top: -5px; }
+        .grid-about-link { display: inline-block; opacity: 0.4; text-decoration: none; transition: all 0.3s ease; margin-left: 8px; }
+        .grid-about-link:hover { opacity: 0.8; }
+        .grid-about-link img { height: 18px; width: auto; filter: brightness(0) invert(1); transition: all 0.3s ease; }
+        .grid-about-link:hover img { filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.3)); }
         .grid-controls { display: flex; gap: 10px; align-items: center; }
         .grid-mode-btn { padding: 14px 24px; background: transparent; border: 2px solid var(--mint); border-radius: 50px; color: var(--mint); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.3s ease; }
         .grid-mode-btn:hover { background: rgba(212, 165, 116, 0.1); border-color: var(--warm); color: var(--warm); }
         .grid-mode-btn.active { background: rgba(232, 184, 109, 0.15); border-color: var(--warm); color: var(--warm); }
         .filter-toggle-bar { display: flex; align-items: center; justify-content: center; padding: 10px 16px; background: var(--bg-panel); border-bottom: 1px solid var(--border); cursor: pointer; }
         .filter-toggle-bar span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
-        .filter-toggle-bar .arrow { margin-left: 6px; font-size: 8px; transition: transform 0.3s ease; }
+        .filter-toggle-bar .arrow { margin-left: 6px; font-size: 8px; transition: transform 0.15s ease; }
         .filter-toggle-bar.open .arrow { transform: rotate(180deg); }
-        .grid-filter-bar { display: flex; gap: 12px; padding: 0; background: var(--bg-panel); flex-shrink: 0; align-items: center; flex-wrap: wrap; max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease-out, opacity 0.2s ease-out; border-bottom: none; opacity: 0; }
-        .grid-filter-bar.open { max-height: 200px; padding: 16px 28px; border-bottom: 1px solid var(--border); opacity: 1; }
+        .grid-filter-bar { display: none; gap: 12px; padding: 16px 28px; background: var(--bg-panel); flex-shrink: 0; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+        .grid-filter-bar.open { display: flex; }
         .grid-filter-bar select { padding: 10px 14px; background: var(--bg-input); border: none; color: var(--text); border-radius: 12px; font-size: 11px; font-family: inherit; font-weight: 600; cursor: pointer; min-width: 150px; color-scheme: dark; }
         .grid-filter-bar select:focus { outline: none; box-shadow: 0 0 0 2px rgba(0, 229, 204, 0.3); }
         .grid-filter-bar select option { background: #1e1d28; color: #fff; padding: 10px 14px; }
@@ -705,10 +753,10 @@
         .multi-select-count { font-size: 9px; color: var(--text-muted); font-weight: 500; }
         .multi-select-swatch { display: flex; gap: 2px; padding: 3px; border-radius: 4px; flex-shrink: 0; }
         .multi-select-swatch span { width: 8px; height: 8px; border-radius: 2px; }
-        .grid-checkbox { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--bg-input); border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dim); cursor: pointer; transition: all 0.3s ease; }
-        .grid-checkbox:hover { background: var(--bg-card); color: var(--text); }
-        .grid-checkbox input { appearance: none; -webkit-appearance: none; width: 8px; height: 8px; border-radius: 50%; background: transparent; border: 1.5px solid var(--text-dim); cursor: pointer; transition: all 0.2s ease; opacity: 0.5; }
-        .grid-checkbox input:checked { background: var(--text-muted); border-color: var(--text-muted); opacity: 0.7; }
+        .grid-checkbox { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--bg-input); border-radius: 50px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); cursor: pointer; transition: all 0.3s ease; }
+        .grid-checkbox:hover { background: var(--bg-card); }
+        .grid-checkbox input { appearance: none; -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%; background: transparent; border: 2px solid var(--text-dim); cursor: pointer; transition: all 0.2s ease; }
+        .grid-checkbox input:checked { background: var(--teal); border-color: var(--teal); }
         .grid-filter-spacer { flex: 1; }
         .grid-supply-tracker { width: 120px; height: 28px; position: relative; flex-shrink: 0; }
         .grid-supply-bar { position: relative; height: 100%; background: var(--bg-input); border-radius: 14px; overflow: hidden; }
@@ -729,15 +777,16 @@
         .grid-item.selected { outline: 3px solid var(--teal); }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
         .grid-item-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(10, 9, 16, 0.9)); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); text-align: center; }
-        .grid-item-fav { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border: none; background: rgba(10, 9, 16, 0.35); color: rgba(255,255,255,0.4); font-size: 14px; cursor: pointer; border-radius: 50%; opacity: 0.6; transition: all 0.2s ease; z-index: 2; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
-        .grid-item:hover .grid-item-fav { opacity: 1; background: rgba(10, 9, 16, 0.7); color: rgba(255,255,255,0.8); }
+        /* Desktop: hearts hidden until hover */
+        .grid-item-fav { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border: none; background: rgba(10, 9, 16, 0.7); color: rgba(255,255,255,0.6); font-size: 14px; cursor: pointer; border-radius: 50%; opacity: 0; transition: all 0.2s ease; z-index: 2; display: flex; align-items: center; justify-content: center; }
+        .grid-item:hover .grid-item-fav { opacity: 1; }
         .grid-item-fav:hover { background: #fff; color: #333; transform: scale(1.15); }
-        .grid-item-fav.favorited { opacity: 1; color: var(--spot-text, #000); background: var(--spot-color, var(--yellow)); box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); backdrop-filter: none; }
-        .grid-item-fav.favorited:hover { opacity: 1; background: #fff; color: #333; }
-        /* Always show fav buttons on touch devices */
+        .grid-item-fav.favorited { opacity: 1; color: var(--spot-text, #000); background: var(--spot-color, var(--yellow)); box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
+        .grid-item-fav.favorited:hover { background: #fff; color: #333; }
+        /* Mobile: hearts always visible but translucent */
         @media (pointer: coarse) {
-            .grid-item-fav { opacity: 0.5; width: 36px; height: 36px; font-size: 16px; }
-            .grid-item-fav.favorited { opacity: 1; }
+            .grid-item-fav { opacity: 0.4; width: 36px; height: 36px; font-size: 16px; background: rgba(10, 9, 16, 0.35); color: rgba(255,255,255,0.5); backdrop-filter: blur(4px); }
+            .grid-item-fav.favorited { opacity: 1; backdrop-filter: none; }
         }
         .grid-item-rank { position: absolute; top: 6px; left: 6px; background: linear-gradient(135deg, var(--orange), var(--yellow)); color: #000; font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; z-index: 2; }
         .grid-item-tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--bg-card); border-radius: 10px; padding: 10px 12px; font-size: 9px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: 8px; }
@@ -790,9 +839,9 @@
             .grid-content { padding: 8px; }
             .grid-items { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
             .grid-group-items { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important; gap: 8px !important; }
-            .grid-controls { flex-wrap: wrap; gap: 6px; justify-content: center; width: 100%; }
-            .grid-mode-btn { padding: 10px 16px; font-size: 9px; border-width: 2px; min-height: 40px; }
-            .gallery-room-toggle, .grid-size-toggle { width: 40px; height: 40px; font-size: 16px; }
+            .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .grid-mode-btn { padding: 6px 10px; font-size: 8px; border-width: 1.5px; min-height: 32px; white-space: nowrap; flex-shrink: 0; }
+            .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; flex-shrink: 0; }
             /* Palette headers on mobile */
             .grid-group-header { padding: 10px 12px; gap: 6px; flex-wrap: nowrap; }
             .grid-group-name { font-size: 10px; letter-spacing: 0.05em; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -806,8 +855,8 @@
             /* Move filter bar to bottom on mobile */
             .grid-panel { display: flex; flex-direction: column; }
             .filter-toggle-bar { order: 10; position: fixed; bottom: 0; left: 0; right: 0; margin: 0; border-radius: 0; z-index: 160; background: var(--bg-panel); border-top: 1px solid var(--border); padding: 14px 16px; }
-            .grid-filter-bar { order: 11; position: fixed; bottom: 50px; left: 0; right: 0; z-index: 159; border-radius: 0; max-height: 50vh; overflow-y: auto; }
-            .grid-filter-bar.open { padding: 16px; }
+            .grid-filter-bar { order: 11; position: fixed; bottom: 50px; left: 0; right: 0; z-index: 159; border-radius: 0; overflow-y: auto; max-height: 50vh; }
+            .grid-filter-bar.open { display: flex; padding: 16px; }
             .grid-content { order: 5; padding-bottom: 70px; }
         }
 
@@ -1123,12 +1172,19 @@
 
         /* Immersive Gallery Room - simplified, just art */
         .gallery-room { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #08070d; z-index: 10000; display: none; overflow: hidden; }
-        .gallery-room.open { display: block; animation: galleryFadeIn 0.8s ease-out; }
+        .gallery-room.open { display: block; animation: galleryFadeIn 0.5s ease-out; }
         @keyframes galleryFadeIn { from { opacity: 0; } to { opacity: 1; } }
         .gallery-room-ambient { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 50% 120%, rgba(212, 165, 116, 0.05) 0%, transparent 60%); pointer-events: none; }
-        .gallery-room-wall { position: absolute; top: 0; left: 0; height: 100%; display: flex; align-items: center; gap: 60px; padding: 0 100px; will-change: transform; }
-        .gallery-room-frame { flex-shrink: 0; background: linear-gradient(145deg, #1a1a2e, #12121f); padding: 12px; border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1); position: relative; cursor: pointer; }
-        .gallery-room-frame img { height: 60vh; width: auto; display: block; border-radius: 2px; transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1); }
+        .gallery-room-wall { position: absolute; top: 0; left: 0; height: 100%; display: flex; align-items: center; gap: 60px; padding: 0 100px; will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
+        .gallery-room-frame { flex-shrink: 0; background: linear-gradient(145deg, #1a1a2e, #12121f); padding: 12px; border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); transition: transform 0.3s ease; position: relative; cursor: pointer; transform: translateZ(0); }
+        .gallery-room-frame img { height: 60vh; width: auto; display: block; border-radius: 2px; }
+        @media (max-width: 768px) {
+            .gallery-room-wall { gap: 30px; padding: 0 40px; }
+            .gallery-room-frame { padding: 8px; }
+            .gallery-room-frame img { height: 50vh; }
+            .gallery-room-frame:hover { transform: none; }
+            .gallery-room-frame:hover img { transform: none; }
+        }
         .gallery-room-frame:hover { transform: scale(1.02); }
         .gallery-room-frame:hover img { transform: scale(1.08); }
         .gallery-room-frame-label { display: none; }
@@ -1319,7 +1375,7 @@
             <div class="note-counter"><span id="noteCharCount">0</span>/140</div>
         </div>
         <div class="studio-credit">
-            <a href="https://www.artblocks.io/studio" target="_blank">Supported by Art Blocks Studio</a>
+            <a href="#" id="aboutTrigger" title="About"><img src="info-icon.png" alt="About"></a>
         </div>
     </div>
 
@@ -1416,6 +1472,7 @@
                     <span class="grid-logo-x">×</span>
                     <a href="https://diid.art" target="_blank" title="Diid"><img src="diid-logo.png" alt="Diid" class="grid-artist-logo diid-logo"></a>
                 </div>
+                <a href="#" class="grid-about-link" id="gridAboutTrigger" title="About"><img src="info-icon.png" alt="About"></a>
             </div>
             <div class="grid-controls">
                 <button class="grid-size-toggle" id="gridSizeToggle" title="Change grid size">
@@ -1513,6 +1570,58 @@
         </div>
     </div>
 
+    <!-- About modal -->
+    <div class="about-modal" id="aboutModal">
+        <div class="about-content">
+            <h1 class="about-title">Cities</h1>
+            <p class="about-collab">A code-based art collaboration between Efdot and Diid, released on Art Blocks.</p>
+            <p class="about-intro">The energy of a city is too complex to understand from street level. So we built a system to observe it from above. From up there, relationships collapse into patterns. Chaos becomes rhythm. An infinite city, always in motion, never the same view twice.</p>
+
+            <div class="about-video">
+                <iframe src="https://player.vimeo.com/video/1162260399?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="about-section" data-section="aerial">
+                <div class="about-section-header">
+                    <span class="about-section-title">The Aerial View</span>
+                    <span class="about-section-arrow">▼</span>
+                </div>
+                <div class="about-section-content">
+                    Zoomed way out, all details fall away. You stop being yourself. You become one dot among millions—a witness to a collective consciousness. Each mark begs you to imagine a story. Millions of these stories overlap to form the fabric of the city.
+                </div>
+            </div>
+
+            <div class="about-section" data-section="algorithm">
+                <div class="about-section-header">
+                    <span class="about-section-title">The Algorithm</span>
+                    <span class="about-section-arrow">▼</span>
+                </div>
+                <div class="about-section-content">
+                    Over three years, we built the Cities algorithm based on rules developed by drawing by hand. We repeated the same loop until the system started surprising us: expand, simplify, balance. When you work by hand, the work carries your personality. When you work generatively, the system develops one of its own.
+                </div>
+            </div>
+
+            <div class="about-section" data-section="color">
+                <div class="about-section-header">
+                    <span class="about-section-title">Color as Time</span>
+                    <span class="about-section-arrow">▼</span>
+                </div>
+                <div class="about-section-content">
+                    Layer upon layer of color builds the illusion of time passing. 112 palettes capture every hour—from quiet dawn to electric midnight. We didn't chase rare traits. We cared about range.
+                </div>
+            </div>
+
+            <div class="about-footer">
+                <p class="about-footer-text">Did you know? You're already a dot in someone else's aerial view.</p>
+                <div class="about-buttons">
+                    <a href="#" target="_blank" class="about-btn-essay" id="aboutEssayLink">Essay</a>
+                    <a href="https://www.artblocks.io/collections/curated/projects/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/490" target="_blank" class="about-mint-link" id="aboutMintBtn"><img src="mint-m.png" alt="M" class="mint-letter"><img src="mint-i.png" alt="I" class="mint-letter"><img src="mint-n.png" alt="N" class="mint-letter"><img src="mint-t.png" alt="T" class="mint-letter"></a>
+                    <button class="about-btn about-btn-explore" id="aboutExploreBtn">Explore</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const CONTRACT = '0x7c78f67700e700b4005c8a3d920a1a99e6004800';
         const GENERATOR = 'https://generator.artblocks.io';
@@ -1526,6 +1635,53 @@
 
         // Collectors data - will be fetched from API for live updates
         let COLLECTORS_DATA = [];
+
+        // Global name alias mapping - map API names to preferred display names
+        // Keys are LOWERCASE for case-insensitive matching
+        const NAME_ALIASES = {
+            // WillEP variations
+            'valisdao': 'WillEP',
+            'valisdao2': 'WillEP',
+            'valisdao.eth': 'WillEP',
+            'willep': 'WillEP',
+            'willep.eth': 'WillEP',
+            // OblivionNFT variations
+            'nyc': 'OblivionNFT',
+            'nftoblivion': 'OblivionNFT',
+            'oblivionnft': 'OblivionNFT',
+            'oblivionnft.eth': 'OblivionNFT',
+            'oblivion': 'OblivionNFT',
+            // REDBEARDNFT variations
+            'dr. whet faartz': 'REDBEARDNFT',
+            'dr whet faartz': 'REDBEARDNFT',
+            'drwhetfaartz': 'REDBEARDNFT',
+            'drwhetfaartz.eth': 'REDBEARDNFT',
+            'redbeardnft': 'REDBEARDNFT',
+            'redbeardnft.eth': 'REDBEARDNFT',
+            'redbeard': 'REDBEARDNFT',
+            // Unnikrishna variations
+            'unnikrishna m damodaran': 'Unnikrishna',
+            'unnikrishna': 'Unnikrishna',
+            'unnikrishna.eth': 'Unnikrishna',
+            // Specific ENS aliases
+            'bsy.eth': 'BatSoupYum',
+            'bsy': 'BatSoupYum',
+            'zaz.eth': 'Zanzibar',
+            'zaz': 'Zanzibar'
+        };
+
+        // Function to apply name aliases and clean up ENS names
+        function applyNameAlias(name) {
+            if (!name) return name;
+            const lowerName = name.toLowerCase();
+            // Check for specific alias first
+            if (NAME_ALIASES[lowerName]) return NAME_ALIASES[lowerName];
+            // Remove .eth suffix
+            if (name.toLowerCase().endsWith('.eth')) {
+                return name.slice(0, -4);
+            }
+            return name;
+        }
 
         // 10 vastly different Cities palettes for collector pills - randomized on each visit
         const CITIES_PALETTE_SETS = [
@@ -2183,7 +2339,9 @@
 
                     // Try to get Art Blocks display name for the owner
                     try {
-                        const userQuery = `{ users(where: {public_address: {_eq: "${ownerAddress}"}}) { display_name } }`;
+                        // Lowercase the address for API query (Art Blocks stores addresses in lowercase)
+                        const normalizedAddress = ownerAddress.toLowerCase();
+                        const userQuery = `{ users(where: {public_address: {_eq: "${normalizedAddress}"}}) { display_name } }`;
                         const userResponse = await fetch('https://data.artblocks.io/v1/graphql', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -2532,52 +2690,7 @@
                         });
                     }
 
-                    // Custom alias overrides - map API names to preferred display names
-                    // Keys are LOWERCASE for case-insensitive matching
-                    const nameAliases = {
-                        // WillEP variations
-                        'valisdao': 'WillEP',
-                        'valisdao2': 'WillEP',
-                        'valisdao.eth': 'WillEP',
-                        'willep': 'WillEP',
-                        'willep.eth': 'WillEP',
-                        // OblivionNFT variations
-                        'nyc': 'OblivionNFT',
-                        'nftoblivion': 'OblivionNFT',
-                        'oblivionnft': 'OblivionNFT',
-                        'oblivionnft.eth': 'OblivionNFT',
-                        'oblivion': 'OblivionNFT',
-                        // REDBEARDNFT variations
-                        'dr. whet faartz': 'REDBEARDNFT',
-                        'dr whet faartz': 'REDBEARDNFT',
-                        'drwhetfaartz': 'REDBEARDNFT',
-                        'drwhetfaartz.eth': 'REDBEARDNFT',
-                        'redbeardnft': 'REDBEARDNFT',
-                        'redbeardnft.eth': 'REDBEARDNFT',
-                        'redbeard': 'REDBEARDNFT',
-                        // Unnikrishna variations
-                        'unnikrishna m damodaran': 'Unnikrishna',
-                        'unnikrishna': 'Unnikrishna',
-                        'unnikrishna.eth': 'Unnikrishna',
-                        // Specific ENS aliases
-                        'bsy.eth': 'BatSoupYum',
-                        'bsy': 'BatSoupYum',
-                        'zaz.eth': 'Zanzibar',
-                        'zaz': 'Zanzibar'
-                    };
-
-                    // Function to clean up ENS names - remove .eth suffix unless there's a specific alias
-                    function cleanEnsName(name) {
-                        if (!name) return name;
-                        const lowerName = name.toLowerCase();
-                        // Check for specific alias first
-                        if (nameAliases[lowerName]) return nameAliases[lowerName];
-                        // Remove .eth suffix
-                        if (name.toLowerCase().endsWith('.eth')) {
-                            return name.slice(0, -4);
-                        }
-                        return name;
-                    }
+                    // Use global NAME_ALIASES and applyNameAlias function for consistency
 
                     // Direct wallet address prefix to name mappings (for wallets without Art Blocks names)
                     // Uses prefix matching - just the first few chars of the address
@@ -2596,9 +2709,9 @@
                         });
                     });
 
-                    // Apply cleanEnsName to existing names (removes .eth, applies aliases)
+                    // Apply applyNameAlias to existing names (removes .eth, applies aliases)
                     Object.keys(addressToName).forEach(addr => {
-                        addressToName[addr] = cleanEnsName(addressToName[addr]);
+                        addressToName[addr] = applyNameAlias(addressToName[addr]);
                     });
 
                     // Try ENS resolution for ALL addresses without names
@@ -2622,9 +2735,9 @@
                         await Promise.all(ensPromises);
                     }
 
-                    // Apply cleanEnsName to all names (removes .eth, applies aliases)
+                    // Apply applyNameAlias to all names (removes .eth, applies aliases)
                     Object.keys(addressToName).forEach(addr => {
-                        addressToName[addr] = cleanEnsName(addressToName[addr]);
+                        addressToName[addr] = applyNameAlias(addressToName[addr]);
                     });
 
                     // Build collectors array (exclude efdot and efdot x diid)
@@ -2698,7 +2811,9 @@
             else if (traitKey === 'Transit') count = traitCounts.transit[traitValue] || 0;
             else if (traitKey === 'Water Feature') count = traitCounts.water[traitValue] || 0;
             else return null;
-            const pct = Math.round((count / totalMinted) * 100);
+            const rawPct = (count / totalMinted) * 100;
+            // Show 1 decimal place for rare traits (<1%), otherwise round to integer
+            const pct = rawPct < 1 && rawPct > 0 ? rawPct.toFixed(1) : Math.round(rawPct);
             return { count, pct };
         }
 
@@ -2761,7 +2876,9 @@
                 return;
             }
             // Priority: Art Blocks username > ENS > shortened address
-            const displayName = owner.artblocksName || owner.ens || shortenAddress(owner.address);
+            // Apply name alias to get preferred display name
+            const rawName = owner.artblocksName || owner.ens || shortenAddress(owner.address);
+            const displayName = applyNameAlias(rawName);
             ownerDisplay.innerHTML = `OWNED BY <a href="https://www.artblocks.io/user/${owner.address}" target="_blank">${displayName.toUpperCase()}</a>`;
         }
 
@@ -4215,11 +4332,15 @@
             gridPanel.classList.remove('open');
             viewToggleBtn.classList.remove('grid-open');
             document.body.classList.remove('grid-open');
-            // If no city loaded yet (first time clicking X), load the rarest city
-            if (!previewImage.src || previewImage.src === window.location.href || currentTokenId === 0) {
-                const rarestToken = getRarestToken();
-                if (rarestToken) {
-                    loadOutput(rarestToken);
+            // If no city loaded yet (first time clicking X), load the current or rarest city
+            if (!previewImage.src || previewImage.src === window.location.href) {
+                if (currentTokenId > 0) {
+                    loadOutput(currentTokenId);
+                } else {
+                    const rarestToken = getRarestToken();
+                    if (rarestToken) {
+                        loadOutput(rarestToken);
+                    }
                 }
             }
         }
@@ -4227,6 +4348,10 @@
             if (gridPanel.classList.contains('open')) {
                 closeGridView();
             } else {
+                // Check if we should return to collector gallery context
+                if (typeof returnToCollectorGallery === 'function' && returnToCollectorGallery()) {
+                    return; // Successfully returned to collector view
+                }
                 openGridView();
             }
         });
@@ -4618,21 +4743,37 @@
 
         function getColorSortValue(palette) {
             const info = PALETTE_DATA[palette];
-            if (!info || !info.bg) return 0;
+            if (!info || !info.bg) return 999; // Unknown palettes go last
             const hex = info.bg.replace('#', '');
-            const r = parseInt(hex.substr(0, 2), 16);
-            const g = parseInt(hex.substr(2, 2), 16);
-            const b = parseInt(hex.substr(4, 2), 16);
-            // Convert to HSL hue for rainbow sorting
+            const r = parseInt(hex.substr(0, 2), 16) / 255;
+            const g = parseInt(hex.substr(2, 2), 16) / 255;
+            const b = parseInt(hex.substr(4, 2), 16) / 255;
+
+            // Convert to HSL
             const max = Math.max(r, g, b), min = Math.min(r, g, b);
-            let h = 0;
+            let h = 0, s = 0, l = (max + min) / 2;
             if (max !== min) {
                 const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
                 if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
                 else if (max === g) h = ((b - r) / d + 2) / 6;
                 else h = ((r - g) / d + 4) / 6;
             }
-            return h;
+            h *= 360;
+            s *= 100;
+            l *= 100;
+
+            // Categorize: saturated first (0-99), then day/light (100-199), then night/dark (200-299)
+            const isDark = l < 20;
+            const isSaturated = s > 35 && l > 20 && l < 85;
+
+            let category;
+            if (isSaturated) category = 0; // Saturated/colorful first
+            else if (isDark) category = 2; // Night - dark backgrounds last
+            else category = 1; // Day - light or desaturated in middle
+
+            // Within category, sort by hue (0-360 normalized to 0-99)
+            return category * 100 + (h / 360) * 99;
         }
 
         function renderGrid() {
@@ -4720,13 +4861,15 @@
                     if (e.target.closest('.grid-item-fav')) return;
                     const tokenId = parseInt(item.dataset.token);
                     gridPanel.classList.remove('open');
+                    viewToggleBtn.classList.remove('grid-open');
+                    document.body.classList.remove('grid-open');
                     loadOutput(tokenId, true);
                 });
             });
         }
 
         function renderAZPalettes(tokens) {
-            // Group by palette, then sort palettes A-Z
+            // Group by palette, then sort palettes A-Z alphabetically
             const groups = {};
             tokens.forEach(id => {
                 const traits = tokenTraits[id];
@@ -4735,7 +4878,7 @@
                 groups[palette].push(id);
             });
 
-            // Sort palette names A-Z
+            // Sort palettes alphabetically A-Z
             const sortedPalettes = Object.keys(groups).sort((a, b) => a.localeCompare(b));
 
             let html = sortedPalettes.map(palette => {
@@ -4803,6 +4946,8 @@
                     if (e.target.closest('.grid-item-fav')) return;
                     const tokenId = parseInt(item.dataset.token);
                     gridPanel.classList.remove('open');
+                    viewToggleBtn.classList.remove('grid-open');
+                    document.body.classList.remove('grid-open');
                     loadOutput(tokenId, true);
                 });
             });
@@ -4840,6 +4985,8 @@
                     if (e.target.closest('.grid-item-fav')) return;
                     const tokenId = parseInt(item.dataset.token);
                     gridPanel.classList.remove('open');
+                    viewToggleBtn.classList.remove('grid-open');
+                    document.body.classList.remove('grid-open');
                     loadOutput(tokenId, true);
                 });
             });
@@ -4858,7 +5005,12 @@
             const mintedPalettes = new Set(Object.keys(groups));
             const unmintedPalettes = Object.keys(PALETTE_DATA).filter(p => !mintedPalettes.has(p));
 
-            const sortedPalettes = Object.keys(groups).sort((a, b) => groups[b].length - groups[a].length);
+            // Sort by popularity (most minted first), then alphabetically for ties
+            const sortedPalettes = Object.keys(groups).sort((a, b) => {
+                const countDiff = groups[b].length - groups[a].length;
+                if (countDiff !== 0) return countDiff;
+                return a.localeCompare(b);
+            });
 
             let html = sortedPalettes.map(palette => {
                 const paletteInfo = PALETTE_DATA[palette];
@@ -4970,6 +5122,8 @@
                     e.stopPropagation();
                     const tokenId = parseInt(item.dataset.token);
                     gridPanel.classList.remove('open');
+                    viewToggleBtn.classList.remove('grid-open');
+                    document.body.classList.remove('grid-open');
                     loadOutput(tokenId, true);
                 });
             });
@@ -4998,6 +5152,8 @@
                     if (e.target.closest('.grid-item-fav')) return;
                     const tokenId = parseInt(item.dataset.token);
                     gridPanel.classList.remove('open');
+                    viewToggleBtn.classList.remove('grid-open');
+                    document.body.classList.remove('grid-open');
                     loadOutput(tokenId, true);
                 });
             });
@@ -5065,6 +5221,8 @@
                     if (e.target.closest('.grid-item-fav')) return;
                     const tokenId = parseInt(item.dataset.token);
                     gridPanel.classList.remove('open');
+                    viewToggleBtn.classList.remove('grid-open');
+                    document.body.classList.remove('grid-open');
                     loadOutput(tokenId, true);
                 });
             });
@@ -5390,14 +5548,27 @@
         let galleryAnimFrame = null;
         let galleryWallWidth = 0;
         let galleryHoveredFrame = null;
+        let galleryOpenedFromCollector = null; // Track if opened from collector view
+
+        // Touch swipe support for gallery room
+        let galleryTouchStartX = 0;
+        let galleryTouchStartTime = 0;
+        let galleryTouchVelocity = 0;
+        let galleryIsTouching = false;
+        let galleryTouchMoved = false;
 
         function openGalleryRoom() {
             const tokens = getGalleryTokens();
             if (tokens.length < 3) return;
 
-            // Shuffle and limit tokens
+            // Track if opened from collector view so we can return there
+            galleryOpenedFromCollector = currentCollectorFilter ? { ...currentCollectorFilter } : null;
+
+            // Shuffle and limit tokens - reduce on mobile to prevent crashes
+            const isMobile = window.innerWidth <= 768;
+            const maxTokens = isMobile ? 20 : 40;
             const shuffled = [...tokens].sort(() => Math.random() - 0.5);
-            const displayTokens = shuffled.slice(0, Math.min(40, shuffled.length));
+            const displayTokens = shuffled.slice(0, Math.min(maxTokens, shuffled.length));
 
             // Duplicate for seamless loop
             const allTokens = [...displayTokens, ...displayTokens];
@@ -5405,21 +5576,25 @@
             // Update counter
             document.getElementById('galleryRoomCounter').textContent = `${displayTokens.length} Cities`;
 
+            // Use smaller images (400px width) for gallery to reduce memory
+            const imgSize = isMobile ? 200 : 400;
             galleryRoomWall.innerHTML = allTokens.map((id) => `
                 <div class="gallery-room-frame" data-token="${id}">
-                    <img src="${MEDIA_BASE}/${CONTRACT}/${id}.png" alt="Cities #${id}" loading="lazy">
+                    <img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=${imgSize}" alt="Cities #${id}" loading="lazy" decoding="async">
                 </div>
             `).join('');
 
             galleryRoom.classList.add('open');
             document.body.style.overflow = 'hidden';
 
-            // Calculate wall width after render
-            requestAnimationFrame(() => {
-                galleryWallWidth = galleryRoomWall.scrollWidth / 2;
-                galleryScrollPos = 0;
-                startGalleryScroll();
-            });
+            // Calculate wall width after render with slight delay for images to settle
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    galleryWallWidth = galleryRoomWall.scrollWidth / 2;
+                    galleryScrollPos = 0;
+                    startGalleryScroll();
+                });
+            }, 100);
         }
 
         function closeGalleryRoom() {
@@ -5433,19 +5608,25 @@
 
         function startGalleryScroll() {
             function animate() {
-                // Smoothly interpolate speed
-                galleryScrollSpeed += (galleryTargetSpeed - galleryScrollSpeed) * 0.02;
+                // Only animate if not currently touching
+                if (!galleryIsTouching) {
+                    // Smoothly interpolate speed (faster deceleration for momentum)
+                    const decayRate = Math.abs(galleryScrollSpeed) > 1 ? 0.05 : 0.02;
+                    galleryScrollSpeed += (galleryTargetSpeed - galleryScrollSpeed) * decayRate;
 
-                // Only scroll if not hovering a frame
-                if (!galleryHoveredFrame) {
-                    galleryScrollPos += galleryScrollSpeed;
+                    // Only scroll if not hovering a frame
+                    if (!galleryHoveredFrame) {
+                        galleryScrollPos += galleryScrollSpeed;
 
-                    // Loop seamlessly
-                    if (galleryScrollPos >= galleryWallWidth) {
-                        galleryScrollPos -= galleryWallWidth;
+                        // Loop seamlessly (handle both directions)
+                        if (galleryScrollPos >= galleryWallWidth) {
+                            galleryScrollPos -= galleryWallWidth;
+                        } else if (galleryScrollPos < 0) {
+                            galleryScrollPos += galleryWallWidth;
+                        }
+
+                        galleryRoomWall.style.transform = `translateX(${-galleryScrollPos}px)`;
                     }
-
-                    galleryRoomWall.style.transform = `translateX(${-galleryScrollPos}px)`;
                 }
 
                 galleryAnimFrame = requestAnimationFrame(animate);
@@ -5498,13 +5679,22 @@
             }
         });
 
-        // Click on frame to view that token
+        // Click on frame to view that token (but not if swiping)
         galleryRoomWall.addEventListener('click', (e) => {
+            // Don't trigger click if user was swiping
+            if (galleryTouchMoved) {
+                galleryTouchMoved = false;
+                return;
+            }
             const frame = e.target.closest('.gallery-room-frame');
             if (frame) {
                 const tokenId = parseInt(frame.dataset.token);
+                // Store that we came from gallery room (to return to collector view later)
+                sessionStorage.setItem('cities-gallery-context', JSON.stringify(galleryOpenedFromCollector));
                 closeGalleryRoom();
                 gridPanel.classList.remove('open');
+                viewToggleBtn.classList.remove('grid-open');
+                document.body.classList.remove('grid-open');
                 loadOutput(tokenId, true);
             }
         });
@@ -5515,6 +5705,84 @@
                 closeGalleryRoom();
             }
         });
+
+        // Touch swipe support for gallery room
+        galleryRoom.addEventListener('touchstart', (e) => {
+            galleryIsTouching = true;
+            galleryTouchMoved = false;
+            galleryTouchStartX = e.touches[0].clientX;
+            galleryTouchStartTime = Date.now();
+            galleryScrollSpeed = 0; // Stop auto-scroll while touching
+            galleryTargetSpeed = 0;
+        }, { passive: true });
+
+        galleryRoom.addEventListener('touchmove', (e) => {
+            if (!galleryIsTouching) return;
+            const touchX = e.touches[0].clientX;
+            const deltaX = galleryTouchStartX - touchX;
+
+            // Mark as moved if dragged more than 10px
+            if (Math.abs(deltaX) > 10) {
+                galleryTouchMoved = true;
+            }
+
+            // Update scroll position directly based on touch movement
+            galleryScrollPos += deltaX;
+
+            // Keep within bounds (loop)
+            if (galleryScrollPos < 0) {
+                galleryScrollPos += galleryWallWidth;
+            } else if (galleryScrollPos >= galleryWallWidth) {
+                galleryScrollPos -= galleryWallWidth;
+            }
+
+            galleryRoomWall.style.transform = `translateX(${-galleryScrollPos}px)`;
+
+            // Calculate velocity for momentum
+            const timeDelta = Date.now() - galleryTouchStartTime;
+            if (timeDelta > 0) {
+                galleryTouchVelocity = deltaX / timeDelta * 16; // Normalize to ~60fps
+            }
+
+            galleryTouchStartX = touchX;
+            galleryTouchStartTime = Date.now();
+        }, { passive: true });
+
+        galleryRoom.addEventListener('touchend', (e) => {
+            if (!galleryIsTouching) return;
+            galleryIsTouching = false;
+
+            // Apply momentum - glide with deceleration
+            const momentum = galleryTouchVelocity * 2;
+            if (Math.abs(momentum) > 0.5) {
+                galleryScrollSpeed = momentum;
+                galleryTargetSpeed = 0.3; // Gradually return to base speed
+            } else {
+                galleryScrollSpeed = 0.3;
+                galleryTargetSpeed = 0.3;
+            }
+        }, { passive: true });
+
+        // Function to return to collector view from single output
+        function returnToCollectorGallery() {
+            const contextStr = sessionStorage.getItem('cities-gallery-context');
+            if (contextStr) {
+                try {
+                    const context = JSON.parse(contextStr);
+                    if (context && context.name) {
+                        currentCollectorFilter = context;
+                        document.getElementById('collectorBannerName').textContent = context.name;
+                        document.getElementById('collectorBanner').classList.add('visible');
+                        gridMode = 'grid';
+                        openGridView();
+                        renderGrid();
+                        sessionStorage.removeItem('cities-gallery-context');
+                        return true;
+                    }
+                } catch (e) {}
+            }
+            return false;
+        }
 
         // ========== MOBILE ENHANCEMENTS ==========
 
@@ -5792,6 +6060,64 @@
             if (mobileBottomBar) {
                 const isGridOpen = gridPanel && gridPanel.classList.contains('open');
                 mobileBottomBar.style.display = (window.innerWidth <= 768 && !isGridOpen) ? 'flex' : 'none';
+            }
+        });
+
+        // About modal
+        const aboutModal = document.getElementById('aboutModal');
+        const aboutTrigger = document.getElementById('aboutTrigger');
+        const gridAboutTrigger = document.getElementById('gridAboutTrigger');
+        const aboutExploreBtn = document.getElementById('aboutExploreBtn');
+        const aboutMintBtn = document.getElementById('aboutMintBtn');
+
+        function openAboutModal(e) {
+            if (e) e.preventDefault();
+            aboutModal.classList.add('open');
+            // Hide mint button if sold out
+            const isSoldOut = document.getElementById('supplyTracker')?.classList.contains('sold-out');
+            if (aboutMintBtn) {
+                aboutMintBtn.style.display = isSoldOut ? 'none' : 'inline-block';
+            }
+        }
+
+        if (aboutTrigger) {
+            aboutTrigger.addEventListener('click', openAboutModal);
+        }
+        if (gridAboutTrigger) {
+            gridAboutTrigger.addEventListener('click', openAboutModal);
+        }
+
+        if (aboutExploreBtn) {
+            aboutExploreBtn.addEventListener('click', () => {
+                aboutModal.classList.remove('open');
+            });
+        }
+
+        // Close about modal on clicking outside content
+        if (aboutModal) {
+            aboutModal.addEventListener('click', (e) => {
+                // Don't close if user is selecting text
+                const selection = window.getSelection();
+                if (selection && selection.toString().length > 0) return;
+
+                if (e.target === aboutModal) {
+                    aboutModal.classList.remove('open');
+                }
+            });
+        }
+
+        // Expandable sections in about modal
+        document.querySelectorAll('.about-section-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const section = header.closest('.about-section');
+                section.classList.toggle('open');
+            });
+        });
+
+        // Close about modal with ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && aboutModal?.classList.contains('open')) {
+                aboutModal.classList.remove('open');
             }
         });
 
