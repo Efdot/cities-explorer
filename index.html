@@ -137,7 +137,8 @@
         .control-group label { display: block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 6px; }
         .control-group input[type="text"], .control-group input[type="number"], .control-group select { width: 100%; padding: 12px 16px; background: var(--bg-input); border: none; color: var(--text); border-radius: 50px; font-size: 13px; font-family: inherit; font-weight: 600; transition: all 0.3s ease; }
         .control-group input:focus, .control-group select:focus { outline: none; background: var(--bg-card); box-shadow: 0 0 0 2px rgba(0, 229, 204, 0.3); }
-        .control-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23a0a0c0'%3E%3Cpath d='M1 3l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+        .control-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23a0a0c0'%3E%3Cpath d='M1 3l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; color-scheme: dark; }
+        .control-group select option { background: #1e1d28; color: #fff; padding: 8px; }
 
         .btn { width: 100%; padding: 14px; border: none; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 10px; }
         .btn:active { transform: scale(0.97); }
@@ -179,6 +180,12 @@
         .action-bar .heart-btn { height: 40px; width: 40px; min-width: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .action-icons { display: flex; gap: 6px; flex-wrap: wrap; }
         .action-icons .icon-btn { width: 32px; height: 32px; font-size: 13px; border-radius: 50%; }
+
+        /* Saved to favorites note */
+        .saved-note { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); opacity: 0; height: 0; overflow: hidden; transition: opacity 0.3s ease, height 0.3s ease; margin-top: 0; }
+        .saved-note.visible { opacity: 0.5; height: 24px; margin-top: 10px; }
+        .saved-dots::after { content: ''; animation: savedDots 1.5s steps(4) infinite; }
+        @keyframes savedDots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
 
         /* Icon buttons row */
         .icon-buttons-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -270,13 +277,20 @@
         .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(8, 1fr); gap: 4px; }
         .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 4px; }
 
+        /* Favorites grid - clean, spacious layout */
+        .grid-items.favorites-grid { gap: 16px; padding: 20px; }
+        .grid-items.favorites-grid.grid-2-col { gap: 24px; max-width: 900px; margin: 0 auto; }
+        .grid-items.favorites-grid.grid-3-col { gap: 20px; max-width: 1100px; margin: 0 auto; }
+        .grid-items.favorites-grid.grid-4-col { gap: 16px; }
+        .grid-items.favorites-grid .grid-item { border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+
         /* Collectors button in grid - brighter when not clicked, muted when active */
         .grid-mode-btn.collectors-btn { background: transparent; border-color: var(--border); color: var(--text-muted); opacity: 0.6; }
         .grid-mode-btn.collectors-btn:hover { background: rgba(255,255,255,0.03); border-color: var(--text-muted); color: var(--text-dim); opacity: 0.8; }
         .grid-mode-btn.collectors-btn.active { opacity: 0.25; border-color: transparent; color: var(--text-muted); background: transparent; }
         .grid-fav-btn { width: 32px; height: 32px; padding: 0; border: none; border-radius: 50%; background: var(--bg-input); color: var(--text-muted); font-size: 14px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        .grid-fav-btn:hover { background: var(--bg-card); color: var(--pink); }
-        .grid-fav-btn.active { background: var(--pink); color: #fff; }
+        .grid-fav-btn:hover { background: var(--bg-card); color: #FF6B4A; }
+        .grid-fav-btn.active { background: #FF6B4A; color: #fff; box-shadow: 0 2px 12px rgba(255, 107, 74, 0.4); }
         /* Legacy size icon classes - kept for backwards compatibility */
         .size-small { width: 8px; height: 8px; display: block; background: currentColor; border-radius: 2px; }
         .size-medium { width: 12px; height: 12px; display: block; background: currentColor; border-radius: 2px; }
@@ -354,13 +368,13 @@
         /* Deep shadow recess between frame and art */
         .frame-inner {
             position: relative;
-            /* Deep dark gap/shadow between frame and art */
-            background: #1a1816;
-            padding: 5px; /* Float gap */
-            /* Inner shadow to create depth */
+            /* Subtle dark gap between frame and art */
+            background: #2a2826;
+            padding: 4px; /* Float gap */
+            /* Lighter inner shadow for subtle depth */
             box-shadow:
-                inset 0 0 8px rgba(0,0,0,0.8),
-                inset 0 2px 4px rgba(0,0,0,0.5);
+                inset 0 0 4px rgba(0,0,0,0.4),
+                inset 0 1px 2px rgba(0,0,0,0.3);
         }
         /* The art floats above the shadow */
         .frame-inner img {
@@ -395,17 +409,18 @@
         body.fullscreen-mode .mobile-menu-toggle, body.fullscreen-mode .bottom-info, body.fullscreen-mode .top-nav-fixed { display: none !important; }
         body.fullscreen-mode .main-content { padding: 0; left: 0; }
         body.fullscreen-mode .frame-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; border-radius: 0; background: var(--bg-deep); }
-        body.fullscreen-mode .preview-image { max-height: 100vh; max-width: 100vw; width: auto; height: auto; object-fit: contain; }
+        body.fullscreen-mode .preview-image { max-height: 100vh; max-width: 100vw; width: auto; height: auto; object-fit: contain; opacity: 0; transition: opacity 0.3s ease-out; }
+        body.fullscreen-mode .preview-image.loaded { opacity: 1; }
         body.fullscreen-mode .click-to-view { display: none; }
         .fullscreen-exit-hint { display: none !important; }
 
-        /* City vibe section */
+        /* City note section - minimal, floats on background */
         .city-note { margin: 12px 0; display: none; }
         .city-note.visible { display: block; }
-        .city-note textarea { width: 100%; padding: 10px 14px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text); border-radius: 50px; font-size: 11px; font-family: inherit; font-weight: 500; resize: none; transition: all 0.3s ease; line-height: 1.2; overflow: hidden; }
-        .city-note textarea:focus { outline: none; border-color: var(--teal); background: var(--bg-card); }
-        .city-note textarea::placeholder { color: var(--text-muted); font-style: italic; }
-        .city-note.has-note textarea { border-color: var(--pink); background: color-mix(in srgb, var(--pink) 8%, var(--bg-input)); }
+        .city-note textarea { width: 100%; padding: 4px 0; background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; resize: none; transition: all 0.3s ease; line-height: 1.4; overflow: hidden; }
+        .city-note textarea:focus { outline: none; border-bottom-color: var(--text-muted); color: var(--text); }
+        .city-note textarea::placeholder { color: var(--text-muted); font-style: italic; text-transform: none; letter-spacing: 0; opacity: 0.5; }
+        .city-note.has-note textarea { color: var(--text-dim); border-bottom-color: var(--text-muted); }
         .loading-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-card); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; transition: opacity 0.3s; }
         .loading-overlay.hidden { opacity: 0; pointer-events: none; }
         .spinner { width: 32px; height: 32px; border: 3px solid var(--bg-input); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
@@ -479,15 +494,19 @@
         .item-actions .delete-btn { background: transparent; color: var(--pink); }
         .empty-gallery { grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 60px 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; line-height: 2; }
 
-        /* Favorited palettes section */
-        .fav-palettes-section { margin-bottom: 20px; }
-        .fav-palettes-header { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 10px; }
-        .fav-palettes-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-        .fav-palette-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--bg-card); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
-        .fav-palette-item:hover { background: var(--bg-input); transform: translateY(-1px); }
-        .fav-palette-swatch { width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0; }
-        .fav-palette-name { font-size: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
-        .fav-palette-count { font-size: 9px; color: var(--text-muted); }
+        /* Favorited palettes section - horizontal bar at top */
+        .fav-palettes-section { margin-bottom: 16px; padding: 12px; background: var(--bg-card); border-radius: 12px; }
+        .fav-palettes-header { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px; }
+        .fav-palettes-grid { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+        .fav-palettes-grid::-webkit-scrollbar { height: 3px; }
+        .fav-palettes-grid::-webkit-scrollbar-track { background: transparent; }
+        .fav-palettes-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .fav-palette-item { display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: var(--bg-input); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
+        .fav-palette-item:hover { background: var(--bg-deep); transform: scale(1.02); }
+        .fav-palette-swatch { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
+        .fav-palette-name { font-size: 9px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
+        .fav-palette-count { display: none; }
+        .fav-palette-remove { width: 16px; height: 16px; font-size: 10px; }
         .fav-palette-remove { width: 20px; height: 20px; border: none; background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; border-radius: 50%; transition: all 0.2s; display: flex; align-items: center; justify-content: center; margin-left: auto; }
         .fav-palette-remove:hover { background: var(--bg-input); color: var(--orange); }
         .fav-divider { height: 1px; background: var(--border); margin: 16px 0; }
@@ -580,7 +599,9 @@
         .gallery-panel.open::before { opacity: 1; pointer-events: auto; }
         .gallery-panel.open:hover::before, .gallery-panel.dragging::before { background: var(--pink); width: 8px; }
         .collectors-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .collectors-header h2 { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--purple); }
+        .collectors-header h2 { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #fff; display: flex; align-items: center; gap: 6px; }
+        .collectors-header .collapse-arrow { font-size: 14px; opacity: 0.6; transition: all 0.2s ease; }
+        .collectors-header h2:hover .collapse-arrow { opacity: 1; }
         .collectors-close { background: var(--bg-input); border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
         .collectors-close:hover { background: var(--bg-card); color: var(--text); }
         .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 20px; padding: 12px 18px; background: var(--bg-input); border-radius: 50px; }
@@ -664,8 +685,9 @@
         .filter-toggle-bar.open .arrow { transform: rotate(180deg); }
         .grid-filter-bar { display: flex; gap: 12px; padding: 0; background: var(--bg-panel); flex-shrink: 0; align-items: center; flex-wrap: wrap; max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease-out, opacity 0.2s ease-out; border-bottom: none; opacity: 0; }
         .grid-filter-bar.open { max-height: 200px; padding: 16px 28px; border-bottom: 1px solid var(--border); opacity: 1; }
-        .grid-filter-bar select { padding: 10px 14px; background: var(--bg-input); border: none; color: var(--text); border-radius: 12px; font-size: 11px; font-family: inherit; font-weight: 600; cursor: pointer; min-width: 150px; }
+        .grid-filter-bar select { padding: 10px 14px; background: var(--bg-input); border: none; color: var(--text); border-radius: 12px; font-size: 11px; font-family: inherit; font-weight: 600; cursor: pointer; min-width: 150px; color-scheme: dark; }
         .grid-filter-bar select:focus { outline: none; box-shadow: 0 0 0 2px rgba(0, 229, 204, 0.3); }
+        .grid-filter-bar select option { background: #1e1d28; color: #fff; padding: 10px 14px; }
         .multi-select { position: relative; min-width: 160px; }
         .multi-select.palette-select { min-width: 220px; }
         .multi-select.bounds-select { min-width: 180px; }
@@ -710,10 +732,11 @@
         .grid-item.selected { outline: 3px solid var(--teal); }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
         .grid-item-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(10, 9, 16, 0.9)); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); text-align: center; }
-        .grid-item-fav { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border: none; background: rgba(10, 9, 16, 0.7); color: var(--text-muted); font-size: 12px; cursor: pointer; border-radius: 50%; opacity: 0; transition: all 0.3s ease; z-index: 2; }
+        .grid-item-fav { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border: none; background: rgba(10, 9, 16, 0.7); color: rgba(255,255,255,0.6); font-size: 14px; cursor: pointer; border-radius: 50%; opacity: 0; transition: all 0.2s ease; z-index: 2; display: flex; align-items: center; justify-content: center; }
         .grid-item:hover .grid-item-fav { opacity: 1; }
-        .grid-item-fav:hover { background: var(--pink); color: #fff; }
-        .grid-item-fav.favorited { opacity: 1; color: var(--pink); background: rgba(10, 9, 16, 0.9); }
+        .grid-item-fav:hover { background: #fff; color: #333; transform: scale(1.15); }
+        .grid-item-fav.favorited { opacity: 0.9; color: #000; background: var(--spot-color, var(--yellow)); box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
+        .grid-item-fav.favorited:hover { opacity: 1; background: #fff; color: #333; }
         .grid-item-rank { position: absolute; top: 6px; left: 6px; background: linear-gradient(135deg, var(--orange), var(--yellow)); color: #000; font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; z-index: 2; }
         .grid-item-tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--bg-card); border-radius: 10px; padding: 10px 12px; font-size: 9px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: 8px; }
         .grid-item:hover .grid-item-tooltip { opacity: 1; transform: translateX(-50%) translateY(-4px); }
@@ -726,15 +749,16 @@
         .grid-group { margin-bottom: 24px; }
         .grid-group-header { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: var(--bg-panel); border-radius: 50px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s; }
         .grid-group-header:hover { background: var(--bg-card); }
-        .grid-group-fav { width: 28px; height: 28px; border: none; background: transparent; color: var(--text-muted); font-size: 14px; cursor: pointer; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-        .grid-group-fav:hover { background: var(--bg-input); color: var(--pink); }
-        .grid-group-fav.favorited { color: var(--pink); }
+        .grid-group-fav { width: 32px; height: 32px; border: none; background: transparent; color: var(--spot-color, var(--text-muted)); font-size: 22px; cursor: pointer; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center; opacity: 0.4; }
+        .grid-group-fav:hover { background: rgba(255,255,255,0.1); color: var(--spot-color, var(--pink)); opacity: 1; }
+        .grid-group-fav.favorited { color: var(--spot-color, var(--pink)); opacity: 1; }
         .grid-group-shuffle { width: 28px; height: 28px; border: none; background: transparent; color: var(--text-muted); font-size: 13px; cursor: pointer; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .grid-group-shuffle:hover { background: var(--bg-input); color: var(--teal); }
-        .grid-group.selected .grid-group-header { outline: 2px solid var(--teal); }
         .grid-group-color { width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0; }
-        .grid-group-swatches { display: flex; gap: 4px; }
-        .grid-group-swatches span { width: 12px; height: 12px; border-radius: 3px; }
+        .grid-group-swatches { display: flex; gap: 0; height: 20px; border-radius: 4px; overflow: hidden; transition: gap 0.3s ease; }
+        .grid-group-swatches span { width: 3px; height: 20px; border-radius: 0; transition: width 0.3s ease; }
+        .grid-group-header:hover .grid-group-swatches { gap: 3px; }
+        .grid-group-header:hover .grid-group-swatches span { width: 14px; border-radius: 3px; }
         .grid-group-name { flex: 1; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); }
         .grid-group-count { font-size: 11px; font-weight: 700; color: var(--teal); }
         .grid-group-toggle { color: var(--text-muted); font-size: 14px; transition: transform 0.2s; }
@@ -933,7 +957,7 @@
         @keyframes welcomeLogosFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* Extra grid sizes */
-        .grid-items.grid-10-col, .grid-group-items.grid-10-col { grid-template-columns: repeat(10, 1fr); gap: 3px; }
+        .grid-items.grid-11-col, .grid-group-items.grid-11-col { grid-template-columns: repeat(11, 1fr); gap: 3px; }
         .grid-items.grid-12-col, .grid-group-items.grid-12-col { grid-template-columns: repeat(12, 1fr); gap: 2px; }
         .grid-items.grid-1-col, .grid-group-items.grid-1-col { grid-template-columns: 1fr; gap: 20px; max-width: 500px; margin: 0 auto; }
         .grid-1-col .grid-item { aspect-ratio: 9/16; border-radius: 12px; }
@@ -959,10 +983,6 @@
         .gallery-room-controls { display: none; }
         .gallery-room-toggle { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(40, 39, 58, 0.6); border: none; border-radius: 50%; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: all 0.3s ease; opacity: 0.6; }
         .gallery-room-toggle:hover { background: var(--bg-card); color: var(--text); opacity: 1; }
-
-        /* Color Explorer link */
-        .color-explorer-toggle { opacity: 0.5; font-size: 16px; text-decoration: none; }
-        .color-explorer-toggle:hover { opacity: 1; }
 
     </style>
 </head>
@@ -1095,6 +1115,7 @@
             <button class="btn btn-explore action-bar-main" id="exploreRandom" aria-label="Enter fullscreen shuffle mode">FULLSCREEN<span class="explore-progress" aria-hidden="true"></span></button>
             <button class="icon-btn heart-btn" id="saveFavorite" title="Save to Favorites" aria-label="Save to favorites"><span class="heart-red" aria-hidden="true">❤️</span><span class="heart-blue" aria-hidden="true">💙</span></button>
         </div>
+        <div class="saved-note" id="savedNote">SAVED TO FAVORITES<span class="saved-dots"></span></div>
 
         <div class="icon-buttons-row">
             <button class="icon-btn" id="copyLink" title="Copy Link" aria-label="Copy link to clipboard">⧉</button>
@@ -1178,10 +1199,15 @@
             <h2>FAVORITES</h2>
             <button class="gallery-close" id="closeGallery">&times;</button>
         </div>
-        <div class="fav-palettes-section" id="favPalettesSection" style="display: none;">
-            <div class="fav-palettes-header">PALETTES</div>
-            <div class="fav-palettes-grid" id="favPalettesGrid"></div>
-            <div class="fav-divider"></div>
+        <div class="fav-palettes-section" id="favPalettesSection">
+            <div class="fav-palettes-header">FAVORITE PALETTES</div>
+            <div class="fav-palettes-grid" id="favPalettesGrid">
+                <div class="fav-palette-item" data-palette="Beach Day">
+                    <div class="fav-palette-swatch" style="background: #f1e9d2;"></div>
+                    <div class="fav-palette-name">Beach Day</div>
+                    <button class="fav-palette-remove">×</button>
+                </div>
+            </div>
         </div>
         <div class="gallery-grid" id="galleryGrid">
             <div class="empty-gallery">NO FAVORITES YET<br><br>CLICK ♥ ON CITIES OR PALETTES</div>
@@ -1192,7 +1218,7 @@
 
     <div class="collectors-panel" id="collectorsPanel" role="dialog" aria-label="Collectors panel" aria-hidden="true">
         <div class="collectors-header">
-            <h2 id="collectorsTitle" style="cursor: pointer;">COLLECTORS</h2>
+            <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›</span></h2>
             <button class="collectors-close" id="closeCollectors">&times;</button>
         </div>
         <div class="pills-view" id="pillsView">
@@ -1372,8 +1398,21 @@
             ]
         ];
 
-        // Pick a random palette set on page load
-        const PILL_PALETTES = CITIES_PALETTE_SETS[Math.floor(Math.random() * CITIES_PALETTE_SETS.length)];
+        // Combine all palette sets and shuffle for more variety
+        const ALL_PILL_PALETTES = CITIES_PALETTE_SETS.flat();
+
+        // Shuffle array function
+        function shuffleArray(arr) {
+            const shuffled = [...arr];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Shuffle on load for variety
+        const PILL_PALETTES = shuffleArray(ALL_PILL_PALETTES);
 
         // City emojis distributed across the palettes
         const CITY_EMOJIS = ['🏙️', '🌆', '🌃', '🏙️', '🌆', '🌃', '🏙️', '🌆', '🌃', '🏙️'];
@@ -1831,13 +1870,73 @@
         function getThumbnailUrl(tokenId) { return `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png?width=200`; }
         function getSmallThumbnailUrl(tokenId) { return `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png?width=50`; }
 
+        // Helper to parse hex color to RGB
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 128, g: 128, b: 128 };
+        }
+
+        // Helper to convert RGB to hex
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => Math.round(Math.max(0, Math.min(255, x))).toString(16).padStart(2, '0')).join('');
+        }
+
+        // Calculate relative luminance
+        function getLuminance(hex) {
+            const rgb = hexToRgb(hex);
+            const [r, g, b] = [rgb.r, rgb.g, rgb.b].map(c => {
+                c = c / 255;
+                return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+            });
+            return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        }
+
+        // Get contrast ratio between two colors
+        function getContrastRatio(hex1, hex2) {
+            const l1 = getLuminance(hex1);
+            const l2 = getLuminance(hex2);
+            const lighter = Math.max(l1, l2);
+            const darker = Math.min(l1, l2);
+            return (lighter + 0.05) / (darker + 0.05);
+        }
+
+        // Adjust spot color for contrast against background
+        function getContrastingSpotColor(spotColor, bgColor) {
+            const contrast = getContrastRatio(spotColor, bgColor);
+            if (contrast >= 2.5) return spotColor; // Good enough contrast
+
+            const spotRgb = hexToRgb(spotColor);
+            const bgLum = getLuminance(bgColor);
+
+            // If background is dark, lighten the spot color; if light, darken it
+            const factor = bgLum > 0.5 ? 0.6 : 1.6;
+            const adjusted = rgbToHex(
+                spotRgb.r * factor + (factor > 1 ? 40 : 0),
+                spotRgb.g * factor + (factor > 1 ? 40 : 0),
+                spotRgb.b * factor + (factor > 1 ? 40 : 0)
+            );
+
+            // If still not enough contrast, go more extreme
+            if (getContrastRatio(adjusted, bgColor) < 2.5) {
+                return bgLum > 0.5 ? '#333333' : '#FFFFFF';
+            }
+            return adjusted;
+        }
+
         function generateGridItem(id, showRank = false, rank = 0, eagerLoad = false) {
             const traits = tokenTraits[id];
             const palette = traits?.['Palette'];
-            const bgColor = PALETTE_DATA[palette]?.bg || '#1a1a2e';
+            const paletteData = PALETTE_DATA[palette];
+            const bgColor = paletteData?.bg || '#1a1a2e';
+            const rawSpotColor = paletteData?.colors?.[10] || '#FFE135';
+            const spotColor = getContrastingSpotColor(rawSpotColor, bgColor);
             const loadingAttr = eagerLoad ? 'eager' : 'lazy';
             return `
-                <div class="grid-item" data-token="${id}" style="background:${bgColor};">
+                <div class="grid-item" data-token="${id}" style="background:${bgColor}; --spot-color:${spotColor};">
                     <button class="grid-item-fav ${isCityFavorited(id) ? 'favorited' : ''}" data-token="${id}">♥</button>
                     <img src="${getSmallThumbnailUrl(id)}" alt="City ${id}" loading="${loadingAttr}" decoding="async">
                     <div class="grid-item-label">#${id}</div>
@@ -2031,8 +2130,40 @@
 
         function renderCollectorsPills() {
             const pillsContainer = document.getElementById('collectorsPills');
+
+            // Vibrant colors that pop off dark background
+            const VIBRANT_PILLS = [
+                { bg: '#FF6B6B', text: '#000' },      // Coral red
+                { bg: '#4ECDC4', text: '#000' },      // Teal
+                { bg: '#FFE66D', text: '#000' },      // Yellow
+                { bg: '#95E1D3', text: '#000' },      // Mint
+                { bg: '#F38181', text: '#000' },      // Salmon
+                { bg: '#AA96DA', text: '#000' },      // Lavender
+                { bg: '#FCBAD3', text: '#000' },      // Pink
+                { bg: '#A8D8EA', text: '#000' },      // Sky blue
+                { bg: '#FF9F43', text: '#000' },      // Orange
+                { bg: '#5DD39E', text: '#000' },      // Green
+                { bg: '#BCE784', text: '#000' },      // Lime
+                { bg: '#DDA0DD', text: '#000' },      // Plum
+                { bg: '#87CEEB', text: '#000' },      // Light blue
+                { bg: '#F0E68C', text: '#000' },      // Khaki
+                { bg: '#98D8C8', text: '#000' },      // Seafoam
+                { bg: '#FFB6C1', text: '#000' },      // Light pink
+                { bg: '#77DD77', text: '#000' },      // Pastel green
+                { bg: '#FDFD96', text: '#000' },      // Pastel yellow
+                { bg: '#B19CD9', text: '#000' },      // Pastel purple
+                { bg: '#FF6961', text: '#000' },      // Pastel red
+                { bg: '#FFB347', text: '#000' },      // Pastel orange
+                { bg: '#03C6FC', text: '#000' },      // Bright cyan
+                { bg: '#FC6C85', text: '#000' },      // Watermelon
+                { bg: '#C1E1C1', text: '#000' },      // Tea green
+            ];
+
+            // Shuffle the vibrant colors
+            const shuffledColors = shuffleArray(VIBRANT_PILLS);
+
             pillsContainer.innerHTML = COLLECTORS_DATA.map((collector, i) => {
-                const palette = PILL_PALETTES[i % PILL_PALETTES.length];
+                const palette = shuffledColors[i % shuffledColors.length];
                 const emoji = CITY_EMOJIS[i % CITY_EMOJIS.length];
                 // Add multi-holder class for collectors with 2+ cities
                 const multiClass = collector.count >= 2 ? ' multi-holder' : '';
@@ -2161,13 +2292,13 @@
         function showLeaderboardView() {
             document.getElementById('pillsView').classList.add('hidden');
             document.getElementById('leaderboardView').classList.add('active');
-            document.getElementById('collectorsTitle').textContent = 'LEADERBOARD';
+            document.querySelector('.collectors-title-text').textContent = 'LEADERBOARD';
         }
 
         function showPillsView() {
             document.getElementById('pillsView').classList.remove('hidden');
             document.getElementById('leaderboardView').classList.remove('active');
-            document.getElementById('collectorsTitle').textContent = 'COLLECTORS';
+            document.querySelector('.collectors-title-text').textContent = 'COLLECTORS';
         }
 
         async function fetchCollectorsData() {
@@ -2245,8 +2376,26 @@
                         // Unnikrishna variations
                         'unnikrishna m damodaran': 'Unnikrishna',
                         'unnikrishna': 'Unnikrishna',
-                        'unnikrishna.eth': 'Unnikrishna'
+                        'unnikrishna.eth': 'Unnikrishna',
+                        // Specific ENS aliases
+                        'bsy.eth': 'BatSoupYum',
+                        'bsy': 'BatSoupYum',
+                        'zaz.eth': 'Zanzibar',
+                        'zaz': 'Zanzibar'
                     };
+
+                    // Function to clean up ENS names - remove .eth suffix unless there's a specific alias
+                    function cleanEnsName(name) {
+                        if (!name) return name;
+                        const lowerName = name.toLowerCase();
+                        // Check for specific alias first
+                        if (nameAliases[lowerName]) return nameAliases[lowerName];
+                        // Remove .eth suffix
+                        if (name.toLowerCase().endsWith('.eth')) {
+                            return name.slice(0, -4);
+                        }
+                        return name;
+                    }
 
                     // Direct wallet address prefix to name mappings (for wallets without Art Blocks names)
                     // Uses prefix matching - just the first few chars of the address
@@ -2265,13 +2414,9 @@
                         });
                     });
 
-                    // Apply name aliases to existing names (case-insensitive)
+                    // Apply cleanEnsName to existing names (removes .eth, applies aliases)
                     Object.keys(addressToName).forEach(addr => {
-                        const currentName = addressToName[addr];
-                        const lowerName = currentName.toLowerCase();
-                        if (nameAliases[lowerName]) {
-                            addressToName[addr] = nameAliases[lowerName];
-                        }
+                        addressToName[addr] = cleanEnsName(addressToName[addr]);
                     });
 
                     // Try ENS resolution for ALL addresses without names
@@ -2295,13 +2440,9 @@
                         await Promise.all(ensPromises);
                     }
 
-                    // Apply name aliases again after ENS resolution (in case ENS names need aliasing)
+                    // Apply cleanEnsName to all names (removes .eth, applies aliases)
                     Object.keys(addressToName).forEach(addr => {
-                        const currentName = addressToName[addr];
-                        const lowerName = currentName.toLowerCase();
-                        if (nameAliases[lowerName]) {
-                            addressToName[addr] = nameAliases[lowerName];
-                        }
+                        addressToName[addr] = cleanEnsName(addressToName[addr]);
                     });
 
                     // Build collectors array (exclude efdot and efdot x diid)
@@ -2452,6 +2593,7 @@
 
             // Fade out current image
             previewImage.classList.add('fade-out');
+            previewImage.classList.remove('loaded'); // Remove loaded state for fullscreen transition
             loadingOverlay.classList.remove('hidden');
 
             setTimeout(() => {
@@ -2476,6 +2618,10 @@
             loadingOverlay.classList.add('hidden');
             previewImage.classList.remove('fade-out');
             previewImage.classList.add('just-loaded');
+            // Add loaded class for fullscreen smooth appearance
+            if (isFullscreen) {
+                previewImage.classList.add('loaded');
+            }
             setTimeout(() => previewImage.classList.remove('just-loaded'), 250);
         });
         previewImage.addEventListener('error', () => {
@@ -2550,6 +2696,7 @@
 
         function saveFavorite() {
             const favBtn = document.getElementById('saveFavorite');
+            const savedNote = document.getElementById('savedNote');
             const exists = favorites.some(f => f.tokenId === currentTokenId);
             if (exists) {
                 // Unfavorite
@@ -2558,14 +2705,16 @@
                 localStorage.setItem('cities-favorites', JSON.stringify(favorites));
                 updateGallery();
                 favBtn.classList.remove('favorited');
-                showStatus('REMOVED');
+                savedNote.classList.remove('visible');
             } else {
                 // Add favorite
                 favorites.unshift({ id: Date.now(), tokenId: currentTokenId, timestamp: new Date().toISOString() });
                 localStorage.setItem('cities-favorites', JSON.stringify(favorites));
                 updateGallery();
                 favBtn.classList.add('favorited');
-                showStatus('SAVED');
+                // Show saved note with animated dots
+                savedNote.classList.add('visible');
+                setTimeout(() => savedNote.classList.remove('visible'), 3000);
             }
             // Update note visibility (only shows for favorited cities)
             updateCityNote();
@@ -2721,6 +2870,17 @@
         function toggleFullscreen() {
             isFullscreen = !isFullscreen;
             document.body.classList.toggle('fullscreen-mode', isFullscreen);
+            // Handle image loading state for smooth fullscreen transition
+            if (isFullscreen) {
+                // If image is already loaded, show it immediately
+                if (previewImage.complete && previewImage.naturalHeight !== 0) {
+                    previewImage.classList.add('loaded');
+                } else {
+                    previewImage.classList.remove('loaded');
+                }
+            } else {
+                previewImage.classList.remove('loaded');
+            }
         }
 
         let exploreTimeout = null;
@@ -2953,15 +3113,21 @@
 
         // Favorite palettes
         let favoritePalettes = JSON.parse(localStorage.getItem('cities-fav-palettes') || '[]');
+        // Debug: add a test palette if none exist
+        if (favoritePalettes.length === 0) {
+            favoritePalettes = ['Beach Day', 'Autumnal'];
+            console.log('Added test palettes:', favoritePalettes);
+        }
 
         function toggleFavoritePalette(palette) {
+            console.log('toggleFavoritePalette called with:', palette);
             const idx = favoritePalettes.indexOf(palette);
             if (idx > -1) {
                 favoritePalettes.splice(idx, 1);
-                showStatus(`UNFAVORITED: ${palette.toUpperCase()}`);
+                console.log('Removed palette, now:', favoritePalettes);
             } else {
                 favoritePalettes.push(palette);
-                showStatus(`FAVORITED: ${palette.toUpperCase()}`);
+                console.log('Added palette, now:', favoritePalettes);
             }
             localStorage.setItem('cities-fav-palettes', JSON.stringify(favoritePalettes));
             updateGallery(); // Update the favorites panel
@@ -3256,12 +3422,15 @@
             const palettesSection = document.getElementById('favPalettesSection');
             const palettesGrid = document.getElementById('favPalettesGrid');
 
+            console.log('updateGallery - favoritePalettes:', favoritePalettes, 'palettesSection:', palettesSection);
+
             // Update total count (cities + palettes)
             const totalFavs = favorites.length + favoritePalettes.length;
             favCount.textContent = totalFavs;
 
             // Render favorited palettes
             if (favoritePalettes.length > 0) {
+                console.log('Rendering', favoritePalettes.length, 'favorite palettes');
                 palettesSection.style.display = 'block';
                 palettesGrid.innerHTML = favoritePalettes.map(palette => {
                     const paletteInfo = PALETTE_DATA[palette];
@@ -3278,13 +3447,13 @@
                     </div>`;
                 }).join('');
 
-                // Add click handlers - open Color Explorer
+                // Add click handlers - jump to palette in grid view
                 palettesGrid.querySelectorAll('.fav-palette-item').forEach(item => {
                     item.addEventListener('click', (e) => {
                         if (e.target.closest('.fav-palette-remove')) return;
                         const palette = item.dataset.palette;
                         galleryPanel.classList.remove('open');
-                        openColorExplorer(palette);
+                        jumpToPalette(palette);
                     });
                 });
                 palettesGrid.querySelectorAll('.fav-palette-remove').forEach(btn => {
@@ -3709,6 +3878,28 @@
             }
         });
 
+        // Jump to a specific palette in grid view
+        function jumpToPalette(paletteName) {
+            // Make sure we're in "by palette" mode
+            document.querySelector('.grid-mode-btn[data-mode="palette"]')?.click();
+
+            // Open grid view if not already open
+            if (!gridPanel.classList.contains('open')) {
+                openGridView();
+            }
+
+            // Wait for render, then scroll to the palette
+            setTimeout(() => {
+                const paletteGroup = gridContent.querySelector(`.grid-group[data-palette="${paletteName}"]`);
+                if (paletteGroup) {
+                    // Expand if collapsed
+                    paletteGroup.classList.remove('collapsed');
+                    // Scroll into view
+                    paletteGroup.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+
         // Mobile filter toggle
         const filterToggleBar = document.getElementById('filterToggleBar');
         const gridFilterBar = document.getElementById('gridFilterBar');
@@ -3764,15 +3955,15 @@
         });
 
         // Grid size toggle - cycles from small to large (zoom in effect)
-        // Reversed order: starts at responsive (6, 8, or 10 based on width), zooms in to 1-col (largest/texture view)
-        const sizeModes = ['auto', '12-col', '10-col', '8-col', '6-col', '4-col', '3-col', '2-col', '1-col'];
+        // Reversed order: starts at responsive (6, 8, or 11 based on width), zooms in to 1-col (largest/texture view)
+        const sizeModes = ['auto', '12-col', '11-col', '8-col', '6-col', '4-col', '3-col', '2-col', '1-col'];
         const sizeIcons = ['size-auto', 'size-12', 'size-10', 'size-8', 'size-6', 'size-4', 'size-3', 'size-2', 'size-1'];
 
         // Calculate responsive initial grid size based on window width
         function getResponsiveGridSize() {
             const w = window.innerWidth;
             // Wider windows get more columns, narrower get fewer
-            if (w >= 1600) return '10-col';  // Wide screens: 10 columns
+            if (w >= 1600) return '11-col';  // Wide screens: 11 columns
             if (w >= 1200) return '8-col';   // Medium-large: 8 columns
             return '6-col';                   // Smaller: 6 columns
         }
@@ -4122,7 +4313,10 @@
             if (supplyFill) supplyFill.style.width = `${(totalMinted / 500) * 100}%`;
             if (mintedCount) mintedCount.textContent = totalMinted;
 
-            if (gridMode === 'grid') {
+            // Use special favorites view when favorites mode is active
+            if (showingFavoritesOnly) {
+                renderFavoritesGrid(tokens);
+            } else if (gridMode === 'grid') {
                 renderSimpleGrid(tokens);
             } else if (gridMode === 'palette') {
                 renderPaletteGroups(tokens);
@@ -4133,6 +4327,49 @@
             } else if (gridMode === 'rarity') {
                 renderRaritySorted(tokens);
             }
+        }
+
+        function renderFavoritesGrid(tokens) {
+            // Special clean grid for favorites - sized big for viewing
+            if (tokens.length === 0) {
+                gridContent.innerHTML = `<div class="empty-gallery">NO FAVORITES YET<br><br>CLICK ♥ ON CITIES TO ADD THEM</div>`;
+                document.getElementById('gridPagination').style.display = 'none';
+                return;
+            }
+
+            // Calculate optimal columns based on number of favorites
+            let favGridSize;
+            if (tokens.length <= 4) {
+                favGridSize = '2-col';
+            } else if (tokens.length <= 9) {
+                favGridSize = '3-col';
+            } else if (tokens.length <= 16) {
+                favGridSize = '4-col';
+            } else if (tokens.length <= 36) {
+                favGridSize = '6-col';
+            } else {
+                favGridSize = '8-col';
+            }
+
+            gridContent.innerHTML = `<div class="grid-items grid-${favGridSize} favorites-grid">${tokens.map(id => generateGridItem(id, false, 0, true)).join('')}</div>`;
+
+            document.getElementById('gridPagination').style.display = 'none';
+
+            gridContent.querySelectorAll('.grid-item-fav').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleCityFavorite(parseInt(btn.dataset.token), e);
+                });
+            });
+
+            gridContent.querySelectorAll('.grid-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (e.target.closest('.grid-item-fav')) return;
+                    const tokenId = parseInt(item.dataset.token);
+                    gridPanel.classList.remove('open');
+                    loadOutput(tokenId, true);
+                });
+            });
         }
 
         function renderAZPalettes(tokens) {
@@ -4152,13 +4389,16 @@
                 const paletteInfo = PALETTE_DATA[palette];
                 const swatches = paletteInfo?.colors ? paletteInfo.colors.map(c => `<span style="background:${c}"></span>`).join('') : '';
                 const isFav = isPaletteFavorited(palette);
+                const bgColor = paletteInfo?.bg || '#333';
+                const rawSpotColor = paletteInfo?.colors?.[10] || '#FFE135';
+                const spotColor = getContrastingSpotColor(rawSpotColor, '#14131c'); // Contrast against panel bg
 
                 // Dark background with light text for better readability
                 return `
-                <div class="grid-group" data-palette="${palette}">
+                <div class="grid-group" data-palette="${palette}" style="--spot-color:${spotColor};">
                     <div class="grid-group-header">
-                        <button class="grid-group-fav ${isFav ? 'favorited' : ''}" data-palette="${palette}" title="Favorite palette">♥</button>
-                        <div class="grid-group-color" style="background:${paletteInfo?.bg || '#333'}"></div>
+                        <button class="grid-group-fav ${isFav ? 'favorited' : ''}" data-palette="${palette}" title="Favorite palette">${isFav ? '♥' : '♡'}</button>
+                        <div class="grid-group-color" style="background:${bgColor}"></div>
                         <div class="grid-group-swatches">${swatches}</div>
                         <span class="grid-group-name">${palette.toUpperCase()}</span>
                         <span class="grid-group-count">${groups[palette].length}</span>
@@ -4179,7 +4419,8 @@
                     e.stopPropagation();
                     const palette = btn.dataset.palette;
                     toggleFavoritePalette(palette);
-                    btn.classList.toggle('favorited');
+                    const isFav = btn.classList.toggle('favorited');
+                    btn.textContent = isFav ? '♥' : '♡';
                 });
             });
 
@@ -4270,11 +4511,14 @@
                 const paletteInfo = PALETTE_DATA[palette];
                 const swatches = paletteInfo?.colors ? paletteInfo.colors.map(c => `<span style="background:${c}"></span>`).join('') : '';
                 const isFav = isPaletteFavorited(palette);
+                const bgColor = paletteInfo?.bg || '#333';
+                const rawSpotColor = paletteInfo?.colors?.[10] || '#FFE135';
+                const spotColor = getContrastingSpotColor(rawSpotColor, '#14131c'); // Contrast against panel bg
                 return `
-                <div class="grid-group" data-palette="${palette}">
+                <div class="grid-group" data-palette="${palette}" style="--spot-color:${spotColor};">
                     <div class="grid-group-header">
-                        <button class="grid-group-fav ${isFav ? 'favorited' : ''}" data-palette="${palette}" title="Favorite palette">♥</button>
-                        <div class="grid-group-color" style="background:${paletteInfo?.bg || '#333'}"></div>
+                        <button class="grid-group-fav ${isFav ? 'favorited' : ''}" data-palette="${palette}" title="Favorite palette">${isFav ? '♥' : '♡'}</button>
+                        <div class="grid-group-color" style="background:${bgColor}"></div>
                         <div class="grid-group-swatches">${swatches}</div>
                         <span class="grid-group-name">${palette.toUpperCase()}</span>
                         <span class="grid-group-count">${groups[palette].length}</span>
@@ -4318,7 +4562,8 @@
                     e.stopPropagation();
                     const palette = btn.dataset.palette;
                     toggleFavoritePalette(palette);
-                    btn.classList.toggle('favorited');
+                    const isFav = btn.classList.toggle('favorited');
+                    btn.textContent = isFav ? '♥' : '♡';
                 });
             });
 
@@ -4336,11 +4581,18 @@
                 });
             });
 
-            // Explore palette chips - click to open Color Explorer for that palette
+            // Explore palette chips - try to jump to palette, show message if no cities
             gridContent.querySelectorAll('.explore-palette-chip').forEach(chip => {
                 chip.addEventListener('click', () => {
                     const palette = chip.dataset.palette;
-                    openColorExplorer(palette);
+                    // Check if this palette has any minted cities
+                    const paletteTokens = Object.keys(tokenTraits).filter(id => tokenTraits[id]?.Palette === palette);
+                    if (paletteTokens.length > 0) {
+                        // Has cities - scroll to it (shouldn't be in explore section but just in case)
+                        jumpToPalette(palette);
+                    } else {
+                        showStatus(`${palette.toUpperCase()} - NOT MINTED YET`);
+                    }
                 });
             });
 
@@ -4911,11 +5163,6 @@
             }
         });
 
-        // openColorExplorer - links to separate page
-        function openColorExplorer(paletteName) {
-            const url = paletteName ? `color-explorer.html?palette=${encodeURIComponent(paletteName)}` : 'color-explorer.html';
-            window.location.href = url;
-        }
 
     </script>
 
