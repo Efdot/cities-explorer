@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cities Color Explorer | Efdot x Diid</title>
+    <meta name="description" content="Explore all 100+ color palettes from the Cities generative art collection by Efdot x Diid">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Cities Color Explorer">
+    <meta property="og:description" content="Explore all 100+ color palettes from the Cities collection">
+    <meta property="og:image" content="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
+
+    <!-- React via CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-deep: #0A0910;
+            --bg-panel: #14131c;
+            --bg-card: #1e1d28;
+            --bg-input: #28273a;
+            --text: #fff;
+            --text-dim: #a0a0c0;
+            --text-muted: #6a6a8a;
+        }
+
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #root {
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useCallback, useMemo } = React;
+
+        // Full palette data with color groupings
+        const PALETTES = {
+            'Aboveground Current': { bg: '#0d2049', grid: ['#081124', '#112044', '#2f7bee', '#f5df86'], bold: ['#000000', '#bcb50f'], subtle: ['#eec7c9', '#e3d536', '#f8cb62'], spot: ['#FFDDA0', '#cce0ff', '#b3ecc6'] },
+            'Alleyway': { bg: '#a096bd', grid: ['#bfcce0', '#767579', '#58529f', '#7f5ac1'], bold: ['#dabab7', '#dad9df'], subtle: ['#bbbbc2', '#b2b4c0', '#adabb9'], spot: ['#ccff66', '#7c6b70', '#c0c8cc'] },
+            'Autumnal': { bg: '#f6efd9', grid: ['#f29c6b', '#db5e35', '#b01e1e', '#591918'], bold: ['#fff7f0', '#ffb76f'], subtle: ['#f8d3b1', '#ffebd6', '#E67424'], spot: ['#ffa982', '#92340d', '#ffcb05'] },
+            'Azulejos': { bg: '#f8f5f0', grid: ['#0A1D6F', '#3657B2', '#506AD8', '#6B7FF0'], bold: ['#2A5CCF', '#192FAD'], subtle: ['#141F8A', '#728ED8', '#96B6D8'], spot: ['#BBCFF0', '#2E3D7A', '#394CAF'] },
+            'Beach Day': { bg: '#f1e9d2', grid: ['#5e4f00', '#423300', '#260700', '#a99746'], bold: ['#6F4E37', '#5e4f00'], subtle: ['#1C1812', '#423b33', '#323030'], spot: ['#d7d0aa', '#ccb78f', '#000080'] },
+            'Bee Line': { bg: '#FFB300', grid: ['#000000', '#333333', '#222222', '#111111'], bold: ['#e8e0ca', '#5c5c5c'], subtle: ['#000000', '#333333', '#222222'], spot: ['#060606', '#f3eee0', '#5c5c5c'] },
+            'Berlin': { bg: '#2C3E8E', grid: ['#58529f', '#7f5ac1', '#4c695c', '#a79986'], bold: ['#d6d6d6', '#bcc3cd'], subtle: ['#a5a9b9', '#617392', '#556482'], spot: ['#1b3d44', '#b1d5e6', '#eaeaea'] },
+            'Bioluminescent': { bg: '#1410af', grid: ['#d54981', '#e7929b', '#007eff', '#702192'], bold: ['#a23188', '#de5b7b'], subtle: ['#120e9d', '#1510b7', '#007eff'], spot: ['#130fa6', '#affff7', '#00a0ff'] },
+            'Bitter Haze': { bg: '#817681', grid: ['#b3a9b3', '#403640', '#ffcc00', '#ccc2cc'], bold: ['#271c27', '#c1acb4'], subtle: ['#6b616b', '#655b65', '#635963'], spot: ['#887e88', '#eb9123', '#7ec599'] },
+            'Blinker': { bg: '#0d2049', grid: ['#bca10f', '#f0d54a', '#f4e87b', '#bc770f'], bold: ['#f2c069', '#bc940f'], subtle: ['#0b1c41', '#0d214c', '#0e2453'], spot: ['#060f25', '#0b1b3e', '#091633'] },
+            'Blue Hour': { bg: '#3856a1', grid: ['#7896e1', '#05236e', '#000a54', '#91affa'], bold: ['#e0ab73', '#ff6600'], subtle: ['#324d90', '#3a5aa9', '#4062b9'], spot: ['#355198', '#2f4988', '#273c70'] },
+            'Blue Skies': { bg: '#d8efff', grid: ['#87CEEB', '#ECE9F8', '#00BFFF', '#B0E0E6'], bold: ['#66ccff', '#1569C7'], subtle: ['#b9daf1', '#eff8fe', '#ffffff'], spot: ['#c0e5ff', '#91d2ff', '#5cb2ee'] },
+            'Blush Signal': { bg: '#fffaf0', grid: ['#ffb3ab', '#ffc1c1', '#ca7f6d', '#fdf5f5'], bold: ['#ebb189', '#fee2e1'], subtle: ['#fdf5ee', '#fcf1ec', '#faeada'], spot: ['#845d5c', '#ffde66', '#fce3c3'] },
+            'Bodega Run': { bg: '#0d2b6d', grid: ['#061a44', '#0c2c73', '#adcdfe', '#ffffff'], bold: ['#000000', '#ffcf32'], subtle: ['#FFF4B2', '#d3990f', '#FFEB8F'], spot: ['#f3daae', '#be9ad8', '#edd6fe'] },
+            'Boiling Point': { bg: '#f1c232', grid: ['#83846d', '#3f2f1b', '#f77f00', '#eaeaea'], bold: ['#eaeaea', '#4e2729'], subtle: ['#f1c232', '#83846d', '#e84327'], spot: ['#ffba4a', '#3f2f1b', '#f77f00'] },
+            'Brick Facade': { bg: '#bc4a3c', grid: ['#4e5358', '#c9c3b9', '#3d3e4d', '#202829'], bold: ['#8d3024', '#f9f8f7'], subtle: ['#251e34', '#554478', '#8e80a9'], spot: ['#2d2241', '#c0b3d9', '#dbd0f1'] },
+            'Broadway': { bg: '#f0ede7', grid: ['#000000', '#000000', '#0033A0', '#FAE600'], bold: ['#E53935', '#1E5B7E'], subtle: ['#11457E', '#3D26B3', '#214478'], spot: ['#FFD700', '#fffc00', '#E2702A'] },
+            'Brooklyn': { bg: '#03071E', grid: ['#370617', '#6A040F', '#9D0208', '#D00000'], bold: ['#DC2F02', '#E85D04'], subtle: ['#F48C06', '#FAA307', '#FFBA08'], spot: ['#61dbb2', '#7FFFD4', '#FF00FF'] },
+            'Buenos Aires': { bg: '#eaeaea', grid: ['#ffa800', '#fc6e20', '#ffb300', '#b25d44'], bold: ['#b25d44', '#fdedd2'], subtle: ['#fbe08d', '#ffd684', '#ffdb72'], spot: ['#fca778', '#897d93', '#fafae4'] },
+            'Burnout': { bg: '#f5937a', grid: ['#822007', '#690700', '#8ca5f6', '#ffac93'], bold: ['#ffac93', '#99907a'], subtle: ['#a24a34', '#be573c', '#c5654c'], spot: ['#ab4e37', '#994631', '#7e3a28'] },
+            'Burnt Impression': { bg: '#8FA3AE', grid: ['#455560', '#1E1E1C', '#FF5C00', '#FF6E1A'], bold: ['#FBC174', '#6A8CA5'], subtle: ['#7c93a0', '#98aab4', '#aab9c1'], spot: ['#859ba7', '#738c9a', '#5d7480'] },
+            'Caffeine': { bg: '#f7f6f5', grid: ['#453b05', '#302603', '#1c0702', '#81753d'], bold: ['#060301', '#453b05'], subtle: ['#5f4a06', '#2A251F', '#000000'], spot: ['#b7b08a', '#ccb78f', '#423300'] },
+            'Caramel Collision': { bg: '#D1C4B2', grid: ['#5D3A00', '#E06C00', '#F5BA57', '#D94F00'], bold: ['#872800', '#B23B00'], subtle: ['#E1C699', '#CFB38B', '#B89B78'], spot: ['#F5DEB3', '#F79C5C', '#AF491F'] },
+            'Carioca': { bg: '#fed2e2', grid: ['#fda1c2', '#eeee5f', '#251f6c', '#2c60a9'], bold: ['#5e91b6', '#f25db4'], subtle: ['#fdb8d1', '#fee5ee', '#e3b0da'], spot: ['#faedf2', '#b2d5a8', '#eeee5f'] },
+            'CDMX': { bg: '#937159', grid: ['#af8c74', '#1b1f3e', '#ddb4c0', '#fdebf1'], bold: ['#ffcd9f', '#ec9a76'], subtle: ['#4b382c', '#977a67', '#8a6d59'], spot: ['#5b4638', '#665042', '#544236'] },
+            'Cerulean': { bg: '#12419a', grid: ['#20e3df', '#1d4ea3', '#6e75d3', '#34877a'], bold: ['#0051bb', '#cffada'], subtle: ['#17444d', '#123d87', '#7f9de8'], spot: ['#203985', '#da0246', '#ffff1c'] },
+            'Cinematic Site': { bg: '#607D8B', grid: ['#8EA0B8', '#5E7380', '#3C5A76', '#B0BEC5'], bold: ['#263238', '#78909C'], subtle: ['#758B95', '#6D858F', '#5D6D75'], spot: ['#4C5E66', '#D2F1F9', '#ADC7D4'] },
+            'Clear Sky Blues': { bg: '#94d8ff', grid: ['#2a609e', '#0b7ed0', '#00adda', '#3d72c0'], bold: ['#3d72c0', '#b6dfff'], subtle: ['#b1dcff', '#addaff', '#afd8fc'], spot: ['#fcffc5', '#fdff8c', '#fff1c1'] },
+            'Concrete Cone': { bg: '#ff5c00', grid: ['#000000', '#333333', '#222222', '#111111'], bold: ['#444444', '#e8e0ca'], subtle: ['#cb530e', '#953e0d', '#222222'], spot: ['#292929', '#444444', '#f3eee0'] },
+            'Concrete Heat': { bg: '#A9A9A9', grid: ['#FFD67B', '#DDC07A', '#D6A461', '#F5E45C'], bold: ['#A67C52', '#7A5B3E'], subtle: ['#C1B6A3', '#B5AFA1', '#fdf5ee'], spot: ['#A2968C', '#CFCFCF', '#D64545'] },
+            'Constellations': { bg: '#1b1420', grid: ['#1A2B1F', '#4A5A90', '#FEDD0D', '#F5F5CC'], bold: ['#6588C7', '#48A662'], subtle: ['#50657A', '#3A4D7A', '#9CA8C8'], spot: ['#4B3D28', '#FF8C00', '#FFC600'] },
+            'Cotton Candy Noise': { bg: '#f4f4f4', grid: ['#d6d6d6', '#a4d5ff', '#fab6d4', '#22375e'], bold: ['#22375e', '#fdf7f7'], subtle: ['#f2f2f2', '#e6e9eb', '#f6f9fc'], spot: ['#6d4c5b', '#d3ff66', '#fffaf0'] },
+            'Crosstown': { bg: '#FFFAF0', grid: ['#000000', '#333333', '#222222', '#111111'], bold: ['#444444', '#5c5c5c'], subtle: ['#000000', '#333333', '#222222'], spot: ['#353434', '#1f1f1f', '#5c5c5c'] },
+            'Cruiser': { bg: '#3c3153', grid: ['#f0cd3a', '#a3c3b1', '#6b7075', '#c9ae00'], bold: ['#3e484e', '#767d6a'], subtle: ['#f0cd3a', '#a3c3b1', '#2c2f38'], spot: ['#abb49c', '#6b7075', '#c9ae00'] },
+            'Curious Blue': { bg: '#d4f0ff', grid: ['#bae1ff', '#1e7cae', '#5baecf', '#fff1c1'], bold: ['#fff1c1', '#d6e3ed'], subtle: ['#d4e8f8', '#badcfa', '#bbe0ff'], spot: ['#3a475e', '#ffefa7', '#bfcce0'] },
+            'Daybreak Dust': { bg: '#f0efec', grid: ['#f8ebbc', '#ffb300', '#fc6e20', '#a79986'], bold: ['#a79986', '#fde1c0'], subtle: ['#e6d6c9', '#f7dfcb', '#efd3bb'], spot: ['#29545c', '#b1d5e6', '#ffe0e0'] },
+            'Diffused Grays': { bg: '#c3cbcf', grid: ['#4b4747', '#8a7670', '#6e6e6e', '#434343'], bold: ['#434343', '#ced7d9'], subtle: ['#b1b1b1', '#cecece', '#e2e0d8'], spot: ['#d65790', '#ff66c3', '#cbcecf'] },
+            'Downplay': { bg: '#785f4e', grid: ['#5b4680', '#191c32', '#c58a9b', '#f1a6c1'], bold: ['#ffaa5a', '#db784d'], subtle: ['#6c5546', '#7e6351', '#8a6d59'], spot: ['#725a4a', '#665042', '#544236'] },
+            'Dusk Session': { bg: '#463766', grid: ['#5c636a', '#ebe8e4', '#47495d', '#253032'], bold: ['#303c41', '#ffffff'], subtle: ['#251e34', '#8272a3', '#8e80a9'], spot: ['#749a71', '#c0b3d9', '#f2eefb'] },
+            'Dust Storm': { bg: '#f9b9aa', grid: ['#d4a373', '#a65c3b', '#706353', '#f4e0c3'], bold: ['#f4e0c3', '#b54a41'], subtle: ['#f9b9aa', '#d4a373', '#e8c3a3'], spot: ['#ddbac3', '#a65c3b', '#706353'] },
+            'Evening Odds': { bg: '#051437', grid: ['#ffdf32', '#fef8d9', '#040e22', '#1b3772'], bold: ['#657fb8', '#ffcf32'], subtle: ['#0b1c41', '#ffad32', '#ffcf32'], spot: ['#ffee2c', '#cce0ff', '#92d1a7'] },
+            'Fly Solo': { bg: '#240c42', grid: ['#59009b', '#0a245d', '#eee378', '#f4b621'], bold: ['#59009b', '#203369'], subtle: ['#0e1736', '#31084f', '#516090'], spot: ['#223a87', '#a3f0e8', '#a3f0e8'] },
+            'Golden Hum': { bg: '#fffdf5', grid: ['#151722', '#ffcf46', '#ffa800', '#fc6e20'], bold: ['#fc6e20', '#fff6ee'], subtle: ['#fffbde', '#fff6d3', '#faf8cd'], spot: ['#a1c35d', '#9b868c', '#fffdf5'] },
+            'Hard Shadow': { bg: '#e3e3db', grid: ['#ffcf46', '#ffe46c', '#ffa800', '#fc6e20'], bold: ['#fc6e20', '#fdf7f5'], subtle: ['#fffbf2', '#f7f5f1', '#f9f1e6'], spot: ['#fca778', '#68b1b3', '#b7b2ae'] },
+            'Heat Wave': { bg: '#FF9100', grid: ['#da4801', '#ff7f32', '#FF6D00', '#ffffff'], bold: ['#fee6c1', '#FF4800'], subtle: ['#FF9E00', '#f9f8f7', '#fee6c1'], spot: ['#FF8500', '#cc0f95', '#ffffa9'] },
+            'Hudson Happening': { bg: '#191970', grid: ['#87CEEB', '#708090', '#2E8B57', '#FF4500'], bold: ['#A9D0A9', '#000080'], subtle: ['#444C6D', '#5D6D84', '#75809A'], spot: ['#dbb18c', '#FFA07A', '#4682B4'] },
+            'Hyper Glow': { bg: '#2b4483', grid: ['#e70688', '#54da82', '#67e4d7', '#a6ac17'], bold: ['#e54eb4', '#0e1596'], subtle: ['#263d75', '#2d4789', '#314e96'], spot: ['#28407c', '#24396f', '#1e2f5b'] },
+            'Impromptu Hue': { bg: '#db9215', grid: ['#001a33', '#001F3F', '#003366', '#3221A3'], bold: ['#004080', '#468dd1'], subtle: ['#1c2835', '#7888CD', '#c9def5'], spot: ['#B4C5E4', '#5361C7', '#4A53BB'] },
+            'Indigo Steps': { bg: '#101a3c', grid: ['#263d75', '#2d4789', '#3a5caf', '#28407c'], bold: ['#24396f', '#1f2d54'], subtle: ['#0e1736', '#1e2e61', '#121d45'], spot: ['#0f1839', '#8497d1', '#556cb9'] },
+            'Into The Night': { bg: '#0b0f1d', grid: ['#ffcb05', '#fef9c5', '#ffffff', '#ff5f00'], bold: ['#fb8e2c', '#ff3b3b'], subtle: ['#131c3a', '#1f2b4d', '#45385f'], spot: ['#392e4e', '#ffffa9', '#e54eb4'] },
+            'Island Summer': { bg: '#F5DEB3', grid: ['#1E90FF', '#D72638', '#FFB6C1', '#FFA500'], bold: ['#4B0082', '#00CED1'], subtle: ['#A0DFFF', '#FFE5CC', '#FFDDDD'], spot: ['#F5CBA7', '#FF6347', '#20B2AA'] },
+            'Jaipur Gem': { bg: '#D8A8B7', grid: ['#2E535B', '#3D2B56', '#1CA66A', '#475BB5'], bold: ['#E67424', '#F080A0'], subtle: ['#cc8da1', '#ddb5c1', '#e9cfd7'], spot: ['#d29aac', '#c68096', '#b45875'] },
+            'Joyride': { bg: '#5b0060', grid: ['#800080', '#8A2BE2', '#A020F0', '#9370DB'], bold: ['#9932CC', '#B86BB5'], subtle: ['#510056', '#5f0064', '#68006e'], spot: ['#56005b', '#4d0051', '#3f0043'] },
+            'La Haze': { bg: '#ffce46', grid: ['#a07600', '#ce6624', '#ed25c8', '#9f0000'], bold: ['#860063', '#5b0000'], subtle: ['#ca7505', '#ff9eec', '#e7a7a1'], spot: ['#a46566', '#f876df', '#ba9da2'] },
+            'Last Train Home': { bg: '#2c2c2c', grid: ['#58529f', '#a79986', '#b7934c', '#df2049'], bold: ['#df2049', '#393031'], subtle: ['#534f56', '#313839', '#3c3643'], spot: ['#78615a', '#947fff', '#363153'] },
+            'Liberty Lane': { bg: '#A9BA9D', grid: ['#708090', '#87CEEB', '#FFD700', '#B87333'], bold: ['#FFFFFF', '#5A5A5A'], subtle: ['#C0C0B0', '#A0A0A0', '#E0E0E0'], spot: ['#B0C0C0', '#FFB300', '#2F4F2F'] },
+            'Live Jazz': { bg: '#0d1a36', grid: ['#091736', '#10275b', '#66a3ff', '#FFF8DC'], bold: ['#000000', '#FFC400'], subtle: ['#cce0ff', '#bd675e', '#FFEB8F'], spot: ['#dcba7d', '#FFF4B2', '#d6f6e0'] },
+            'London Fog': { bg: '#c8c8c8', grid: ['#b1a5a1', '#a7a6a6', '#828282', '#a8a8a8'], bold: ['#f05b67', '#ff0015'], subtle: ['#bdbdbd', '#d0d0d0', '#e2e2e2'], spot: ['#7e554b', '#b6674e', '#ff0015'] },
+            'Low Sun Rush': { bg: '#f9f7ed', grid: ['#fc6e20', '#ffb300', '#b7934c', '#876935'], bold: ['#876935', '#fecfc3'], subtle: ['#fdcbaf', '#fab78a', '#fba676'], spot: ['#523743', '#d3ff66', '#fce3c3'] },
+            'Lucid Blue': { bg: '#00254b', grid: ['#008bf4', '#2f455c', '#003d7a', '#004c99'], bold: ['#005fbd', '#008bf4'], subtle: ['#001b38', '#002042', '#002348'], spot: ['#001d3b', '#001a35', '#00152c'] },
+            'Manhattan': { bg: '#22375e', grid: ['#3c69be', '#1b2b4f', '#fe675e', '#00d0a0'], bold: ['#1d2cff', '#3d69bd'], subtle: ['#857b6c', '#3b4e56', '#808da3'], spot: ['#2c383d', '#877cff', '#3d4eff'] },
+            'Marakata': { bg: '#18382A', grid: ['#4FA98D', '#2E6D57', '#60A280', '#15725C'], bold: ['#3E8C6F', '#0F1C18'], subtle: ['#1B352B', '#244438', '#305E4B'], spot: ['#102D21', '#B5FF7B', '#5AE8AC'] },
+            'Marfa Memory': { bg: '#D6B37C', grid: ['#F4C882', '#B4653B', '#F5E1B9', '#F1C27B'], bold: ['#C69C6D', '#9D7950'], subtle: ['#E0C79D', '#CFAE8A', '#ffffff'], spot: ['#C7A376', '#67FFFF', '#9D7950'] },
+            'Mauve Orleans': { bg: '#f1e9d2', grid: ['#800080', '#8A2BE2', '#A020F0', '#9370DB'], bold: ['#9932CC', '#8B008B'], subtle: ['#800080', '#A546A8', '#B86BB5'], spot: ['#CD8ACD', '#730077', '#5F0063'] },
+            'Mental Mine': { bg: '#363153', grid: ['#22375e', '#337699', '#5baecf', '#58529f'], bold: ['#58529f', '#515156'], subtle: ['#474649', '#5e5e5f', '#3f3d3d'], spot: ['#845d5c', '#ffde66', '#1f1722'] },
+            'Miami': { bg: '#182f5a', grid: ['#007BA7', '#1d4ea3', '#6e75d3', '#34877a'], bold: ['#0051bb', '#59d8c5'], subtle: ['#20535d', '#e7929b', '#7f9de8'], spot: ['#3251b0', '#e6a9f3', '#ffff1c'] },
+            'Midday Brights': { bg: '#e9e4ab', grid: ['#ff9500', '#a37410', '#ff7b00', '#de7106'], bold: ['#de7106', '#d6d6d4'], subtle: ['#e0e0dc', '#ebe9e5', '#f5f3ed'], spot: ['#ef8a7f', '#ffc466', '#f9f7f0'] },
+            'Midnight': { bg: '#151722', grid: ['#151628', '#242744', '#6c7fae', '#96adce'], bold: ['#c1ceea', '#e9eff9'], subtle: ['#171927', '#1b1d2e', '#83a4d2'], spot: ['#181a29', '#d2e5ff', '#12131e'] },
+            'Minted Mile': { bg: '#75aca1', grid: ['#1a5e45', '#bb86d8', '#cccfda', '#b93043'], bold: ['#0318f8', '#5f1bee'], subtle: ['#62a194', '#7eb1a7', '#90bcb3'], spot: ['#6ba69a', '#5c998d', '#4b7e74'] },
+            'Momentary Oasis': { bg: '#4C956C', grid: ['#6AA889', '#B7D5C7', '#E8F3F1', '#FFF8F0'], bold: ['#FFF8F0', '#4C956C'], subtle: ['#448661', '#4f9c71', '#58aa7c'], spot: ['#488d66', '#407e5b', '#35684b'] },
+            'Mono Contrast': { bg: '#f5f5f5', grid: ['#111111', '#222222', '#d8d8d8', '#c7c7c7'], bold: ['#b9b9b9', '#ababab'], subtle: ['#111111', '#333333', '#d5d5d5'], spot: ['#c7c7c7', '#444444', '#d8d8d8'] },
+            'Morning Meditation': { bg: '#f7ecbb', grid: ['#cfb720', '#fffc0f', '#e36a0f', '#f97a00'], bold: ['#f97a00', '#b9a58f'], subtle: ['#cab299', '#dcbea2', '#edcbac'], spot: ['#99b5df', '#9aafbd', '#fddbbe'] },
+            'Mundane Morning': { bg: '#f8f8f8', grid: ['#a7c9d4', '#e6c5bc', '#627181', '#f5f9fc'], bold: ['#ffffff', '#c9adb0'], subtle: ['#bababa', '#d9d9d9', '#eeeeee'], spot: ['#c4c4c4', '#afafaf', '#909090'] },
+            'Naturalistic': { bg: '#685b5b', grid: ['#e0857b', '#9f8000', '#d8dcdd', '#a759c7'], bold: ['#52a0ef', '#3099df'], subtle: ['#4d4545', '#5a5050', '#625858'], spot: ['#3c3535', '#e0acf5', '#fad022'] },
+            'Neighborly Love': { bg: '#fff5f9', grid: ['#fc6e20', '#ffa800', '#a79986', '#337699'], bold: ['#337699', '#fec9ba'], subtle: ['#fec4a0', '#f5a071', '#fc9151'], spot: ['#73e5ea', '#ffce66', '#fce3c3'] },
+            'New Resident': { bg: '#1f043a', grid: ['#b858cb', '#4b2f5a', '#ce06f3', '#12b9f4'], bold: ['#e36de3', '#ffafcc'], subtle: ['#10dd9c', '#650976', '#dd66f3'], spot: ['#98d8ef', '#ce06f3', '#e36de3'] },
+            'Night Flow': { bg: '#101a3c', grid: ['#ffff33', '#fae599', '#ddd04e', '#d09a18'], bold: ['#4B0082', '#1f2d54'], subtle: ['#0e1736', '#101b3e', '#121d45'], spot: ['#0f1839', '#0d1632', '#0b122a'] },
+            'Night Light': { bg: '#29023a', grid: ['#07938e', '#db60f8', '#455728', '#8342bf'], bold: ['#f06e29', '#8aeeb8'], subtle: ['#240134', '#2b023c', '#2f0242'], spot: ['#260137', '#ff66cb', '#ff66cb'] },
+            'One Phone Call': { bg: '#1a1c2c', grid: ['#131421', '#202237', '#586994', '#738eb7'], bold: ['#91a6d4', '#aec4e4'], subtle: ['#171927', '#1b1d2e', '#1d2032'], spot: ['#181a29', '#404377', '#313448'] },
+            'Other Planet': { bg: '#210754', grid: ['#27466d', '#0a423a', '#7fd190', '#bd3f3e'], bold: ['#effda1', '#2e29ad'], subtle: ['#1d064b', '#220758', '#250860'], spot: ['#1f064f', '#1c0547', '#fbfdf2'] },
+            'Out Late': { bg: '#171010', grid: ['#f3f2f2', '#dcdcdc', '#2F2C29', '#3E3A36'], bold: ['#1A1410', '#201C16'], subtle: ['#110F0D', '#2e2e2e', '#3C3935'], spot: ['#514D48', '#E63B2E', '#00A652'] },
+            'Pepdot': { bg: '#ecebed', grid: ['#05aa0e', '#0a8811', '#040406', '#1441ff'], bold: ['#fc070d', '#158f1c'], subtle: ['#d4d2d6', '#f7f7f8', '#ffffff'], spot: ['#e0dee1', '#c8c5cb', '#a5a0a9'] },
+            'Present Moment': { bg: '#ecb317', grid: ['#ecd287', '#ce6624', '#ff59e0', '#9f0000'], bold: ['#860063', '#5b0000'], subtle: ['#9e5d08', '#ff9eec', '#e7a7a1'], spot: ['#a46566', '#f876df', '#ba9da2'] },
+            'Red Mirage': { bg: '#f6efd9', grid: ['#DC143C', '#8B0000', '#A52A2A', '#B22222'], bold: ['#800020', '#FF4500'], subtle: ['#DC143C', '#FF6347', '#FF7F50'], spot: ['#FF6656', '#FFA07A', '#FFB6C1'] },
+            'Renewal': { bg: '#d8efff', grid: ['#c2e9f9', '#8ccff2', '#32cbff', '#e2daea'], bold: ['#ade3fe', '#117df6'], subtle: ['#82b7dd', '#eff8fe', '#ffffff'], spot: ['#c0e5ff', '#91d2ff', '#4ab5ff'] },
+            'Restful Pause': { bg: '#732da3', grid: ['#9b6eb9', '#ada9c0', '#d0e0eb', '#fefeff'], bold: ['#fefeff', '#ffffff'], subtle: ['#8678b1', '#aba0c8', '#f2f1f7'], spot: ['#c2bbd8', '#aba0c8', '#8678b1'] },
+            'San Francisco': { bg: '#337699', grid: ['#73b6d9', '#004366', '#d4b96b', '#8ccff2'], bold: ['#002a4c', '#3366ff'], subtle: ['#2d7093', '#1f6285', '#1e6184'], spot: ['#216487', '#ffffa9', '#eb9123'] },
+            'Signal Arc': { bg: '#58529f', grid: ['#9892df', '#251f6c', '#b1abf8', '#dda890'], bold: ['#99907a', '#0c0652'], subtle: ['#4f498f', '#5c56a6', '#6b65af'], spot: ['#534d97', '#4a4587', '#3d396f'] },
+            'Slow Collage': { bg: '#5F658C', grid: ['#ACB5D7', '#FCFCF5', '#646472', '#F1A354'], bold: ['#53577B', '#4D516B'], subtle: ['#EAC49F', '#B5B1BB', '#46495D'], spot: ['#FF69B4', '#FF69B4', '#00CED1'] },
+            'Soft Shadow': { bg: '#cfc9e0', grid: ['#4b2862', '#67497c', '#6e6a86', '#749ab3'], bold: ['#d2bf9d', '#f3bc77'], subtle: ['#b7aed0', '#dbd6e7', '#f2f1f7'], spot: ['#c2bbd8', '#aba0c8', '#8678b1'] },
+            'Subtle Static': { bg: '#f0eeee', grid: ['#e2e6e9', '#363153', '#837c7c', '#fdf5f5'], bold: ['#fdf5f5', '#e8e7e8'], subtle: ['#a5a5a5', '#e2e2e2', '#d0d3d8'], spot: ['#52c7cc', '#ffce66', '#d6d6d6'] },
+            'Sunset Blush': { bg: '#F47C74', grid: ['#FF867C', '#FF5E52', '#FFAA99', '#FBE1DC'], bold: ['#FFD1C7', '#A34238'], subtle: ['#FBAEA6', '#E5948B', '#EED4CE'], spot: ['#C9584E', '#FFEDE8', '#A96AFB'] },
+            'Swift Transfer': { bg: '#0a0705', grid: ['#333333', '#606060', '#8c8c8c', '#b8b8b8'], bold: ['#ffffff', '#f2f8f7'], subtle: ['#F21E2C', '#0d0907', '#0e0a08'], spot: ['#0c0806', '#fec631', '#F9591F'] },
+            'Taxi Station': { bg: '#d6cecf', grid: ['#635b5c', '#ffcc00', '#dcc9d2', '#efe7e8'], bold: ['#efe7e8', '#4a4242'], subtle: ['#877e7f', '#9d9596', '#aba4a5'], spot: ['#8e8687', '#807778', '#696263'] },
+            'Thick Air': { bg: '#6f7369', grid: ['#afb3a9', '#3c4036', '#c8ccc2', '#99907a'], bold: ['#a0cbbb', '#23271c'], subtle: ['#63675e', '#74786e', '#7f8478'], spot: ['#696d63', '#5e6159', '#4d5049'] },
+            'Timeless Static': { bg: '#e2e6e9', grid: ['#363153', '#58529f', '#837c7c', '#d6d6d6'], bold: ['#d6d6d6', '#eeedee'], subtle: ['#eeeeee', '#f8f4f4', '#e7eaef'], spot: ['#78615a', '#947fff', '#f4f4f4'] },
+            'Tinted Ink': { bg: '#f1c1ea', grid: ['#001a33', '#3221A3', '#003366', '#001F3F'], bold: ['#004080', '#00509E'], subtle: ['#2f4359', '#94a0d3', '#96a5b4'], spot: ['#d1ddf2', '#838dd6', '#4A53BB'] },
+            'Tourist Trap': { bg: '#fffaf0', grid: ['#ffcba1', '#ffcf46', '#d88c7a', '#ae5029'], bold: ['#913f1d', '#fbf7e5'], subtle: ['#fef1f1', '#fff3ef', '#f8eaea'], spot: ['#5e6d87', '#ffefa7', '#ffe0e0'] },
+            'Tunnel Vision': { bg: '#968e8f', grid: ['#3f4245', '#dac5a1', '#31323c', '#1a1f20'], bold: ['#21272a', '#cdc6bf'], subtle: ['#362c4a', '#3f3357', '#dac5a1'], spot: ['#6d5c8d', '#332946', '#2a223a'] },
+            'Underground Current': { bg: '#0d2049', grid: ['#081124', '#112044', '#2f7bee', '#f5df86'], bold: ['#000000', '#bcb50f'], subtle: ['#eec7c9', '#e3d536', '#f8cb62'], spot: ['#FFDDA0', '#cce0ff', '#b3ecc6'] },
+            'Urban Haze': { bg: '#b8c5d0', grid: ['#6b7a8a', '#9ca8b5', '#d4dce3', '#4a5a6a'], bold: ['#3a4a5a', '#c4cfd8'], subtle: ['#a5b2be', '#bcc7d1', '#d0d9e0'], spot: ['#8a9aa8', '#7a8a98', '#5a6a7a'] },
+            'Warm Dust': { bg: '#e8ddd0', grid: ['#c4b5a0', '#a89880', '#8c7c60', '#706050'], bold: ['#584838', '#f0e8dc'], subtle: ['#d8ccc0', '#ccc0b0', '#c0b4a0'], spot: ['#b4a890', '#a89c80', '#9c9070'] },
+            'Waterfront': { bg: '#1a3a5c', grid: ['#2a5a8c', '#3a7abc', '#4a9adc', '#5abafc'], bold: ['#0a2a4c', '#6adaff'], subtle: ['#1a4a6c', '#2a6a9c', '#3a8acc'], spot: ['#4aaaec', '#5acaff', '#6aeaff'] },
+        };
+
+        const paletteNames = Object.keys(PALETTES).sort();
+        const GROUP_ORDER = ['bg', 'grid', 'bold', 'subtle', 'spot'];
+        const GROUP_LABELS = { bg: 'BG', grid: 'GRID', bold: 'BOLD', subtle: 'SUBTLE', spot: 'SPOT' };
+
+        // Get palette from URL parameter
+        function getInitialPalette() {
+            const params = new URLSearchParams(window.location.search);
+            const palette = params.get('palette');
+            if (palette && PALETTES[palette]) return palette;
+            return paletteNames[Math.floor(Math.random() * paletteNames.length)];
+        }
+
+        function ColorExplorer() {
+            const [currentPalette, setCurrentPalette] = useState(getInitialPalette);
+            const [favorites, setFavorites] = useState(() => {
+                try {
+                    return JSON.parse(localStorage.getItem('cities-fav-palettes') || '[]');
+                } catch { return []; }
+            });
+            const [hoveredGroup, setHoveredGroup] = useState(null);
+            const [copiedColor, setCopiedColor] = useState(null);
+
+            const palette = PALETTES[currentPalette];
+            const currentIndex = paletteNames.indexOf(currentPalette);
+            const isFavorite = favorites.includes(currentPalette);
+
+            // Build all colors array for fan display
+            const allColors = useMemo(() => {
+                if (!palette) return [];
+                const colors = [];
+                colors.push({ color: palette.bg, group: 'bg', label: 'BG' });
+                palette.grid.forEach((c, i) => colors.push({ color: c, group: 'grid', label: `Grid ${i+1}` }));
+                palette.bold.forEach((c, i) => colors.push({ color: c, group: 'bold', label: `Bold ${i+1}` }));
+                palette.subtle.forEach((c, i) => colors.push({ color: c, group: 'subtle', label: `Subtle ${i+1}` }));
+                palette.spot.forEach((c, i) => colors.push({ color: c, group: 'spot', label: `Spot ${i+1}` }));
+                return colors;
+            }, [palette]);
+
+            const navigate = useCallback((dir) => {
+                let idx = currentIndex + dir;
+                if (idx < 0) idx = paletteNames.length - 1;
+                if (idx >= paletteNames.length) idx = 0;
+                setCurrentPalette(paletteNames[idx]);
+            }, [currentIndex]);
+
+            const shuffle = useCallback(() => {
+                const idx = Math.floor(Math.random() * paletteNames.length);
+                setCurrentPalette(paletteNames[idx]);
+            }, []);
+
+            const toggleFavorite = useCallback(() => {
+                const newFavs = isFavorite
+                    ? favorites.filter(f => f !== currentPalette)
+                    : [...favorites, currentPalette];
+                setFavorites(newFavs);
+                localStorage.setItem('cities-fav-palettes', JSON.stringify(newFavs));
+            }, [favorites, currentPalette, isFavorite]);
+
+            const copyColor = useCallback((color) => {
+                navigator.clipboard.writeText(color);
+                setCopiedColor(color);
+                setTimeout(() => setCopiedColor(null), 1500);
+            }, []);
+
+            // Keyboard navigation
+            useEffect(() => {
+                const handleKey = (e) => {
+                    if (e.key === 'ArrowLeft') navigate(-1);
+                    if (e.key === 'ArrowRight') navigate(1);
+                    if (e.key === ' ') { e.preventDefault(); shuffle(); }
+                    if (e.key === 'f') toggleFavorite();
+                };
+                window.addEventListener('keydown', handleKey);
+                return () => window.removeEventListener('keydown', handleKey);
+            }, [navigate, shuffle, toggleFavorite]);
+
+            if (!palette) return null;
+
+            const fanSpread = 140;
+            const startAngle = -fanSpread / 2;
+
+            return (
+                <div style={{
+                    minHeight: '100vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '40px 20px',
+                    position: 'relative',
+                    overflow: 'hidden'
+                }}>
+                    {/* Background */}
+                    <div style={{
+                        position: 'fixed',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        background: palette.bg,
+                        opacity: 0.15,
+                        transition: 'background 0.5s ease',
+                        pointerEvents: 'none'
+                    }} />
+
+                    {/* Back button */}
+                    <a href="index.html" style={{
+                        position: 'fixed',
+                        top: 20, left: 20,
+                        width: 44, height: 44,
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '50%',
+                        color: '#a0a0c0',
+                        fontSize: 20,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textDecoration: 'none',
+                        transition: 'all 0.3s ease',
+                        zIndex: 10
+                    }}>←</a>
+
+                    {/* Navigation */}
+                    <button onClick={() => navigate(-1)} style={{
+                        position: 'fixed',
+                        left: 20, top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: 48, height: 48,
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '50%',
+                        color: '#a0a0c0',
+                        fontSize: 24,
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease'
+                    }}>‹</button>
+
+                    <button onClick={() => navigate(1)} style={{
+                        position: 'fixed',
+                        right: 20, top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: 48, height: 48,
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '50%',
+                        color: '#a0a0c0',
+                        fontSize: 24,
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease'
+                    }}>›</button>
+
+                    {/* Palette name */}
+                    <h1 style={{
+                        fontSize: 'clamp(28px, 6vw, 56px)',
+                        fontWeight: 800,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                        marginBottom: 30,
+                        textAlign: 'center',
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        gap: '0 4px',
+                        position: 'relative',
+                        zIndex: 1
+                    }}>
+                        {currentPalette.split('').map((char, i) => (
+                            <span key={i} style={{
+                                display: 'inline-block',
+                                transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                cursor: 'default',
+                                width: char === ' ' ? '0.3em' : 'auto'
+                            }} className="letter">{char}</span>
+                        ))}
+                    </h1>
+
+                    {/* Group labels */}
+                    <div style={{
+                        display: 'flex',
+                        gap: 12,
+                        marginBottom: 30,
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        position: 'relative',
+                        zIndex: 1
+                    }}>
+                        {GROUP_ORDER.map(group => {
+                            const groupColors = group === 'bg' ? [palette.bg] : palette[group];
+                            const sampleColor = groupColors[0];
+                            return (
+                                <div key={group}
+                                    onMouseEnter={() => setHoveredGroup(group)}
+                                    onMouseLeave={() => setHoveredGroup(null)}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 6,
+                                        padding: '6px 12px',
+                                        background: hoveredGroup === group ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.03)',
+                                        borderRadius: 20,
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s ease'
+                                    }}>
+                                    <span style={{
+                                        width: 10, height: 10,
+                                        borderRadius: '50%',
+                                        background: sampleColor
+                                    }} />
+                                    <span style={{
+                                        fontSize: 9,
+                                        fontWeight: 700,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.1em',
+                                        color: '#8888a8'
+                                    }}>{GROUP_LABELS[group]}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Swatch fan */}
+                    <div style={{
+                        position: 'relative',
+                        height: 320,
+                        width: '100%',
+                        maxWidth: 500,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: 30
+                    }}>
+                        {allColors.map((item, i) => {
+                            const angle = startAngle + (i / (allColors.length - 1)) * fanSpread;
+                            const isHighlighted = hoveredGroup === null || hoveredGroup === item.group;
+                            const zIndex = i < allColors.length / 2 ? i + 1 : allColors.length - i;
+
+                            return (
+                                <div
+                                    key={i}
+                                    onClick={() => copyColor(item.color)}
+                                    style={{
+                                        position: 'absolute',
+                                        width: 55,
+                                        height: 180,
+                                        borderRadius: 28,
+                                        background: item.color,
+                                        transformOrigin: 'center bottom',
+                                        transform: `rotate(${angle}deg) translateY(-20px)`,
+                                        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                        opacity: isHighlighted ? 1 : 0.3,
+                                        zIndex: zIndex,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        padding: '12px 0'
+                                    }}
+                                    className="swatch-card"
+                                >
+                                    <span style={{
+                                        fontSize: 8,
+                                        fontWeight: 600,
+                                        fontFamily: 'monospace',
+                                        color: 'rgba(255,255,255,0.7)',
+                                        textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+                                        opacity: 0,
+                                        transition: 'opacity 0.3s'
+                                    }} className="swatch-hex">{copiedColor === item.color ? 'COPIED!' : item.color}</span>
+                                    <span style={{
+                                        fontSize: 7,
+                                        fontWeight: 700,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.1em',
+                                        color: 'rgba(255,255,255,0.8)',
+                                        textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+                                        opacity: 0,
+                                        transition: 'opacity 0.3s'
+                                    }} className="swatch-label">{item.label}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Controls */}
+                    <div style={{
+                        display: 'flex',
+                        gap: 12,
+                        marginBottom: 20,
+                        position: 'relative',
+                        zIndex: 1
+                    }}>
+                        <button onClick={shuffle} style={{
+                            padding: '12px 24px',
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            borderRadius: 50,
+                            color: '#a0a0c0',
+                            fontSize: 11,
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            fontFamily: 'inherit'
+                        }}>↻ Shuffle</button>
+
+                        <button onClick={toggleFavorite} style={{
+                            padding: '12px 24px',
+                            background: isFavorite ? '#D4A574' : 'transparent',
+                            border: '2px solid #D4A574',
+                            borderRadius: 50,
+                            color: isFavorite ? '#000' : '#D4A574',
+                            fontSize: 11,
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            fontFamily: 'inherit'
+                        }}>{isFavorite ? '♥ Favorited' : '♡ Favorite'}</button>
+                    </div>
+
+                    {/* Counter */}
+                    <div style={{
+                        fontSize: 10,
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        color: '#6a6a8a',
+                        position: 'relative',
+                        zIndex: 1
+                    }}>
+                        {currentIndex + 1} / {paletteNames.length}
+                    </div>
+
+                    {/* Keyboard hints */}
+                    <div style={{
+                        position: 'fixed',
+                        bottom: 20,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        display: 'flex',
+                        gap: 16,
+                        fontSize: 9,
+                        color: '#6a6a8a',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em'
+                    }}>
+                        <span>← → Navigate</span>
+                        <span>Space Shuffle</span>
+                        <span>F Favorite</span>
+                    </div>
+
+                    <style>{`
+                        .letter:hover { transform: translateY(-8px) scale(1.1) !important; }
+                        .swatch-card:hover { transform: translateY(-40px) scale(1.15) !important; z-index: 100 !important; box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important; }
+                        .swatch-card:hover .swatch-hex, .swatch-card:hover .swatch-label { opacity: 1 !important; }
+                        button:hover { background: rgba(255,255,255,0.1) !important; }
+                    `}</style>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<ColorExplorer />);
+    </script>
+</body>
+</html>
