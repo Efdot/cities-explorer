@@ -407,7 +407,8 @@
 
         /* Fullscreen mode */
         body.fullscreen-mode .sidebar, body.fullscreen-mode .gallery-toggle, body.fullscreen-mode .collectors-toggle, body.fullscreen-mode .mint-toggle,
-        body.fullscreen-mode .mobile-menu-toggle, body.fullscreen-mode .bottom-info, body.fullscreen-mode .top-nav-fixed { display: none !important; }
+        body.fullscreen-mode .mobile-menu-toggle, body.fullscreen-mode .bottom-info, body.fullscreen-mode .top-nav-fixed, body.fullscreen-mode .mobile-bottom-bar,
+        body.fullscreen-mode .pull-refresh-indicator { display: none !important; }
         body.fullscreen-mode .main-content { padding: 0; left: 0; }
         body.fullscreen-mode .frame-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; border-radius: 0; background: var(--bg-deep); }
         body.fullscreen-mode .preview-image { max-height: 100vh; max-width: 100vw; width: auto; height: auto; object-fit: contain; opacity: 0; transition: opacity 0.3s ease-out; }
@@ -728,11 +729,16 @@
         .grid-item.selected { outline: 3px solid var(--teal); }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; }
         .grid-item-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(10, 9, 16, 0.9)); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); text-align: center; }
-        .grid-item-fav { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border: none; background: rgba(10, 9, 16, 0.7); color: rgba(255,255,255,0.6); font-size: 14px; cursor: pointer; border-radius: 50%; opacity: 0; transition: all 0.2s ease; z-index: 2; display: flex; align-items: center; justify-content: center; }
-        .grid-item:hover .grid-item-fav { opacity: 1; }
+        .grid-item-fav { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border: none; background: rgba(10, 9, 16, 0.35); color: rgba(255,255,255,0.4); font-size: 14px; cursor: pointer; border-radius: 50%; opacity: 0.6; transition: all 0.2s ease; z-index: 2; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .grid-item:hover .grid-item-fav { opacity: 1; background: rgba(10, 9, 16, 0.7); color: rgba(255,255,255,0.8); }
         .grid-item-fav:hover { background: #fff; color: #333; transform: scale(1.15); }
-        .grid-item-fav.favorited { opacity: 0.9; color: var(--spot-text, #000); background: var(--spot-color, var(--yellow)); box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
+        .grid-item-fav.favorited { opacity: 1; color: var(--spot-text, #000); background: var(--spot-color, var(--yellow)); box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); backdrop-filter: none; }
         .grid-item-fav.favorited:hover { opacity: 1; background: #fff; color: #333; }
+        /* Always show fav buttons on touch devices */
+        @media (pointer: coarse) {
+            .grid-item-fav { opacity: 0.5; width: 36px; height: 36px; font-size: 16px; }
+            .grid-item-fav.favorited { opacity: 1; }
+        }
         .grid-item-rank { position: absolute; top: 6px; left: 6px; background: linear-gradient(135deg, var(--orange), var(--yellow)); color: #000; font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; z-index: 2; }
         .grid-item-tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--bg-card); border-radius: 10px; padding: 10px 12px; font-size: 9px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: 8px; }
         .grid-item:hover .grid-item-tooltip { opacity: 1; transform: translateX(-50%) translateY(-4px); }
@@ -750,7 +756,8 @@
         .grid-group-fav.favorited { color: var(--spot-color, var(--pink)); opacity: 1; }
         .grid-group-shuffle { width: 24px; height: 24px; border: none; background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; border-radius: 50%; transition: all 0.3s ease; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .grid-group-shuffle:hover { background: var(--bg-input); color: var(--teal); }
-        .grid-group-color { width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0; }
+        .grid-group-color { width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0; opacity: 0.7; transition: opacity 0.2s ease; }
+        .grid-group-header:hover .grid-group-color { opacity: 1; }
         .grid-group-swatches { display: flex; gap: 0; height: 24px; border-radius: 4px; overflow: hidden; transition: gap 0.3s ease; }
         .grid-group-swatches span { width: 3px; height: 24px; border-radius: 0; transition: width 0.3s ease; }
         .grid-group-header:hover .grid-group-swatches { gap: 3px; }
@@ -767,14 +774,14 @@
         .grid-pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
         .grid-pagination .page-info { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
         @media (max-width: 768px) {
-            .grid-header { padding: 14px 16px; flex-direction: column; gap: 12px; min-height: auto; align-items: center; }
-            .grid-brand { position: static; flex-wrap: nowrap; justify-content: center; gap: 8px; align-items: baseline; }
-            .grid-brand h1 { font-size: 20px; }
-            .grid-controls { order: 2; }
-            .grid-artist-logos { gap: 5px; }
-            .grid-artist-logo { height: 13px; top: 0; }
-            .grid-artist-logo.diid-logo { height: 16px; }
-            .grid-logo-x { font-size: 8px; top: -1px; }
+            .grid-header { padding: 14px 16px; flex-direction: column; gap: 10px; min-height: auto; align-items: stretch; }
+            .grid-brand { position: static; flex-wrap: nowrap; justify-content: flex-start; gap: 8px; align-items: baseline; }
+            .grid-brand h1 { font-size: 18px; }
+            .grid-controls { order: 2; justify-content: flex-start; }
+            .grid-artist-logos { gap: 4px; display: flex; }
+            .grid-artist-logo { height: 11px; top: 0; }
+            .grid-artist-logo.diid-logo { height: 14px; }
+            .grid-logo-x { font-size: 7px; top: -1px; }
             .filter-toggle-bar { padding: 8px 12px; }
             .filter-toggle-bar span { font-size: 9px; }
             .grid-filter-bar.open { padding: 10px 12px; }
@@ -784,18 +791,24 @@
             .grid-items { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
             .grid-group-items { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important; gap: 8px !important; }
             .grid-controls { flex-wrap: wrap; gap: 6px; justify-content: center; width: 100%; }
-            .grid-mode-btn { padding: 10px 16px; font-size: 9px; border-width: 2px; }
-            .gallery-room-toggle, .grid-size-toggle { width: 36px; height: 36px; font-size: 14px; }
+            .grid-mode-btn { padding: 10px 16px; font-size: 9px; border-width: 2px; min-height: 40px; }
+            .gallery-room-toggle, .grid-size-toggle { width: 40px; height: 40px; font-size: 16px; }
             /* Palette headers on mobile */
             .grid-group-header { padding: 10px 12px; gap: 6px; flex-wrap: nowrap; }
             .grid-group-name { font-size: 10px; letter-spacing: 0.05em; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
             .grid-group-count { font-size: 9px; padding: 2px 6px; flex-shrink: 0; }
-            .grid-group-fav, .grid-group-shuffle { width: 24px; height: 24px; font-size: 12px; flex-shrink: 0; }
-            .grid-group-toggle { font-size: 10px; flex-shrink: 0; }
-            .grid-group-color { width: 18px; height: 18px; flex-shrink: 0; }
+            .grid-group-fav, .grid-group-shuffle { width: 32px; height: 32px; font-size: 14px; flex-shrink: 0; }
+            .grid-group-toggle { font-size: 12px; flex-shrink: 0; }
+            .grid-group-color { width: 22px; height: 22px; flex-shrink: 0; }
             .grid-group-swatches { display: none; }
             .grid-filter-spacer, .grid-supply-tracker, .grid-showing-count { display: none; }
             .grid-stats-bar { padding: 6px 12px; font-size: 8px; gap: 10px; flex-wrap: wrap; justify-content: center; }
+            /* Move filter bar to bottom on mobile */
+            .grid-panel { display: flex; flex-direction: column; }
+            .filter-toggle-bar { order: 10; position: fixed; bottom: 0; left: 0; right: 0; margin: 0; border-radius: 0; z-index: 160; background: var(--bg-panel); border-top: 1px solid var(--border); padding: 14px 16px; }
+            .grid-filter-bar { order: 11; position: fixed; bottom: 50px; left: 0; right: 0; z-index: 159; border-radius: 0; max-height: 50vh; overflow-y: auto; }
+            .grid-filter-bar.open { padding: 16px; }
+            .grid-content { order: 5; padding-bottom: 70px; }
         }
 
         /* Condensed sidebar for narrow windows */
@@ -812,9 +825,12 @@
             hr { margin: 8px 0; }
         }
 
-        /* Hide logos when window is narrow - tuck them under Cities */
+        /* Show smaller logos when window is narrow */
         @media (max-width: 1200px) {
-            .grid-artist-logos { display: none; }
+            .grid-artist-logos { gap: 4px; }
+            .grid-artist-logo { height: 12px; }
+            .grid-artist-logo.diid-logo { height: 15px; }
+            .grid-logo-x { font-size: 7px; }
         }
 
         .mobile-menu-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 50%; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 5px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
@@ -864,6 +880,153 @@
             .btn { min-height: 48px; }
             .token-nav button { min-width: 48px; min-height: 48px; }
             .gallery-item .item-actions { opacity: 1; background: rgba(10, 9, 16, 0.7); }
+            /* Larger touch targets for mobile */
+            .heart-btn { width: 48px; height: 48px; font-size: 22px; }
+            .icon-btn { width: 44px; height: 44px; font-size: 18px; }
+            .grid-item-fav { width: 32px; height: 32px; font-size: 14px; }
+            .grid-group-fav, .grid-group-shuffle { width: 32px; height: 32px; font-size: 14px; }
+        }
+
+        /* Mobile bottom controls bar */
+        .mobile-bottom-bar { display: none; }
+        @media (max-width: 768px) {
+            .mobile-bottom-bar {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 64px;
+                background: var(--bg-panel);
+                border-top: 1px solid var(--border);
+                z-index: 150;
+                align-items: center;
+                justify-content: space-around;
+                padding: 0 8px;
+                gap: 4px;
+            }
+            .mobile-bottom-bar button {
+                flex: 1;
+                height: 48px;
+                max-width: 80px;
+                border: none;
+                border-radius: 12px;
+                background: var(--bg-input);
+                color: var(--text-dim);
+                font-size: 18px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .mobile-bottom-bar button:active { transform: scale(0.95); background: var(--bg-card); }
+            .mobile-bottom-bar button.active { background: var(--teal); color: #000; }
+            .mobile-bottom-bar .mobile-heart-btn.favorited { background: var(--pink); color: #fff; }
+            /* Adjust main content for bottom bar */
+            .main-content { padding-bottom: 80px !important; }
+            .grid-toggle { display: none; }
+            /* Grid panel needs bottom padding for controls */
+            .grid-panel { padding-bottom: 70px; }
+            .grid-content { padding-bottom: 80px; }
+        }
+
+        /* Pull to refresh indicator */
+        .pull-refresh-indicator {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: var(--bg-panel);
+            border-radius: 0 0 20px 20px;
+            color: var(--text-dim);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            z-index: 200;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+        }
+        .pull-refresh-indicator.visible { display: block; }
+        .pull-refresh-indicator.pulling { color: var(--teal); }
+        .pull-refresh-indicator.refreshing { color: var(--warm); }
+        .pull-refresh-indicator .refresh-icon { display: inline-block; margin-right: 6px; transition: transform 0.3s ease; }
+        .pull-refresh-indicator.refreshing .refresh-icon { animation: spin 0.6s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Double-tap heart animation */
+        .double-tap-heart {
+            position: fixed;
+            pointer-events: none;
+            font-size: 80px;
+            z-index: 1000;
+            opacity: 0;
+            transform: scale(0);
+            transition: none;
+            color: #FF6B8A;
+            text-shadow: 0 0 30px rgba(255, 107, 138, 0.8), 0 0 60px rgba(255, 107, 138, 0.4);
+        }
+        .double-tap-heart.show {
+            animation: doubleTapHeart 0.8s ease-out forwards;
+        }
+        @keyframes doubleTapHeart {
+            0% { opacity: 0; transform: scale(0) rotate(-15deg); }
+            15% { opacity: 1; transform: scale(1.3) rotate(5deg); }
+            30% { transform: scale(0.9) rotate(-3deg); }
+            45% { transform: scale(1.1) rotate(2deg); }
+            60% { transform: scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: scale(1.2) rotate(0deg); }
+        }
+
+        /* Landscape mode on mobile - condense vertical space */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .grid-header { padding: 8px 16px; gap: 6px; min-height: auto; }
+            .grid-brand h1 { font-size: 16px; }
+            .grid-artist-logo { height: 10px; }
+            .grid-artist-logo.diid-logo { height: 12px; }
+            .grid-controls { gap: 4px; }
+            .grid-mode-btn { padding: 6px 12px; font-size: 8px; min-height: 32px; }
+            .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; }
+            .filter-toggle-bar { padding: 8px 12px; }
+            .grid-filter-bar.open { padding: 8px 12px; }
+            .grid-group-header { padding: 6px 10px; }
+            .grid-group-name { font-size: 9px; }
+            .grid-group-fav, .grid-group-shuffle, .grid-group-color { width: 20px; height: 20px; font-size: 10px; }
+            .grid-content { padding: 6px; }
+            .grid-items, .grid-group-items { gap: 4px !important; }
+            .mobile-bottom-bar { height: 48px; }
+            .mobile-bottom-bar button { height: 38px; max-width: 60px; font-size: 14px; }
+            .main-content { padding-top: 50px !important; padding-bottom: 60px !important; }
+            .top-nav-fixed { top: 8px; right: 8px; gap: 4px; }
+            .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; font-size: 14px; }
+            .mint-toggle { padding: 1px; }
+            .mint-letter { height: 10px; }
+            .preview-image { max-height: calc(100vh - 120px); }
+            .pull-refresh-indicator { padding: 8px 16px; font-size: 9px; }
+        }
+
+        /* Extra condensed for very short landscape screens */
+        @media (max-height: 400px) and (orientation: landscape) {
+            .grid-header { padding: 6px 12px; flex-direction: row; align-items: center; }
+            .grid-brand { gap: 6px; }
+            .grid-brand h1 { font-size: 14px; }
+            .grid-artist-logos { display: none; }
+            .grid-controls { width: auto; }
+            .grid-mode-btn { padding: 5px 10px; font-size: 7px; }
+            .filter-toggle-bar { padding: 6px 10px; position: static; }
+            .grid-filter-bar { position: static; max-height: none; }
+            .mobile-bottom-bar { height: 40px; }
+            .mobile-bottom-bar button { height: 32px; font-size: 12px; border-radius: 8px; }
+            .main-content { padding-top: 40px !important; padding-bottom: 50px !important; }
+            .preview-image { max-height: calc(100vh - 100px); }
+        }
+
+        /* Smooth orientation change transitions */
+        body.orientation-changing * {
+            transition: all 0.2s ease !important;
         }
 
         ::-webkit-scrollbar { width: 4px; }
@@ -3129,15 +3292,54 @@
             }
         });
 
-        // Also exit fullscreen when tapping the image in fullscreen mode
-        previewImage.addEventListener('click', (e) => {
+        // Fullscreen swipe navigation for mobile
+        let fullscreenTouchStartX = 0;
+        let fullscreenTouchStartY = 0;
+        let fullscreenTouchStartTime = 0;
+        let fullscreenSwiped = false;
+
+        previewImage.addEventListener('touchstart', (e) => {
             if (isFullscreen) {
+                fullscreenTouchStartX = e.changedTouches[0].screenX;
+                fullscreenTouchStartY = e.changedTouches[0].screenY;
+                fullscreenTouchStartTime = Date.now();
+                fullscreenSwiped = false;
+            }
+        }, { passive: true });
+
+        previewImage.addEventListener('touchend', (e) => {
+            if (isFullscreen) {
+                const touchEndX = e.changedTouches[0].screenX;
+                const touchEndY = e.changedTouches[0].screenY;
+                const diffX = fullscreenTouchStartX - touchEndX;
+                const diffY = fullscreenTouchStartY - touchEndY;
+                const touchDuration = Date.now() - fullscreenTouchStartTime;
+                const swipeThreshold = 50;
+
+                // Check if horizontal swipe (more horizontal than vertical movement)
+                if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > Math.abs(diffY)) {
+                    fullscreenSwiped = true;
+                    if (diffX > 0) {
+                        // Swipe left - next
+                        document.getElementById('nextToken').click();
+                    } else {
+                        // Swipe right - previous
+                        document.getElementById('prevToken').click();
+                    }
+                }
+            }
+        }, { passive: true });
+
+        // Also exit fullscreen when tapping the image (not swiping)
+        previewImage.addEventListener('click', (e) => {
+            if (isFullscreen && !fullscreenSwiped) {
                 e.preventDefault();
                 e.stopPropagation();
                 if (exploreActive) stopExplore();
                 isFullscreen = false;
                 document.body.classList.remove('fullscreen-mode');
             }
+            fullscreenSwiped = false;
         });
 
         // More outputs feature - curated suggestions based on color relationships
@@ -5300,9 +5502,386 @@
             }
         });
 
+        // ========== MOBILE ENHANCEMENTS ==========
+
+        // Haptic feedback helper
+        function haptic(type = 'light') {
+            if ('vibrate' in navigator) {
+                const patterns = { light: 10, medium: 25, heavy: 50 };
+                navigator.vibrate(patterns[type] || 10);
+            }
+        }
+
+        // Mobile bottom bar controls
+        const mobileBottomBar = document.getElementById('mobileBottomBar');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobilePrevBtn = document.getElementById('mobilePrevBtn');
+        const mobileHeartBtn = document.getElementById('mobileHeartBtn');
+        const mobileNextBtn = document.getElementById('mobileNextBtn');
+        const mobileGridBtn = document.getElementById('mobileGridBtn');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                haptic('light');
+                document.querySelector('.mobile-menu-toggle')?.click();
+            });
+        }
+
+        if (mobilePrevBtn) {
+            mobilePrevBtn.addEventListener('click', () => {
+                haptic('light');
+                document.getElementById('prevToken')?.click();
+            });
+        }
+
+        if (mobileNextBtn) {
+            mobileNextBtn.addEventListener('click', () => {
+                haptic('light');
+                document.getElementById('nextToken')?.click();
+            });
+        }
+
+        if (mobileHeartBtn) {
+            mobileHeartBtn.addEventListener('click', () => {
+                haptic('medium');
+                document.getElementById('favBtn')?.click();
+                // Update button state
+                setTimeout(() => {
+                    mobileHeartBtn.classList.toggle('favorited', isCityFavorited(currentTokenId));
+                }, 50);
+            });
+        }
+
+        if (mobileGridBtn) {
+            mobileGridBtn.addEventListener('click', () => {
+                haptic('light');
+                if (gridPanel.classList.contains('open')) {
+                    closeGridView();
+                    mobileGridBtn.classList.remove('active');
+                } else {
+                    openGridView();
+                    mobileGridBtn.classList.add('active');
+                }
+            });
+        }
+
+
+        // Update mobile heart button state when token changes
+        function updateMobileHeartState() {
+            if (mobileHeartBtn) {
+                mobileHeartBtn.classList.toggle('favorited', isCityFavorited(currentTokenId));
+            }
+        }
+
+        // Hook into loadOutput to update mobile heart
+        const originalLoadOutput = loadOutput;
+        loadOutput = async function(tokenId, updateUrl = true) {
+            await originalLoadOutput(tokenId, updateUrl);
+            updateMobileHeartState();
+            preloadAdjacentImages();
+        };
+
+        // Update grid button state when grid opens/closes
+        const origOpenGridView = openGridView;
+        const origCloseGridView = closeGridView;
+        openGridView = function() {
+            origOpenGridView();
+            if (mobileGridBtn) mobileGridBtn.classList.add('active');
+            // Hide bottom bar in grid view, show different controls
+            if (mobileBottomBar) mobileBottomBar.style.display = 'none';
+        };
+        closeGridView = function() {
+            origCloseGridView();
+            if (mobileGridBtn) mobileGridBtn.classList.remove('active');
+            if (mobileBottomBar && window.innerWidth <= 768) mobileBottomBar.style.display = 'flex';
+        };
+
+        // Preload adjacent images for smoother swiping
+        function preloadAdjacentImages() {
+            const prevId = currentTokenId > 0 ? currentTokenId - 1 : MAX_TOKEN;
+            const nextId = currentTokenId < MAX_TOKEN ? currentTokenId + 1 : 0;
+
+            const prevImg = new Image();
+            prevImg.src = getPreviewUrl(prevId);
+
+            const nextImg = new Image();
+            nextImg.src = getPreviewUrl(nextId);
+        }
+
+        // Double-tap to favorite
+        let lastTapTime = 0;
+        let lastTapX = 0;
+        let lastTapY = 0;
+        const doubleTapHeart = document.getElementById('doubleTapHeart');
+
+        previewImage.addEventListener('touchend', (e) => {
+            if (isFullscreen) return; // Don't interfere with fullscreen swipe
+
+            const currentTime = Date.now();
+            const tapX = e.changedTouches[0].clientX;
+            const tapY = e.changedTouches[0].clientY;
+            const timeDiff = currentTime - lastTapTime;
+            const distDiff = Math.sqrt(Math.pow(tapX - lastTapX, 2) + Math.pow(tapY - lastTapY, 2));
+
+            if (timeDiff < 300 && distDiff < 50) {
+                // Double tap detected!
+                e.preventDefault();
+                haptic('heavy');
+
+                // Show heart animation
+                if (doubleTapHeart) {
+                    doubleTapHeart.style.left = tapX - 40 + 'px';
+                    doubleTapHeart.style.top = tapY - 40 + 'px';
+                    doubleTapHeart.classList.remove('show');
+                    void doubleTapHeart.offsetWidth; // Trigger reflow
+                    doubleTapHeart.classList.add('show');
+                }
+
+                // Toggle favorite
+                if (!isCityFavorited(currentTokenId)) {
+                    document.getElementById('favBtn')?.click();
+                    updateMobileHeartState();
+                }
+
+                lastTapTime = 0; // Reset to prevent triple-tap
+            } else {
+                lastTapTime = currentTime;
+                lastTapX = tapX;
+                lastTapY = tapY;
+            }
+        });
+
+        // Pull to refresh / shuffle
+        let pullStartY = 0;
+        let pullCurrentY = 0;
+        let isPulling = false;
+        const pullThreshold = 100;
+        const pullRefreshIndicator = document.getElementById('pullRefreshIndicator');
+        const pullRefreshText = pullRefreshIndicator?.querySelector('.refresh-text');
+
+        // Detect if we're at the top of scrollable content
+        function isAtTop() {
+            const gridContent = document.getElementById('gridContent');
+            if (gridPanel.classList.contains('open') && gridContent) {
+                return gridContent.scrollTop <= 0;
+            }
+            return true; // Main view is always "at top"
+        }
+
+        document.addEventListener('touchstart', (e) => {
+            if (isAtTop() && !isFullscreen) {
+                pullStartY = e.touches[0].clientY;
+                isPulling = true;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isPulling || !pullRefreshIndicator) return;
+
+            pullCurrentY = e.touches[0].clientY;
+            const pullDistance = pullCurrentY - pullStartY;
+
+            if (pullDistance > 20 && isAtTop()) {
+                pullRefreshIndicator.classList.add('visible');
+
+                if (pullDistance > pullThreshold) {
+                    pullRefreshIndicator.classList.add('pulling');
+                    if (pullRefreshText) pullRefreshText.textContent = 'Release to shuffle';
+                } else {
+                    pullRefreshIndicator.classList.remove('pulling');
+                    if (pullRefreshText) pullRefreshText.textContent = 'Pull to shuffle';
+                }
+
+                // Move indicator with pull
+                const translateY = Math.min(pullDistance * 0.4, 60);
+                pullRefreshIndicator.style.transform = `translateX(-50%) translateY(${translateY}px)`;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', () => {
+            if (!isPulling || !pullRefreshIndicator) return;
+
+            const pullDistance = pullCurrentY - pullStartY;
+
+            if (pullDistance > pullThreshold && isAtTop()) {
+                // Trigger refresh/shuffle
+                haptic('heavy');
+                pullRefreshIndicator.classList.add('refreshing');
+                pullRefreshIndicator.classList.remove('pulling');
+                if (pullRefreshText) pullRefreshText.textContent = 'Shuffling...';
+
+                // Shuffle based on context
+                setTimeout(() => {
+                    if (gridPanel.classList.contains('open') && gridMode === 'palette') {
+                        // Scramble palette order
+                        scramblePalettes();
+                    } else if (gridPanel.classList.contains('open')) {
+                        // Shuffle grid items
+                        renderGrid();
+                    } else {
+                        // Load random city
+                        document.getElementById('randomFiltered')?.click();
+                    }
+
+                    // Hide indicator
+                    setTimeout(() => {
+                        pullRefreshIndicator.classList.remove('visible', 'pulling', 'refreshing');
+                        pullRefreshIndicator.style.transform = 'translateX(-50%)';
+                        if (pullRefreshText) pullRefreshText.textContent = 'Pull to shuffle';
+                    }, 300);
+                }, 200);
+            } else {
+                // Cancel pull
+                pullRefreshIndicator.classList.remove('visible', 'pulling');
+                pullRefreshIndicator.style.transform = 'translateX(-50%)';
+            }
+
+            isPulling = false;
+            pullStartY = 0;
+            pullCurrentY = 0;
+        });
+
+        // Scramble palettes function
+        function scramblePalettes() {
+            const gridContent = document.getElementById('gridContent');
+            if (!gridContent) return;
+
+            const groups = Array.from(gridContent.querySelectorAll('.grid-group'));
+            if (groups.length === 0) return;
+
+            // Fisher-Yates shuffle
+            for (let i = groups.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                gridContent.appendChild(groups[j]);
+            }
+
+            // Add shuffle animation
+            groups.forEach((group, i) => {
+                group.style.animation = 'none';
+                void group.offsetWidth;
+                group.style.animation = `fadeSlideIn 0.3s ease forwards ${i * 0.02}s`;
+            });
+        }
+
+        // Shake to scramble
+        let shakeThreshold = 15;
+        let lastShakeTime = 0;
+        let lastX = 0, lastY = 0, lastZ = 0;
+
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', (e) => {
+                const acceleration = e.accelerationIncludingGravity;
+                if (!acceleration) return;
+
+                const currentTime = Date.now();
+                if (currentTime - lastShakeTime < 1000) return; // Debounce
+
+                const deltaX = Math.abs(acceleration.x - lastX);
+                const deltaY = Math.abs(acceleration.y - lastY);
+                const deltaZ = Math.abs(acceleration.z - lastZ);
+
+                if ((deltaX > shakeThreshold && deltaY > shakeThreshold) ||
+                    (deltaX > shakeThreshold && deltaZ > shakeThreshold) ||
+                    (deltaY > shakeThreshold && deltaZ > shakeThreshold)) {
+
+                    lastShakeTime = currentTime;
+                    haptic('heavy');
+
+                    // Shake detected - scramble!
+                    if (gridPanel.classList.contains('open') && gridMode === 'palette') {
+                        scramblePalettes();
+                        showStatus('SHUFFLED!');
+                    } else if (!gridPanel.classList.contains('open')) {
+                        // Load random city in main view
+                        document.getElementById('randomFiltered')?.click();
+                    }
+                }
+
+                lastX = acceleration.x;
+                lastY = acceleration.y;
+                lastZ = acceleration.z;
+            });
+        }
+
+        // Add CSS animation for scramble
+        const scrambleStyle = document.createElement('style');
+        scrambleStyle.textContent = `
+            @keyframes fadeSlideIn {
+                from { opacity: 0.5; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(scrambleStyle);
+
+        // Handle orientation changes smoothly
+        let orientationTimeout;
+        window.addEventListener('orientationchange', () => {
+            document.body.classList.add('orientation-changing');
+            clearTimeout(orientationTimeout);
+            orientationTimeout = setTimeout(() => {
+                document.body.classList.remove('orientation-changing');
+            }, 300);
+        });
+
+        // Also handle resize for desktop testing
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                // Update mobile bottom bar visibility based on screen size and grid state
+                if (mobileBottomBar) {
+                    if (window.innerWidth <= 768 && !gridPanel.classList.contains('open')) {
+                        mobileBottomBar.style.display = 'flex';
+                    } else if (window.innerWidth > 768) {
+                        mobileBottomBar.style.display = 'none';
+                    }
+                }
+            }, 100);
+        });
+
+        // Long press on image to save/share (shows native menu)
+        let longPressTimer;
+        previewImage.addEventListener('touchstart', (e) => {
+            if (isFullscreen) return;
+            longPressTimer = setTimeout(() => {
+                haptic('medium');
+                // The browser's native context menu will handle save/share
+            }, 500);
+        }, { passive: true });
+
+        previewImage.addEventListener('touchend', () => {
+            clearTimeout(longPressTimer);
+        });
+
+        previewImage.addEventListener('touchmove', () => {
+            clearTimeout(longPressTimer);
+        });
+
+        // Initial state
+        updateMobileHeartState();
+        preloadAdjacentImages();
+
 
     </script>
 
     <a href="https://shop.efdotstudio.com" target="_blank" title="Shop"><img src="blob-shop.png" alt="Shop" class="blob-shop-fixed"></a>
+
+    <!-- Mobile bottom bar for single view -->
+    <div class="mobile-bottom-bar" id="mobileBottomBar">
+        <button id="mobileMenuBtn" title="Menu">☰</button>
+        <button id="mobilePrevBtn" title="Previous">◀</button>
+        <button id="mobileHeartBtn" class="mobile-heart-btn" title="Favorite">♥</button>
+        <button id="mobileNextBtn" title="Next">▶</button>
+        <button id="mobileGridBtn" title="Grid View">⊞</button>
+    </div>
+
+    <!-- Pull to refresh indicator -->
+    <div class="pull-refresh-indicator" id="pullRefreshIndicator">
+        <span class="refresh-icon">↻</span>
+        <span class="refresh-text">Pull to shuffle</span>
+    </div>
+
+    <!-- Double tap heart animation -->
+    <div class="double-tap-heart" id="doubleTapHeart">♥</div>
 </body>
 </html>
