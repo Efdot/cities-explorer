@@ -410,8 +410,8 @@
 
         /* Timeline items */
         .timeline-item { position: relative; margin: 60px 0; cursor: pointer; transition: transform 0.4s ease; }
-        .timeline-item.left { width: 42%; margin-right: auto; padding-right: 60px; text-align: right; }
-        .timeline-item.right { width: 42%; margin-left: auto; padding-left: 60px; text-align: left; }
+        .timeline-item.left { width: 52%; margin-right: auto; padding-right: 50px; text-align: right; }
+        .timeline-item.right { width: 52%; margin-left: auto; padding-left: 50px; text-align: left; }
         .timeline-item.center { width: 70%; margin: 80px auto; text-align: center; }
         .timeline-item.wide { width: 50%; }
 
@@ -424,7 +424,11 @@
         .timeline-item-title { display: block; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; color: var(--text); }
         .timeline-item-year { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.05em; }
         .timeline-item-subtitle { display: block; font-size: 10px; color: var(--text-muted); margin-top: 6px; opacity: 0.8; }
-        .timeline-item-desc { display: none; }
+        .timeline-item-desc { display: block; font-size: 11px; color: var(--text-dim); line-height: 1.9; margin-top: 10px; max-width: 300px; font-variant: small-caps; letter-spacing: 0.02em; opacity: 0.25; transition: opacity 0.4s ease; }
+        .timeline-item.in-view .timeline-item-desc { opacity: 0.85; }
+        .timeline-item.left .timeline-item-desc { margin-left: auto; }
+        .timeline-item.right .timeline-item-desc { margin-right: auto; }
+        .timeline-item.center .timeline-item-desc, .timeline-item.featured .timeline-item-desc { margin: 10px auto; text-align: center; }
         .timeline-item-status { display: block; font-size: 12px; color: var(--warm); margin-top: 8px; font-weight: 500; }
         .timeline-item-medium { display: inline-block; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); background: var(--bg-input); padding: 4px 10px; border-radius: 20px; margin-top: 10px; opacity: 0.7; }
         .timeline-item.physical { opacity: 0.9; }
@@ -528,6 +532,17 @@
         .timeline-preview-grid img:hover { transform: scale(1.1); filter: brightness(1.15); z-index: 1; }
         .timeline-culmination-btn { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 32px; border-radius: 50px; border: 1px solid var(--warm); background: none; color: var(--warm); cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
         .timeline-culmination-btn:hover { background: var(--warm); color: var(--bg-deep); }
+        .timeline-mint-btn { position: relative; overflow: hidden; }
+        .timeline-mint-btn .mint-animation { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(232, 184, 109, 0.3), transparent); animation: mintShimmer 2s ease-in-out infinite; }
+        @keyframes mintShimmer { 0% { left: -100%; } 50%, 100% { left: 100%; } }
+
+        /* Timeline entrance animations */
+        .timeline-item { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .timeline-item.visible { opacity: 1; transform: translateY(0); }
+        .timeline-item.left.visible { animation: slideInLeft 0.6s ease forwards; }
+        .timeline-item.right.visible { animation: slideInRight 0.6s ease forwards; }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
 
         /* The Physicals section */
         .timeline-item.physicals-section { margin: 80px auto; cursor: default; }
@@ -1986,7 +2001,7 @@
         <button class="timeline-close" id="timelineClose">&times;</button>
         <div class="timeline-header">
             <h2 class="timeline-headline">Six Years of Cities</h2>
-            <p class="timeline-subhead">It started with skate spots and graffiti tags in the Lower East Side. Street photography. Drone shots over Brooklyn rooftops. Travel sketches on napkins and hotel stationery. Then murals that took weeks. Each piece builds on the last: the aerial view, the 8fps heartbeat, the palettes named after moods, cities, and neighborhoods.</p>
+            <p class="timeline-subhead">It started with skate spots and graffiti tags in the Lower East Side. Street photography. Drone shots over Brooklyn rooftops. Travel sketches on napkins and hotel stationery. Then murals that took weeks. Each piece builds on the last: the aerial view, the layered color, the palettes named after moods, cities, and neighborhoods.</p>
         </div>
         <div class="timeline-container">
             <div class="timeline-line"></div>
@@ -2014,7 +2029,7 @@
                     </div>
                 </div>
 
-                <div class="timeline-item left physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7k4jaoqmjn3est5v3ec5tjf7qwtbh4wypcnn7dsk5mbp3dqtncy" data-title="The Hall Mural" data-year="2019" data-link="https://www.efdotstudio.com/murals">
+                <div class="timeline-item right physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7k4jaoqmjn3est5v3ec5tjf7qwtbh4wypcnn7dsk5mbp3dqtncy" data-title="The Hall Mural" data-year="2019" data-link="https://www.efdotstudio.com/murals">
                     <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7k4jaoqmjn3est5v3ec5tjf7qwtbh4wypcnn7dsk5mbp3dqtncy" alt="The Hall Mural">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">The Hall Mural</span>
@@ -2024,41 +2039,14 @@
                     </div>
                 </div>
 
-                <!-- 2020: Efdot Lab -->
+                <!-- 2020: Open Minds -->
                 <div class="timeline-year" data-year="2020">2020</div>
 
-                <div class="timeline-item left" data-img="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1" data-title="Summer 365" data-year="2020" data-link="https://foundation.app/@efdot/efdotlab/1">
-                    <img src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1" alt="Summer 365">
-                    <div class="timeline-item-info">
-                        <span class="timeline-item-title">Summer 365</span>
-                        <span class="timeline-item-year">2020 · Efdot Lab</span>
-                        <span class="timeline-item-desc">365 days of summer on one canvas. Minted on Foundation, 2020.</span>
-                        <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://foundation.app/@efdot/efdotlab/1" target="_blank" title="View on Foundation">⟐</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item right" data-img="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1" data-title="Winterplay" data-year="2020" data-link="https://foundation.app/@efdot/efdotlab/2">
-                    <img src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1" alt="Winterplay">
-                    <div class="timeline-item-info">
-                        <span class="timeline-item-title">Winterplay</span>
-                        <span class="timeline-item-year">2020 · Efdot Lab</span>
-                        <span class="timeline-item-desc">Cold gradients and warm corners. The winter mood that shaped how I think about temperature in color.</span>
-                        <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://foundation.app/@efdot/efdotlab/2" target="_blank" title="View on Foundation">⟐</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2021: Open Minds -->
-                <div class="timeline-year" data-year="2021">2021</div>
-
-                <div class="timeline-item left" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" data-title="You Are Here" data-year="2021" data-link="https://opensea.io/collection/efdot-openminds">
+                <div class="timeline-item left" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" data-title="You Are Here" data-year="2020" data-link="https://opensea.io/collection/efdot-openminds">
                     <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" alt="You Are Here">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">You Are Here</span>
-                        <span class="timeline-item-year">2021 · Open Minds #1</span>
+                        <span class="timeline-item-year">2020 · Open Minds #1</span>
                         <span class="timeline-item-desc">Stand on top of the map. Look down at the cross-section of a city that exists only in your head. Navigation without destination.</span>
                         <div class="timeline-provenance">
                             <a class="provenance-link" href="https://opensea.io/collection/efdot-openminds" target="_blank" title="View on OpenSea">⟐</a>
@@ -2066,11 +2054,11 @@
                     </div>
                 </div>
 
-                <div class="timeline-item right" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128174409-8EGQR3U2UDYK7SK91Z19/Efdot_Open+Mind+2_Night+Mode.gif" data-title="Night Mode" data-year="2021" data-link="https://opensea.io/collection/efdot-openminds">
+                <div class="timeline-item right" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128174409-8EGQR3U2UDYK7SK91Z19/Efdot_Open+Mind+2_Night+Mode.gif" data-title="Night Mode" data-year="2020" data-link="https://opensea.io/collection/efdot-openminds">
                     <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128174409-8EGQR3U2UDYK7SK91Z19/Efdot_Open+Mind+2_Night+Mode.gif" alt="Night Mode">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Night Mode</span>
-                        <span class="timeline-item-year">2021 · Open Minds #2</span>
+                        <span class="timeline-item-year">2020 · Open Minds #2</span>
                         <span class="timeline-item-desc">3am thoughts rendered in dark blues and deep purples. What happens when the lights go out but the mind stays on.</span>
                         <div class="timeline-provenance">
                             <a class="provenance-link" href="https://opensea.io/collection/efdot-openminds" target="_blank" title="View on OpenSea">⟐</a>
@@ -2078,11 +2066,11 @@
                     </div>
                 </div>
 
-                <div class="timeline-item left" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128270023-9JC2N4SS09UHMA4LR5NN/Efdot_Open+Minds+3_Passing+Through.gif" data-title="Passing Through" data-year="2021" data-link="https://opensea.io/collection/efdot-openminds">
+                <div class="timeline-item left" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128270023-9JC2N4SS09UHMA4LR5NN/Efdot_Open+Minds+3_Passing+Through.gif" data-title="Passing Through" data-year="2020" data-link="https://opensea.io/collection/efdot-openminds">
                     <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128270023-9JC2N4SS09UHMA4LR5NN/Efdot_Open+Minds+3_Passing+Through.gif" alt="Passing Through">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Passing Through</span>
-                        <span class="timeline-item-year">2021 · Open Minds #3</span>
+                        <span class="timeline-item-year">2020 · Open Minds #3</span>
                         <span class="timeline-item-desc">That moment when you're moving through a space but your mind is somewhere else entirely. Pink haze, soft edges.</span>
                         <div class="timeline-provenance">
                             <a class="provenance-link" href="https://opensea.io/collection/efdot-openminds" target="_blank" title="View on OpenSea">⟐</a>
@@ -2090,14 +2078,41 @@
                     </div>
                 </div>
 
-                <div class="timeline-item right" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128443026-X974A5CT72RIUD8KFZY7/Efdot_Open+Minds+6_Sweet+Streets.gif" data-title="Sweet Streets" data-year="2021" data-link="https://opensea.io/collection/efdot-openminds">
+                <div class="timeline-item right" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128443026-X974A5CT72RIUD8KFZY7/Efdot_Open+Minds+6_Sweet+Streets.gif" data-title="Sweet Streets" data-year="2020" data-link="https://opensea.io/collection/efdot-openminds">
                     <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128443026-X974A5CT72RIUD8KFZY7/Efdot_Open+Minds+6_Sweet+Streets.gif" alt="Sweet Streets">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Sweet Streets</span>
-                        <span class="timeline-item-year">2021 · Open Minds #6</span>
+                        <span class="timeline-item-year">2020 · Open Minds #6</span>
                         <span class="timeline-item-desc">Candy-colored grids dissolving at the edges. A place that exists somewhere between a map and a memory.</span>
                         <div class="timeline-provenance">
                             <a class="provenance-link" href="https://opensea.io/collection/efdot-openminds" target="_blank" title="View on OpenSea">⟐</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2021: Efdot Lab -->
+                <div class="timeline-year" data-year="2021">2021</div>
+
+                <div class="timeline-item left" data-img="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1" data-title="Summer 365" data-year="2021" data-link="https://foundation.app/@efdot/efdotlab/1">
+                    <img src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1" alt="Summer 365">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Summer 365</span>
+                        <span class="timeline-item-year">2021 · Efdot Lab</span>
+                        <span class="timeline-item-desc">365 days of summer on one canvas. Minted on Foundation.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://foundation.app/@efdot/efdotlab/1" target="_blank" title="View on Foundation">⟐</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-img="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1" data-title="Winterplay" data-year="2021" data-link="https://foundation.app/@efdot/efdotlab/2">
+                    <img src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1" alt="Winterplay">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Winterplay</span>
+                        <span class="timeline-item-year">2021 · Efdot Lab</span>
+                        <span class="timeline-item-desc">Cold gradients and warm corners. The winter mood that shaped how I think about temperature in color.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://foundation.app/@efdot/efdotlab/2" target="_blank" title="View on Foundation">⟐</a>
                         </div>
                     </div>
                 </div>
@@ -2166,7 +2181,7 @@
                 <!-- 2023 -->
                 <div class="timeline-year" data-year="2023">2023</div>
 
-                <div class="timeline-item right" data-img="https://arweave.net/pk00hY7LdV6c8q6l3OiVP6GSRYG-Sx_KeDIearNK878" data-title="Street View" data-year="2023" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/29">
+                <div class="timeline-item left" data-img="https://arweave.net/pk00hY7LdV6c8q6l3OiVP6GSRYG-Sx_KeDIearNK878" data-title="Street View" data-year="2023" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/29">
                     <img src="https://arweave.net/pk00hY7LdV6c8q6l3OiVP6GSRYG-Sx_KeDIearNK878" alt="Street View">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Street View</span>
@@ -2215,7 +2230,7 @@
                 <!-- 2024 -->
                 <div class="timeline-year" data-year="2024">2024</div>
 
-                <div class="timeline-item left" data-img="https://arweave.net/qEiCFd9Y3U0UAE63z3sCZkmDDlZ1sKKQgkzQWZQkJBg" data-title="Silent Skyline" data-year="2024" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/36">
+                <div class="timeline-item right" data-img="https://arweave.net/qEiCFd9Y3U0UAE63z3sCZkmDDlZ1sKKQgkzQWZQkJBg" data-title="Silent Skyline" data-year="2024" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/36">
                     <img src="https://arweave.net/qEiCFd9Y3U0UAE63z3sCZkmDDlZ1sKKQgkzQWZQkJBg" alt="Silent Skyline">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Silent Skyline</span>
@@ -2227,26 +2242,16 @@
                     </div>
                 </div>
 
-                <div class="timeline-item left physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/Qmdo2hzEGfXV6Ep3A2K8KHK7mg4XVUvKMbDG4Xu2Pj8LB2" data-title="Over the Bridge (Mural)" data-year="2024" data-link="https://www.efdotstudio.com/murals">
+                <div class="timeline-item left physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/Qmdo2hzEGfXV6Ep3A2K8KHK7mg4XVUvKMbDG4Xu2Pj8LB2" data-title="Over the Bridge (Mural)" data-year="2024" data-link="https://opensea.io/item/ethereum/0xdb1f952239c6e89af76dd1226e7cb1fa57463e5e/127">
                     <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/Qmdo2hzEGfXV6Ep3A2K8KHK7mg4XVUvKMbDG4Xu2Pj8LB2" alt="Over the Bridge Mural">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Over the Bridge</span>
-                        <span class="timeline-item-year">2024 · Physical Mural</span>
-                        <span class="timeline-item-desc">A traffic study painted in Brooklyn. The wall came first, then the animation gave it motion.</span>
-                        <span class="timeline-item-medium">Analog</span>
-                    </div>
-                </div>
-
-                <div class="timeline-item right" data-title="Over the Bridge" data-year="2024" data-link="https://opensea.io/item/ethereum/0xdb1f952239c6e89af76dd1226e7cb1fa57463e5e/127">
-                    <video src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiacjsh45e2uduoi2odkp4ldy4z5wxu2za3cgzwoyonscgudx75u3i" autoplay muted loop playsinline alt="Over the Bridge"></video>
-                    <div class="timeline-item-info">
-                        <span class="timeline-item-title">Over the Bridge</span>
                         <span class="timeline-item-year">2024 · Edition of 50</span>
-                        <span class="timeline-item-collector">Animated Mural</span>
+                        <span class="timeline-item-desc">A traffic study painted in Brooklyn. Wall turned animation turned edition.</span>
                     </div>
                 </div>
 
-                <div class="timeline-item left physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7gwk2abb7rgs3trw2i3ulonuedrdr3jmcy63zccu5xf2vdjxjuy" data-title="City in Bloom (Mural)" data-year="2024" data-link="https://www.efdotstudio.com/murals">
+                <div class="timeline-item right physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7gwk2abb7rgs3trw2i3ulonuedrdr3jmcy63zccu5xf2vdjxjuy" data-title="City in Bloom (Mural)" data-year="2024" data-link="https://www.efdotstudio.com/murals">
                     <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7gwk2abb7rgs3trw2i3ulonuedrdr3jmcy63zccu5xf2vdjxjuy" alt="City in Bloom Mural">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">City in Bloom</span>
@@ -2325,9 +2330,12 @@
                     <div class="timeline-culmination">
                         <div class="timeline-culmination-title">Cities by Efdot x Diid</div>
                         <div class="timeline-culmination-subtitle">June 2025 · Art Blocks Curated</div>
-                        <div class="timeline-culmination-desc">500 generative outputs from the system built over 3 years</div>
+                        <div class="timeline-culmination-desc">500 generative outputs built with Diid, who translated the system into code. Three years of 1/1s distilled into an algorithm.</div>
                         <div class="timeline-preview-grid" id="timelinePreviewGrid"></div>
-                        <button class="timeline-culmination-btn" id="exploreCollectionBtn">Explore Collection</button>
+                        <a href="https://www.artblocks.io/marketplace/collections/cities-by-efdot-x-diid" target="_blank" class="timeline-culmination-btn timeline-mint-btn">
+                            <span class="mint-text">Explore Collection</span>
+                            <span class="mint-animation"></span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -2361,12 +2369,10 @@
 
         <!-- Email Capture -->
         <div class="timeline-email-capture">
-            <p class="email-capture-text">Get notified when new prints and editions drop</p>
             <form class="email-capture-form" id="emailCaptureForm">
-                <input type="email" placeholder="your@email.com" class="email-capture-input" id="emailInput" required>
+                <input type="email" placeholder="stay in the loop" class="email-capture-input" id="emailInput" required>
                 <button type="submit" class="email-capture-btn">→</button>
             </form>
-            <p class="email-capture-note">Join 2,000+ collectors. No spam, just art.</p>
         </div>
 
         <!-- Price Toggle -->
@@ -7258,6 +7264,38 @@
             if (thanksEl) {
                 thanksEl.textContent = thankYouMessages[Math.floor(Math.random() * thankYouMessages.length)];
             }
+            // Initialize entrance animations
+            initTimelineAnimations();
+        }
+
+        // Timeline entrance animations
+        function initTimelineAnimations() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+
+            // Entrance animation observer
+            const entranceObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            // Description visibility observer - only one fully visible at a time
+            const descObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                        // Remove in-view from all others
+                        timelineItems.forEach(item => item.classList.remove('in-view'));
+                        entry.target.classList.add('in-view');
+                    }
+                });
+            }, { threshold: [0.5], rootMargin: '-30% 0px -30% 0px' });
+
+            timelineItems.forEach(item => {
+                entranceObserver.observe(item);
+                descObserver.observe(item);
+            });
         }
 
         // Open timeline from About modal
