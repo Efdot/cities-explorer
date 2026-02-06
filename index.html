@@ -31,6 +31,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -203,6 +204,22 @@
         .text-btn .fav-count { color: var(--pink); }
         .row-divider { color: var(--border); font-size: 8px; }
 
+        /* Originals button */
+        .originals-btn { background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; opacity: 0.5; }
+        .originals-btn:hover { opacity: 1; }
+        .originals-btn .originals-icon { font-size: 16px; filter: grayscale(100%) brightness(2); transition: filter 0.3s ease; }
+        .originals-btn:hover .originals-icon { filter: grayscale(50%) brightness(1.5); }
+        .originals-btn .originals-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width 0.3s ease, opacity 0.3s ease; opacity: 0; }
+        .originals-btn:hover .originals-label { max-width: 80px; opacity: 1; }
+
+        /* Grid originals button */
+        .grid-originals-btn { background: none; border: none; cursor: pointer; padding: 6px 8px; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; opacity: 0.5; border-radius: 6px; }
+        .grid-originals-btn:hover { opacity: 1; background: var(--bg-input); }
+        .grid-originals-btn .originals-icon { font-size: 16px; filter: grayscale(100%) brightness(2); transition: filter 0.3s ease; }
+        .grid-originals-btn:hover .originals-icon { filter: grayscale(50%) brightness(1.5); }
+        .grid-originals-btn .originals-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width 0.3s ease, opacity 0.3s ease; opacity: 0; }
+        .grid-originals-btn:hover .originals-label { max-width: 80px; opacity: 1; }
+
         .btn-explore { background: transparent; border: 1px solid var(--border); color: var(--text-muted); position: relative; overflow: hidden; padding: 10px 14px; }
         .btn-explore:hover { background: var(--bg-card); color: var(--warm); border-color: var(--warm); }
         .btn-explore.active { background: var(--bg-card); border-color: var(--bg-card); color: var(--text-dim); }
@@ -309,9 +326,9 @@
         .palette-color-section { margin-bottom: 20px; }
         .palette-color-section-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px; }
         .palette-color-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-        .palette-color-chip { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
-        .palette-color-chip:hover { transform: scale(1.2); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .palette-color-chip.expanded { border-radius: 14px; width: auto; min-width: 70px; padding: 0 10px; font-size: 8px; height: 28px; }
+        .palette-color-chip { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; cursor: pointer; transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s ease, padding 0.2s ease, font-size 0.15s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.2); will-change: width, border-radius; }
+        .palette-color-chip:hover { transform: scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .palette-color-chip.expanded { border-radius: 14px; width: 75px; padding: 0 10px; font-size: 8px; height: 28px; }
         .palette-color-chip.bg-chip { width: 100%; height: 40px; border-radius: 10px; font-size: 9px; margin-bottom: 8px; box-shadow: none; }
         .palette-color-chip.bg-chip:hover { border-radius: 10px; transform: none; }
         .palette-inspector-similar { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
@@ -347,12 +364,12 @@
         .about-section.open .about-section-arrow { transform: rotate(180deg); }
         .about-section-content { display: none; padding-bottom: 18px; font-size: 14px; line-height: 1.7; color: var(--text-dim); }
         .about-section.open .about-section-content { display: block; }
-        .about-footer { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
+        .about-footer { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); text-align: center; }
         .about-footer-text { font-size: 14px; font-style: italic; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
-        .about-buttons { display: flex; gap: 40px; justify-content: center; align-items: center; }
-        .about-mint-link { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center; text-decoration: none; gap: 2px; opacity: 0.8; transition: opacity 0.3s ease; }
+        .about-buttons { display: flex; gap: 24px; justify-content: center; align-items: center; }
+        .about-mint-link { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center; text-decoration: none; gap: 1px; opacity: 0.8; transition: opacity 0.3s ease; height: 38px; }
         .about-mint-link:hover { opacity: 1; }
-        .about-mint-link .mint-letter { height: 18px; width: auto; display: block; transition: transform 0.15s ease, filter 0.3s ease; animation: letterBounce 2s ease-in-out infinite; }
+        .about-mint-link .mint-letter { height: 16px; width: auto; display: block; transition: transform 0.15s ease, filter 0.3s ease; animation: letterBounce 2s ease-in-out infinite; }
         .about-mint-link .mint-letter:nth-child(1) { animation-delay: 0s; }
         .about-mint-link .mint-letter:nth-child(2) { animation-delay: 0.15s; }
         .about-mint-link .mint-letter:nth-child(3) { animation-delay: 0.3s; }
@@ -362,14 +379,275 @@
         .about-mint-link:hover .mint-letter:nth-child(3) { animation-delay: 0.12s; }
         .about-mint-link:hover .mint-letter:nth-child(4) { animation-delay: 0.18s; }
         @keyframes letterBounce { 0%, 85%, 100% { transform: translateY(0); } 90% { transform: translateY(-3px); } 95% { transform: translateY(0); } }
-        .about-btn-essay { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; text-decoration: none; text-transform: uppercase; background: none; border: 0.5px dashed var(--text-muted); padding: 10px 24px; color: var(--text-muted); border-radius: 50px; }
-        .about-btn-essay:hover { color: var(--text); border-color: var(--text); }
-        .about-btn-explore { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; text-decoration: none; text-transform: uppercase; background: none; border: 0.5px dashed var(--text-muted); padding: 10px 24px; color: var(--text-muted); border-radius: 50px; }
-        .about-btn-explore:hover { color: var(--text); border-color: var(--text); }
+        .about-btn-essay, .about-btn-explore { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; text-decoration: none; text-transform: uppercase; background: none; border: 0.5px dashed var(--text-muted); padding: 10px 24px; color: var(--text-muted); border-radius: 50px; height: 38px; display: flex; align-items: center; }
+        .about-btn-essay:hover, .about-btn-explore:hover { color: var(--text); border-color: var(--text); }
+
+        /* Origins section - hover reveal effect */
+        /* Origins button in About */
+        .origins-title { position: relative; display: inline-flex; align-items: center; }
+        .origins-base { display: inline; }
+        .origins-reveal { display: inline; max-width: 0; overflow: hidden; transition: max-width 0.3s ease, opacity 0.3s ease; opacity: 0; }
+        .origins-s { display: inline; }
+        .origins-efdot { position: absolute; right: 100%; margin-right: 8px; font-size: 9px; letter-spacing: 0.15em; color: var(--warm); opacity: 0; transform: translateX(10px); transition: opacity 0.3s ease, transform 0.3s ease; white-space: nowrap; }
+        .origins-header:hover .origins-reveal { max-width: 20px; opacity: 1; }
+        .origins-header:hover .origins-efdot { opacity: 1; transform: translateX(0); }
+        .origins-header { cursor: pointer; }
+
+        /* Timeline View - Full Screen */
+        .timeline-view { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-deep); z-index: 2500; display: none; overflow-y: auto; overflow-x: hidden; }
+        .timeline-view.open { display: block; }
+        .timeline-header { text-align: center; padding: 80px 40px 60px; max-width: 600px; margin: 0 auto; }
+        .timeline-headline { font-size: 32px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); margin: 0 0 24px; line-height: 1.2; }
+        .timeline-subhead { font-size: 14px; color: var(--text-dim); line-height: 1.9; max-width: 520px; margin: 0 auto; }
+        .timeline-close { position: fixed; top: 24px; right: 28px; font-size: 36px; color: var(--text-muted); cursor: pointer; transition: color 0.2s ease; background: none; border: none; z-index: 2600; }
+        .timeline-close:hover { color: var(--text); }
+        .timeline-container { position: relative; max-width: 900px; margin: 0 auto; padding: 80px 40px 120px; }
+        .timeline-line { position: fixed; left: 50%; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent 0%, var(--border) 10%, var(--border) 90%, transparent 100%); transform: translateX(-50%); z-index: 1; pointer-events: none; }
+        .timeline-content { position: relative; z-index: 2; }
+
+        /* Year markers - pill shaped, in front */
+        .timeline-year { text-align: center; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; color: var(--text); padding: 10px 24px; margin: 60px auto; position: relative; z-index: 10; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 50px; display: inline-block; left: 50%; transform: translateX(-50%); }
+
+        /* Timeline items */
+        .timeline-item { position: relative; margin: 60px 0; cursor: pointer; transition: transform 0.4s ease; }
+        .timeline-item.left { width: 42%; margin-right: auto; padding-right: 60px; text-align: right; }
+        .timeline-item.right { width: 42%; margin-left: auto; padding-left: 60px; text-align: left; }
+        .timeline-item.center { width: 70%; margin: 80px auto; text-align: center; }
+        .timeline-item.wide { width: 50%; }
+
+        .timeline-item img, .timeline-item video { width: 100%; border-radius: 0; transition: transform 0.4s ease, box-shadow 0.4s ease, border-radius 0.4s ease; }
+        .timeline-item video { display: block; }
+        .timeline-item:hover img, .timeline-item:hover video { transform: scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.5); border-radius: 12px; }
+        .timeline-item:hover { transform: translateY(-4px); }
+
+        .timeline-item-info { margin-top: 16px; }
+        .timeline-item-title { display: block; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; color: var(--text); }
+        .timeline-item-year { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.05em; }
+        .timeline-item-subtitle { display: block; font-size: 10px; color: var(--text-muted); margin-top: 6px; opacity: 0.8; }
+        .timeline-item-desc { display: none; }
+        .timeline-item-status { display: block; font-size: 12px; color: var(--warm); margin-top: 8px; font-weight: 500; }
+        .timeline-item-medium { display: inline-block; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); background: var(--bg-input); padding: 4px 10px; border-radius: 20px; margin-top: 10px; opacity: 0.7; }
+        .timeline-item.physical { opacity: 0.9; }
+        .timeline-item.physical img { filter: saturate(0.95); }
+
+        /* Provenance inline */
+        .timeline-provenance { margin-top: 10px; font-size: 10px; font-weight: 400; letter-spacing: 0.08em; color: var(--text-muted); }
+        .timeline-provenance .provenance-link { margin-right: 6px; font-size: 11px; opacity: 0.5; text-decoration: none; color: var(--text-muted); cursor: pointer; transition: opacity 0.6s ease, color 0.6s ease; }
+        .timeline-provenance .provenance-link:hover { opacity: 1; color: var(--warm); }
+        .timeline-provenance .provenance-name { text-transform: uppercase; }
+        .timeline-provenance .provenance-price { display: none; margin-left: 8px; }
+        .timeline-view.show-eth .timeline-provenance .provenance-price.eth { display: inline; }
+        .timeline-view.show-usd .timeline-provenance .provenance-price.usd { display: inline; }
+
+        /* Price toggle control - more visible */
+        .timeline-price-toggle { position: fixed; bottom: 30px; right: 30px; z-index: 2550; display: flex; align-items: center; gap: 8px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 24px; padding: 10px 16px; cursor: pointer; transition: all 0.3s ease; }
+        .timeline-price-toggle:hover { border-color: var(--warm); background: rgba(232, 184, 109, 0.08); }
+        .timeline-price-toggle .price-icon { font-size: 16px; transition: transform 0.3s ease; }
+        .timeline-price-toggle:hover .price-icon { transform: scale(1.1); }
+        .timeline-view.show-eth .timeline-price-toggle, .timeline-view.show-usd .timeline-price-toggle { border-color: var(--warm); background: rgba(232, 184, 109, 0.1); }
+        .timeline-price-toggle .price-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); }
+        .timeline-view.show-eth .timeline-price-toggle .price-label::after { content: 'ETH'; color: var(--warm); }
+        .timeline-view.show-usd .timeline-price-toggle .price-label::after { content: 'USD'; color: var(--warm); }
+        .timeline-view:not(.show-eth):not(.show-usd) .timeline-price-toggle .price-label::after { content: 'Show prices'; }
+
+        /* Timeline item actions - share/download on hover */
+        .timeline-item-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; opacity: 0; transition: opacity 0.3s ease; z-index: 5; }
+        .timeline-item.left .timeline-item-actions { right: auto; left: 12px; }
+        .timeline-item:hover .timeline-item-actions { opacity: 1; }
+        .timeline-action-btn { width: 32px; height: 32px; border-radius: 50%; background: rgba(10, 9, 16, 0.8); backdrop-filter: blur(8px); border: none; color: var(--text-dim); font-size: 13px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+        .timeline-action-btn:hover { background: var(--warm); color: var(--bg-deep); transform: scale(1.1); }
+
+        /* Collector Network */
+        .timeline-network { text-align: center; padding: 80px 40px; max-width: 800px; margin: 0 auto; }
+        .timeline-network-title { font-family: Helvetica, Arial, sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); margin: 0 0 32px; cursor: pointer; transition: color 0.3s ease; }
+        .timeline-network-title:hover { color: var(--warm); }
+        .network-container { position: relative; width: 100%; height: 300px; border-radius: 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); overflow: hidden; cursor: pointer; }
+        .network-container.active { cursor: default; }
+        .collector-network-canvas { width: 100%; height: 100%; display: none; }
+        .network-container.active .collector-network-canvas { display: block; }
+        .network-loading { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+        .network-container.active .network-loading { display: none; }
+        .network-loading-text { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); }
+        .network-loading-hint { font-size: 9px; color: var(--text-muted); opacity: 0.5; }
+        .network-dots { display: flex; gap: 8px; }
+        .network-dot { width: 8px; height: 8px; border-radius: 50%; animation: networkPulse 1.5s ease-in-out infinite; }
+        .network-dot:nth-child(1) { background: #E8B86D; animation-delay: 0s; }
+        .network-dot:nth-child(2) { background: #D4A574; animation-delay: 0.2s; }
+        .network-dot:nth-child(3) { background: #FF8C42; animation-delay: 0.4s; }
+        .network-dot:nth-child(4) { background: #00B4FF; animation-delay: 0.6s; }
+        .network-dot:nth-child(5) { background: #B967FF; animation-delay: 0.8s; }
+        @keyframes networkPulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.3); opacity: 1; } }
+        .timeline-network-names { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; }
+        .network-name { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 6px 12px; background: var(--bg-input); border-radius: 20px; cursor: default; transition: all 0.3s ease; }
+        .network-name:hover { color: var(--warm); background: rgba(232, 184, 109, 0.1); }
+        .network-name.highlight { color: var(--warm); background: rgba(232, 184, 109, 0.15); }
+
+        /* Thank You section */
+        .timeline-thanks { text-align: center; padding: 80px 40px 60px; max-width: 600px; margin: 0 auto; }
+        .timeline-thanks-headline { font-family: Helvetica, Arial, sans-serif; font-size: 64px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text); margin: 0 0 24px; }
+        .timeline-thanks-message { font-size: 13px; color: var(--text-dim); line-height: 1.8; font-style: italic; opacity: 0.7; }
+
+        /* Email Capture */
+        .timeline-email-capture { text-align: center; padding: 60px 40px 100px; max-width: 400px; margin: 0 auto; }
+        .email-capture-text { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; letter-spacing: 0.03em; }
+        .email-capture-form { display: flex; gap: 8px; margin-bottom: 12px; }
+        .email-capture-input { flex: 1; padding: 14px 20px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 50px; color: var(--text); font-size: 13px; font-family: inherit; transition: border-color 0.3s ease; }
+        .email-capture-input:focus { outline: none; border-color: var(--warm); }
+        .email-capture-input::placeholder { color: var(--text-muted); }
+        .email-capture-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--warm); border: none; color: var(--bg-deep); font-size: 18px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .email-capture-btn:hover { transform: scale(1.05); background: #f0c878; }
+        .email-capture-note { font-size: 10px; color: var(--text-muted); opacity: 0.6; }
+
+        /* Featured/bookend pieces - centered and larger */
+        .timeline-item.featured { width: 60%; margin: 100px auto; text-align: center; }
+        .timeline-item.featured img { max-width: 100%; }
+
+        /* Available item highlight */
+        .timeline-item.available img { box-shadow: 0 0 0 2px var(--warm); }
+        .timeline-item.available .timeline-item-info { opacity: 1; transform: translateY(0); }
+
+        /* Italy 3x3 grid */
+        .timeline-italy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; border-radius: 0; overflow: hidden; transition: border-radius 0.4s ease; }
+        .timeline-item.italy:hover .timeline-italy-grid { border-radius: 12px; }
+        .timeline-italy-grid img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; transition: filter 0.3s ease; border-radius: 0; }
+        .timeline-item.italy:hover .timeline-italy-grid img { filter: brightness(1.08); }
+
+        /* Culmination - generative collection */
+        .timeline-item.culmination { margin: 100px auto; }
+        .timeline-culmination { padding: 60px 40px; border: 1px solid var(--border); border-radius: 16px; background: rgba(232, 184, 109, 0.03); }
+        .timeline-culmination-title { font-size: 28px; font-weight: 700; font-family: Helvetica, Arial, sans-serif; margin-bottom: 8px; }
+        .timeline-culmination-subtitle { font-size: 12px; color: var(--warm); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+        .timeline-culmination-desc { font-size: 14px; color: var(--text-dim); margin-bottom: 24px; }
+        .timeline-preview-grid { display: flex; flex-direction: column; gap: 4px; margin-bottom: 32px; overflow: hidden; margin-left: -40px; margin-right: -40px; }
+        .preview-row { display: flex; gap: 4px; animation: scrollBricks 40s linear infinite; }
+        .preview-row-1 { animation-direction: normal; }
+        .preview-row-2 { animation-direction: reverse; animation-duration: 50s; }
+        .preview-row-3 { animation-direction: normal; animation-duration: 45s; }
+        @keyframes scrollBricks { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .timeline-preview-grid img { width: 80px; height: 80px; object-fit: cover; flex-shrink: 0; transition: transform 0.3s ease, filter 0.3s ease; cursor: pointer; border-radius: 4px; }
+        .timeline-preview-grid img:hover { transform: scale(1.1); filter: brightness(1.15); z-index: 1; }
+        .timeline-culmination-btn { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 32px; border-radius: 50px; border: 1px solid var(--warm); background: none; color: var(--warm); cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
+        .timeline-culmination-btn:hover { background: var(--warm); color: var(--bg-deep); }
+
+        /* The Physicals section */
+        .timeline-item.physicals-section { margin: 80px auto; cursor: default; }
+        .timeline-item.physicals-section:hover { transform: none; }
+        .timeline-physicals { padding: 50px 40px; border: 1px solid var(--border); border-radius: 16px; background: rgba(255, 255, 255, 0.02); }
+        .timeline-physicals-title { font-size: 24px; font-weight: 700; font-family: Helvetica, Arial, sans-serif; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .timeline-physicals-subtitle { font-size: 12px; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 28px; }
+        .timeline-physicals-grid { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 16px; margin-bottom: 24px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .timeline-physicals-grid::-webkit-scrollbar { height: 4px; }
+        .timeline-physicals-grid::-webkit-scrollbar-track { background: var(--bg-input); border-radius: 4px; }
+        .timeline-physicals-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        .physical-item { flex-shrink: 0; width: 140px; text-decoration: none; scroll-snap-align: start; transition: transform 0.3s ease; }
+        .physical-item:hover { transform: translateY(-4px); }
+        .physical-item img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; margin-bottom: 8px; transition: box-shadow 0.3s ease; }
+        .physical-item:hover img { box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .physical-item-title { display: block; font-size: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; text-align: center; }
+        .physical-item-price { display: block; font-size: 9px; color: var(--text-muted); text-align: center; margin-top: 2px; opacity: 0.7; }
+        .timeline-physicals-btn { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 28px; border-radius: 50px; border: 1px solid var(--text-muted); background: none; color: var(--text-dim); cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
+        .timeline-physicals-btn:hover { border-color: var(--text); color: var(--text); background: rgba(255,255,255,0.05); }
+
+        @media (max-width: 768px) {
+            .timeline-physicals { padding: 32px 20px; }
+            .timeline-physicals-title { font-size: 20px; }
+            .physical-item { width: 120px; }
+        }
+
+        /* Origins Lightbox */
+        .origins-lightbox { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; flex-direction: column; padding: 40px; }
+        .origins-lightbox.open { display: flex; }
+        .origins-lightbox-close { position: absolute; top: 20px; right: 24px; font-size: 32px; color: var(--text-muted); cursor: pointer; transition: color 0.2s ease; background: none; border: none; }
+        .origins-lightbox-close:hover { color: var(--text); }
+        .origins-lightbox-img { max-width: 80vw; max-height: 70vh; object-fit: contain; border-radius: 8px; margin-bottom: 24px; }
+        .origins-lightbox-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        .origins-lightbox-year { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+        .origins-lightbox-price { font-size: 14px; color: var(--warm); margin-bottom: 16px; }
+        .origins-lightbox-btn { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 28px; border-radius: 50px; border: 1px solid var(--text-muted); background: none; color: var(--text); cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
+        .origins-lightbox-btn:hover { background: var(--text); color: var(--bg-deep); }
+
         @media (max-width: 768px) {
             .about-modal { padding: 24px 16px; }
             .about-title { font-size: 28px; }
             .about-intro, .about-section-content, .about-footer-text { font-size: 13px; }
+            .timeline-header { padding: 40px 20px 30px; }
+            .timeline-headline { font-size: 28px; }
+            .timeline-headline span { font-size: 11px; }
+            .timeline-subhead { font-size: 12px; }
+            .timeline-container { padding: 40px 16px 100px; }
+            .timeline-line { display: none; }
+            .timeline-item.left, .timeline-item.right, .timeline-item.featured { width: 100%; padding: 0; text-align: center; margin: 32px auto; }
+            .timeline-item.center { width: 100%; }
+            .timeline-item-desc { max-width: 100%; margin: 8px auto; }
+            .timeline-year { margin: 40px auto; }
+            .timeline-item-info { opacity: 1; transform: translateY(0); }
+            .timeline-preview-grid { margin-left: -16px; margin-right: -16px; }
+            .timeline-preview-grid img { width: 60px; height: 60px; }
+            .timeline-culmination { padding: 40px 20px; }
+            .timeline-culmination-title { font-size: 22px; }
+            .timeline-thanks { padding: 80px 20px 60px; }
+            .timeline-thanks-headline { font-size: 42px; }
+            .timeline-price-toggle { bottom: 20px; right: 20px; padding: 6px 12px; }
+            .origins-lightbox-img { max-width: 95vw; max-height: 60vh; }
+        }
+
+        /* Timeline Zoom/Focus View */
+        .timeline-zoom { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-deep); z-index: 2600; display: none; }
+        .timeline-zoom.open { display: flex; }
+        .timeline-zoom-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+        .timeline-zoom-artwork { max-width: 70vw; max-height: 60vh; object-fit: contain; border-radius: 0; transition: opacity 0.4s ease; }
+        .timeline-zoom-info { text-align: center; margin-top: 32px; max-width: 500px; }
+        .timeline-zoom-title { font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        .timeline-zoom-year { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
+        .timeline-zoom-desc { font-size: 14px; color: var(--text-muted); line-height: 1.8; font-style: italic; margin-bottom: 20px; max-width: 450px; }
+        .timeline-zoom-provenance { font-size: 10px; color: var(--text-dim); opacity: 0.6; }
+        .timeline-zoom-provenance a { color: var(--text-dim); text-decoration: none; transition: color 0.3s ease; }
+        .timeline-zoom-provenance a:hover { color: var(--warm); }
+        .timeline-zoom-price { font-size: 12px; color: var(--warm); margin-top: 8px; display: none; }
+        .timeline-view.show-eth .timeline-zoom-price.has-eth, .timeline-view.show-usd .timeline-zoom-price.has-usd { display: block; }
+        .timeline-zoom-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+        .timeline-zoom-print-btn, .timeline-zoom-offer-btn { display: none; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 20px; border-radius: 50px; border: 1px solid var(--text-muted); background: none; color: var(--text-dim); text-decoration: none; transition: all 0.3s ease; }
+        .timeline-zoom-print-btn.visible, .timeline-zoom-offer-btn.visible { display: inline-block; }
+        .timeline-zoom-print-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(232, 184, 109, 0.1); }
+        .timeline-zoom-offer-btn { font-size: 9px; padding: 8px 16px; opacity: 0.6; }
+        .timeline-zoom-offer-btn:hover { opacity: 1; border-color: var(--text); color: var(--text); }
+        .timeline-zoom-nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 32px; color: var(--text-muted); background: none; border: none; cursor: pointer; padding: 20px; opacity: 0.4; transition: opacity 0.3s ease; }
+        .timeline-zoom-nav:hover { opacity: 1; }
+        .timeline-zoom-nav.prev { left: 20px; }
+        .timeline-zoom-nav.next { right: 20px; }
+        .timeline-zoom-close { position: absolute; top: 24px; right: 28px; font-size: 32px; color: var(--text-muted); background: none; border: none; cursor: pointer; transition: color 0.3s ease; }
+        .timeline-zoom-close:hover { color: var(--text); }
+        .timeline-zoom-actions { position: absolute; top: 24px; left: 28px; display: flex; gap: 8px; }
+        .timeline-zoom-action-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--text-dim); font-size: 16px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+        .timeline-zoom-action-btn:hover { background: var(--warm); color: var(--bg-deep); border-color: var(--warm); transform: scale(1.05); }
+        .timeline-zoom-strip { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 60px; overflow-x: auto; }
+        .timeline-zoom-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; cursor: pointer; opacity: 0.4; transition: opacity 0.3s ease, transform 0.3s ease; flex-shrink: 0; }
+        .timeline-zoom-thumb:hover { opacity: 0.8; }
+        .timeline-zoom-thumb.active { opacity: 1; transform: scale(1.1); box-shadow: 0 0 0 2px var(--warm); }
+
+        /* Magnifying Loupe */
+        .loupe-btn { opacity: 0.5; }
+        .loupe-btn.active { opacity: 1; background: var(--warm); color: var(--bg-deep); border-color: var(--warm); }
+        .loupe-container { position: relative; cursor: crosshair; }
+        .loupe-container.loupe-active { cursor: none; }
+        .loupe { position: fixed; width: 180px; height: 180px; border-radius: 50%; border: 2px solid var(--warm); background: var(--bg-deep); overflow: hidden; pointer-events: none; opacity: 0; transition: opacity 0.15s ease; z-index: 2700; box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1); }
+        .loupe.visible { opacity: 1; }
+        .loupe-inner { position: absolute; width: 100%; height: 100%; background-size: cover; background-repeat: no-repeat; image-rendering: auto; }
+        .loupe-crosshair { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; pointer-events: none; }
+        .loupe-crosshair::before, .loupe-crosshair::after { content: ''; position: absolute; background: rgba(232, 184, 109, 0.3); }
+        .loupe-crosshair::before { width: 1px; height: 100%; left: 50%; top: 0; }
+        .loupe-crosshair::after { width: 100%; height: 1px; top: 50%; left: 0; }
+        .loupe-zoom-label { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warm); background: rgba(10, 9, 16, 0.8); padding: 3px 8px; border-radius: 10px; }
+
+        @media (max-width: 768px) {
+            .timeline-zoom-main { padding: 20px; }
+            .timeline-zoom-artwork { max-width: 90vw; max-height: 50vh; }
+            .timeline-zoom-info { margin-top: 20px; }
+            .timeline-zoom-title { font-size: 16px; }
+            .timeline-zoom-desc { font-size: 12px; }
+            .timeline-zoom-nav { font-size: 24px; padding: 10px; }
+            .timeline-zoom-strip { height: 70px; gap: 6px; }
+            .timeline-zoom-thumb { width: 40px; height: 40px; }
         }
 
         /* Framed Mockup View - off-white wall with floater frame */
@@ -650,6 +928,39 @@
         .collectors-header h2:hover .collapse-arrow { opacity: 1; }
         .collectors-close { background: var(--bg-input); border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
         .collectors-close:hover { background: var(--bg-card); color: var(--text); }
+        .collectors-header-actions { display: flex; gap: 8px; align-items: center; }
+        .collectors-network-btn { background: var(--bg-input); border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; font-size: 14px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .collectors-network-btn:hover { background: var(--bg-card); color: var(--text); }
+        .collectors-network-btn.active { background: var(--warm); color: var(--bg-deep); }
+        .collectors-network-view { display: none; padding: 20px 0; }
+        .collectors-network-view.visible { display: block; }
+        .collectors-network-canvas-container { position: relative; width: 100%; height: 250px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); overflow: hidden; }
+        .collectors-network-canvas { width: 100%; height: 100%; }
+
+        /* Wallet Connection */
+        .wallet-section { margin-bottom: 20px; text-align: center; }
+        .wallet-connect-btn { background: linear-gradient(135deg, var(--warm) 0%, #D4A574 100%); border: none; color: var(--bg-deep); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 12px 24px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; }
+        .wallet-connect-btn:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(232, 184, 109, 0.3); }
+        .wallet-connect-btn .wallet-icon { font-size: 14px; }
+        .wallet-connected { display: none; flex-direction: column; align-items: center; gap: 12px; }
+        .wallet-connected.visible { display: flex; }
+        .wallet-address { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: var(--text-muted); background: var(--bg-input); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; }
+        .wallet-address .address-text { color: var(--warm); }
+        .wallet-disconnect { background: none; border: none; color: var(--text-dim); font-size: 12px; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
+        .wallet-disconnect:hover { opacity: 1; }
+        .my-cities-section { display: none; margin-top: 20px; }
+        .my-cities-section.visible { display: block; }
+        .my-cities-header { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text); margin-bottom: 16px; text-align: center; }
+        .my-cities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; padding-right: 4px; }
+        .my-cities-grid::-webkit-scrollbar { width: 4px; }
+        .my-cities-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+        .my-city-item { aspect-ratio: 1; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative; }
+        .my-city-item:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+        .my-city-item img { width: 100%; height: 100%; object-fit: cover; }
+        .my-city-item .city-number { position: absolute; bottom: 4px; right: 4px; font-size: 8px; font-weight: 700; color: white; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 10px; }
+        .my-cities-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 12px; }
+        .my-cities-count { font-size: 10px; color: var(--teal); font-weight: 600; margin-bottom: 12px; text-align: center; }
+
         .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 20px; padding: 12px 18px; background: var(--bg-input); border-radius: 50px; }
         .collectors-stats strong { color: var(--teal); }
         .collectors-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
@@ -1196,8 +1507,8 @@
         .gallery-room-info { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.2); font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0; transition: opacity 0.3s ease; }
         .gallery-room:hover .gallery-room-info { opacity: 1; }
         .gallery-room-controls { display: none; }
-        .gallery-room-toggle { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(40, 39, 58, 0.6); border: none; border-radius: 50%; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: all 0.3s ease; opacity: 0.6; }
-        .gallery-room-toggle:hover { background: var(--bg-card); color: var(--text); opacity: 1; }
+        .gallery-room-toggle { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: all 0.3s ease; opacity: 0.5; }
+        .gallery-room-toggle:hover { opacity: 1; }
 
     </style>
 </head>
@@ -1374,7 +1685,11 @@
             <textarea class="note-input" id="noteInput" maxlength="140" placeholder="Add a note..."></textarea>
             <div class="note-counter"><span id="noteCharCount">0</span>/140</div>
         </div>
-        <div class="studio-credit">
+        <div class="studio-credit" style="display: flex; align-items: center; justify-content: center; gap: 16px;">
+            <button class="originals-btn" id="sidebarOriginalsBtn" title="Originals">
+                <span class="originals-icon">✍</span>
+                <span class="originals-label">Originals</span>
+            </button>
             <a href="#" id="aboutTrigger" title="About"><img src="info-icon.png" alt="About"></a>
         </div>
     </div>
@@ -1434,7 +1749,37 @@
     <div class="collectors-panel" id="collectorsPanel" role="dialog" aria-label="Collectors panel" aria-hidden="true">
         <div class="collectors-header">
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›</span></h2>
-            <button class="collectors-close" id="closeCollectors">&times;</button>
+            <div class="collectors-header-actions">
+                <button class="collectors-network-btn" id="collectorsNetworkBtn" title="Network View">🌐</button>
+                <button class="collectors-close" id="closeCollectors">&times;</button>
+            </div>
+        </div>
+        <div class="collectors-network-view" id="collectorsNetworkView">
+            <div class="collectors-network-canvas-container">
+                <canvas id="collectorsNetworkCanvas" class="collectors-network-canvas"></canvas>
+            </div>
+        </div>
+        <!-- Wallet Connection Section -->
+        <div class="wallet-section" id="walletSection">
+            <button class="wallet-connect-btn" id="walletConnectBtn">
+                <span class="wallet-icon">◈</span>
+                <span>Connect Wallet</span>
+            </button>
+            <div class="wallet-connected" id="walletConnected">
+                <div class="wallet-address">
+                    <span class="address-text" id="walletAddressText">0x...</span>
+                    <button class="wallet-disconnect" id="walletDisconnect">✕</button>
+                </div>
+            </div>
+        </div>
+        <!-- My Cities Section (shown when connected) -->
+        <div class="my-cities-section" id="myCitiesSection">
+            <div class="my-cities-count" id="myCitiesCount">You own 0 Cities</div>
+            <div class="my-cities-grid" id="myCitiesGrid"></div>
+            <div class="my-cities-empty" id="myCitiesEmpty" style="display: none;">
+                No Cities found in this wallet.<br>
+                <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" style="color: var(--warm); margin-top: 12px; display: inline-block;">Browse on OpenSea →</a>
+            </div>
         </div>
         <div class="pills-view" id="pillsView">
             <div class="collectors-stats"><strong>111</strong> COLLECTORS • <strong>245</strong> CITIES COLLECTED</div>
@@ -1478,10 +1823,14 @@
                 <button class="grid-size-toggle" id="gridSizeToggle" title="Change grid size">
                     <span class="size-icon" id="sizeIcon"></span>
                 </button>
-                <button class="grid-mode-btn" data-mode="grid" id="gridAllFavBtn">ALL</button>
+                <button class="grid-mode-btn" data-mode="grid" id="gridAllFavBtn">FAVS</button>
                 <button class="grid-mode-btn active" data-mode="palette" id="paletteColorToggle">BY PALETTE</button>
                 <button class="grid-mode-btn collectors-btn" id="gridCollectorsBtn">COLLECTORS</button>
                 <button class="gallery-room-toggle" id="galleryRoomToggle" title="Enter immersive gallery">👁</button>
+                <button class="grid-originals-btn" id="gridOriginalsBtn" title="Originals">
+                    <span class="originals-icon">✍</span>
+                    <span class="originals-label">Originals</span>
+                </button>
             </div>
         </div>
         <div class="filter-toggle-bar" id="filterToggleBar"><span>FILTERS</span><span class="arrow">▼</span></div>
@@ -1587,7 +1936,7 @@
                     <span class="about-section-arrow">▼</span>
                 </div>
                 <div class="about-section-content">
-                    Zoomed way out, all details fall away. You stop being yourself. You become one dot among millions—a witness to a collective consciousness. Each mark begs you to imagine a story. Millions of these stories overlap to form the fabric of the city.
+                    Zoomed way out, all details fall away. You stop being yourself. You become one dot among millions, a witness to a collective consciousness. Each mark begs you to imagine a story. Millions of these stories overlap to form the fabric of the city.
                 </div>
             </div>
 
@@ -1607,7 +1956,17 @@
                     <span class="about-section-arrow">▼</span>
                 </div>
                 <div class="about-section-content">
-                    Layer upon layer of color builds the illusion of time passing. 112 palettes capture every hour—from quiet dawn to electric midnight. We didn't chase rare traits. We cared about range.
+                    Layer upon layer of color builds the illusion of time passing. 112 palettes capture every hour, from quiet dawn to electric midnight. We didn't chase rare traits. We cared about range.
+                </div>
+            </div>
+
+            <div class="about-section origins-section" data-section="origins">
+                <div class="about-section-header origins-header" id="openTimeline">
+                    <span class="about-section-title origins-title">
+                        <span class="origins-base">ORIGIN</span><span class="origins-reveal">AL</span><span class="origins-s">S</span>
+                        <span class="origins-efdot">EFDOT</span>
+                    </span>
+                    <span class="about-section-arrow">→</span>
                 </div>
             </div>
 
@@ -1620,6 +1979,444 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Origins Timeline -->
+    <div class="timeline-view" id="timelineView">
+        <button class="timeline-close" id="timelineClose">&times;</button>
+        <div class="timeline-header">
+            <h2 class="timeline-headline">Six Years of Cities</h2>
+            <p class="timeline-subhead">It started with skate spots and graffiti tags in the Lower East Side. Street photography. Drone shots over Brooklyn rooftops. Travel sketches on napkins and hotel stationery. Then murals that took weeks. Each piece builds on the last: the aerial view, the 8fps heartbeat, the palettes named after moods, cities, and neighborhoods.</p>
+        </div>
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+            <div class="timeline-content">
+                <!-- 2019: Physical Origins -->
+                <div class="timeline-year" data-year="2019">2019</div>
+
+                <div class="timeline-item left physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeihcmhw3utkt54cs4ewcdjvhouhcwce7irzltfnlq5sdjmoc7ubnpy" data-title="USA Network Mural" data-year="2019" data-link="https://www.efdotstudio.com/murals">
+                    <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeihcmhw3utkt54cs4ewcdjvhouhcwce7irzltfnlq5sdjmoc7ubnpy" alt="USA Network Mural">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">USA Network Mural</span>
+                        <span class="timeline-item-year">2019 · 30 Rockefeller Plaza, NYC</span>
+                        <span class="timeline-item-desc">30 Rock, floor to ceiling. First time painting cities from above at this scale.</span>
+                        <span class="timeline-item-medium">Analog</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item right physical" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1578595775517-UEPOPTM1UYQAGIP68ADJ/muros-mural-web.jpg" data-title="SoNo Collection Mural" data-year="2019" data-link="https://www.efdotstudio.com/murals">
+                    <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1578595775517-UEPOPTM1UYQAGIP68ADJ/muros-mural-web.jpg" alt="SoNo Collection Mural">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">SoNo Collection Mural</span>
+                        <span class="timeline-item-year">2019 · Norwalk, Connecticut</span>
+                        <span class="timeline-item-desc">Two-story mall installation. Crowds passing through while I painted above.</span>
+                        <span class="timeline-item-medium">Analog</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item left physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7k4jaoqmjn3est5v3ec5tjf7qwtbh4wypcnn7dsk5mbp3dqtncy" data-title="The Hall Mural" data-year="2019" data-link="https://www.efdotstudio.com/murals">
+                    <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7k4jaoqmjn3est5v3ec5tjf7qwtbh4wypcnn7dsk5mbp3dqtncy" alt="The Hall Mural">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">The Hall Mural</span>
+                        <span class="timeline-item-year">2019</span>
+                        <span class="timeline-item-desc">DC's Navy Yard district. The Hall's walls became a testing ground for scale I'd never attempted.</span>
+                        <span class="timeline-item-medium">Analog</span>
+                    </div>
+                </div>
+
+                <!-- 2020: Efdot Lab -->
+                <div class="timeline-year" data-year="2020">2020</div>
+
+                <div class="timeline-item left" data-img="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1" data-title="Summer 365" data-year="2020" data-link="https://foundation.app/@efdot/efdotlab/1">
+                    <img src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1" alt="Summer 365">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Summer 365</span>
+                        <span class="timeline-item-year">2020 · Efdot Lab</span>
+                        <span class="timeline-item-desc">365 days of summer on one canvas. Minted on Foundation, 2020.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://foundation.app/@efdot/efdotlab/1" target="_blank" title="View on Foundation">⟐</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-img="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1" data-title="Winterplay" data-year="2020" data-link="https://foundation.app/@efdot/efdotlab/2">
+                    <img src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1" alt="Winterplay">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Winterplay</span>
+                        <span class="timeline-item-year">2020 · Efdot Lab</span>
+                        <span class="timeline-item-desc">Cold gradients and warm corners. The winter mood that shaped how I think about temperature in color.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://foundation.app/@efdot/efdotlab/2" target="_blank" title="View on Foundation">⟐</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2021: Open Minds -->
+                <div class="timeline-year" data-year="2021">2021</div>
+
+                <div class="timeline-item left" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" data-title="You Are Here" data-year="2021" data-link="https://opensea.io/collection/efdot-openminds">
+                    <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" alt="You Are Here">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">You Are Here</span>
+                        <span class="timeline-item-year">2021 · Open Minds #1</span>
+                        <span class="timeline-item-desc">Stand on top of the map. Look down at the cross-section of a city that exists only in your head. Navigation without destination.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://opensea.io/collection/efdot-openminds" target="_blank" title="View on OpenSea">⟐</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128174409-8EGQR3U2UDYK7SK91Z19/Efdot_Open+Mind+2_Night+Mode.gif" data-title="Night Mode" data-year="2021" data-link="https://opensea.io/collection/efdot-openminds">
+                    <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128174409-8EGQR3U2UDYK7SK91Z19/Efdot_Open+Mind+2_Night+Mode.gif" alt="Night Mode">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Night Mode</span>
+                        <span class="timeline-item-year">2021 · Open Minds #2</span>
+                        <span class="timeline-item-desc">3am thoughts rendered in dark blues and deep purples. What happens when the lights go out but the mind stays on.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://opensea.io/collection/efdot-openminds" target="_blank" title="View on OpenSea">⟐</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128270023-9JC2N4SS09UHMA4LR5NN/Efdot_Open+Minds+3_Passing+Through.gif" data-title="Passing Through" data-year="2021" data-link="https://opensea.io/collection/efdot-openminds">
+                    <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128270023-9JC2N4SS09UHMA4LR5NN/Efdot_Open+Minds+3_Passing+Through.gif" alt="Passing Through">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Passing Through</span>
+                        <span class="timeline-item-year">2021 · Open Minds #3</span>
+                        <span class="timeline-item-desc">That moment when you're moving through a space but your mind is somewhere else entirely. Pink haze, soft edges.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://opensea.io/collection/efdot-openminds" target="_blank" title="View on OpenSea">⟐</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128443026-X974A5CT72RIUD8KFZY7/Efdot_Open+Minds+6_Sweet+Streets.gif" data-title="Sweet Streets" data-year="2021" data-link="https://opensea.io/collection/efdot-openminds">
+                    <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128443026-X974A5CT72RIUD8KFZY7/Efdot_Open+Minds+6_Sweet+Streets.gif" alt="Sweet Streets">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Sweet Streets</span>
+                        <span class="timeline-item-year">2021 · Open Minds #6</span>
+                        <span class="timeline-item-desc">Candy-colored grids dissolving at the edges. A place that exists somewhere between a map and a memory.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://opensea.io/collection/efdot-openminds" target="_blank" title="View on OpenSea">⟐</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2022 -->
+                <div class="timeline-year" data-year="2022">2022</div>
+
+                <div class="timeline-item featured" data-img="https://ipfs.io/ipfs/bafybeig6zprnwhaseyq2dnts2mkktminx3ri7zsnoeqdkq4qefm2ftdo2e" data-title="Eye of the City" data-year="2022" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/22">
+                    <img src="https://ipfs.io/ipfs/bafybeig6zprnwhaseyq2dnts2mkktminx3ri7zsnoeqdkq4qefm2ftdo2e" alt="Eye of the City">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Eye of the City</span>
+                        <span class="timeline-item-year">2022</span>
+                        <span class="timeline-item-desc">The first time I painted an eye into a cityscape. Looking down at the grid, the grid looking back.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/22" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Reginald de la Grarbs</span><span class="provenance-price eth">· 3.27 ETH</span><span class="provenance-price usd">· $6,100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-img="https://nft-cdn.alchemy.com/eth-mainnet/24cacdfcf8625283c2cd21244136ae80" data-title="Light Pulp" data-year="2022" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/17">
+                    <img src="https://nft-cdn.alchemy.com/eth-mainnet/24cacdfcf8625283c2cd21244136ae80" alt="Light Pulp">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Light Pulp</span>
+                        <span class="timeline-item-year">2022</span>
+                        <span class="timeline-item-desc">Moving through the world, like the pulp floating in a glass of orange juice. Place: a city on an island in my mind. Time: wake up to the sunrise.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/17" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Easp0rts</span><span class="provenance-price eth">· 2 ETH</span><span class="provenance-price usd">· $3,700</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-img="https://arweave.net/dUzBTD-4kZZHEITC_6HEWrHb4HzIxKzslAEeLznkHRQ" data-title="Midnight In Manhattan" data-year="2022" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/27">
+                    <img src="https://arweave.net/dUzBTD-4kZZHEITC_6HEWrHb4HzIxKzslAEeLznkHRQ" alt="Midnight In Manhattan">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Midnight In Manhattan</span>
+                        <span class="timeline-item-year">2022</span>
+                        <span class="timeline-item-desc">Manhattan at midnight. The piece that made me realize these could be more than one-offs.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/27" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Sendrock</span><span class="provenance-price eth">· 2.22 ETH</span><span class="provenance-price usd">· $4,100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-img="https://arweave.net/hEokztJ9b7fxAtGf1eiwi2QRWkMY5F8UlJOa0rlHqag" data-title="Hazy Day" data-year="2022" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/28">
+                    <img src="https://arweave.net/hEokztJ9b7fxAtGf1eiwi2QRWkMY5F8UlJOa0rlHqag" alt="Hazy Day">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Hazy Day</span>
+                        <span class="timeline-item-year">2022</span>
+                        <span class="timeline-item-desc">Orange and pink fog. Some days you can't see past the next block.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/28" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Cosimo Medici</span><span class="provenance-price eth">· 1.7 ETH</span><span class="provenance-price usd">· $3,100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-title="Two Bridges" data-year="2022" data-link="https://opensea.io/item/ethereum/0xc80d40e86c91dc4a713c5e2e9d8fc47c6b6a68fd/181000100001">
+                    <img src="https://ipfs.io/ipfs/bafybeidjajtk5byo2cg7ipid24lywtlqcnlnnkcztmfk3mu7fnqtwavaji" alt="Two Bridges">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Two Bridges</span>
+                        <span class="timeline-item-year">2022 · Edition of 10</span>
+                        <span class="timeline-item-desc">An ode to the LES neighborhood where I learned to skate and paint. Dynamic edition that changes with the seasons.</span>
+                        <span class="timeline-item-subtitle">Dynamic · Changes with Seasons</span>
+                    </div>
+                </div>
+
+                <!-- 2023 -->
+                <div class="timeline-year" data-year="2023">2023</div>
+
+                <div class="timeline-item right" data-img="https://arweave.net/pk00hY7LdV6c8q6l3OiVP6GSRYG-Sx_KeDIearNK878" data-title="Street View" data-year="2023" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/29">
+                    <img src="https://arweave.net/pk00hY7LdV6c8q6l3OiVP6GSRYG-Sx_KeDIearNK878" alt="Street View">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Street View</span>
+                        <span class="timeline-item-year">2023</span>
+                        <span class="timeline-item-desc">Candy colors pooling at intersections. What Google Maps looks like in my head.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/29" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Diid</span><span class="provenance-price eth">· 2.2 ETH</span><span class="provenance-price usd">· $4,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right available" data-img="https://arweave.net/cTSB-Acjliv_eqJqlWFtsbNB5Wpwwr_j-ck1cshWaTk" data-title="Brain Fog" data-year="2023" data-price="2 ETH" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/31">
+                    <img src="https://arweave.net/cTSB-Acjliv_eqJqlWFtsbNB5Wpwwr_j-ck1cshWaTk" alt="Brain Fog">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Brain Fog</span>
+                        <span class="timeline-item-year">2023</span>
+                        <span class="timeline-item-desc">Today, seven floors of foggy windows frame the blue world. Tomorrow afternoon, the skies might clear up.</span>
+                        <span class="timeline-item-status">Available · 2 ETH</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-img="https://arweave.net/3Hlm3Mo0by9mqa7H2hH6TT4ioB0vI1LaVgWXD61Addk" data-title="Traffic on the Avenue" data-year="2023" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/33">
+                    <img src="https://arweave.net/3Hlm3Mo0by9mqa7H2hH6TT4ioB0vI1LaVgWXD61Addk" alt="Traffic on the Avenue">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Traffic on the Avenue</span>
+                        <span class="timeline-item-year">2023</span>
+                        <span class="timeline-item-desc">Rush hour rendered in brushstrokes. Yellow cabs, red taillights, the blur of movement through midtown.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/33" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Redbeard</span><span class="provenance-price eth">· 3.07 ETH</span><span class="provenance-price usd">· $5,700</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-img="https://arweave.net/6ucEGXVGd9S5s2f9fnIEQqUc4-X0zCnuUD-_XNwpsVM" data-title="Roundabout" data-year="2023" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/34">
+                    <img src="https://arweave.net/6ucEGXVGd9S5s2f9fnIEQqUc4-X0zCnuUD-_XNwpsVM" alt="Roundabout">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Roundabout</span>
+                        <span class="timeline-item-year">2023</span>
+                        <span class="timeline-item-desc">Circular logic, circular roads. Traffic patterns that mirror the way we retrace our steps through familiar places.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/34" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Paperbuddha</span><span class="provenance-price eth">· 2 ETH</span><span class="provenance-price usd">· $3,700</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2024 -->
+                <div class="timeline-year" data-year="2024">2024</div>
+
+                <div class="timeline-item left" data-img="https://arweave.net/qEiCFd9Y3U0UAE63z3sCZkmDDlZ1sKKQgkzQWZQkJBg" data-title="Silent Skyline" data-year="2024" data-link="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/36">
+                    <img src="https://arweave.net/qEiCFd9Y3U0UAE63z3sCZkmDDlZ1sKKQgkzQWZQkJBg" alt="Silent Skyline">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Silent Skyline</span>
+                        <span class="timeline-item-year">2024</span>
+                        <span class="timeline-item-desc">Early morning, no traffic yet. The city holding its breath before the day starts.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/36" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Blondie</span><span class="provenance-price eth">· 4.5 ETH</span><span class="provenance-price usd">· $8,300</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item left physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/Qmdo2hzEGfXV6Ep3A2K8KHK7mg4XVUvKMbDG4Xu2Pj8LB2" data-title="Over the Bridge (Mural)" data-year="2024" data-link="https://www.efdotstudio.com/murals">
+                    <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/Qmdo2hzEGfXV6Ep3A2K8KHK7mg4XVUvKMbDG4Xu2Pj8LB2" alt="Over the Bridge Mural">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Over the Bridge</span>
+                        <span class="timeline-item-year">2024 · Physical Mural</span>
+                        <span class="timeline-item-desc">A traffic study painted in Brooklyn. The wall came first, then the animation gave it motion.</span>
+                        <span class="timeline-item-medium">Analog</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-title="Over the Bridge" data-year="2024" data-link="https://opensea.io/item/ethereum/0xdb1f952239c6e89af76dd1226e7cb1fa57463e5e/127">
+                    <video src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiacjsh45e2uduoi2odkp4ldy4z5wxu2za3cgzwoyonscgudx75u3i" autoplay muted loop playsinline alt="Over the Bridge"></video>
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Over the Bridge</span>
+                        <span class="timeline-item-year">2024 · Edition of 50</span>
+                        <span class="timeline-item-collector">Animated Mural</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item left physical" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7gwk2abb7rgs3trw2i3ulonuedrdr3jmcy63zccu5xf2vdjxjuy" data-title="City in Bloom (Mural)" data-year="2024" data-link="https://www.efdotstudio.com/murals">
+                    <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeig7gwk2abb7rgs3trw2i3ulonuedrdr3jmcy63zccu5xf2vdjxjuy" alt="City in Bloom Mural">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">City in Bloom</span>
+                        <span class="timeline-item-year">2024 · Rio de Janeiro, Brazil</span>
+                        <span class="timeline-item-desc">Painted during a Rio residency. Pink bougainvillea and tropical heat translated into the Cities system.</span>
+                        <span class="timeline-item-medium">Analog</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item featured" data-img="https://nft-cdn.alchemy.com/eth-mainnet/bf524597b88d4936737d66df0ba5f368" data-title="City in Bloom" data-year="2024" data-link="https://superrare.com/0x51650bf8cda4d93b00dbfa97f65aba14a82b2a9e/1">
+                    <img src="https://nft-cdn.alchemy.com/eth-mainnet/bf524597b88d4936737d66df0ba5f368" alt="City in Bloom">
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">City in Bloom</span>
+                        <span class="timeline-item-year">2024 · Rio Art Residency</span>
+                        <span class="timeline-item-desc">Wall to screen. The mural from Rio became a digital piece. Same colors, same energy, new medium.</span>
+                        <div class="timeline-provenance">
+                            <a class="provenance-link" href="https://superrare.com/0x51650bf8cda4d93b00dbfa97f65aba14a82b2a9e/1" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Alex Zuttre</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2025 -->
+                <div class="timeline-year" data-year="2025">2025</div>
+
+                <div class="timeline-item center italy" data-link="https://citiesitaly.ninfa.io/">
+                    <div class="timeline-italy-grid">
+                        <img src="https://images.ninfa.io/nfts/original/c8330669474b599172d9caf56c186cb5d60a1483ae7a114734313a20ca8b8df1.jpeg" alt="Echo Hill">
+                        <img src="https://images.ninfa.io/nfts/original/ea9a2b42ef67db20ce7fb63c592e9f75036e874df9ea593835384ede046be449.jpeg" alt="Around the Duomo">
+                        <img src="https://images.ninfa.io/nfts/original/e9ff95e5215d28b765cabcb3b2360520266c86d74683b7ecaa59630f5e0db086.jpeg" alt="Through The Piazza">
+                        <img src="https://images.ninfa.io/nfts/original/c16d801ae69e5ed00046d63b8ed30be387e477297a62767d1178f142add4a31b.jpeg" alt="Shifted Shadow">
+                        <img src="https://images.ninfa.io/nfts/original/ed64013129837544d5fe74e63f414a6c74fee743b95f9e5223e911ac0303a476.jpeg" alt="Last Lap">
+                        <img src="https://images.ninfa.io/nfts/original/a2cc2905f3f49f56757890038b3cf715bcc4139a05660b378f43b4fa9c93b9af.jpeg" alt="Radial Intent">
+                        <img src="https://images.ninfa.io/nfts/original/d3ca7d2aa862e1ff132864f703c8680d1038bc470c279db28909cbaa0c8c79ad.jpeg" alt="Across the Arno">
+                        <img src="https://images.ninfa.io/nfts/original/fa42a57fcc480226220ec5cf90dd1a6b58a567ccf49b52f35c9ee91170498a63.jpeg" alt="Drawn To Center">
+                        <img src="https://images.ninfa.io/nfts/original/f9bd77a279884e9b4ed1edeaa8f213cec0f8c210a4558eb2f6c01c021f540200.jpeg" alt="Walled Memory">
+                    </div>
+                    <div class="timeline-item-info">
+                        <span class="timeline-item-title">Cities // Italy</span>
+                        <span class="timeline-item-year">2025 · 9 Connected Pieces</span>
+                        <span class="timeline-item-collector">Sold out via Ninfa</span>
+                    </div>
+                </div>
+
+                <!-- The Physicals -->
+                <div class="timeline-item center physicals-section">
+                    <div class="timeline-physicals">
+                        <div class="timeline-physicals-title">The Physicals</div>
+                        <div class="timeline-physicals-subtitle">Original works created alongside the digital collection</div>
+                        <div class="timeline-physicals-grid">
+                            <div class="physical-item" data-img="https://shop.efdotstudio.com/cdn/shop/files/bigpaintingnewnew_grande.jpg?v=1750983148" data-title="Sunday In Brooklyn" data-price="$8,000" data-link="https://shop.efdotstudio.com/products/sunday-in-brooklyn">
+                                <img src="https://shop.efdotstudio.com/cdn/shop/files/bigpaintingnewnew_grande.jpg?v=1750983148" alt="Sunday In Brooklyn">
+                                <span class="physical-item-title">Sunday In Brooklyn</span>
+                                <span class="physical-item-price">$8,000</span>
+                            </div>
+                            <div class="physical-item" data-img="https://shop.efdotstudio.com/cdn/shop/files/brooklyn-industrian-park_grande.jpg?v=1703109822" data-title="Brooklyn Industrial Park" data-price="$750" data-link="https://shop.efdotstudio.com/products/brooklyn-industrial-park">
+                                <img src="https://shop.efdotstudio.com/cdn/shop/files/brooklyn-industrian-park_grande.jpg?v=1703109822" alt="Brooklyn Industrial Park">
+                                <span class="physical-item-title">Brooklyn Industrial Park</span>
+                                <span class="physical-item-price">$750</span>
+                            </div>
+                            <div class="physical-item" data-img="https://shop.efdotstudio.com/cdn/shop/files/the-city-in-the-summer-framed1_1.jpg?v=1750985400" data-title="OMAGE Mono Prints" data-price="Open for offers" data-link="https://shop.efdotstudio.com/products/omage-1-1-screen-prints">
+                                <img src="https://shop.efdotstudio.com/cdn/shop/files/the-city-in-the-summer-framed1_1.jpg?v=1750985400" alt="OMAGE Mono Prints">
+                                <span class="physical-item-title">OMAGE Mono Prints</span>
+                                <span class="physical-item-price">Open for offers</span>
+                            </div>
+                            <div class="physical-item" data-img="https://shop.efdotstudio.com/cdn/shop/files/citys-first-snow-final_grande.jpg?v=1703110053" data-title="City's First Snow" data-link="https://shop.efdotstudio.com/products/citys-first-snow">
+                                <img src="https://shop.efdotstudio.com/cdn/shop/files/citys-first-snow-final_grande.jpg?v=1703110053" alt="City's First Snow">
+                                <span class="physical-item-title">City's First Snow</span>
+                            </div>
+                        </div>
+                        <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" class="timeline-physicals-btn">View All</a>
+                    </div>
+                </div>
+
+                <!-- Generative Collection -->
+                <div class="timeline-item center culmination">
+                    <div class="timeline-culmination">
+                        <div class="timeline-culmination-title">Cities by Efdot x Diid</div>
+                        <div class="timeline-culmination-subtitle">June 2025 · Art Blocks Curated</div>
+                        <div class="timeline-culmination-desc">500 generative outputs from the system built over 3 years</div>
+                        <div class="timeline-preview-grid" id="timelinePreviewGrid"></div>
+                        <button class="timeline-culmination-btn" id="exploreCollectionBtn">Explore Collection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collector Network -->
+        <div class="timeline-network">
+            <div class="timeline-network-title">The Collectors</div>
+            <div class="network-container" id="networkContainer">
+                <div class="network-loading">
+                    <div class="network-dots">
+                        <span class="network-dot"></span>
+                        <span class="network-dot"></span>
+                        <span class="network-dot"></span>
+                        <span class="network-dot"></span>
+                        <span class="network-dot"></span>
+                    </div>
+                    <span class="network-loading-text">Click to explore</span>
+                    <span class="network-loading-hint">the collector network</span>
+                </div>
+                <canvas id="collectorNetwork" class="collector-network-canvas"></canvas>
+            </div>
+            <div class="timeline-network-names" id="networkNames"></div>
+        </div>
+
+        <!-- Thank You Section -->
+        <div class="timeline-thanks">
+            <h3 class="timeline-thanks-headline">Thank You</h3>
+            <p class="timeline-thanks-message" id="thanksMessage"></p>
+        </div>
+
+        <!-- Email Capture -->
+        <div class="timeline-email-capture">
+            <p class="email-capture-text">Get notified when new prints and editions drop</p>
+            <form class="email-capture-form" id="emailCaptureForm">
+                <input type="email" placeholder="your@email.com" class="email-capture-input" id="emailInput" required>
+                <button type="submit" class="email-capture-btn">→</button>
+            </form>
+            <p class="email-capture-note">Join 2,000+ collectors. No spam, just art.</p>
+        </div>
+
+        <!-- Price Toggle -->
+        <button class="timeline-price-toggle" id="priceToggle">
+            <span class="price-icon">✦</span>
+            <span class="price-label"></span>
+        </button>
+    </div>
+
+    <!-- Origins Lightbox -->
+    <!-- Timeline Zoom View -->
+    <div class="timeline-zoom" id="timelineZoom">
+        <button class="timeline-zoom-close" id="timelineZoomClose">&times;</button>
+        <div class="timeline-zoom-actions" id="timelineZoomActions">
+            <button class="timeline-zoom-action-btn" id="zoomShareBtn" title="Share">↗</button>
+            <button class="timeline-zoom-action-btn" id="zoomDownloadBtn" title="Save">↓</button>
+            <button class="timeline-zoom-action-btn loupe-btn" id="loupeBtn" title="Magnify">🔍</button>
+        </div>
+        <!-- Magnifying Loupe -->
+        <div class="loupe" id="loupe">
+            <div class="loupe-inner" id="loupeInner"></div>
+            <div class="loupe-crosshair"></div>
+            <div class="loupe-zoom-label">3×</div>
+        </div>
+        <button class="timeline-zoom-nav prev" id="timelineZoomPrev">‹</button>
+        <button class="timeline-zoom-nav next" id="timelineZoomNext">›</button>
+        <div class="timeline-zoom-main">
+            <img src="" alt="" class="timeline-zoom-artwork" id="timelineZoomArtwork">
+            <div class="timeline-zoom-info">
+                <div class="timeline-zoom-title" id="timelineZoomTitle"></div>
+                <div class="timeline-zoom-year" id="timelineZoomYear"></div>
+                <div class="timeline-zoom-desc" id="timelineZoomDesc"></div>
+                <div class="timeline-zoom-provenance" id="timelineZoomProvenance"></div>
+                <div class="timeline-zoom-price" id="timelineZoomPrice"></div>
+                <div class="timeline-zoom-buttons">
+                    <a class="timeline-zoom-print-btn" id="timelineZoomPrint" href="#" target="_blank">🖼 Print Available</a>
+                    <a class="timeline-zoom-offer-btn" id="timelineZoomOffer" href="#" target="_blank">Make Offer</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-zoom-strip" id="timelineZoomStrip"></div>
+    </div>
+
+    <div class="origins-lightbox" id="originsLightbox">
+        <button class="origins-lightbox-close" id="originsLightboxClose">&times;</button>
+        <img src="" alt="" class="origins-lightbox-img" id="originsLightboxImg">
+        <div class="origins-lightbox-title" id="originsLightboxTitle"></div>
+        <div class="origins-lightbox-year" id="originsLightboxYear"></div>
+        <div class="origins-lightbox-price" id="originsLightboxPrice"></div>
+        <a href="#" target="_blank" class="origins-lightbox-btn" id="originsLightboxBtn">View on SuperRare</a>
     </div>
 
     <script>
@@ -2429,6 +3226,8 @@
             populateFilter(filterRender, traitValues.render);
             populateFilter(filterZoom, traitValues.zoom);
             populateFilter(filterWater, traitValues.water);
+            // Restore saved filters after populating options
+            if (typeof loadFiltersFromStorage === 'function') loadFiltersFromStorage();
         }
 
         function populateFilter(select, values, displayMap = {}) {
@@ -2868,18 +3667,18 @@
 
         function displayOwnerInfo(owner, loading = false) {
             if (loading) {
-                ownerDisplay.innerHTML = '<span style="opacity:0.5">LOADING OWNER...</span>';
+                ownerDisplay.innerHTML = '<span style="opacity:0.5">LOADING...</span>';
                 return;
             }
             if (!owner || !owner.address) {
-                ownerDisplay.innerHTML = '<span style="opacity:0.5">OWNER UNKNOWN</span>';
+                ownerDisplay.innerHTML = '<span style="opacity:0.5">COLLECTOR UNKNOWN</span>';
                 return;
             }
             // Priority: Art Blocks username > ENS > shortened address
             // Apply name alias to get preferred display name
             const rawName = owner.artblocksName || owner.ens || shortenAddress(owner.address);
             const displayName = applyNameAlias(rawName);
-            ownerDisplay.innerHTML = `OWNED BY <a href="https://www.artblocks.io/user/${owner.address}" target="_blank">${displayName.toUpperCase()}</a>`;
+            ownerDisplay.innerHTML = `IN THE COLLECTION OF <a href="https://www.artblocks.io/user/${owner.address}" target="_blank">${displayName.toUpperCase()}</a>`;
         }
 
         async function loadOutput(tokenId = null, updateUrl = true) {
@@ -3100,7 +3899,7 @@
                     const url = URL.createObjectURL(jpgBlob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `efdot-diid-${currentTokenId}.jpg`;
+                    a.download = `Cities-by-Efdot-x-Diid-${currentTokenId}.jpg`;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -3236,7 +4035,7 @@
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `efdot-diid-cities-${currentTokenId}-framed.jpg`;
+                    a.download = `Cities-by-Efdot-x-Diid-${currentTokenId}-framed.jpg`;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -3885,6 +4684,7 @@
             filterTraffic.value = ''; filterLine.value = ''; filterRender.value = '';
             filterZoom.value = ''; filterWater.value = '';
             updateMatchCount();
+            try { localStorage.removeItem('cities-filters'); } catch (e) {}
             showStatus('CLEARED');
         }
 
@@ -4010,6 +4810,287 @@
         document.getElementById('closeCollectors').addEventListener('click', closeCollectorsPanel);
         document.getElementById('collectorsTitle').addEventListener('click', closeCollectorsPanel);
 
+        // Collectors Network View Toggle
+        const collectorsNetworkBtn = document.getElementById('collectorsNetworkBtn');
+        const collectorsNetworkView = document.getElementById('collectorsNetworkView');
+        const collectorsNetworkCanvas = document.getElementById('collectorsNetworkCanvas');
+        const pillsViewEl = document.getElementById('pillsView');
+        const leaderboardViewEl = document.getElementById('leaderboardView');
+        let collectorsNetworkActive = false;
+        let collectorsNetworkInitialized = false;
+
+        collectorsNetworkBtn?.addEventListener('click', () => {
+            collectorsNetworkActive = !collectorsNetworkActive;
+            collectorsNetworkBtn.classList.toggle('active', collectorsNetworkActive);
+            collectorsNetworkView.classList.toggle('visible', collectorsNetworkActive);
+            pillsViewEl.style.display = collectorsNetworkActive ? 'none' : '';
+            leaderboardViewEl.style.display = collectorsNetworkActive ? 'none' : '';
+
+            if (collectorsNetworkActive) {
+                if (!collectorsNetworkInitialized) {
+                    initCollectorsNetwork();
+                    collectorsNetworkInitialized = true;
+                } else {
+                    // Restart animation
+                    requestAnimationFrame(function restartAnim() {
+                        if (collectorsNetworkActive) initCollectorsNetwork();
+                    });
+                }
+            }
+        });
+
+        function initCollectorsNetwork() {
+            const canvas = collectorsNetworkCanvas;
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const container = canvas.parentElement;
+
+            // Set canvas size
+            const resize = () => {
+                canvas.width = container.offsetWidth * 2;
+                canvas.height = container.offsetHeight * 2;
+                canvas.style.width = container.offsetWidth + 'px';
+                canvas.style.height = container.offsetHeight + 'px';
+            };
+            resize();
+
+            // Use collectors from timeline network
+            const collectors = [
+                { name: 'REGINALD', color: '#E8B86D' },
+                { name: 'DIID', color: '#D4A574' },
+                { name: 'SENDROCK', color: '#FF8C42' },
+                { name: 'COSIMO', color: '#00B4FF' },
+                { name: 'REDBEARD', color: '#B967FF' },
+                { name: 'BLONDIE', color: '#FF6B9D' },
+                { name: 'PAPERBUDDHA', color: '#4ECDC4' },
+                { name: 'EASP0RTS', color: '#95E1D3' },
+                { name: 'ZUTTRE', color: '#F38181' }
+            ];
+
+            // Create nodes
+            const nodes = collectors.map((c, i) => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: 6 + Math.random() * 4,
+                color: c.color,
+                name: c.name
+            }));
+
+            // Create connections
+            const connections = [];
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    if (Math.random() > 0.5) {
+                        connections.push([i, j]);
+                    }
+                }
+            }
+
+            let frame = 0;
+            function animate() {
+                if (!collectorsNetworkActive) return;
+
+                ctx.fillStyle = 'rgba(10, 9, 16, 0.15)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Update and draw at 8fps feel
+                if (frame % 8 === 0) {
+                    nodes.forEach(node => {
+                        node.x += node.vx * 3;
+                        node.y += node.vy * 3;
+
+                        // Bounce off edges
+                        if (node.x < 20 || node.x > canvas.width - 20) node.vx *= -1;
+                        if (node.y < 20 || node.y > canvas.height - 20) node.vy *= -1;
+
+                        // Slight random drift
+                        node.vx += (Math.random() - 0.5) * 0.1;
+                        node.vy += (Math.random() - 0.5) * 0.1;
+                        node.vx = Math.max(-1, Math.min(1, node.vx));
+                        node.vy = Math.max(-1, Math.min(1, node.vy));
+                    });
+                }
+
+                // Draw connections
+                connections.forEach(([i, j]) => {
+                    const a = nodes[i], b = nodes[j];
+                    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+                    if (dist < 300) {
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.strokeStyle = `rgba(232, 184, 109, ${0.15 * (1 - dist / 300)})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                });
+
+                // Draw nodes
+                nodes.forEach(node => {
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.radius * 2, 0, Math.PI * 2);
+                    ctx.fillStyle = node.color;
+                    ctx.fill();
+                });
+
+                frame++;
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Wallet Connection (works with MetaMask, Coinbase, Rainbow, etc.)
+        const walletConnectBtn = document.getElementById('walletConnectBtn');
+        const walletConnected = document.getElementById('walletConnected');
+        const walletAddressText = document.getElementById('walletAddressText');
+        const walletDisconnect = document.getElementById('walletDisconnect');
+        const myCitiesSection = document.getElementById('myCitiesSection');
+        const myCitiesGrid = document.getElementById('myCitiesGrid');
+        const myCitiesCount = document.getElementById('myCitiesCount');
+        const myCitiesEmpty = document.getElementById('myCitiesEmpty');
+
+        let connectedAddress = null;
+        const CITIES_CONTRACT = '0x7c78f67700e700b4005c8a3d920a1a99e6004800';
+        const ALCHEMY_KEY = 'demo'; // Replace with your Alchemy key for production
+
+        walletConnectBtn?.addEventListener('click', async () => {
+            if (!window.ethereum) {
+                // No wallet detected - show helpful message
+                alert('No wallet detected. Please install MetaMask, Coinbase Wallet, or Rainbow to connect.');
+                window.open('https://metamask.io/download/', '_blank');
+                return;
+            }
+
+            try {
+                walletConnectBtn.textContent = 'Connecting...';
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+                if (accounts.length > 0) {
+                    connectedAddress = accounts[0];
+                    showConnectedWallet(connectedAddress);
+                    await loadMyCities(connectedAddress);
+                }
+            } catch (err) {
+                console.error('Wallet connection failed:', err);
+                walletConnectBtn.innerHTML = '<span class="wallet-icon">◈</span><span>Connect Wallet</span>';
+            }
+        });
+
+        walletDisconnect?.addEventListener('click', () => {
+            connectedAddress = null;
+            walletConnectBtn.style.display = '';
+            walletConnected.classList.remove('visible');
+            myCitiesSection.classList.remove('visible');
+            myCitiesGrid.innerHTML = '';
+        });
+
+        function showConnectedWallet(address) {
+            const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
+            walletAddressText.textContent = shortAddress;
+            walletConnectBtn.style.display = 'none';
+            walletConnected.classList.add('visible');
+            myCitiesSection.classList.add('visible');
+        }
+
+        async function loadMyCities(address) {
+            myCitiesGrid.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Loading your Cities...</div>';
+
+            try {
+                // Use Alchemy NFT API to get owned Cities
+                const response = await fetch(
+                    `https://eth-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_KEY}/getNFTsForOwner?owner=${address}&contractAddresses[]=${CITIES_CONTRACT}&withMetadata=true`
+                );
+
+                if (!response.ok) throw new Error('Failed to fetch');
+
+                const data = await response.json();
+                const ownedNfts = data.ownedNfts || [];
+
+                if (ownedNfts.length === 0) {
+                    myCitiesGrid.innerHTML = '';
+                    myCitiesEmpty.style.display = 'block';
+                    myCitiesCount.textContent = 'You own 0 Cities';
+                    return;
+                }
+
+                myCitiesEmpty.style.display = 'none';
+                myCitiesCount.textContent = `You own ${ownedNfts.length} ${ownedNfts.length === 1 ? 'City' : 'Cities'}`;
+
+                myCitiesGrid.innerHTML = ownedNfts.map(nft => {
+                    const tokenId = nft.tokenId;
+                    const imgUrl = `https://media-proxy.artblocks.io/1/${CITIES_CONTRACT}/${tokenId}.png`;
+                    return `
+                        <div class="my-city-item" data-token="${tokenId}" onclick="goToCity(${tokenId})">
+                            <img src="${imgUrl}" alt="City #${tokenId}" loading="lazy">
+                            <span class="city-number">#${tokenId}</span>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                console.error('Failed to load Cities:', err);
+                // Fallback: Try using the existing COLLECTORS_DATA
+                const collectorData = COLLECTORS_DATA.find(c =>
+                    c.address?.toLowerCase() === address.toLowerCase()
+                );
+
+                if (collectorData && collectorData.tokens) {
+                    myCitiesEmpty.style.display = 'none';
+                    myCitiesCount.textContent = `You own ${collectorData.tokens.length} ${collectorData.tokens.length === 1 ? 'City' : 'Cities'}`;
+
+                    myCitiesGrid.innerHTML = collectorData.tokens.map(tokenId => {
+                        const imgUrl = `https://media-proxy.artblocks.io/1/${CITIES_CONTRACT}/${tokenId}.png`;
+                        return `
+                            <div class="my-city-item" data-token="${tokenId}" onclick="goToCity(${tokenId})">
+                                <img src="${imgUrl}" alt="City #${tokenId}" loading="lazy">
+                                <span class="city-number">#${tokenId}</span>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    myCitiesGrid.innerHTML = '';
+                    myCitiesEmpty.style.display = 'block';
+                    myCitiesCount.textContent = 'You own 0 Cities';
+                }
+            }
+        }
+
+        // Navigate to a specific city
+        window.goToCity = function(tokenId) {
+            // Close collectors panel
+            closeCollectorsPanel();
+            // Find the city in data and navigate to it
+            const cityIndex = CITIES_DATA.findIndex(c => c.tokenId === tokenId);
+            if (cityIndex !== -1) {
+                currentIndex = cityIndex;
+                updateDisplay(true);
+            }
+        };
+
+        // Check if wallet was previously connected
+        if (window.ethereum) {
+            window.ethereum.request({ method: 'eth_accounts' }).then(accounts => {
+                if (accounts.length > 0) {
+                    connectedAddress = accounts[0];
+                    showConnectedWallet(connectedAddress);
+                    loadMyCities(connectedAddress);
+                }
+            }).catch(() => {});
+
+            // Listen for account changes
+            window.ethereum.on?.('accountsChanged', (accounts) => {
+                if (accounts.length > 0) {
+                    connectedAddress = accounts[0];
+                    showConnectedWallet(connectedAddress);
+                    loadMyCities(connectedAddress);
+                } else {
+                    walletDisconnect?.click();
+                }
+            });
+        }
+
         // Swipe/drag to close panels
         function setupPanelSwipe(panel, direction = 'right') {
             let startX = 0, startY = 0, currentX = 0, isDragging = false;
@@ -4085,7 +5166,41 @@
             updateMatchCount();
             // Auto-pause explore when a filter is applied
             if (filter.value) stopExplore();
+            // Save filters to localStorage
+            saveFiltersToStorage();
         }));
+
+        function saveFiltersToStorage() {
+            const filters = {
+                timeOfDay: filterTime.value,
+                palette: filterPalette.value,
+                bounds: filterBounds.value,
+                traffic: filterTraffic.value,
+                line: filterLine.value,
+                render: filterRender.value,
+                zoom: filterZoom.value,
+                water: filterWater.value
+            };
+            try { localStorage.setItem('cities-filters', JSON.stringify(filters)); } catch (e) {}
+        }
+
+        function loadFiltersFromStorage() {
+            try {
+                const saved = localStorage.getItem('cities-filters');
+                if (saved) {
+                    const filters = JSON.parse(saved);
+                    if (filters.timeOfDay) filterTime.value = filters.timeOfDay;
+                    if (filters.palette) filterPalette.value = filters.palette;
+                    if (filters.bounds) filterBounds.value = filters.bounds;
+                    if (filters.traffic) filterTraffic.value = filters.traffic;
+                    if (filters.line) filterLine.value = filters.line;
+                    if (filters.render) filterRender.value = filters.render;
+                    if (filters.zoom) filterZoom.value = filters.zoom;
+                    if (filters.water) filterWater.value = filters.water;
+                    updateMatchCount();
+                }
+            } catch (e) {}
+        }
 
         document.getElementById('toggleShortcuts').addEventListener('click', () => {
             const hints = document.getElementById('keyboardHints');
@@ -4495,7 +5610,8 @@
         gridAllFavBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             showingFavoritesOnly = !showingFavoritesOnly;
-            gridAllFavBtn.textContent = showingFavoritesOnly ? 'FAVS' : 'ALL';
+            // Show opposite state as button label (what you'll switch TO)
+            gridAllFavBtn.textContent = showingFavoritesOnly ? 'ALL' : 'FAVS';
             gridAllFavBtn.classList.toggle('favorites-active', showingFavoritesOnly);
             gridPage = 1;
             renderGrid();
@@ -6106,19 +7222,659 @@
             });
         }
 
-        // Expandable sections in about modal
+        // Expandable sections in about modal (except Origins which opens timeline)
         document.querySelectorAll('.about-section-header').forEach(header => {
+            if (header.id === 'openTimeline') return; // Skip Origins
             header.addEventListener('click', () => {
                 const section = header.closest('.about-section');
                 section.classList.toggle('open');
             });
         });
 
+        // Timeline functionality
+        const timelineView = document.getElementById('timelineView');
+        const timelineClose = document.getElementById('timelineClose');
+        const openTimelineBtn = document.getElementById('openTimeline');
+        const sidebarOriginalsBtn = document.getElementById('sidebarOriginalsBtn');
+        const gridOriginalsBtn = document.getElementById('gridOriginalsBtn');
+
+        // Thank you messages that rotate on each load
+        const thankYouMessages = [
+            "To the collectors who saw something worth holding onto — you made this possible.",
+            "Every piece found its home because someone believed in the vision.",
+            "Art lives when it's collected. Thank you for giving these works a life.",
+            "From my walls to yours — grateful for every collector who took the leap.",
+            "You didn't just collect art. You supported a dream.",
+            "Three years of Cities, made real by the people who believed early.",
+            "To those who collect with their hearts — this journey is yours too."
+        ];
+
+        function openTimeline() {
+            aboutModal?.classList.remove('open');
+            timelineView.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            // Set random thank you message
+            const thanksEl = document.getElementById('thanksMessage');
+            if (thanksEl) {
+                thanksEl.textContent = thankYouMessages[Math.floor(Math.random() * thankYouMessages.length)];
+            }
+        }
+
+        // Open timeline from About modal
+        openTimelineBtn?.addEventListener('click', openTimeline);
+
+        // Open timeline from sidebar (single output mode)
+        sidebarOriginalsBtn?.addEventListener('click', openTimeline);
+
+        // Open timeline from grid header
+        gridOriginalsBtn?.addEventListener('click', openTimeline);
+
+        // Close timeline
+        timelineClose?.addEventListener('click', () => {
+            timelineView.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+
+        // Price toggle functionality (3 states: off → ETH → USD → off)
+        const priceToggle = document.getElementById('priceToggle');
+        let priceState = 0; // 0 = off, 1 = ETH, 2 = USD
+
+        priceToggle?.addEventListener('click', () => {
+            priceState = (priceState + 1) % 3;
+            timelineView.classList.remove('show-eth', 'show-usd');
+            if (priceState === 1) {
+                timelineView.classList.add('show-eth');
+            } else if (priceState === 2) {
+                timelineView.classList.add('show-usd');
+            }
+            // Update zoom view price if open
+            if (timelineZoom?.classList.contains('open')) {
+                updateZoomView(currentZoomIndex);
+            }
+        });
+
+        // Populate timeline preview grid with curated outputs - 3 rows scrolling like bricks
+        const timelinePreviewGrid = document.getElementById('timelinePreviewGrid');
+        const previewTokensRow1 = [0, 7, 23, 42, 56, 89, 112, 156, 193, 217, 267, 301, 0, 7, 23, 42];
+        const previewTokensRow2 = [15, 33, 67, 98, 134, 178, 203, 245, 289, 310, 15, 33, 67, 98];
+        const previewTokensRow3 = [5, 19, 48, 77, 101, 145, 188, 222, 256, 295, 5, 19, 48, 77];
+
+        if (timelinePreviewGrid) {
+            [previewTokensRow1, previewTokensRow2, previewTokensRow3].forEach((tokens, rowIndex) => {
+                const row = document.createElement('div');
+                row.className = `preview-row preview-row-${rowIndex + 1}`;
+                tokens.forEach(token => {
+                    const img = document.createElement('img');
+                    img.src = `${MEDIA_BASE}/${CONTRACT}/${token}.png`;
+                    img.alt = `Cities #${token}`;
+                    img.loading = 'lazy';
+                    img.addEventListener('click', () => {
+                        timelineView.classList.remove('open');
+                        document.body.style.overflow = '';
+                        currentIndex = token;
+                        updateDisplay();
+                        if (gridPanel.classList.contains('open')) {
+                            gridPanel.classList.remove('open');
+                        }
+                    });
+                    row.appendChild(img);
+                });
+                timelinePreviewGrid.appendChild(row);
+            });
+        }
+
+        // Explore Collection button - close timeline and open grid
+        const exploreCollectionBtn = document.getElementById('exploreCollectionBtn');
+        exploreCollectionBtn?.addEventListener('click', () => {
+            timelineView.classList.remove('open');
+            document.body.style.overflow = '';
+            gridPanel.classList.add('open');
+            gridPanel.setAttribute('aria-hidden', 'false');
+        });
+
+        // Collector Network Visualization - Cities-style with lines and dots
+        const networkCanvas = document.getElementById('collectorNetwork');
+        const networkContainer = document.getElementById('networkContainer');
+        const networkNamesEl = document.getElementById('networkNames');
+        let networkAnimating = false;
+
+        if (networkCanvas && networkContainer) {
+            const ctx = networkCanvas.getContext('2d');
+            const collectors = [
+                { name: 'REGINALD DE LA GRARBS', pieces: 2 },
+                { name: 'DIID', pieces: 1 },
+                { name: 'SENDROCK', pieces: 1 },
+                { name: 'COSIMO MEDICI', pieces: 1 },
+                { name: 'REDBEARD', pieces: 1 },
+                { name: 'BLONDIE', pieces: 1 },
+                { name: 'PAPERBUDDHA', pieces: 1 },
+                { name: 'EASP0RTS', pieces: 1 },
+                { name: 'ALEX ZUTTRE', pieces: 1 }
+            ];
+
+            // Populate name tags
+            collectors.forEach(c => {
+                const tag = document.createElement('span');
+                tag.className = 'network-name';
+                tag.textContent = c.name;
+                networkNamesEl.appendChild(tag);
+            });
+
+            // Colors from Cities palette
+            const colors = ['#E8B86D', '#D4A574', '#FF8C42', '#00B4FF', '#B967FF', '#FFE135'];
+            let nodes = [];
+            let centerNode = {};
+            let frame = 0;
+
+            function initNetwork() {
+                const rect = networkCanvas.getBoundingClientRect();
+                networkCanvas.width = rect.width * 2;
+                networkCanvas.height = rect.height * 2;
+                ctx.scale(2, 2);
+
+                const w = networkCanvas.width / 2;
+                const h = networkCanvas.height / 2;
+
+                nodes = collectors.map((c, i) => ({
+                    x: Math.random() * (w - 60) + 30,
+                    y: Math.random() * (h - 60) + 30,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    size: 5 + c.pieces * 4,
+                    name: c.name
+                }));
+
+                centerNode = { x: w / 2, y: h / 2, size: 14, name: 'EFDOT' };
+            }
+
+            function drawNetwork() {
+                if (!networkAnimating) return;
+
+                const w = networkCanvas.width / 2;
+                const h = networkCanvas.height / 2;
+
+                ctx.clearRect(0, 0, w, h);
+
+                // Only update every 8 frames for 8fps feel
+                if (frame % 8 === 0) {
+                    nodes.forEach(node => {
+                        node.x += node.vx;
+                        node.y += node.vy;
+
+                        // Bounce off edges
+                        if (node.x < 25 || node.x > w - 25) node.vx *= -1;
+                        if (node.y < 25 || node.y > h - 25) node.vy *= -1;
+
+                        // Slight drift toward center
+                        node.vx += (w / 2 - node.x) * 0.0002;
+                        node.vy += (h / 2 - node.y) * 0.0002;
+                    });
+                }
+
+                // Draw connections (lines) - Cities style
+                nodes.forEach((node, i) => {
+                    ctx.beginPath();
+                    ctx.moveTo(centerNode.x, centerNode.y);
+                    ctx.lineTo(node.x, node.y);
+                    ctx.strokeStyle = colors[i % colors.length] + '35';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+
+                // Draw small dots along lines (Cities signature)
+                nodes.forEach((node, i) => {
+                    const dx = node.x - centerNode.x;
+                    const dy = node.y - centerNode.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const dots = Math.floor(dist / 20);
+                    for (let d = 1; d < dots; d++) {
+                        const t = d / dots;
+                        const dotX = centerNode.x + dx * t;
+                        const dotY = centerNode.y + dy * t;
+                        // Stagger dot sizes for rhythm
+                        const dotSize = (d % 3 === 0) ? 3 : 1.5;
+                        ctx.beginPath();
+                        ctx.arc(dotX, dotY, dotSize, 0, Math.PI * 2);
+                        ctx.fillStyle = colors[i % colors.length] + '50';
+                        ctx.fill();
+                    }
+                });
+
+                // Draw some curved connecting lines between nodes
+                for (let i = 0; i < nodes.length; i++) {
+                    const next = nodes[(i + 1) % nodes.length];
+                    if (Math.abs(nodes[i].x - next.x) < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        const cpX = (nodes[i].x + next.x) / 2 + (Math.random() - 0.5) * 30;
+                        const cpY = (nodes[i].y + next.y) / 2 + (Math.random() - 0.5) * 30;
+                        ctx.quadraticCurveTo(cpX, cpY, next.x, next.y);
+                        ctx.strokeStyle = colors[i % colors.length] + '18';
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+
+                // Draw collector nodes
+                nodes.forEach((node, i) => {
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+                    ctx.fillStyle = colors[i % colors.length];
+                    ctx.fill();
+                    // Inner dot
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = '#0A0910';
+                    ctx.fill();
+                });
+
+                // Draw center node (Efdot) - larger with ring
+                ctx.beginPath();
+                ctx.arc(centerNode.x, centerNode.y, centerNode.size, 0, Math.PI * 2);
+                ctx.fillStyle = '#fff';
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(centerNode.x, centerNode.y, centerNode.size - 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#0A0910';
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(centerNode.x, centerNode.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#E8B86D';
+                ctx.fill();
+
+                frame++;
+                requestAnimationFrame(drawNetwork);
+            }
+
+            // Click to activate
+            networkContainer.addEventListener('click', () => {
+                if (!networkAnimating) {
+                    networkContainer.classList.add('active');
+                    networkAnimating = true;
+                    initNetwork();
+                    drawNetwork();
+                }
+            });
+
+            // Also allow clicking title
+            document.querySelector('.timeline-network-title')?.addEventListener('click', () => {
+                if (!networkAnimating) {
+                    networkContainer.classList.add('active');
+                    networkAnimating = true;
+                    initNetwork();
+                    drawNetwork();
+                }
+            });
+        }
+
+        // Email capture form
+        const emailForm = document.getElementById('emailCaptureForm');
+        emailForm?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            // Open ConvertKit/Substack subscription in new tab
+            // Replace with your actual ConvertKit form URL
+            window.open(`https://efdot.substack.com/subscribe?email=${encodeURIComponent(email)}`, '_blank');
+            document.getElementById('emailInput').value = '';
+            showStatus('Redirecting to subscribe...', 'success');
+        });
+
+        // Timeline Zoom View
+        const timelineZoom = document.getElementById('timelineZoom');
+        const timelineZoomClose = document.getElementById('timelineZoomClose');
+        const timelineZoomPrev = document.getElementById('timelineZoomPrev');
+        const timelineZoomNext = document.getElementById('timelineZoomNext');
+        const timelineZoomArtwork = document.getElementById('timelineZoomArtwork');
+        const timelineZoomTitle = document.getElementById('timelineZoomTitle');
+        const timelineZoomYear = document.getElementById('timelineZoomYear');
+        const timelineZoomDesc = document.getElementById('timelineZoomDesc');
+        const timelineZoomProvenance = document.getElementById('timelineZoomProvenance');
+        const timelineZoomStrip = document.getElementById('timelineZoomStrip');
+
+        // Collect all zoomable timeline items
+        const zoomableItems = Array.from(document.querySelectorAll('.timeline-item[data-title]')).filter(item => {
+            // Exclude italy grid, culmination, and physicals section
+            return !item.classList.contains('italy') && !item.classList.contains('culmination') && !item.classList.contains('physicals-section');
+        });
+        let currentZoomIndex = 0;
+
+        // Print links for pieces that have prints available
+        // type: 'poster' = open edition museum poster, 'edition' = signed/numbered screen print
+        // remaining: number left for limited editions
+        const printLinks = {
+            'Street View': { url: 'https://shop.efdotstudio.com/products/street-view-print', type: 'poster' },
+            'Traffic on the Avenue': { url: 'https://shop.efdotstudio.com/products/traffic-on-the-avenue-print', type: 'poster' },
+            'Roundabout': { url: 'https://shop.efdotstudio.com/products/roundabout-print', type: 'poster' },
+            'Silent Skyline': { url: 'https://shop.efdotstudio.com/products/silent-skyline-print', type: 'poster' },
+            'Midnight In Manhattan': { url: 'https://shop.efdotstudio.com/products/midnight-in-manhattan-print', type: 'poster' },
+            'You Are Here': { url: 'https://shop.efdotstudio.com/products/you-are-here-print', type: 'edition', remaining: 2 },
+            'Sweet Streets': { url: 'https://shop.efdotstudio.com/products/sweet-streets-print', type: 'edition', remaining: 8 },
+            'Soft Swerve': { url: 'https://shop.efdotstudio.com/products/soft-swerve-print', type: 'edition', remaining: 7 }
+        };
+
+        const timelineZoomPrice = document.getElementById('timelineZoomPrice');
+        const timelineZoomPrint = document.getElementById('timelineZoomPrint');
+
+        function updateZoomView(index) {
+            const item = zoomableItems[index];
+            if (!item) return;
+
+            const imgEl = item.querySelector('img');
+            const imgSrc = imgEl ? imgEl.src : (item.dataset.img || '');
+            const title = item.dataset.title || '';
+            const year = item.querySelector('.timeline-item-year')?.textContent || '';
+            const desc = item.querySelector('.timeline-item-desc')?.textContent || '';
+            const provenanceEl = item.querySelector('.timeline-provenance');
+            const link = item.dataset.link || '';
+
+            timelineZoomArtwork.src = imgSrc;
+            timelineZoomTitle.textContent = title;
+            timelineZoomYear.textContent = year;
+            timelineZoomDesc.textContent = desc;
+
+            if (provenanceEl) {
+                const name = provenanceEl.querySelector('.provenance-name')?.textContent || '';
+                const ethPrice = provenanceEl.querySelector('.provenance-price.eth')?.textContent || '';
+                const usdPrice = provenanceEl.querySelector('.provenance-price.usd')?.textContent || '';
+                timelineZoomProvenance.innerHTML = name ? `<a href="${link}" target="_blank">⟐</a> ${name}` : '';
+
+                // Show price based on current toggle state
+                timelineZoomPrice.className = 'timeline-zoom-price';
+                if (ethPrice && timelineView.classList.contains('show-eth')) {
+                    timelineZoomPrice.textContent = ethPrice.replace('·', '').trim();
+                    timelineZoomPrice.classList.add('has-eth');
+                    timelineZoomPrice.style.display = 'block';
+                } else if (usdPrice && timelineView.classList.contains('show-usd')) {
+                    timelineZoomPrice.textContent = usdPrice.replace('·', '').trim();
+                    timelineZoomPrice.classList.add('has-usd');
+                    timelineZoomPrice.style.display = 'block';
+                } else {
+                    timelineZoomPrice.style.display = 'none';
+                }
+            } else {
+                timelineZoomProvenance.innerHTML = '';
+                timelineZoomPrice.style.display = 'none';
+            }
+
+            // Show print button if print available
+            if (printLinks[title]) {
+                const printInfo = printLinks[title];
+                timelineZoomPrint.href = printInfo.url;
+                if (printInfo.type === 'edition') {
+                    const remainingText = printInfo.remaining ? ` · ${printInfo.remaining} left` : '';
+                    timelineZoomPrint.innerHTML = `✎ Signed Edition${remainingText}`;
+                } else {
+                    timelineZoomPrint.innerHTML = '🖼 Poster Available';
+                }
+                timelineZoomPrint.classList.add('visible');
+            } else {
+                timelineZoomPrint.classList.remove('visible');
+            }
+
+            // Show Make Offer button for collected 1/1s
+            const timelineZoomOffer = document.getElementById('timelineZoomOffer');
+            if (timelineZoomOffer && provenanceEl && link) {
+                timelineZoomOffer.href = link;
+                timelineZoomOffer.classList.add('visible');
+            } else if (timelineZoomOffer) {
+                timelineZoomOffer.classList.remove('visible');
+            }
+
+            // Update thumbnails
+            document.querySelectorAll('.timeline-zoom-thumb').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+
+            currentZoomIndex = index;
+        }
+
+        function openZoomView(index) {
+            // Build thumbnail strip if empty
+            if (timelineZoomStrip.children.length === 0) {
+                zoomableItems.forEach((item, i) => {
+                    const imgEl = item.querySelector('img');
+                    const src = imgEl ? imgEl.src : (item.dataset.img || '');
+                    const thumb = document.createElement('img');
+                    thumb.src = src;
+                    thumb.className = 'timeline-zoom-thumb';
+                    thumb.addEventListener('click', () => updateZoomView(i));
+                    timelineZoomStrip.appendChild(thumb);
+                });
+            }
+
+            updateZoomView(index);
+            timelineZoom.classList.add('open');
+        }
+
+        // Add share/action buttons to timeline items
+        zoomableItems.forEach((item) => {
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'timeline-item-actions';
+
+            const title = item.dataset.title || '';
+            const link = item.dataset.link || '';
+            const imgEl = item.querySelector('img');
+            const imgSrc = imgEl ? imgEl.src : '';
+
+            // Share button
+            const shareBtn = document.createElement('button');
+            shareBtn.className = 'timeline-action-btn';
+            shareBtn.innerHTML = '↗';
+            shareBtn.title = 'Share';
+            shareBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const shareText = `${title} by @eaboricua — part of the Cities collection`;
+                if (navigator.share) {
+                    navigator.share({ title, text: shareText, url: link || window.location.href });
+                } else {
+                    navigator.clipboard.writeText(link || window.location.href);
+                    showStatus('Link copied!', 'success');
+                }
+            });
+
+            // Download button (if image available)
+            if (imgSrc) {
+                const downloadBtn = document.createElement('button');
+                downloadBtn.className = 'timeline-action-btn';
+                downloadBtn.innerHTML = '↓';
+                downloadBtn.title = 'Save image';
+                downloadBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const a = document.createElement('a');
+                    a.href = imgSrc;
+                    a.download = `${title.replace(/\s+/g, '-').toLowerCase()}.png`;
+                    a.target = '_blank';
+                    a.click();
+                });
+                actionsDiv.appendChild(downloadBtn);
+            }
+
+            actionsDiv.appendChild(shareBtn);
+            item.appendChild(actionsDiv);
+        });
+
+        // Timeline item clicks - open zoom view
+        zoomableItems.forEach((item, index) => {
+            item.addEventListener('click', (e) => {
+                // Don't open zoom if clicking provenance link or action buttons
+                if (e.target.closest('.provenance-link') || e.target.closest('.timeline-action-btn')) return;
+                openZoomView(index);
+            });
+        });
+
+        // Zoom navigation
+        timelineZoomClose?.addEventListener('click', () => timelineZoom.classList.remove('open'));
+        timelineZoomPrev?.addEventListener('click', () => {
+            const newIndex = (currentZoomIndex - 1 + zoomableItems.length) % zoomableItems.length;
+            updateZoomView(newIndex);
+            document.getElementById('loupe')?.classList.remove('visible');
+        });
+        timelineZoomNext?.addEventListener('click', () => {
+            const newIndex = (currentZoomIndex + 1) % zoomableItems.length;
+            updateZoomView(newIndex);
+            document.getElementById('loupe')?.classList.remove('visible');
+        });
+
+        // Zoom view share/download buttons
+        const zoomShareBtn = document.getElementById('zoomShareBtn');
+        const zoomDownloadBtn = document.getElementById('zoomDownloadBtn');
+
+        zoomShareBtn?.addEventListener('click', () => {
+            const item = zoomableItems[currentZoomIndex];
+            const title = item?.dataset.title || 'Cities artwork';
+            const link = item?.dataset.link || window.location.href;
+            const shareText = `${title} by @eaboricua — part of the Cities collection`;
+            if (navigator.share) {
+                navigator.share({ title, text: shareText, url: link });
+            } else {
+                navigator.clipboard.writeText(link);
+                showStatus('Link copied!', 'success');
+            }
+        });
+
+        zoomDownloadBtn?.addEventListener('click', () => {
+            const item = zoomableItems[currentZoomIndex];
+            const title = item?.dataset.title || 'artwork';
+            const imgSrc = timelineZoomArtwork.src;
+            if (imgSrc) {
+                const a = document.createElement('a');
+                a.href = imgSrc;
+                a.download = `${title.replace(/\s+/g, '-').toLowerCase()}.png`;
+                a.target = '_blank';
+                a.click();
+            }
+        });
+
+        // Magnifying Loupe functionality
+        const loupeBtn = document.getElementById('loupeBtn');
+        const loupe = document.getElementById('loupe');
+        const loupeInner = document.getElementById('loupeInner');
+        const zoomMain = document.querySelector('.timeline-zoom-main');
+        let loupeActive = false;
+        const loupeZoom = 3; // 3x magnification
+        const loupeSize = 180;
+
+        loupeBtn?.addEventListener('click', () => {
+            loupeActive = !loupeActive;
+            loupeBtn.classList.toggle('active', loupeActive);
+            if (!loupeActive) {
+                loupe.classList.remove('visible');
+            }
+        });
+
+        // Update loupe on mouse move over artwork
+        timelineZoomArtwork?.addEventListener('mousemove', (e) => {
+            if (!loupeActive) return;
+
+            const rect = timelineZoomArtwork.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Position loupe at cursor
+            loupe.style.left = `${e.clientX - loupeSize / 2}px`;
+            loupe.style.top = `${e.clientY - loupeSize / 2}px`;
+
+            // Calculate background position for zoom
+            const bgX = (x / rect.width) * 100;
+            const bgY = (y / rect.height) * 100;
+
+            loupeInner.style.backgroundImage = `url(${timelineZoomArtwork.src})`;
+            loupeInner.style.backgroundSize = `${rect.width * loupeZoom}px ${rect.height * loupeZoom}px`;
+            loupeInner.style.backgroundPosition = `${bgX}% ${bgY}%`;
+
+            loupe.classList.add('visible');
+        });
+
+        timelineZoomArtwork?.addEventListener('mouseenter', () => {
+            if (loupeActive) {
+                timelineZoomArtwork.style.cursor = 'none';
+            }
+        });
+
+        timelineZoomArtwork?.addEventListener('mouseleave', () => {
+            loupe.classList.remove('visible');
+            timelineZoomArtwork.style.cursor = loupeActive ? 'crosshair' : 'default';
+        });
+
+        // Reset loupe when changing artwork
+        const originalUpdateZoomView = window.updateZoomView;
+        const resetLoupe = () => {
+            loupe.classList.remove('visible');
+        };
+
+        // Disable loupe when closing zoom view
+        timelineZoomClose?.addEventListener('click', () => {
+            loupeActive = false;
+            loupeBtn?.classList.remove('active');
+            loupe.classList.remove('visible');
+        });
+
+        // Keyboard navigation for zoom
+        document.addEventListener('keydown', (e) => {
+            if (!timelineZoom.classList.contains('open')) return;
+            if (e.key === 'Escape') timelineZoom.classList.remove('open');
+            if (e.key === 'ArrowLeft') timelineZoomPrev?.click();
+            if (e.key === 'ArrowRight') timelineZoomNext?.click();
+        });
+
+        // Italy grid click - go to Ninfa
+        document.querySelector('.timeline-item.italy')?.addEventListener('click', () => {
+            window.open('https://citiesitaly.ninfa.io/', '_blank');
+        });
+
         // Close about modal with ESC
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && aboutModal?.classList.contains('open')) {
-                aboutModal.classList.remove('open');
+            if (e.key === 'Escape') {
+                const lightbox = document.getElementById('originsLightbox');
+                if (lightbox?.classList.contains('open')) {
+                    lightbox.classList.remove('open');
+                } else if (timelineView?.classList.contains('open')) {
+                    timelineView.classList.remove('open');
+                    document.body.style.overflow = '';
+                } else if (aboutModal?.classList.contains('open')) {
+                    aboutModal.classList.remove('open');
+                }
             }
+        });
+
+        // Origins Lightbox functionality
+        const originsLightbox = document.getElementById('originsLightbox');
+        const originsLightboxImg = document.getElementById('originsLightboxImg');
+        const originsLightboxTitle = document.getElementById('originsLightboxTitle');
+        const originsLightboxYear = document.getElementById('originsLightboxYear');
+        const originsLightboxPrice = document.getElementById('originsLightboxPrice');
+        const originsLightboxBtn = document.getElementById('originsLightboxBtn');
+        const originsLightboxClose = document.getElementById('originsLightboxClose');
+
+        // Close lightbox
+        originsLightboxClose?.addEventListener('click', () => {
+            originsLightbox.classList.remove('open');
+        });
+
+        originsLightbox?.addEventListener('click', (e) => {
+            if (e.target === originsLightbox) {
+                originsLightbox.classList.remove('open');
+            }
+        });
+
+        // Physical items lightbox
+        document.querySelectorAll('.physical-item[data-img]').forEach(item => {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const img = item.dataset.img;
+                const title = item.dataset.title;
+                const price = item.dataset.price || '';
+                const link = item.dataset.link;
+
+                originsLightboxImg.src = img;
+                originsLightboxTitle.textContent = title;
+                originsLightboxYear.textContent = 'Original Artwork';
+                originsLightboxPrice.textContent = price;
+                originsLightboxBtn.href = link;
+                originsLightboxBtn.textContent = 'View in Shop';
+                originsLightbox.classList.add('open');
+            });
         });
 
 
