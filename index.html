@@ -1534,6 +1534,16 @@
         .gallery-room-toggle { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: all 0.3s ease; opacity: 0.5; }
         .gallery-room-toggle:hover { opacity: 1; }
 
+        /* Search button in grid */
+        .grid-search-btn { width: 32px; height: 32px; background: transparent; border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+        .grid-search-btn:hover, .grid-search-btn.active { background: var(--bg-input); color: var(--text); border-color: var(--text-muted); }
+        .grid-search-container { display: none; align-items: center; gap: 8px; }
+        .grid-search-container.open { display: flex; }
+        .grid-search-input { background: var(--bg-input); border: 1px solid var(--border); border-radius: 20px; padding: 8px 16px; color: var(--text); font-size: 14px; width: 100px; font-family: inherit; }
+        .grid-search-input:focus { outline: none; border-color: var(--teal); }
+        .grid-search-clear { background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; padding: 4px 8px; }
+        .grid-search-clear:hover { color: var(--text); }
+
     </style>
 </head>
 <body>
@@ -1829,6 +1839,11 @@
                 <button class="grid-mode-btn active" data-mode="palette" id="paletteColorToggle">BY PALETTE</button>
                 <button class="grid-mode-btn collectors-btn" id="gridCollectorsBtn">COLLECTORS</button>
                 <button class="gallery-room-toggle" id="galleryRoomToggle" title="Enter immersive gallery">👁</button>
+                <button class="grid-search-btn" id="gridSearchBtn" title="Search by token number">🔍</button>
+                <div class="grid-search-container" id="gridSearchContainer">
+                    <input type="text" class="grid-search-input" id="gridSearchInput" placeholder="Token #..." maxlength="3">
+                    <button class="grid-search-clear" id="gridSearchClear" title="Clear">×</button>
+                </div>
                 <button class="grid-originals-btn" id="gridOriginalsBtn" title="Originals">
                     <span class="originals-icon">✍</span>
                     <span class="originals-label">Originals</span>
@@ -7225,6 +7240,44 @@
 
         // Open timeline from sidebar (single output mode)
         sidebarOriginalsBtn?.addEventListener('click', openTimeline);
+
+        // Search button in grid
+        const gridSearchBtn = document.getElementById('gridSearchBtn');
+        const gridSearchContainer = document.getElementById('gridSearchContainer');
+        const gridSearchInput = document.getElementById('gridSearchInput');
+        const gridSearchClear = document.getElementById('gridSearchClear');
+
+        gridSearchBtn?.addEventListener('click', () => {
+            gridSearchContainer.classList.toggle('open');
+            gridSearchBtn.classList.toggle('active');
+            if (gridSearchContainer.classList.contains('open')) {
+                gridSearchInput.focus();
+            }
+        });
+
+        gridSearchInput?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const val = gridSearchInput.value.trim();
+                const tokenId = parseInt(val);
+                if (!isNaN(tokenId) && tokenId >= 0 && tokenId <= MAX_TOKEN) {
+                    gridPanel.classList.remove('open');
+                    document.body.classList.remove('grid-open');
+                    loadOutput(tokenId, true);
+                    gridSearchInput.value = '';
+                    gridSearchContainer.classList.remove('open');
+                    gridSearchBtn.classList.remove('active');
+                }
+            } else if (e.key === 'Escape') {
+                gridSearchInput.value = '';
+                gridSearchContainer.classList.remove('open');
+                gridSearchBtn.classList.remove('active');
+            }
+        });
+
+        gridSearchClear?.addEventListener('click', () => {
+            gridSearchInput.value = '';
+            gridSearchInput.focus();
+        });
 
         // Open timeline from grid header
         gridOriginalsBtn?.addEventListener('click', openTimeline);
