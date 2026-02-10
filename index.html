@@ -292,7 +292,8 @@
 
         /* Collapsible filters */
         .filters-toggle { display: flex; justify-content: space-between; align-items: center; padding: 10px 18px; background: var(--bg-input); border-radius: 50px; cursor: pointer; margin-bottom: 10px; }
-        .filters-toggle span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+        .filters-toggle span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); transition: color 0.2s ease; }
+        .filters-section:not(.collapsed) .filters-toggle span { color: var(--warm); }
         .filters-toggle .toggle-icon { transition: transform 0.2s; }
         .filters-section.collapsed .filters-toggle .toggle-icon { transform: rotate(-90deg); }
         .filters-section.collapsed .filters-content { display: none; }
@@ -301,7 +302,8 @@
         /* Metadata section collapsible */
         .metadata-section { margin-bottom: 8px; }
         .metadata-toggle { display: flex; justify-content: space-between; align-items: center; padding: 10px 18px; background: var(--bg-input); border-radius: 50px; cursor: pointer; margin-bottom: 8px; }
-        .metadata-toggle span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+        .metadata-toggle span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); transition: color 0.2s ease; }
+        .metadata-section:not(.collapsed) .metadata-toggle span { color: var(--warm); }
         .metadata-toggle .toggle-icon { transition: transform 0.2s; }
         .metadata-section.collapsed .metadata-toggle .toggle-icon { transform: rotate(-90deg); }
         .metadata-section.collapsed .metadata-content { display: none; }
@@ -417,13 +419,15 @@
         .btn-inspect:hover { border-color: var(--teal); color: var(--teal); }
 
         /* About Modal */
-        .about-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.97); z-index: 2500; display: none; align-items: flex-start; justify-content: center; backdrop-filter: blur(20px); overflow-y: auto; padding: 40px 20px; cursor: pointer; }
+        .about-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.97); z-index: 2500; display: none; align-items: flex-start; justify-content: center; backdrop-filter: blur(20px); overflow-y: auto; padding: 40px 20px 80px; cursor: pointer; }
         .about-modal.open { display: flex; }
         .about-close { position: fixed; top: 20px; right: 20px; background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.6); width: 40px; height: 40px; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
         .about-close:hover { background: #fff; border-color: #fff; color: #000; }
         .about-content { max-width: 560px; width: 100%; text-align: left; cursor: default; }
         .about-title { font-size: 36px; font-weight: 700; text-transform: none; letter-spacing: 0.02em; margin-bottom: 8px; color: #fff; font-family: Helvetica, Arial, sans-serif; }
         .about-collab { font-size: 11px; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.05em; text-transform: uppercase; }
+        .about-collab a { color: var(--warm); text-decoration: none; transition: color 0.2s ease; }
+        .about-collab a:hover { color: var(--orange); }
         .about-intro { font-size: 15px; line-height: 1.8; color: var(--text-dim); margin-bottom: 28px; max-width: 100%; }
         .about-video { position: relative; width: 100%; padding-bottom: 56.25%; margin-bottom: 28px; border-radius: 8px; overflow: hidden; }
         .about-video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
@@ -444,8 +448,8 @@
         .about-artist a { color: var(--teal); text-decoration: none; }
         .about-artist a:hover { text-decoration: underline; }
         .about-artist-links { margin-top: 8px; display: flex; gap: 12px; }
-        .about-artist-links a { font-size: 11px; color: var(--text-muted); text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; }
-        .about-artist-links a:hover { color: var(--text); }
+        .about-artist-links a { font-size: 11px; color: rgba(232, 184, 109, 0.5); text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.2s ease; }
+        .about-artist-links a:hover { color: var(--warm); }
         .about-shortcuts { text-align: center; margin: 20px 0; padding: 12px; background: var(--bg-input); border-radius: 8px; }
         .about-shortcut-hint { font-size: 11px; color: var(--text-muted); }
         .about-shortcut-hint kbd { display: inline-block; padding: 2px 8px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; font-family: monospace; font-size: 12px; color: var(--text); }
@@ -990,10 +994,9 @@
 
         /* Same Palette Owners - inline in same palette section */
         .same-palette-owners { margin-top: 8px; font-size: 9px; color: var(--text-muted); line-height: 1.5; }
-        .same-palette-owners-label { font-weight: 600; color: var(--text-dim); }
+        .same-palette-owners-label { font-weight: 600; color: var(--text-dim); margin-right: 4px; }
         .same-palette-owner { cursor: pointer; transition: color 0.2s ease; }
         .same-palette-owner:hover { color: var(--warm); }
-        .same-palette-section.collapsed .same-palette-owners { display: none; }
 
         /* Same Palette Cities section (Neighbors) - collapsible */
         .same-palette-section { margin: 12px 0; }
@@ -1133,7 +1136,7 @@
         /* Time of Day Color Picker */
         .time-color-picker { margin: 16px 0 12px; }
         .time-color-label { display: block; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; }
-        .time-color-gradient { height: 24px; border-radius: 12px; background: linear-gradient(to right, #1a1a3a 0%, #4a3a6a 10%, #ff9966 20%, #ffcc66 35%, #87ceeb 50%, #ffaa55 65%, #ff6644 80%, #3a2a5a 90%, #1a1a3a 100%); cursor: pointer; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
+        .time-color-gradient { height: 24px; border-radius: 12px; background: linear-gradient(to right, #1a1a3a 0%, #2a2a4a 10%, #ff9966 20%, #ffdd88 30%, #87ceeb 45%, #ffcc77 60%, #ff7755 75%, #6a4a7a 90%, #1a1a3a 100%); cursor: pointer; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
         .time-color-marker { position: absolute; width: 8px; height: 32px; background: #fff; border-radius: 4px; top: -4px; transform: translateX(-50%); box-shadow: 0 2px 8px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
         .time-color-gradient:hover .time-color-marker, .time-color-gradient.active .time-color-marker { opacity: 1; }
         .time-color-gradient.active { box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 2px var(--teal); }
@@ -1271,19 +1274,18 @@
         .leaderboard-list { list-style: none; }
         .leaderboard-btn.back-btn { margin-bottom: 24px; }
         .leaderboard-item { margin-bottom: 12px; display: flex; gap: 10px; align-items: center; }
-        .leaderboard-chips-wrap { flex-shrink: 0; }
+        .leaderboard-name-wrap { flex-shrink: 0; min-width: 120px; display: flex; align-items: center; gap: 6px; }
+        .leaderboard-rank { font-size: 9px; font-weight: 600; color: var(--border); width: 18px; opacity: 0; transition: opacity 0.2s ease; flex-shrink: 0; }
+        .leaderboard-item:hover .leaderboard-rank { opacity: 1; }
+        .leaderboard-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; transition: transform 0.2s ease-out, color 0.2s ease; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        .leaderboard-item:hover .leaderboard-name { transform: rotate(-1.5deg) translateX(2px); color: var(--yellow) !important; }
+        .leaderboard-chips-wrap { flex: 1; display: flex; justify-content: flex-end; }
         .leaderboard-chips { display: flex; gap: 2px; border-radius: 4px; overflow: hidden; transition: gap 0.2s ease; }
         .leaderboard-chip { width: 18px; aspect-ratio: 9/16; border-radius: 2px; overflow: hidden; transition: all 0.2s ease; }
         .leaderboard-chip img { width: 100%; height: 100%; object-fit: cover; }
         .leaderboard-item:hover .leaderboard-chips { gap: 3px; }
         .leaderboard-item:hover .leaderboard-chip { width: 28px; border-radius: 3px; }
-        .leaderboard-item-info { flex: 1; min-width: 0; }
-        .leaderboard-item-header { display: flex; align-items: center; gap: 8px; }
-        .leaderboard-rank { font-size: 9px; font-weight: 600; color: var(--border); width: 18px; opacity: 0; transition: opacity 0.2s ease; flex-shrink: 0; }
-        .leaderboard-item:hover .leaderboard-rank { opacity: 1; }
-        .leaderboard-name { flex: 1; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; transition: transform 0.2s ease-out, color 0.2s ease; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .leaderboard-item:hover .leaderboard-name { transform: rotate(-1.5deg) translateX(2px); color: var(--yellow) !important; }
-        .leaderboard-count { font-size: 11px; font-weight: 800; color: var(--teal); flex-shrink: 0; }
+        .leaderboard-count { font-size: 11px; font-weight: 800; color: var(--teal); flex-shrink: 0; min-width: 24px; text-align: right; }
 
         .loading-bar-container { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: var(--bg-panel); z-index: 1000; opacity: 0; transition: opacity 0.3s; }
         .loading-bar-container.visible { opacity: 1; }
@@ -1453,10 +1455,12 @@
         }
         .wall-view-modal.dark-mode .wall-view-mode-toggle { border-color: #333; color: #666; }
         .wall-view-modal.dark-mode .wall-view-mode-toggle:hover { background: #fff; border-color: #fff; color: #000; }
-        .wall-view-back-btn { background: none; border: 1px solid #ddd; color: #999; padding: 6px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+        .wall-view-back-btn { background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.15); color: #666; padding: 6px 14px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
         .wall-view-back-btn:hover { background: #333; border-color: #333; color: #fff; }
-        .wall-view-modal.dark-mode .wall-view-back-btn { border-color: #444; color: #888; }
-        .wall-view-modal.dark-mode .wall-view-back-btn:hover { background: #fff; border-color: #fff; color: #000; }
+        .wall-view-modal.dark-mode .wall-view-back-btn, .wall-view-modal.wall-black .wall-view-back-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
+        .wall-view-modal.dark-mode .wall-view-back-btn:hover, .wall-view-modal.wall-black .wall-view-back-btn:hover { background: #fff; border-color: #fff; color: #000; }
+        .wall-view-mint-btn { padding: 4px 8px; }
+        .wall-view-mint-btn .mint-letter { height: 18px; }
         .wall-view-close { background: none; border: 1px solid #ddd; color: #999; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .wall-view-close:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-close { border-color: #333; color: #666; }
@@ -1533,11 +1537,17 @@
         .wall-view-grid-nudge-text span { color: #fff; font-weight: 700; }
         .wall-view-grid-nudge-text .grid-count { color: #c9a227; }
         /* Collector suggestion section */
-        .wall-view-tips-toggle { position: fixed; bottom: 80px; right: 24px; width: 44px; height: 44px; border-radius: 8px; background: rgba(30,30,35,0.9); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 23; transition: all 0.2s ease; }
-        .wall-view-tips-toggle.has-tips { display: flex; }
-        .wall-view-tips-toggle:hover { background: rgba(50,50,55,0.95); border-color: rgba(255,255,255,0.2); transform: scale(1.05); }
+        .wall-view-tips-toggle { position: fixed; bottom: 130px; right: 24px; width: 44px; height: 44px; border-radius: 8px; background: rgba(30,30,35,0.9); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 23; transition: all 0.2s ease; }
+        .wall-view-tips-toggle.has-tips { display: flex; animation: tipsGlow 10s ease-in-out infinite; }
+        .wall-view-tips-toggle:hover { background: rgba(50,50,55,0.95); border-color: rgba(255,255,255,0.2); transform: scale(1.05); animation: none; }
         .wall-view-tips-toggle .tips-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; font-size: 10px; line-height: 1; }
-        .wall-view-suggestion { position: fixed; bottom: 140px; right: 24px; background: rgba(30,30,35,0.95); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px 24px; display: none; flex-direction: column; gap: 12px; z-index: 24; backdrop-filter: blur(12px); max-width: 340px; text-align: center; transform: none; left: auto; }
+        @keyframes tipsGlow {
+            0%, 85% { box-shadow: none; transform: scale(1); }
+            90% { box-shadow: 0 0 12px rgba(201, 162, 39, 0.5); transform: scale(1.08); border-color: rgba(201, 162, 39, 0.5); }
+            95% { box-shadow: 0 0 8px rgba(201, 162, 39, 0.3); transform: scale(1.04); }
+            100% { box-shadow: none; transform: scale(1); }
+        }
+        .wall-view-suggestion { position: fixed; bottom: 190px; right: 24px; background: rgba(30,30,35,0.95); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px 24px; display: none; flex-direction: column; gap: 12px; z-index: 24; backdrop-filter: blur(12px); max-width: 340px; text-align: center; transform: none; left: auto; }
         .wall-view-suggestion.visible { display: flex; }
         .wall-view-suggestion-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.5); }
         .wall-view-suggestion-text { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.5; }
@@ -1609,6 +1619,23 @@
         .try-city-picker-thumb { cursor: pointer; transition: all 0.2s; border-radius: 3px; overflow: hidden; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .try-city-picker-thumb:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
         .try-city-picker-thumb img { width: 56px; height: 100px; object-fit: cover; display: block; }
+        .try-city-picker-energy-filters { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; justify-content: center; }
+        .try-city-picker-energy-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 6px 12px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.2s; }
+        .try-city-picker-energy-btn:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+        .try-city-picker-energy-btn.active { background: rgba(201, 162, 39, 0.2); border-color: rgba(201, 162, 39, 0.5); color: #c9a227; }
+        .try-city-picker-energy-btn.recommended { position: relative; }
+        .try-city-picker-energy-btn.recommended::after { content: '★'; position: absolute; top: -4px; right: -4px; font-size: 8px; color: #c9a227; }
+        .try-city-picker-section-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 10px; text-align: center; }
+        .try-city-picker-tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
+        .try-city-picker-tab { flex: 1; background: none; border: none; padding: 8px 4px; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.2s; border-bottom: 2px solid transparent; margin-bottom: -13px; }
+        .try-city-picker-tab:hover { color: rgba(255,255,255,0.7); }
+        .try-city-picker-tab.active { color: #c9a227; border-bottom-color: #c9a227; }
+        .try-city-picker-tab-content { display: none; min-height: 120px; }
+        .try-city-picker-tab-content.active { display: block; }
+        .try-city-picker-smart-row { margin-bottom: 16px; }
+        .try-city-picker-smart-label { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .try-city-picker-smart-label .label-icon { color: #c9a227; }
+        .try-city-picker-smart-cities { display: flex; gap: 6px; flex-wrap: wrap; }
         .wall-view-frame { width: 100%; background: #e8e4dc; padding: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 8px 40px rgba(0,0,0,0.06); position: relative; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; box-sizing: border-box; }
         .wall-view-frame:hover { transform: scale(1.02); box-shadow: 0 8px 30px rgba(0,0,0,0.15), 0 12px 50px rgba(0,0,0,0.1); z-index: 5; }
         .wall-view-modal.dark-mode .wall-view-frame { background: #1a1a1a; box-shadow: 0 4px 30px rgba(0,0,0,0.4), 0 8px 50px rgba(0,0,0,0.3); }
@@ -1664,7 +1691,8 @@
         .print-inquiry-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer; line-height: 1; padding: 4px; }
         .print-inquiry-close:hover { color: #fff; }
         .print-inquiry-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .print-inquiry-subtitle { font-size: 11px; color: #888; margin-bottom: 24px; line-height: 1.5; }
+        .print-inquiry-subtitle { font-size: 11px; color: #888; margin-bottom: 12px; line-height: 1.5; }
+        .print-inquiry-note { font-size: 10px; color: #666; margin-bottom: 20px; line-height: 1.5; font-style: italic; padding: 10px 12px; background: rgba(201, 162, 39, 0.08); border-left: 2px solid rgba(201, 162, 39, 0.4); border-radius: 0 6px 6px 0; }
         .print-inquiry-field { margin-bottom: 16px; }
         .print-inquiry-field label { display: block; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 6px; }
         .print-inquiry-field input, .print-inquiry-field textarea, .print-inquiry-field select { width: 100%; padding: 12px 14px; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 13px; font-family: inherit; }
@@ -1812,6 +1840,11 @@
         .grid-group-header:hover .grid-group-swatches { gap: 3px; }
         .grid-group-header:hover .grid-group-swatches span { width: 14px; border-radius: 3px; }
         .grid-group-name { flex: 1; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); cursor: pointer; user-select: none; }
+        .collector-group .collector-name:hover { color: var(--yellow); }
+        .collector-rank { font-size: 10px; font-weight: 700; color: var(--text-muted); padding: 2px 8px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .collector-rank.rank-1 { background: linear-gradient(135deg, #c9a227, #ffe135); color: #000; }
+        .collector-rank.rank-2 { background: linear-gradient(135deg, #8a8a8a, #c0c0c0); color: #000; }
+        .collector-rank.rank-3 { background: linear-gradient(135deg, #8b5a2b, #cd7f32); color: #fff; }
         .grid-group-blurb { display: none; font-size: 11px; color: var(--text-dim); font-weight: 400; text-transform: none; letter-spacing: 0.02em; padding: 12px 16px; margin: -8px 0 8px 0; font-style: italic; border-left: 2px solid var(--warm); margin-left: 52px; }
         .grid-group-blurb.visible { display: block; }
         .grid-group-collectors { display: flex; gap: 6px; align-items: center; flex-shrink: 1; overflow: hidden; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; margin-left: auto; }
@@ -2441,8 +2474,15 @@
             <div class="pairs-well-grid" id="pairsWellGrid"></div>
         </div>
 
-        <div class="city-note" id="cityNote">
-            <textarea id="cityNoteInput" placeholder="Add a note..." rows="1"></textarea>
+        <div class="metadata-section collapsed" id="metadataSection">
+            <div class="metadata-toggle" id="metadataToggle">
+                <span>METADATA</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="metadata-content">
+                <div id="traitsDisplay" class="traits-display">LOADING...</div>
+                <button class="btn btn-inspect btn-sm" id="inspectPalette" style="margin-top: 10px;">INSPECT PALETTE</button>
+            </div>
         </div>
 
         <div class="filters-section collapsed" id="filtersSection">
@@ -2491,12 +2531,13 @@
                         <div class="time-color-marker" id="timeColorMarker"></div>
                     </div>
                     <div class="time-color-labels">
+                        <span>Night</span>
                         <span>Dawn</span>
                         <span>Morning</span>
-                        <span>Noon</span>
+                        <span>Daylight</span>
                         <span>Afternoon</span>
                         <span>Dusk</span>
-                        <span>Night</span>
+                        <span>Evening</span>
                     </div>
                 </div>
                 <div class="filter-actions">
@@ -2506,17 +2547,6 @@
             </div>
         </div>
         <div class="match-count" id="matchCount">LOADING...</div>
-
-        <div class="metadata-section collapsed" id="metadataSection">
-            <div class="metadata-toggle" id="metadataToggle">
-                <span>METADATA</span>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="metadata-content">
-                <div id="traitsDisplay" class="traits-display">LOADING...</div>
-                <button class="btn btn-inspect btn-sm" id="inspectPalette" style="margin-top: 10px;">INSPECT PALETTE</button>
-            </div>
-        </div>
 
         <hr>
         <div class="action-bar">
@@ -2541,7 +2571,7 @@
         <a href="https://www.artblocks.io/collection/0x7c78f67700e700b4005c8a3d920a1a99e6004800-0" target="_blank" class="supply-tracker" id="supplyTracker">
             <div class="supply-bar">
                 <div class="supply-fill" id="supplyFill" style="width: 64%;"></div>
-                <div class="supply-label"><span id="mintedPercent">64</span>% of 500 minted</div>
+                <div class="supply-label"><span id="mintedCount">—</span> minted</div>
             </div>
             <span class="mint-text">VIEW ON ARTBLOCKS</span>
         </a>
@@ -2814,11 +2844,11 @@
                     <div class="wall-view-wall-color gray active" data-wall="gray" title="Light wall"></div>
                     <div class="wall-view-wall-color black" data-wall="black" title="Dark wall"></div>
                 </div>
-                <button class="wall-view-mode-toggle" id="wallViewLighting">✦</button>
                 <button class="wall-view-layout-toggle" id="wallViewLayoutToggle" title="Toggle wide/tall layout">⊞</button>
-                <button class="wall-view-hide-empty" id="wallViewHideEmpty" title="Toggle grid/line view"><span class="line-icon">▭</span> LINE</button>
+                <button class="wall-view-hide-empty" id="wallViewHideEmpty" title="Toggle grid/line view"><span class="line-icon">⊞</span> GRID</button>
                 <button class="wall-view-try-mode" id="wallViewTryMode" title="Try adding cities to your grid">✦ TRY</button>
-                <button class="wall-view-back-btn" id="wallViewBackBtn">← ALL COLLECTORS</button>
+                <button class="wall-view-back-btn" id="wallViewBackBtn">← COLLECTORS</button>
+                <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn"><img src="mint-m.png" alt="M" class="mint-letter"><img src="mint-i.png" alt="I" class="mint-letter"><img src="mint-n.png" alt="N" class="mint-letter"><img src="mint-t.png" alt="T" class="mint-letter"></a>
                 <button class="wall-view-close" id="wallViewClose">&times;</button>
             </div>
         </div>
@@ -2846,7 +2876,7 @@
         <div class="wall-view-zoom-controls">
             <button class="wall-view-zoom-btn" id="wallViewZoomIn" title="Zoom in">+</button>
             <button class="wall-view-zoom-btn" id="wallViewZoomOut" title="Zoom out">−</button>
-            <button class="wall-view-zoom-btn" id="wallViewZoomReset" title="Reset zoom">⟲</button>
+            <button class="wall-view-zoom-btn" id="wallViewShuffle" title="Shuffle order">⟳</button>
         </div>
         <!-- Grid status nudge bar -->
         <div class="wall-view-grid-nudge" id="wallViewGridNudge">
@@ -2873,6 +2903,7 @@
             <div id="printInquiryForm">
                 <div class="print-inquiry-title">Request Print Info</div>
                 <div class="print-inquiry-subtitle">Interested in a custom print or commission? Fill out the quick form below and we'll get back to you.</div>
+                <div class="print-inquiry-note">Signed prints of specific cities are exclusive to owners. Posters and prints inspired by the collection are available to all in the shop.</div>
 
                 <div class="print-inquiry-preview">
                     <div class="print-inquiry-preview-label">Your Cities</div>
@@ -3046,16 +3077,8 @@
         <button class="about-close" id="aboutCloseBtn" onclick="var m = document.getElementById('aboutModal'); if(m) m.classList.remove('open'); event.stopPropagation();">&times;</button>
         <div class="about-content">
             <h1 class="about-title">Cities</h1>
-            <p class="about-collab">A code-based art collaboration between <a href="https://efdotstudio.com" target="_blank">Efdot</a> and <a href="https://diid.art" target="_blank">Diid</a>, minting on Art Blocks.</p>
+            <p class="about-collab">A code-based art collaboration between <a href="https://efdotstudio.com" target="_blank">Efdot</a> and <a href="https://diid.art" target="_blank">Diid</a>, minting on <a href="https://www.artblocks.io/collections/curated/projects/0x99a9b7c1116f9ceeb1652de04d5969cce509b069/498" target="_blank">Art Blocks</a>.</p>
             <p class="about-intro">The energy of a city is too complex to understand from street level. So we built a system to observe it from above. From up there, relationships collapse into patterns. Traffic hums. Light shifts. An infinite city emerges, always in motion, never the same view twice.</p>
-
-            <div class="about-stats" id="aboutStats">
-                <span class="about-stat"><strong id="aboutMintedCount">—</strong>/500 minted</span>
-                <span class="about-stat-sep">·</span>
-                <span class="about-stat"><strong id="aboutCollectorCount">—</strong> collectors</span>
-                <span class="about-stat-sep">·</span>
-                <span class="about-stat"><strong>112</strong> palettes</span>
-            </div>
 
             <div class="about-video">
                 <iframe src="https://player.vimeo.com/video/1162260399?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
@@ -3070,14 +3093,14 @@
                     <div class="about-artist">
                         <strong><a href="https://efdotstudio.com" target="_blank">Efdot</a></strong> is a visual artist known for intricate, hand-drawn cityscapes and abstract compositions. His work explores the relationship between chaos and order in urban environments.
                         <div class="about-artist-links">
-                            <a href="https://twitter.com/eaborren" target="_blank">Twitter</a>
+                            <a href="https://twitter.com/efdotstudio" target="_blank">X/Twitter</a>
                             <a href="https://instagram.com/efdot" target="_blank">Instagram</a>
                         </div>
                     </div>
                     <div class="about-artist">
                         <strong><a href="https://diid.art" target="_blank">Diid</a></strong> is a generative artist and creative coder who builds systems that translate visual ideas into algorithmic processes. His work bridges hand-drawn aesthetics with computational precision.
                         <div class="about-artist-links">
-                            <a href="https://twitter.com/diaborren" target="_blank">Twitter</a>
+                            <a href="https://twitter.com/0xdiid" target="_blank">X/Twitter</a>
                         </div>
                     </div>
                 </div>
@@ -3113,11 +3136,15 @@
                 </div>
             </div>
 
-            <div class="about-shortcuts">
-                <span class="about-shortcut-hint">Press <kbd>?</kbd> for keyboard shortcuts</span>
-            </div>
 
             <div class="about-footer">
+                <div class="about-stats" id="aboutStats">
+                    <span class="about-stat"><strong id="aboutMintedCount">—</strong>/500 minted</span>
+                    <span class="about-stat-sep">·</span>
+                    <span class="about-stat"><strong id="aboutCollectorCount">—</strong> collectors</span>
+                    <span class="about-stat-sep">·</span>
+                    <span class="about-stat"><strong>112</strong> palettes</span>
+                </div>
                 <div class="about-buttons">
                     <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="about-mint-btn" id="aboutMintBtn"><img src="mint-m.png" alt="M" class="mint-letter"><img src="mint-i.png" alt="I" class="mint-letter"><img src="mint-n.png" alt="N" class="mint-letter"><img src="mint-t.png" alt="T" class="mint-letter"></a>
                 </div>
@@ -4443,8 +4470,6 @@
                 if (e.target.closest('.grid-item-fav')) return;
                 e.stopPropagation();
 
-                // Comparison mode removed
-
                 // Close the grid panel
                 var gp = document.getElementById('gridPanel');
                 var vtb = document.getElementById('viewToggleBtn');
@@ -4452,7 +4477,7 @@
                 if (vtb) vtb.classList.remove('grid-open');
                 document.body.classList.remove('grid-open');
 
-                // Load the output directly (no page reload)
+                // Load the output directly (no page reload) - shows sidebar view
                 if (typeof loadOutput === 'function') {
                     loadOutput(tokenId, true);
                 }
@@ -5133,16 +5158,14 @@
                     return `<div class="leaderboard-chip" title="#${id}"><img src="${getSmallThumbnailUrl(id)}" alt="#${id}" loading="lazy"></div>`;
                 }).join('');
                 return `<li class="leaderboard-item" data-collector="${collector.name}" style="cursor: pointer;">
+                    <div class="leaderboard-name-wrap">
+                        <span class="leaderboard-rank">${i + 1}</span>
+                        <span class="leaderboard-name" style="color: ${color}">${collector.name}</span>
+                    </div>
                     <div class="leaderboard-chips-wrap">
                         <div class="leaderboard-chips">${swatchChipsHtml}</div>
                     </div>
-                    <div class="leaderboard-item-info">
-                        <div class="leaderboard-item-header">
-                            <span class="leaderboard-rank">${i + 1}</span>
-                            <span class="leaderboard-name" style="color: ${color}">${collector.name}</span>
-                            <span class="leaderboard-count">${collector.count}</span>
-                        </div>
-                    </div>
+                    <span class="leaderboard-count">${collector.count}</span>
                 </li>`;
             }).join('');
 
@@ -5376,6 +5399,18 @@
                 }
             });
 
+            // Click on frame/image to open OpenSea offer page
+            document.querySelector('.single-piece-frame')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tokenId = singlePieceTokens[singlePieceCurrentIndex];
+                if (tokenId !== undefined) {
+                    const confirmed = confirm('You are about to leave this page and go to OpenSea to make an offer on City #' + tokenId + '. Continue?');
+                    if (confirmed) {
+                        window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`, '_blank');
+                    }
+                }
+            });
+
             // Click/tap to close single piece view
             const singlePieceOverlayEl = document.getElementById('singlePieceOverlay');
             singlePieceOverlayEl?.addEventListener('click', (e) => {
@@ -5383,11 +5418,14 @@
                 const isNavButton = e.target.closest('.single-piece-nav');
                 const isCloseButton = e.target.closest('.single-piece-close');
                 const isDownloadButton = e.target.closest('.single-piece-download');
+                const isFrame = e.target.closest('.single-piece-frame');
                 if (isCloseButton || e.target.id === 'singlePieceOverlay') {
                     closeSinglePieceView();
                     return;
                 }
-                // On mobile (touch device), tap anywhere except nav/download to close
+                // Don't close if clicking the frame (handled separately)
+                if (isFrame) return;
+                // On mobile (touch device), tap anywhere except nav/download/frame to close
                 if ('ontouchstart' in window && !isNavButton && !isDownloadButton) {
                     closeSinglePieceView();
                 }
@@ -5449,22 +5487,17 @@
                 });
             });
 
-            // Lighting toggle
-            document.getElementById('wallViewLighting')?.addEventListener('click', () => {
-                document.getElementById('wallViewModal')?.classList.toggle('lighting-on');
-            });
-
-            // Grid / Line view toggle
+            // Grid / Line view toggle - button shows CURRENT state
             document.getElementById('wallViewHideEmpty')?.addEventListener('click', () => {
                 const btn = document.getElementById('wallViewHideEmpty');
                 const modal = document.getElementById('wallViewModal');
                 modal?.classList.toggle('line-view');
                 btn?.classList.toggle('active');
 
-                // Toggle button icon and text between GRID and LINE
+                // Toggle button icon and text - shows CURRENT state (GRID when in grid, LINE when in line)
                 if (btn) {
                     const isLine = modal?.classList.contains('line-view');
-                    btn.innerHTML = isLine ? '<span class="line-icon">⊞</span> GRID' : '<span class="line-icon">▭</span> LINE';
+                    btn.innerHTML = isLine ? '<span class="line-icon">▭</span> LINE' : '<span class="line-icon">⊞</span> GRID';
                 }
             });
 
@@ -5531,7 +5564,17 @@
                         }
                     } else {
                         // In grid view, add empty slots based on grid layout
-                        if (existingTrySlots === 0) {
+                        // Count ALL empty slots (both static GRID slots and TRY slots)
+                        const allEmptySlots = wall.querySelectorAll('.wall-view-frame.empty-slot').length;
+                        const tempCities = wall.querySelectorAll('.wall-view-frame.temp-city').length;
+                        const totalItems = realCities + tempCities + allEmptySlots;
+
+                        // Only add more TRY slots if we haven't reached the next grid target
+                        // For small collections (< 4), focus on achieving first 2x2 grid
+                        const nextGridTarget = realCities < 4 ? 4 : (realCities < 6 ? 6 : (realCities < 9 ? 9 : 12));
+                        const slotsToReachTarget = nextGridTarget - realCities - tempCities;
+
+                        if (existingTrySlots === 0 && slotsToReachTarget > 0) {
                             const layout = getOptimalGridLayout(realCities);
                             let slotsNeeded = 1;
 
@@ -5539,46 +5582,66 @@
                                 // On mobile, just add 1 slot (new row is fine)
                                 slotsNeeded = 1;
                             } else {
-                                // On desktop, add a full column to maintain grid shape
-                                // For grids with 2 rows, add 2 slots (new column)
-                                // For grids with 3+ rows, add enough for a column
-                                if (realCities === 4) {
-                                    // 2x2 -> add 2 to make 3x2
+                                // On desktop grid view, add slots to reach next perfect grid
+                                // But cap at the number needed to reach the next grid target
+                                if (realCities === 1) {
+                                    // 1 city -> add 3 to make 2x2
+                                    slotsNeeded = 3;
+                                } else if (realCities === 2) {
+                                    // 2 cities in a row -> add 2 underneath to make 2x2
+                                    slotsNeeded = 2;
+                                } else if (realCities === 3) {
+                                    // 3 cities in a row -> add 3 underneath to make 3x2
+                                    slotsNeeded = 3;
+                                } else if (realCities === 4) {
+                                    // 2x2 -> add 2 underneath to make 2x3
                                     slotsNeeded = 2;
                                 } else if (realCities === 5) {
                                     // 5 in 3x2 layout -> add 1 to complete 3x2
                                     slotsNeeded = 1;
                                 } else if (realCities === 6) {
-                                    // 3x2 -> add 2 to make 4x2 (8 total)
-                                    slotsNeeded = 2;
+                                    // 3x2 -> add 3 underneath to make 3x3
+                                    slotsNeeded = 3;
                                 } else if (realCities === 7) {
                                     // 7 in 4x2 layout -> add 1 to complete 4x2
                                     slotsNeeded = 1;
                                 } else if (realCities === 8) {
-                                    // 4x2 -> add 1 to start toward 3x3
-                                    slotsNeeded = 1;
+                                    // 4x2 -> add 4 underneath to make 4x3
+                                    slotsNeeded = 4;
                                 } else if (realCities === 9) {
-                                    // 3x3 -> add 3 to make 4x3 (12 total)
+                                    // 3x3 -> add 3 underneath to make 3x4
                                     slotsNeeded = 3;
-                                } else if (layout.rows >= 2) {
-                                    // For larger grids, add enough for a new column
-                                    slotsNeeded = layout.rows;
+                                } else if (layout.cols >= 1) {
+                                    // For larger grids, add enough for a new row
+                                    slotsNeeded = layout.cols;
                                 }
+
+                                // Cap at slots needed to reach target (don't overshoot)
+                                slotsNeeded = Math.min(slotsNeeded, slotsToReachTarget);
                             }
 
                             for (let i = 0; i < slotsNeeded; i++) {
                                 addTryModeSlot(wall);
                             }
 
-                            // Zoom out to show full grid if needed
+                            // Recalculate grid layout with new total count
                             const totalSlots = realCities + slotsNeeded;
-                            if (totalSlots > 6 && wallViewZoom > 0.8) {
+                            const newLayout = getOptimalGridLayout(totalSlots);
+
+                            // Update cols class
+                            wall.className = wall.className.replace(/cols-\d+/g, '').trim();
+                            wall.classList.add('wall-view-wall');
+                            wall.classList.add(`cols-${newLayout.cols}`);
+
+                            // Zoom out to show full grid and collector name
+                            if (newLayout.rows >= 3) {
                                 wallViewZoom = 0.8;
-                                applyWallZoom();
-                            } else if (totalSlots > 9 && wallViewZoom > 0.7) {
-                                wallViewZoom = 0.7;
-                                applyWallZoom();
+                            } else if (newLayout.rows >= 2) {
+                                wallViewZoom = 0.85;
+                            } else {
+                                wallViewZoom = 0.9;
                             }
+                            applyWallZoom();
                         }
                     }
                 } else if (!wallViewTryMode && wall) {
@@ -5586,11 +5649,20 @@
                     const tryModeSlots = wall.querySelectorAll('.wall-view-artwork.try-mode-slot');
                     tryModeSlots.forEach(slot => slot.remove());
 
-                    // Reset zoom
-                    if (wallViewZoom < 1) {
-                        wallViewZoom = 1;
-                        applyWallZoom();
-                    }
+                    // Recalculate grid layout with remaining items
+                    const remainingCities = wall.querySelectorAll('.wall-view-artwork').length;
+                    const restoredLayout = getOptimalGridLayout(remainingCities);
+
+                    // Update cols class
+                    wall.className = wall.className.replace(/cols-\d+/g, '').trim();
+                    wall.classList.add('wall-view-wall');
+                    wall.classList.add(`cols-${restoredLayout.cols}`);
+
+                    // Reset zoom based on rows
+                    if (restoredLayout.rows >= 4) wallViewZoom = 0.75;
+                    else if (restoredLayout.rows >= 3) wallViewZoom = 0.85;
+                    else wallViewZoom = 1;
+                    applyWallZoom();
                 }
 
                 updateGridNudge();
@@ -5852,21 +5924,29 @@
             const tempCities = wall?.querySelectorAll('.wall-view-frame.temp-city').length || 0;
             const totalCities = realCities + tempCities;
             const collectorName = document.getElementById('wallViewCollectorName')?.textContent || 'Collector';
+            const isTrying = tempCities > 0;
 
             const status = analyzeGridStatus(totalCities);
+            const realStatus = analyzeGridStatus(realCities);
 
             if (status.isPerfect) {
                 if (status.isMassive) {
                     // Massive collection
-                    nudgeText.innerHTML = `<span>${collectorName}</span> has a legendary collection of <span class="grid-count">${totalCities}</span> cities! ✦✦✦`;
+                    const verb = isTrying ? 'is trying out' : 'has';
+                    nudgeText.innerHTML = `<span>${collectorName}</span> ${verb} a legendary collection of <span class="grid-count">${totalCities}</span> cities! ✦✦✦`;
                 } else if (status.superGrid) {
                     // Super grid (multiple 2x2s)
                     const gridIcon = generateGridIcon('2×2');
-                    nudgeText.innerHTML = `<span>${collectorName}</span> has a super grid! ${gridIcon} <span class="grid-count">${status.superGrid}</span> grids ✦`;
+                    const verb = isTrying ? 'is trying out' : 'has';
+                    nudgeText.innerHTML = `<span>${collectorName}</span> ${verb} a super grid! ${gridIcon} <span class="grid-count">${status.superGrid}</span> grids ✦`;
                 } else {
                     // Regular perfect grid
                     const gridIcon = generateGridIcon(status.dims);
-                    nudgeText.innerHTML = `<span>${collectorName}</span> has a perfect ${gridIcon} <span class="grid-count">${status.dims}</span> grid! ✦`;
+                    if (isTrying) {
+                        nudgeText.innerHTML = `<span>${collectorName}</span> is trying a ${gridIcon} <span class="grid-count">${status.dims}</span> grid! ✦`;
+                    } else {
+                        nudgeText.innerHTML = `<span>${collectorName}</span> has a perfect ${gridIcon} <span class="grid-count">${status.dims}</span> grid! ✦`;
+                    }
                 }
                 nudge.classList.add('visible');
             } else if (status.needed <= 5) {
@@ -6202,7 +6282,7 @@
                     <span class="empty-slot-dropdown-icon">✨</span>
                     <div class="empty-slot-dropdown-text">
                         <div class="empty-slot-dropdown-title">Mint a New City</div>
-                        <div class="empty-slot-dropdown-desc">Mint fresh on Art Blocks</div>
+                        <div class="empty-slot-dropdown-desc">On Art Blocks</div>
                     </div>
                 </div>
                 <div class="empty-slot-dropdown-item" data-action="offer">
@@ -6241,7 +6321,7 @@
                     if (action === 'try') {
                         openTryCityPicker(slotElement);
                     } else if (action === 'mint') {
-                        window.open('https://www.artblocks.io/collections/curated/projects/0x99a9b7c1116f9ceeb1652de04d5969cce509b069/490', '_blank');
+                        window.open('https://www.artblocks.io/collection/cities-by-efdot-x-diid', '_blank');
                     } else if (action === 'offer') {
                         // Go to collection to browse and make offers on specific cities
                         window.open('https://opensea.io/collection/cities-by-efdot-x-diid', '_blank');
@@ -6270,6 +6350,39 @@
             const existingPicker = document.querySelector('.try-city-picker');
             if (existingPicker) existingPicker.remove();
 
+            // Get collector's current traits to determine recommendations
+            const collectorTokenIds = wallViewTokenIds || [];
+            const collectorTraits = {
+                energies: {},
+                palettes: {},
+                times: {},
+                zooms: {},
+                traffic: {}
+            };
+            const allEnergies = ['Rising', 'Living', 'Fading', 'Resting'];
+
+            collectorTokenIds.forEach(id => {
+                const traits = tokenTraits[id];
+                if (!traits) return;
+                if (traits['Energy']) collectorTraits.energies[traits['Energy']] = (collectorTraits.energies[traits['Energy']] || 0) + 1;
+                if (traits['Palette']) collectorTraits.palettes[traits['Palette']] = (collectorTraits.palettes[traits['Palette']] || 0) + 1;
+                if (traits['Time']) collectorTraits.times[traits['Time']] = (collectorTraits.times[traits['Time']] || 0) + 1;
+                if (traits['Zoom']) collectorTraits.zooms[traits['Zoom']] = (collectorTraits.zooms[traits['Zoom']] || 0) + 1;
+                if (traits['Traffic']) collectorTraits.traffic[traits['Traffic']] = (collectorTraits.traffic[traits['Traffic']] || 0) + 1;
+            });
+
+            // Determine recommended energies
+            const recommendedEnergies = [];
+            const missingEnergies = allEnergies.filter(e => !collectorTraits.energies[e]);
+            const duplicateEnergy = Object.entries(collectorTraits.energies).find(([e, count]) => count >= 2);
+            if (duplicateEnergy) recommendedEnergies.push(duplicateEnergy[0]);
+            missingEnergies.forEach(e => { if (!recommendedEnergies.includes(e)) recommendedEnergies.push(e); });
+
+            // Get dominant traits for smart suggestions
+            const dominantPalette = Object.entries(collectorTraits.palettes).sort((a, b) => b[1] - a[1])[0]?.[0];
+            const dominantTime = Object.entries(collectorTraits.times).sort((a, b) => b[1] - a[1])[0]?.[0];
+            const dominantZoom = Object.entries(collectorTraits.zooms).sort((a, b) => b[1] - a[1])[0]?.[0];
+
             // Create picker modal
             const picker = document.createElement('div');
             picker.className = 'try-city-picker';
@@ -6284,8 +6397,33 @@
                         <button class="try-city-picker-add">Add</button>
                     </div>
                     <div class="try-city-picker-preview"></div>
-                    <div class="try-city-picker-suggestions">
-                        <div class="try-city-picker-quick"></div>
+                    <div class="try-city-picker-tabs">
+                        <button class="try-city-picker-tab active" data-tab="smart">Smart</button>
+                        <button class="try-city-picker-tab" data-tab="energy">Energy</button>
+                        <button class="try-city-picker-tab" data-tab="palette">Palette</button>
+                        <button class="try-city-picker-tab" data-tab="rarity">Rarity</button>
+                    </div>
+                    <div class="try-city-picker-tab-content active" data-tab="smart">
+                        <div class="try-city-picker-smart-suggestions"></div>
+                    </div>
+                    <div class="try-city-picker-tab-content" data-tab="energy">
+                        <div class="try-city-picker-energy-filters">
+                            <button class="try-city-picker-energy-btn active" data-energy="all">All</button>
+                            ${allEnergies.map(e => `<button class="try-city-picker-energy-btn${recommendedEnergies.includes(e) ? ' recommended' : ''}" data-energy="${e}">${e}</button>`).join('')}
+                        </div>
+                        <div class="try-city-picker-suggestions">
+                            <div class="try-city-picker-quick"></div>
+                        </div>
+                    </div>
+                    <div class="try-city-picker-tab-content" data-tab="palette">
+                        <div class="try-city-picker-suggestions">
+                            <div class="try-city-picker-palette-picks"></div>
+                        </div>
+                    </div>
+                    <div class="try-city-picker-tab-content" data-tab="rarity">
+                        <div class="try-city-picker-suggestions">
+                            <div class="try-city-picker-rarity-picks"></div>
+                        </div>
                     </div>
                 </div>
             `;
@@ -6297,39 +6435,286 @@
             const addBtn = picker.querySelector('.try-city-picker-add');
             const closeBtn = picker.querySelector('.try-city-picker-close');
             const quickPicks = picker.querySelector('.try-city-picker-quick');
+            const energyBtns = picker.querySelectorAll('.try-city-picker-energy-btn');
 
-            // Get suggestions from favorites first, then random minted cities
-            const favs = JSON.parse(localStorage.getItem('cities-favorites') || '[]');
-            const favIds = favs.slice(0, 4).map(f => f.tokenId);
+            // Get minted cities list from tokenTraits (the source of truth)
+            const mintedList = Object.keys(tokenTraits).map(Number);
 
-            // Get random minted cities (only from mintedTokens array which contains actual minted ones)
-            const mintedList = typeof mintedTokens !== 'undefined' ? mintedTokens : [];
-            const randomMinted = [];
-            const usedIds = new Set(favIds);
+            // Function to populate suggestions based on energy filter
+            function populateSuggestions(energyFilter = 'all') {
+                quickPicks.innerHTML = '';
 
-            // Fill remaining slots with random minted cities
-            while (randomMinted.length < (8 - favIds.length) && mintedList.length > 0) {
-                const randIdx = Math.floor(Math.random() * mintedList.length);
-                const id = mintedList[randIdx];
-                if (!usedIds.has(id)) {
+                // Get favorites first
+                const favs = JSON.parse(localStorage.getItem('cities-favorites') || '[]');
+                let favIds = favs.map(f => f.tokenId);
+
+                // Filter by energy if needed
+                if (energyFilter !== 'all') {
+                    favIds = favIds.filter(id => {
+                        const traits = tokenTraits[id];
+                        return traits && traits['Energy'] === energyFilter;
+                    });
+                }
+                favIds = favIds.slice(0, 4);
+
+                // Get random minted cities matching the energy filter
+                const randomMinted = [];
+                const usedIds = new Set(favIds);
+                const shuffled = [...mintedList].sort(() => Math.random() - 0.5);
+
+                for (const id of shuffled) {
+                    if (usedIds.has(id)) continue;
+                    if (energyFilter !== 'all') {
+                        const traits = tokenTraits[id];
+                        if (!traits || traits['Energy'] !== energyFilter) continue;
+                    }
                     randomMinted.push(id);
                     usedIds.add(id);
+                    if (randomMinted.length >= (8 - favIds.length)) break;
                 }
-                if (usedIds.size >= mintedList.length) break; // Prevent infinite loop
+
+                // Combine and display
+                const suggestions = [...favIds, ...randomMinted].slice(0, 8);
+
+                if (suggestions.length === 0) {
+                    quickPicks.innerHTML = '<div style="color: #666; font-size: 11px; text-align: center; padding: 20px;">No cities found with this energy</div>';
+                    return;
+                }
+
+                suggestions.forEach(id => {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'try-city-picker-thumb';
+                    thumb.innerHTML = `<img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}">`;
+                    thumb.addEventListener('click', () => {
+                        addTempCity(id, slotElement);
+                        picker.remove();
+                    });
+                    quickPicks.appendChild(thumb);
+                });
             }
 
-            // Combine favorites and random picks
-            const suggestions = [...favIds, ...randomMinted].slice(0, 8);
+            // Tab switching
+            const tabs = picker.querySelectorAll('.try-city-picker-tab');
+            const tabContents = picker.querySelectorAll('.try-city-picker-tab-content');
 
-            suggestions.forEach(id => {
-                const thumb = document.createElement('div');
-                thumb.className = 'try-city-picker-thumb';
-                thumb.innerHTML = `<img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}">`;
-                thumb.addEventListener('click', () => {
-                    addTempCity(id, slotElement);
-                    picker.remove();
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(tc => tc.classList.remove('active'));
+                    tab.classList.add('active');
+                    picker.querySelector(`.try-city-picker-tab-content[data-tab="${tab.dataset.tab}"]`)?.classList.add('active');
                 });
-                quickPicks.appendChild(thumb);
+            });
+
+            // Populate Smart suggestions
+            function populateSmartSuggestions() {
+                const smartContainer = picker.querySelector('.try-city-picker-smart-suggestions');
+                if (!smartContainer) return;
+
+                const ownedIds = new Set(collectorTokenIds.map(Number));
+                let html = '';
+
+                // 1. Same palette suggestions
+                if (dominantPalette) {
+                    const samePalette = mintedList.filter(id => {
+                        if (ownedIds.has(id)) return false;
+                        const traits = tokenTraits[id];
+                        return traits && traits['Palette'] === dominantPalette;
+                    }).slice(0, 4);
+
+                    if (samePalette.length > 0) {
+                        html += `<div class="try-city-picker-smart-row">
+                            <div class="try-city-picker-smart-label"><span class="label-icon">◆</span> Same palette (${dominantPalette})</div>
+                            <div class="try-city-picker-smart-cities">${samePalette.map(id =>
+                                `<div class="try-city-picker-thumb" data-id="${id}"><img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}"></div>`
+                            ).join('')}</div>
+                        </div>`;
+                    }
+                }
+
+                // 2. Complete energy set
+                if (missingEnergies.length > 0 && missingEnergies.length < 4) {
+                    const energySuggestions = [];
+                    for (const energy of missingEnergies) {
+                        const match = mintedList.find(id => {
+                            if (ownedIds.has(id)) return false;
+                            const traits = tokenTraits[id];
+                            return traits && traits['Energy'] === energy;
+                        });
+                        if (match) energySuggestions.push({ id: match, energy });
+                    }
+
+                    if (energySuggestions.length > 0) {
+                        html += `<div class="try-city-picker-smart-row">
+                            <div class="try-city-picker-smart-label"><span class="label-icon">✦</span> Complete energy set (need ${missingEnergies.join(', ')})</div>
+                            <div class="try-city-picker-smart-cities">${energySuggestions.map(s =>
+                                `<div class="try-city-picker-thumb" data-id="${s.id}" title="${s.energy}"><img src="${MEDIA_BASE}/${CONTRACT}/${s.id}.png?width=120" alt="#${s.id}"></div>`
+                            ).join('')}</div>
+                        </div>`;
+                    }
+                }
+
+                // 3. Same time of day
+                if (dominantTime) {
+                    const sameTime = mintedList.filter(id => {
+                        if (ownedIds.has(id)) return false;
+                        const traits = tokenTraits[id];
+                        return traits && traits['Time'] === dominantTime;
+                    }).sort(() => Math.random() - 0.5).slice(0, 4);
+
+                    if (sameTime.length > 0) {
+                        html += `<div class="try-city-picker-smart-row">
+                            <div class="try-city-picker-smart-label"><span class="label-icon">☀</span> Same time (${dominantTime})</div>
+                            <div class="try-city-picker-smart-cities">${sameTime.map(id =>
+                                `<div class="try-city-picker-thumb" data-id="${id}"><img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}"></div>`
+                            ).join('')}</div>
+                        </div>`;
+                    }
+                }
+
+                // 4. Same zoom level
+                if (dominantZoom) {
+                    const sameZoom = mintedList.filter(id => {
+                        if (ownedIds.has(id)) return false;
+                        const traits = tokenTraits[id];
+                        return traits && traits['Zoom'] === dominantZoom;
+                    }).sort(() => Math.random() - 0.5).slice(0, 4);
+
+                    if (sameZoom.length > 0) {
+                        html += `<div class="try-city-picker-smart-row">
+                            <div class="try-city-picker-smart-label"><span class="label-icon">◎</span> Same zoom (${dominantZoom})</div>
+                            <div class="try-city-picker-smart-cities">${sameZoom.map(id =>
+                                `<div class="try-city-picker-thumb" data-id="${id}"><img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}"></div>`
+                            ).join('')}</div>
+                        </div>`;
+                    }
+                }
+
+                // Fallback: show random picks if no smart suggestions
+                if (!html) {
+                    const randomPicks = mintedList.filter(id => !ownedIds.has(id)).sort(() => Math.random() - 0.5).slice(0, 8);
+                    if (randomPicks.length > 0) {
+                        html = `<div class="try-city-picker-smart-row">
+                            <div class="try-city-picker-smart-label"><span class="label-icon">✦</span> Discover cities</div>
+                            <div class="try-city-picker-smart-cities">${randomPicks.map(id =>
+                                `<div class="try-city-picker-thumb" data-id="${id}"><img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}"></div>`
+                            ).join('')}</div>
+                        </div>`;
+                    } else {
+                        html = '<div style="color: #666; font-size: 11px; text-align: center; padding: 20px;">No suggestions available</div>';
+                    }
+                }
+
+                smartContainer.innerHTML = html;
+
+                // Add click handlers
+                smartContainer.querySelectorAll('.try-city-picker-thumb').forEach(thumb => {
+                    thumb.addEventListener('click', () => {
+                        addTempCity(parseInt(thumb.dataset.id), slotElement);
+                        picker.remove();
+                    });
+                });
+            }
+
+            // Populate Palette tab
+            function populatePalettePicks() {
+                const container = picker.querySelector('.try-city-picker-palette-picks');
+                if (!container) return;
+
+                const ownedIds = new Set(collectorTokenIds.map(Number));
+                const ownedPalettes = Object.keys(collectorTraits.palettes);
+
+                // Show cities from palettes the collector already has
+                let suggestions = [];
+                for (const palette of ownedPalettes) {
+                    const matches = mintedList.filter(id => {
+                        if (ownedIds.has(id)) return false;
+                        const traits = tokenTraits[id];
+                        return traits && traits['Palette'] === palette;
+                    }).slice(0, 2);
+                    suggestions.push(...matches);
+                }
+                suggestions = suggestions.slice(0, 8);
+
+                // Fallback: show random cities if no palette matches
+                if (suggestions.length === 0) {
+                    suggestions = mintedList.filter(id => !ownedIds.has(id)).sort(() => Math.random() - 0.5).slice(0, 8);
+                }
+
+                if (suggestions.length === 0) {
+                    container.innerHTML = '<div style="color: #666; font-size: 11px; text-align: center; padding: 20px;">No cities available</div>';
+                    return;
+                }
+
+                container.innerHTML = `<div class="try-city-picker-quick">${suggestions.map(id =>
+                    `<div class="try-city-picker-thumb" data-id="${id}"><img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}"></div>`
+                ).join('')}</div>`;
+
+                container.querySelectorAll('.try-city-picker-thumb').forEach(thumb => {
+                    thumb.addEventListener('click', () => {
+                        addTempCity(parseInt(thumb.dataset.id), slotElement);
+                        picker.remove();
+                    });
+                });
+            }
+
+            // Populate Rarity tab (rare traits)
+            function populateRarityPicks() {
+                const container = picker.querySelector('.try-city-picker-rarity-picks');
+                if (!container) return;
+
+                const ownedIds = new Set(collectorTokenIds.map(Number));
+
+                // Find cities with rare traits (Rush Hour traffic, Water feature, etc.)
+                const rareCities = mintedList.filter(id => {
+                    if (ownedIds.has(id)) return false;
+                    const traits = tokenTraits[id];
+                    if (!traits) return false;
+                    return traits['Traffic'] === 'Rush Hour' || traits['Water'] === 'Yes';
+                }).sort(() => Math.random() - 0.5).slice(0, 8);
+
+                if (rareCities.length === 0) {
+                    container.innerHTML = '<div style="color: #666; font-size: 11px; text-align: center; padding: 20px;">No rare cities available</div>';
+                    return;
+                }
+
+                container.innerHTML = `<div class="try-city-picker-section-label">Rush Hour & Water Features</div>
+                    <div class="try-city-picker-quick">${rareCities.map(id =>
+                    `<div class="try-city-picker-thumb" data-id="${id}"><img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}"></div>`
+                ).join('')}</div>`;
+
+                container.querySelectorAll('.try-city-picker-thumb').forEach(thumb => {
+                    thumb.addEventListener('click', () => {
+                        addTempCity(parseInt(thumb.dataset.id), slotElement);
+                        picker.remove();
+                    });
+                });
+            }
+
+            // Initial population of all tabs
+            try {
+                populateSmartSuggestions();
+            } catch (e) {
+                console.error('Smart suggestions error:', e);
+                picker.querySelector('.try-city-picker-smart-suggestions').innerHTML = '<div style="color: #666; padding: 20px; text-align: center;">Loading suggestions...</div>';
+            }
+            try {
+                populateSuggestions('all');
+            } catch (e) { console.error('Energy suggestions error:', e); }
+            try {
+                populatePalettePicks();
+            } catch (e) { console.error('Palette picks error:', e); }
+            try {
+                populateRarityPicks();
+            } catch (e) { console.error('Rarity picks error:', e); }
+
+            // Energy filter buttons
+            energyBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    energyBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    populateSuggestions(btn.dataset.energy);
+                });
             });
 
             // Preview on input change - only show if minted
@@ -6638,6 +7023,7 @@
             });
 
             // Add empty slots to fill the current row (grid view always fills rows)
+            // But only for collections with 4+ cities - smaller collections should use TRY mode
             const modal = document.getElementById('wallViewModal');
             modal.classList.remove('has-empty-slots');
 
@@ -6645,7 +7031,9 @@
             const remainder = count % layout.cols;
             const slotsToFillRow = remainder === 0 ? 0 : layout.cols - remainder;
 
-            if (slotsToFillRow > 0) {
+            // Only add static GRID slots for collections of 4+ (already have a grid)
+            // Smaller collections should use TRY mode to build toward their first grid
+            if (slotsToFillRow > 0 && count >= 4) {
                 modal.classList.add('has-empty-slots');
                 for (let i = 0; i < slotsToFillRow; i++) {
                     // Create matching structure: artwork > frame.empty-slot > empty-frame
@@ -6726,12 +7114,12 @@
                 modal.classList.remove('show-layout-toggle');
             }
 
-            // Reset to grid view (not line view)
+            // Reset to grid view (not line view) - button shows current state "GRID"
             modal.classList.remove('line-view');
             const lineBtn = document.getElementById('wallViewHideEmpty');
             if (lineBtn) {
                 lineBtn.classList.remove('active');
-                lineBtn.innerHTML = '<span class="line-icon">▭</span> LINE';
+                lineBtn.innerHTML = '<span class="line-icon">⊞</span> GRID';
             }
 
             modal.classList.add('open');
@@ -6830,7 +7218,7 @@
                     ...diversePicks
                 ].slice(0, 4);
 
-                const neededForGrid = count === 2 ? 1 : 2;
+                const neededForGrid = 4 - count; // Need 4 for a 2x2 grid
                 messageHtml = `${collectorName} has <strong>${count} ${energy}</strong> cities. Add ${neededForGrid} more for a <strong>${energy} grid</strong>, or diversify with other energies.`;
 
             } else if (missingEnergies.length > 0 && missingEnergies.length < 4) {
@@ -7006,21 +7394,24 @@
             const overlay = document.getElementById('singlePieceOverlay');
             const wallModal = document.getElementById('wallViewModal');
 
-            // Store collector's tokens for navigation
-            if (currentCollectorFilter && currentCollectorFilter.tokens) {
-                singlePieceTokens = currentCollectorFilter.tokens.slice().sort((a, b) => a - b);
-            } else {
-                singlePieceTokens = [tokenId];
-            }
+            // Use all minted tokens for sequential navigation
+            const allMintedTokens = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
+            singlePieceTokens = allMintedTokens.length > 0 ? allMintedTokens : [tokenId];
             singlePieceCurrentIndex = singlePieceTokens.indexOf(tokenId);
             if (singlePieceCurrentIndex === -1) singlePieceCurrentIndex = 0;
             singlePieceCollectorName = collectorName;
 
-            // Match dark mode from wall view
-            if (wallModal?.classList.contains('wall-black') || wallModal?.classList.contains('dark-mode')) {
-                overlay.classList.add('dark-mode');
+            // Match dark mode from wall view, or default to dark if opening from grid
+            if (wallModal?.classList.contains('open')) {
+                // Opening from wall view - match its mode
+                if (wallModal.classList.contains('wall-black') || wallModal.classList.contains('dark-mode')) {
+                    overlay.classList.add('dark-mode');
+                } else {
+                    overlay.classList.remove('dark-mode');
+                }
             } else {
-                overlay.classList.remove('dark-mode');
+                // Opening from grid - default to dark mode
+                overlay.classList.add('dark-mode');
             }
 
             updateSinglePieceView();
@@ -7036,9 +7427,13 @@
             img.src = `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png`;
             label.textContent = `#${tokenId}`;
 
+            // Get current owner for this specific token
+            const collector = COLLECTORS_DATA?.find(c => c.tokens && c.tokens.includes(tokenId));
+            const ownerName = collector ? collector.name : null;
+
             // Show collector name - creates subtle FOMO since each city can only be owned by one person
-            if (singlePieceCollectorName && collectorEl) {
-                collectorEl.textContent = `owned by ${singlePieceCollectorName}`;
+            if (ownerName && collectorEl) {
+                collectorEl.textContent = `owned by ${ownerName}`;
                 collectorEl.style.display = 'block';
             } else if (collectorEl) {
                 collectorEl.style.display = 'none';
@@ -7743,8 +8138,9 @@
             const currentIndex = matches.indexOf(currentTokenId);
             const prevBtn = document.getElementById('frameMockupPrev');
             const nextBtn = document.getElementById('frameMockupNext');
+            // Navigation now wraps around, so buttons are always enabled if there are matches
             if (prevBtn) {
-                prevBtn.disabled = currentIndex <= 0;
+                prevBtn.disabled = matches.length <= 1;
             }
             if (nextBtn) {
                 nextBtn.disabled = currentIndex >= matches.length - 1 || currentIndex === -1;
@@ -7753,24 +8149,24 @@
 
         function frameMockupPrev() {
             const matches = getFilteredTokens();
+            if (matches.length === 0) return;
             const currentIndex = matches.indexOf(currentTokenId);
-            if (currentIndex > 0) {
-                const newToken = matches[currentIndex - 1];
-                loadOutput(newToken, true, false);
-                document.getElementById('frameMockupImage').src = getPreviewUrl(newToken);
-                updateFrameMockupNav();
-            }
+            // Wrap around to end if at start
+            const newToken = currentIndex <= 0 ? matches[matches.length - 1] : matches[currentIndex - 1];
+            loadOutput(newToken, true, false);
+            document.getElementById('frameMockupImage').src = getPreviewUrl(newToken);
+            updateFrameMockupNav();
         }
 
         function frameMockupNext() {
             const matches = getFilteredTokens();
+            if (matches.length === 0) return;
             const currentIndex = matches.indexOf(currentTokenId);
-            if (currentIndex >= 0 && currentIndex < matches.length - 1) {
-                const newToken = matches[currentIndex + 1];
-                loadOutput(newToken, true, false);
-                document.getElementById('frameMockupImage').src = getPreviewUrl(newToken);
-                updateFrameMockupNav();
-            }
+            // Wrap around to start if at end
+            const newToken = (currentIndex === -1 || currentIndex >= matches.length - 1) ? matches[0] : matches[currentIndex + 1];
+            loadOutput(newToken, true, false);
+            document.getElementById('frameMockupImage').src = getPreviewUrl(newToken);
+            updateFrameMockupNav();
         }
 
         function toggleFrameMockupDarkMode() {
@@ -7912,6 +8308,17 @@
         document.getElementById('frameMockup').addEventListener('click', (e) => {
             if (e.target.id === 'frameMockup' || e.target.classList.contains('frame-mockup-content')) {
                 closeFrameMockup();
+            }
+        });
+
+        // Click on frame/image to open OpenSea offer page
+        document.getElementById('frameWrapper')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentTokenId !== undefined) {
+                const confirmed = confirm('You are about to leave this page and go to OpenSea to make an offer on City #' + currentTokenId + '. Continue?');
+                if (confirmed) {
+                    window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${currentTokenId}`, '_blank');
+                }
             }
         });
 
@@ -8260,7 +8667,7 @@
                 const t = tokenTraits[i];
                 if (t && t['Palette'] === currentPalette) {
                     samePalette.push(i);
-                    // Find collector for this city
+                    // Find collector for this city (exclude current owner - their name is shown above)
                     const collector = COLLECTORS_DATA.find(c => c.tokens && c.tokens.includes(i));
                     if (collector && (!currentOwner || collector.name !== currentOwner.name)) {
                         otherCollectors.add(collector.name);
@@ -8284,7 +8691,7 @@
                 el.addEventListener('click', () => loadOutput(parseInt(el.dataset.token), true, true)); // Add to history for back button
             });
 
-            // Show other collectors with same palette (hidden until expanded)
+            // Show other collectors with same palette
             const collectors = [...otherCollectors].slice(0, 6);
             if (collectors.length > 0) {
                 ownersEl.innerHTML = collectors.map(name => `<span class="same-palette-owner" data-collector="${name}">${name}</span>`).join(', ');
@@ -8298,6 +8705,8 @@
                 ownersEl.style.display = 'none';
             }
 
+            // Uncollapse by default when showing neighbors
+            section.classList.remove('collapsed');
             section.style.display = 'block';
         }
 
@@ -8521,12 +8930,13 @@
             localStorage.setItem('cities-favorites', JSON.stringify(favorites));
 
             const noteContainer = document.getElementById('cityNote');
-            noteContainer.classList.toggle('has-note', !!note.trim());
+            noteContainer?.classList.toggle('has-note', !!note.trim());
         }
 
         function updateCityNote() {
             const noteInput = document.getElementById('cityNoteInput');
             const noteContainer = document.getElementById('cityNote');
+            if (!noteInput || !noteContainer) return;
             const isFav = isCityFavorited(currentTokenId);
 
             // Only show note input for favorited cities
@@ -8544,7 +8954,7 @@
 
         // Debounce for auto-save - longer delay to avoid issues
         let noteDebounceTimer = null;
-        document.getElementById('cityNoteInput').addEventListener('input', (e) => {
+        document.getElementById('cityNoteInput')?.addEventListener('input', (e) => {
             clearTimeout(noteDebounceTimer);
             noteDebounceTimer = setTimeout(() => {
                 saveCityNote(currentTokenId, e.target.value);
@@ -8552,7 +8962,7 @@
         });
 
         // Save on blur
-        document.getElementById('cityNoteInput').addEventListener('blur', (e) => {
+        document.getElementById('cityNoteInput')?.addEventListener('blur', (e) => {
             clearTimeout(noteDebounceTimer);
             saveCityNote(currentTokenId, e.target.value);
         });
@@ -8859,14 +9269,17 @@
 
         if (timeColorGradient) {
             // Map position to time periods and filter
+            // Actual time values: Night, Dawn, Morning, Daylight, Afternoon, Dusk, Evening
             const getTimeFromPosition = (percent) => {
-                // Map gradient position to time categories
-                if (percent < 15) return 'Night';
-                if (percent < 25) return 'Dawn';
-                if (percent < 40) return 'Morning';
-                if (percent < 60) return 'Noon';
-                if (percent < 75) return 'Afternoon';
-                if (percent < 90) return 'Dusk';
+                // Map gradient position to actual time categories from Art Blocks traits
+                // Gradient flows: Night → Dawn → Morning → Daylight → Afternoon → Dusk → Evening → Night
+                if (percent < 10) return 'Night';
+                if (percent < 20) return 'Dawn';
+                if (percent < 30) return 'Morning';
+                if (percent < 45) return 'Daylight';
+                if (percent < 60) return 'Afternoon';
+                if (percent < 75) return 'Dusk';
+                if (percent < 90) return 'Evening';
                 return 'Night';
             };
 
@@ -8913,19 +9326,16 @@
 
         // Update nav button states based on position in minted tokens
         function updateNavButtonStates() {
-            const matches = getFilteredTokens();
-            const currentValue = parseInt(tokenIdInput.value) || 0;
-            const currentIndex = matches.indexOf(currentValue);
+            // Navigation now wraps around, so buttons are always enabled
             const prevBtn = document.getElementById('prevToken');
             const nextBtn = document.getElementById('nextToken');
-            // Disable prev at start, next at end
             if (prevBtn) {
-                prevBtn.disabled = currentIndex <= 0;
-                prevBtn.style.opacity = currentIndex <= 0 ? '0.3' : '1';
+                prevBtn.disabled = false;
+                prevBtn.style.opacity = '1';
             }
             if (nextBtn) {
-                nextBtn.disabled = currentIndex >= matches.length - 1 || currentIndex === -1;
-                nextBtn.style.opacity = (currentIndex >= matches.length - 1 || currentIndex === -1) ? '0.3' : '1';
+                nextBtn.disabled = false;
+                nextBtn.style.opacity = '1';
             }
         }
 
@@ -8934,10 +9344,21 @@
             if (matches.length === 0) return;
             const currentValue = parseInt(tokenIdInput.value) || 0;
             const currentIndex = matches.indexOf(currentValue);
-            // Don't navigate if at start
-            if (currentIndex <= 0) return;
-            const newToken = matches[currentIndex - 1];
-            tokenIdInput.value = newToken; loadOutput(newToken, true, false);
+
+            let newToken;
+            if (currentIndex === -1) {
+                // Current token not in filtered list - find closest previous token
+                const smaller = matches.filter(t => t < currentValue);
+                newToken = smaller.length > 0 ? smaller[smaller.length - 1] : matches[matches.length - 1];
+            } else if (currentIndex === 0) {
+                // At start, wrap to end
+                newToken = matches[matches.length - 1];
+            } else {
+                // Normal: go to previous
+                newToken = matches[currentIndex - 1];
+            }
+            tokenIdInput.value = newToken;
+            loadOutput(newToken, true, false);
             updateNavButtonStates();
         });
 
@@ -8946,10 +9367,21 @@
             if (matches.length === 0) return;
             const currentValue = parseInt(tokenIdInput.value) || 0;
             const currentIndex = matches.indexOf(currentValue);
-            // Don't navigate if at end
-            if (currentIndex === -1 || currentIndex >= matches.length - 1) return;
-            const newToken = matches[currentIndex + 1];
-            tokenIdInput.value = newToken; loadOutput(newToken, true, false);
+
+            let newToken;
+            if (currentIndex === -1) {
+                // Current token not in filtered list - find closest next token
+                const larger = matches.filter(t => t > currentValue);
+                newToken = larger.length > 0 ? larger[0] : matches[0];
+            } else if (currentIndex >= matches.length - 1) {
+                // At end, wrap to start
+                newToken = matches[0];
+            } else {
+                // Normal: go to next
+                newToken = matches[currentIndex + 1];
+            }
+            tokenIdInput.value = newToken;
+            loadOutput(newToken, true, false);
             updateNavButtonStates();
         });
 
@@ -9360,8 +9792,8 @@
                         fanNavigatePrev();
                     } else if (document.getElementById('frameMockup')?.classList.contains('open')) {
                         frameMockupPrev();
-                    } else {
-                        // Navigate in single view
+                    } else if (!document.getElementById('gridPanel')?.classList.contains('open')) {
+                        // Navigate in single view (only if grid panel not open)
                         document.getElementById('prevToken')?.click();
                     }
                     break;
@@ -9375,8 +9807,8 @@
                         fanNavigateNext();
                     } else if (document.getElementById('frameMockup')?.classList.contains('open')) {
                         frameMockupNext();
-                    } else {
-                        // Navigate in single view
+                    } else if (!document.getElementById('gridPanel')?.classList.contains('open')) {
+                        // Navigate in single view (only if grid panel not open)
                         document.getElementById('nextToken')?.click();
                     }
                     break;
@@ -9570,7 +10002,8 @@
             palette: { next: 'color', text: 'BY PALETTE', color: 'var(--warm)' },
             color: { next: 'az', text: 'BY COLOR', color: 'var(--warm)' },
             az: { next: 'rarity', text: 'A-Z', color: 'var(--warm)' },
-            rarity: { next: 'palette', text: 'RARITY', color: 'var(--warm)' }
+            rarity: { next: 'collector', text: 'RARITY', color: 'var(--warm)' },
+            collector: { next: 'palette', text: 'BY COLLECTOR', color: 'var(--warm)' }
         };
 
         function updateToggleStyle() {
@@ -10043,6 +10476,8 @@
                 renderAZPalettes(tokens);
             } else if (gridMode === 'rarity') {
                 renderRaritySorted(tokens);
+            } else if (gridMode === 'collector') {
+                renderCollectorGroups(tokens);
             }
         }
 
@@ -10185,6 +10620,85 @@
                     if (e.target.closest('.grid-item-fav')) return;
                     const tokenId = parseInt(item.dataset.token);
                     // Check if in comparison select mode
+                    gridPanel.classList.remove('open');
+                    viewToggleBtn.classList.remove('grid-open');
+                    document.body.classList.remove('grid-open');
+                    loadOutput(tokenId, true);
+                });
+            });
+
+            gridContent.querySelectorAll('.grid-item-fav').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleCityFavorite(parseInt(btn.dataset.token), e);
+                });
+            });
+        }
+
+        function renderCollectorGroups(tokens) {
+            // Group cities by collector, sorted by most cities first
+            // Exclude "The Lost Cities" as it's not a real collector
+            const tokenSet = new Set(tokens);
+
+            // Build collector groups from COLLECTORS_DATA, filtering to only include tokens in our set
+            const collectorGroups = COLLECTORS_DATA
+                .filter(c => c.name !== 'The Lost Cities' && !c.name.startsWith('0x'))
+                .map(c => ({
+                    name: c.name,
+                    tokens: (c.tokens || []).filter(id => tokenSet.has(id)),
+                    totalCount: c.count
+                }))
+                .filter(c => c.tokens.length > 0)
+                .sort((a, b) => b.tokens.length - a.tokens.length);
+
+            if (collectorGroups.length === 0) {
+                gridContent.innerHTML = `<div class="empty-gallery">NO COLLECTORS FOUND</div>`;
+                document.getElementById('gridPagination').style.display = 'none';
+                return;
+            }
+
+            let html = collectorGroups.map((collector, idx) => {
+                const rank = idx + 1;
+                const isTopCollector = rank <= 3;
+                const rankBadge = isTopCollector ? `<span class="collector-rank rank-${rank}">#${rank}</span>` : `<span class="collector-rank">#${rank}</span>`;
+
+                return `
+                <div class="grid-group collector-group" data-collector="${collector.name}">
+                    <div class="grid-group-header collector-header">
+                        ${rankBadge}
+                        <span class="grid-group-name collector-name" data-collector="${collector.name}">${collector.name.toUpperCase()}</span>
+                        <span class="grid-group-count">${collector.tokens.length}</span>
+                        <span class="grid-group-toggle">▼</span>
+                    </div>
+                    <div class="grid-group-items grid-${gridSize}">${collector.tokens.map(id => generateGridItem(id)).join('')}</div>
+                </div>
+            `}).join('');
+
+            gridContent.innerHTML = html;
+            document.getElementById('gridPagination').style.display = 'none';
+
+            // Header collapse toggle
+            gridContent.querySelectorAll('.grid-group-header').forEach(header => {
+                header.addEventListener('click', (e) => {
+                    if (e.target.closest('.collector-name')) return; // Don't collapse when clicking name
+                    header.parentElement.classList.toggle('collapsed');
+                });
+            });
+
+            // Click collector name to open their gallery
+            gridContent.querySelectorAll('.collector-name').forEach(name => {
+                name.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const collectorName = name.dataset.collector;
+                    fetchCollectorTokens(collectorName);
+                });
+            });
+
+            // Grid item clicks
+            gridContent.querySelectorAll('.grid-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (e.target.closest('.grid-item-fav')) return;
+                    const tokenId = parseInt(item.dataset.token);
                     gridPanel.classList.remove('open');
                     viewToggleBtn.classList.remove('grid-open');
                     document.body.classList.remove('grid-open');
@@ -10522,7 +11036,7 @@
 
                     // Update UI
                     const percent = Math.round((minted / 500) * 100);
-                    document.getElementById('mintedPercent').textContent = percent;
+                    document.getElementById('mintedCount').textContent = minted;
                     document.getElementById('statsCities').textContent = minted;
 
                     // Update progress bar
@@ -12007,10 +12521,11 @@
                 if (mintBtn) {
                     mintBtn.style.display = isSoldOut ? 'none' : 'flex';
                 }
-                // Update minted count
+                // Update minted count - use actual tokenTraits count for accuracy
                 const mintedCountEl = document.getElementById('aboutMintedCount');
-                if (mintedCountEl && typeof MAX_TOKEN !== 'undefined') {
-                    mintedCountEl.textContent = MAX_TOKEN + 1; // MAX_TOKEN is 0-indexed
+                if (mintedCountEl) {
+                    const actualMinted = Object.keys(tokenTraits).length;
+                    mintedCountEl.textContent = actualMinted > 0 ? actualMinted : '—';
                 }
                 // Update collector count
                 const collectorCountEl = document.getElementById('aboutCollectorCount');
@@ -12026,8 +12541,8 @@
         // Expose to window for inline onclick
         window.openAboutModal = openAboutModal;
 
-        // Mint countdown timer - March 31, 2025 at 11:59 PM UTC
-        const MINT_DEADLINE = new Date('2025-03-31T23:59:00Z').getTime();
+        // Mint countdown timer - March 31, 2025 at 6:00 PM ET (10:00 PM UTC)
+        const MINT_DEADLINE = new Date('2025-03-31T22:00:00Z').getTime();
         let countdownInterval = null;
 
         function updateMintCountdown() {
@@ -12036,7 +12551,8 @@
             const countdownEl = document.getElementById('aboutCountdown');
 
             if (remaining <= 0) {
-                if (countdownEl) countdownEl.classList.add('expired');
+                // Hide countdown when expired
+                if (countdownEl) countdownEl.style.display = 'none';
                 if (countdownInterval) clearInterval(countdownInterval);
                 return;
             }
@@ -12852,6 +13368,6 @@
 
     </script>
 
-    <a href="https://shop.efdotstudio.com/collections/cities" target="_blank" title="Shop Cities Prints"><img src="ef-logo.png" alt="Efdot" class="efdot-shop-fixed"></a>
+    <a href="https://shop.efdotstudio.com/collections/cities-collection/Cities" target="_blank" title="Shop Cities Prints"><img src="ef-logo.png" alt="Efdot" class="efdot-shop-fixed"></a>
 </body>
 </html>
