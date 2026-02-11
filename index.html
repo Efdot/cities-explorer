@@ -18,6 +18,15 @@
     <meta name="twitter:description" content="Explore the Cities generative art collection. Browse unique city maps, filter by traits, and discover collectors.">
     <meta name="twitter:image" content="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
 
+    <!-- Preconnect to image CDNs for faster loading -->
+    <link rel="preconnect" href="https://blush-worried-heron-358.mypinata.cloud" crossorigin>
+    <link rel="preconnect" href="https://ipfs.io" crossorigin>
+    <link rel="preconnect" href="https://images.squarespace-cdn.com" crossorigin>
+    <link rel="preconnect" href="https://f8n-production-collection-assets.imgix.net" crossorigin>
+    <link rel="preconnect" href="https://nft-cdn.alchemy.com" crossorigin>
+    <link rel="preconnect" href="https://images.ninfa.io" crossorigin>
+    <link rel="preconnect" href="https://media-proxy.artblocks.io" crossorigin>
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
     <link rel="apple-touch-icon" href="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
@@ -241,6 +250,9 @@
         .grid-sort-toggle:hover { opacity: 1; background: var(--bg-input); }
         .grid-sort-toggle .sort-arrow { display: inline-block; transition: transform 0.2s ease; margin-left: 2px; }
         .grid-sort-toggle.sort-desc .sort-arrow { transform: rotate(180deg); }
+        .grid-numbers-toggle { background: none; border: none; cursor: pointer; padding: 4px 8px; font-size: 10px; font-weight: 700; color: var(--text-muted); opacity: 0.4; transition: all 0.3s ease; border-radius: 8px; margin-left: -6px; }
+        .grid-numbers-toggle:hover { opacity: 0.8; background: var(--bg-input); }
+        .grid-numbers-toggle.active { opacity: 1; color: var(--warm); }
 
         /* Grid energy clock - non-interactive display */
         .grid-energy-clock { background: none; border: none; cursor: default; padding: 4px 8px; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); opacity: 0.5; transition: all 0.3s ease; border-radius: 12px; white-space: nowrap; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
@@ -350,7 +362,7 @@
         .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(4, 1fr); gap: 8px; }
         .grid-items.grid-6-col, .grid-group-items.grid-6-col { grid-template-columns: repeat(6, 1fr); gap: 5px; }
         .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(8, 1fr); gap: 4px; }
-        .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 4px; }
+        .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(14, 1fr); gap: 2px; }
 
         /* Favorites grid - clean, spacious layout */
         .grid-items.favorites-grid { gap: 16px; padding: 20px; width: 100%; }
@@ -566,6 +578,17 @@
         .about-section.open .about-section-arrow { transform: rotate(180deg); }
         .about-section-content { display: none; padding-bottom: 18px; font-size: 14px; line-height: 1.7; color: var(--text-dim); }
         .about-section.open .about-section-content { display: block; }
+        /* About page set type examples */
+        .about-set-types { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 8px; }
+        .about-set-type { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .about-set-type:hover { background: rgba(255,255,255,0.06); border-color: var(--text-muted); transform: translateY(-1px); }
+        .about-set-icon { font-size: 18px; line-height: 1; flex-shrink: 0; }
+        .about-set-info { display: flex; flex-direction: column; gap: 2px; }
+        .about-set-name { font-size: 11px; font-weight: 700; color: var(--text); line-height: 1.2; }
+        .about-set-desc { font-size: 9px; color: var(--text-muted); line-height: 1.3; }
+        @media (max-width: 600px) {
+            .about-set-types { grid-template-columns: 1fr; }
+        }
         .about-stats { display: flex; justify-content: center; gap: 8px; margin: 16px 0 20px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; }
         .about-stat { white-space: nowrap; }
         .about-stat strong { color: var(--text); font-weight: 700; }
@@ -597,15 +620,36 @@
         .about-btn-essay, .about-btn-explore, .about-btn-origins { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; text-decoration: none; text-transform: uppercase; background: none; border: 0.5px dashed var(--text-muted); padding: 10px 24px; color: var(--text-muted); border-radius: 50px; height: 38px; display: flex; align-items: center; }
         .about-btn-essay:hover, .about-btn-explore:hover, .about-btn-origins:hover { color: var(--text); border-color: var(--text); }
         .about-mint-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
-        .about-mint-btn { display: flex; align-items: flex-end; text-decoration: none; padding: 8px 12px; gap: 2px; opacity: 0.8; transition: opacity 0.3s ease; background: transparent; border: none; cursor: pointer; }
+        .about-mint-btn { display: flex; align-items: center; text-decoration: none; padding: 8px 12px; gap: 0; opacity: 0.8; transition: opacity 0.3s ease; background: transparent; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 0.05em; color: #F5B731; text-transform: uppercase; }
         .about-mint-btn:hover { opacity: 1; }
         .about-mint-btn .mint-letter { height: 24px; width: auto; display: block; transition: transform 0.15s ease, filter 0.3s ease; }
+        .about-mint-btn .collect-letter { display: inline-block; transition: transform 0.15s ease; }
         .about-mint-btn:hover .mint-letter { filter: brightness(1.1); animation: letterVibrate 0.3s ease-in-out infinite; }
+        .about-mint-btn:hover .collect-letter { animation: letterVibrate 0.3s ease-in-out infinite; }
+        .about-mint-btn:hover .collect-letter:nth-child(1) { animation-delay: 0s; }
+        .about-mint-btn:hover .collect-letter:nth-child(2) { animation-delay: 0.04s; }
+        .about-mint-btn:hover .collect-letter:nth-child(3) { animation-delay: 0.08s; }
+        .about-mint-btn:hover .collect-letter:nth-child(4) { animation-delay: 0.12s; }
+        .about-mint-btn:hover .collect-letter:nth-child(5) { animation-delay: 0.16s; }
+        .about-mint-btn:hover .collect-letter:nth-child(6) { animation-delay: 0.20s; }
+        .about-mint-btn:hover .collect-letter:nth-child(7) { animation-delay: 0.24s; }
         .about-mint-btn:hover .mint-letter:nth-child(2) { animation-delay: 0.06s; }
         .about-mint-btn:hover .mint-letter:nth-child(3) { animation-delay: 0.12s; }
         .about-mint-btn:hover .mint-letter:nth-child(4) { animation-delay: 0.18s; }
         .about-mint-tooltip { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); font-size: 10px; font-style: italic; color: var(--text-muted); white-space: nowrap; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; margin-top: 4px; }
         .about-mint-wrapper:hover .about-mint-tooltip { opacity: 0.7; }
+
+        /* Collect popover menu */
+        .collect-popover { position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%) scale(0.95); background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 6px 0; min-width: 160px; opacity: 0; visibility: hidden; transition: all 0.15s ease; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .collect-popover.open { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
+        .collect-popover-option { display: block; width: 100%; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-decoration: none; text-align: left; background: none; border: none; cursor: pointer; transition: all 0.15s ease; font-family: inherit; }
+        .collect-popover-option:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+        .collect-popover-option span { opacity: 0.5; font-weight: 400; margin-left: 4px; }
+        .collect-btn-wrapper { position: relative; display: inline-block; }
+        /* Light mode popover (for wall view gray mode) */
+        .wall-view-modal.wall-gray .collect-popover { background: #fff; border-color: #ddd; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+        .wall-view-modal.wall-gray .collect-popover-option { color: #666; }
+        .wall-view-modal.wall-gray .collect-popover-option:hover { background: rgba(0,0,0,0.05); color: #333; }
 
         /* Origins section - hover reveal effect */
         /* Origins button in About */
@@ -673,11 +717,11 @@
         .timeline-content { position: relative; z-index: 2; }
         .timeline-item img, .timeline-item video { position: relative; z-index: 3; }
 
-        /* Year markers - pill shaped, in front - condensed */
-        .timeline-year { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: var(--text); padding: 8px 20px; margin: 80px auto 20px; position: relative; z-index: 10; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 50px; display: inline-block; left: 50%; transform: translateX(-50%); }
+        /* Year markers - pill shaped, in front - more prominent */
+        .timeline-year { text-align: center; font-size: 13px; font-weight: 800; letter-spacing: 0.18em; color: var(--text); padding: 10px 24px; margin: 80px auto 24px; position: relative; z-index: 10; background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; display: inline-block; left: 50%; transform: translateX(-50%); box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
 
-        /* Timeline story one-liners */
-        .timeline-story { text-align: center; font-size: 13px; font-style: italic; color: var(--text-muted); max-width: 400px; margin: 0 auto 50px; padding: 0 20px; line-height: 1.5; opacity: 0.8; }
+        /* Timeline story one-liners - more legible */
+        .timeline-story { text-align: center; font-size: 15px; font-style: italic; color: var(--text-dim); max-width: 440px; margin: 0 auto 50px; padding: 0 24px; line-height: 1.6; opacity: 0.9; }
 
         /* Timeline items - condensed vertical spacing */
         .timeline-item { position: relative; margin: 40px 0; cursor: pointer; transition: transform 0.4s ease; }
@@ -1202,7 +1246,7 @@
         .main-content > * { pointer-events: auto; }
         .frame-container { position: relative; overflow: hidden; cursor: pointer; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.3s ease-out; display: flex; align-items: center; justify-content: center; }
         .frame-container:hover { transform: scale(1.02); border-radius: 24px; }
-        .preview-image { max-height: calc(100vh - 240px); max-width: 100%; width: auto; height: auto; display: block; transition: opacity 0.3s ease-out; object-fit: contain; }
+        .preview-image { max-height: calc(100vh - 280px); max-width: 100%; width: auto; height: auto; display: block; transition: opacity 0.3s ease-out; object-fit: contain; }
         .bottom-info { margin-top: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
         .preview-image.fade-out { opacity: 0; }
 
@@ -1319,18 +1363,29 @@
             .view-toggle-btn.grid-open:hover .glyph-blob.glyph-animated { display: none !important; }
             .view-toggle-btn.grid-open:hover .glyph-textile.glyph-animated { display: block; }
         }
-        .mint-toggle { display: flex; align-items: flex-end; text-decoration: none; padding: 4px 3px; flex-shrink: 0; gap: 1px; opacity: 0.6; transition: opacity 0.3s ease; margin-right: 16px; }
+        .mint-toggle { display: flex; align-items: flex-end; text-decoration: none; padding: 4px 3px; flex-shrink: 0; gap: 1px; opacity: 0.6; transition: opacity 0.3s ease; margin-right: 16px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.02em; color: #F5B731; text-transform: uppercase; background: none; border: none; cursor: pointer; }
         .mint-toggle:hover { opacity: 1; }
         .mint-letter { height: 20px; width: auto; display: block; transition: transform 0.15s ease, filter 0.3s ease; }
+        .collect-letter { display: inline-block; transition: transform 0.15s ease; }
         .mint-toggle:hover .mint-letter { filter: brightness(1.1); animation: letterVibrate 0.3s ease-in-out infinite; }
+        .mint-toggle:hover .collect-letter { animation: letterVibrate 0.3s ease-in-out infinite; }
+        .mint-toggle:hover .collect-letter:nth-child(1) { animation-delay: 0s; }
+        .mint-toggle:hover .collect-letter:nth-child(2) { animation-delay: 0.04s; }
+        .mint-toggle:hover .collect-letter:nth-child(3) { animation-delay: 0.08s; }
+        .mint-toggle:hover .collect-letter:nth-child(4) { animation-delay: 0.12s; }
+        .mint-toggle:hover .collect-letter:nth-child(5) { animation-delay: 0.16s; }
+        .mint-toggle:hover .collect-letter:nth-child(6) { animation-delay: 0.20s; }
+        .mint-toggle:hover .collect-letter:nth-child(7) { animation-delay: 0.24s; }
         .mint-toggle:hover .mint-letter:nth-child(2) { animation-delay: 0.06s; }
         .mint-toggle:hover .mint-letter:nth-child(3) { animation-delay: 0.12s; }
         .mint-toggle:hover .mint-letter:nth-child(4) { animation-delay: 0.18s; }
         .mint-letter.wave { animation: letterWave 0.6s ease-out !important; }
-        /* Subtle M only in single view - reveal full MINT on hover */
+        /* Subtle C only in single view - reveal full COLLECT on hover */
         body:not(.grid-open) .mint-toggle { opacity: 0.3; }
         body:not(.grid-open) .mint-toggle:hover { opacity: 0.8; }
         body:not(.grid-open) .mint-letter { height: 14px; transition: all 0.2s ease; }
+        body:not(.grid-open) .collect-letter:not(:first-child) { display: none; width: 0; opacity: 0; transition: all 0.2s ease; }
+        body:not(.grid-open) .mint-toggle:hover .collect-letter:not(:first-child) { display: inline-block; width: auto; opacity: 1; }
         body:not(.grid-open) .mint-letter:not(:first-child) { display: none; width: 0; opacity: 0; }
         body:not(.grid-open) .mint-toggle:hover .mint-letter:not(:first-child) { display: block; width: auto; opacity: 1; }
         @keyframes letterWave { 0% { transform: translateY(0) rotate(0deg); } 30% { transform: translateY(-5px) rotate(-4deg); } 50% { transform: translateY(-2px) rotate(2deg); } 70% { transform: translateY(-3px) rotate(-1deg); } 100% { transform: translateY(0) rotate(0deg); } }
@@ -1339,9 +1394,12 @@
         .gallery-panel { position: fixed; top: 0; right: 0; width: 380px; height: 100vh; background: var(--bg-panel); padding: 28px 24px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 99; will-change: transform; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
         .gallery-panel.open { transform: translateX(0); }
         .gallery-panel.dragging { transition: none; }
-        .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+        .gallery-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; padding-top: 20px; }
         .gallery-header h2 { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--pink); }
-        .gallery-close { background: var(--bg-input); border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .gallery-title-close { cursor: pointer; transition: opacity 0.2s ease; }
+        .gallery-title-close:hover { opacity: 0.7; }
+        .gallery-close-arrow { margin-left: 6px; font-size: 16px; }
+        .gallery-close { background: var(--bg-input); border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; margin-top: 24px; }
         .gallery-close:hover { background: var(--bg-card); color: var(--text); }
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .gallery-item { position: relative; cursor: pointer; border-radius: 16px; overflow: hidden; background: var(--bg-card); aspect-ratio: 9/16; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -1356,21 +1414,24 @@
         .item-actions .delete-btn { background: transparent; color: var(--pink); }
         .empty-gallery { grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 60px 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; line-height: 2; }
 
-        /* Favorited palettes section - horizontal bar at top */
-        .fav-palettes-section { margin-bottom: 16px; padding: 12px; background: var(--bg-card); border-radius: 12px; }
-        .fav-palettes-header { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px; }
-        .fav-palettes-grid { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
-        .fav-palettes-grid::-webkit-scrollbar { height: 3px; }
+        /* Favorited palettes section - collapsible vertical list */
+        .fav-palettes-section { margin-bottom: 16px; background: var(--bg-card); border-radius: 12px; overflow: hidden; }
+        .fav-palettes-header { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); padding: 12px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: background 0.2s ease; }
+        .fav-palettes-header:hover { background: var(--bg-input); }
+        .fav-palettes-header .collapse-arrow { font-size: 10px; transition: transform 0.2s ease; }
+        .fav-palettes-section.collapsed .collapse-arrow { transform: rotate(-90deg); }
+        .fav-palettes-grid { display: flex; flex-direction: column; gap: 2px; padding: 0 8px 8px; max-height: 200px; overflow-y: auto; transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.2s ease; }
+        .fav-palettes-section.collapsed .fav-palettes-grid { max-height: 0; padding: 0 8px; opacity: 0; overflow: hidden; }
+        .fav-palettes-grid::-webkit-scrollbar { width: 3px; }
         .fav-palettes-grid::-webkit-scrollbar-track { background: transparent; }
         .fav-palettes-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        .fav-palette-item { display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: var(--bg-input); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
-        .fav-palette-item:hover { background: var(--bg-deep); transform: scale(1.02); }
-        .fav-palette-swatch { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
-        .fav-palette-name { font-size: 9px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
+        .fav-palette-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--bg-input); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+        .fav-palette-item:hover { background: var(--bg-deep); }
+        .fav-palette-swatch { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; }
+        .fav-palette-name { font-size: 10px; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.03em; flex: 1; }
         .fav-palette-count { display: none; }
-        .fav-palette-remove { width: 16px; height: 16px; font-size: 10px; }
-        .fav-palette-remove { width: 20px; height: 20px; border: none; background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; border-radius: 50%; transition: all 0.2s; display: flex; align-items: center; justify-content: center; margin-left: auto; }
-        .fav-palette-remove:hover { background: var(--bg-input); color: var(--orange); }
+        .fav-palette-remove { width: 20px; height: 20px; border: none; background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; border-radius: 50%; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .fav-palette-remove:hover { background: var(--bg-card); color: var(--orange); }
         .fav-divider { height: 1px; background: var(--border); margin: 16px 0; }
 
         .keyboard-hints { margin-top: auto; padding-top: 24px; }
@@ -1474,10 +1535,10 @@
 
         .supply-tracker { display: block; text-decoration: none; transition: all 0.4s ease; cursor: pointer; position: relative; margin-bottom: 12px; }
         .supply-bar { position: relative; height: 18px; background: var(--bg-input); border-radius: 9px; overflow: hidden; }
-        .supply-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, rgba(160, 130, 90, 0.6), rgba(180, 150, 100, 0.6), rgba(160, 130, 90, 0.6)); background-size: 200% 100%; border-radius: 9px; transition: all 0.4s ease; animation: supplyShimmer 15s ease-in-out infinite; }
+        .supply-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, rgba(180, 140, 80, 0.8), rgba(200, 160, 100, 0.8), rgba(180, 140, 80, 0.8)); background-size: 200% 100%; border-radius: 9px; transition: all 0.4s ease; animation: supplyShimmer 15s ease-in-out infinite; }
         .supply-tracker:hover .supply-fill { background: linear-gradient(90deg, #D4A574, #E8B86D, #D4A574); background-size: 200% 100%; }
         @keyframes supplyShimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 10px; font-size: 8px; font-weight: 600; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.5); z-index: 2; transition: color 0.3s ease; }
+        .supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 10px; font-size: 7px; font-weight: 800; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.5); z-index: 2; transition: color 0.3s ease; }
         .supply-tracker:hover .supply-label { color: #000; }
         .supply-tracker .mint-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; opacity: 0; color: #000; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; transition: opacity 0.3s ease; z-index: 3; border-radius: 9px; background: linear-gradient(90deg, var(--orange), var(--yellow), var(--pink), var(--orange)); background-size: 300% 100%; animation: colorShift 12s ease-in-out infinite; text-shadow: none; }
         .supply-tracker:hover .supply-bar { box-shadow: 0 2px 8px rgba(212, 165, 116, 0.25); }
@@ -1561,11 +1622,26 @@
         .leaderboard-grid-cell.resting { background: #B19CD9; }
         .leaderboard-grid-wrap.has-complete .leaderboard-grid-cell:not([style*="opacity"]) { filter: brightness(1.15); }
         .leaderboard-grid-multiplier { font-size: 7px; font-weight: 800; color: var(--warm); margin-left: 2px; line-height: 1; }
+        /* Achievement badges */
+        .achievement-badges { display: inline-flex; gap: 3px; margin-left: 6px; align-items: center; }
+        .achievement-badge { font-size: 10px; opacity: 0.7; cursor: default; line-height: 1; }
+        .achievement-badge.og { font-size: 7px; font-weight: 600; color: var(--text-muted); opacity: 0.4; letter-spacing: 0.03em; }
+        .achievement-badge.grid { display: inline-flex; align-items: center; gap: 1px; }
+        .grid-icon-mini { display: inline-grid; grid-template-columns: repeat(2, 3px); grid-template-rows: repeat(2, 5px); gap: 1px; opacity: 0.6; }
+        .grid-icon-mini b { display: block; background: currentColor; border-radius: 0.5px; }
+        .grid-multiplier { font-size: 7px; opacity: 0.5; font-weight: 600; }
+        .achievement-badge.spectrum { filter: saturate(0.7); opacity: 0.65; }
+        .achievement-badge.rising-set, .achievement-badge.living-set, .achievement-badge.fading-set, .achievement-badge.resting-set { font-size: 10px; opacity: 0.65; }
+        /* Leaderboard alternating rows */
+        .leaderboard-item:nth-child(odd) { background: rgba(255,255,255,0.02); }
+        .leaderboard-item:nth-child(even) { background: transparent; }
         .leaderboard-list { list-style: none; contain: content; }
         .leaderboard-btn.back-btn { margin-bottom: 24px; }
         /* Become a Collector */
         .become-collector-btn { display: block; width: 100%; padding: 12px 16px; margin-bottom: 16px; background: transparent; border: 1px dashed var(--border); color: var(--text-muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
         .become-collector-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(255,179,71,0.05); }
+        .not-collector-link { display: block; width: 100%; padding: 8px 0; margin-bottom: 12px; background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; }
+        .not-collector-link:hover { opacity: 1; color: var(--warm); }
         /* Citizen Guide View - Clean onboarding */
         .collector-guide-view { display: none; }
         .collector-guide-view.active { display: block; }
@@ -1610,8 +1686,7 @@
         .leaderboard-item:hover .leaderboard-name { transform: rotate(-1.5deg) translateX(2px); color: var(--yellow) !important; }
         .leaderboard-chips-wrap { flex: 1; display: flex; justify-content: flex-end; overflow: hidden; }
         .leaderboard-chips { display: flex; gap: 2px; border-radius: 4px; overflow: hidden; transition: gap 0.12s ease; }
-        .leaderboard-chip { width: 18px; aspect-ratio: 9/16; border-radius: 2px; overflow: hidden; transition: width 0.12s ease, border-radius 0.12s ease; will-change: width; }
-        .leaderboard-chip img { width: 100%; height: 100%; object-fit: cover; }
+        .leaderboard-chip { width: 18px; aspect-ratio: 9/16; border-radius: 2px; overflow: hidden; transition: width 0.12s ease, border-radius 0.12s ease; will-change: width; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
         .leaderboard-item:hover .leaderboard-chips { gap: 3px; }
         .leaderboard-item:hover .leaderboard-chip { width: 28px; border-radius: 3px; }
         .leaderboard-count { font-size: 11px; font-weight: 800; color: var(--teal); flex-shrink: 0; min-width: 24px; text-align: right; }
@@ -1695,16 +1770,16 @@
         .top-50-dot { background: #C0C0C0; }
         .top-100-dot { background: #CD7F32; }
         .grid-filter-spacer { flex: 1; }
-        .grid-supply-tracker { width: 120px; height: 28px; position: relative; flex-shrink: 0; cursor: pointer; }
+        .grid-supply-tracker { width: 120px; height: 28px; position: relative; flex-shrink: 0; cursor: pointer; display: block; text-decoration: none; }
         .grid-supply-bar { position: relative; height: 100%; background: var(--bg-input); border-radius: 14px; overflow: hidden; transition: box-shadow 0.3s ease; }
         .grid-supply-tracker:hover .grid-supply-bar { box-shadow: 0 2px 8px rgba(212, 165, 116, 0.25); }
         .grid-supply-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, rgba(160, 130, 90, 0.5), rgba(180, 150, 100, 0.5), rgba(160, 130, 90, 0.5)); background-size: 200% 100%; border-radius: 14px; transition: all 0.4s ease; animation: supplyShimmer 8s ease-in-out infinite; }
         .grid-supply-tracker:hover .grid-supply-fill { background: linear-gradient(90deg, #D4A574, #E8B86D, #D4A574); background-size: 200% 100%; }
-        .grid-supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 12px; font-size: 9px; font-weight: 600; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.45); z-index: 2; transition: color 0.3s ease; }
+        .grid-supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 12px; font-size: 8px; font-weight: 800; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.45); z-index: 2; transition: color 0.3s ease; }
         .grid-supply-tracker:hover .grid-supply-label { color: #000; }
         .grid-showing-count { font-size: 10px; font-weight: 500; color: var(--text-muted); display: none; letter-spacing: 0.03em; white-space: nowrap; flex-shrink: 0; }
         .grid-showing-count.visible { display: inline; opacity: 0.4; }
-        .collector-banner { display: none; flex-direction: row; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 60px 16px 24px; background: linear-gradient(135deg, #1a1520 0%, #2a2235 50%, #1f1a28 100%); position: relative; z-index: 10; border-bottom: 1px solid rgba(232, 184, 109, 0.15); cursor: pointer; transition: background 0.2s ease; }
+        .collector-banner { display: none; flex-direction: row; align-items: center; justify-content: center; gap: 16px; padding: 12px 24px; background: linear-gradient(135deg, #1a1520 0%, #2a2235 50%, #1f1a28 100%); position: relative; z-index: 10; border-bottom: 1px solid rgba(232, 184, 109, 0.15); cursor: pointer; transition: background 0.2s ease; }
         .collector-banner:hover { background: linear-gradient(135deg, #1f1a25 0%, #2f273a 50%, #24202d 100%); }
         .collector-banner.visible { display: flex; }
         .collector-banner-left { display: flex; align-items: baseline; gap: 10px; }
@@ -1715,9 +1790,13 @@
         .collector-banner-phrase { font-size: 11px; font-weight: 400; color: rgba(200, 190, 210, 0.6); font-style: italic; letter-spacing: 0.03em; }
         .collector-banner-wall { background: none; border: 1px solid rgba(232, 184, 109, 0.4); color: rgba(232, 184, 109, 0.8); padding: 6px 14px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px; cursor: pointer; transition: all 0.3s ease; }
         .collector-banner-wall:hover { background: rgba(232, 184, 109, 0.15); border-color: rgba(232, 184, 109, 0.8); color: rgba(232, 184, 109, 1); }
-        .collector-banner-count { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 24px; text-align: right; }
+        .collector-banner-count { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 24px; text-align: center; }
         .collector-banner-close { background: rgba(255,255,255,0.08); border: none; color: rgba(200, 190, 210, 0.4); width: 26px; height: 26px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); }
         .collector-banner-close:hover { background: rgba(255,255,255,0.15); color: rgba(200, 190, 210, 0.9); transform: translateY(-50%) scale(1.1); }
+        .collector-banner-nav { background: rgba(255,255,255,0.06); border: none; color: rgba(200, 190, 210, 0.5); width: 32px; height: 32px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; flex-shrink: 0; position: absolute; top: 50%; transform: translateY(-50%); }
+        .collector-banner-nav:hover { background: rgba(232, 184, 109, 0.15); color: var(--warm); }
+        .collector-banner-prev { left: 16px; }
+        .collector-banner-next { right: 56px; }
 
         /* Wall View Modal */
         .wall-view-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #e8e4e0; z-index: 2000; display: none; flex-direction: column; overflow: hidden; transition: background 0.4s ease; }
@@ -1763,7 +1842,7 @@
         .wall-view-layout-toggle.active { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.wall-black .wall-view-layout-toggle { border-color: #333; color: #666; }
         .wall-view-modal.wall-black .wall-view-layout-toggle:hover, .wall-view-modal.wall-black .wall-view-layout-toggle.active { background: #fff; border-color: #fff; color: #000; }
-        .wall-view-hide-empty { background: none; border: 1px solid #ddd; color: #888; padding: 5px 10px; font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 4px; }
+        .wall-view-hide-empty { background: none; border: 1px solid #ddd; color: #888; padding: 6px 14px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 50px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 4px; }
         .wall-view-hide-empty .line-icon { font-size: 12px; line-height: 1; }
         .wall-view-hide-empty:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-hide-empty.active { background: #333; border-color: #333; color: #fff; }
@@ -1826,11 +1905,17 @@
         .wall-view-modal.wall-black .wall-view-collector-name { color: rgba(200,180,120,0.5); }
         .wall-view-modal.wall-black .wall-view-collector-name:hover { color: #c8b478; }
         /* Zoom controls */
-        .wall-view-zoom-controls { position: absolute; bottom: 80px; left: 24px; display: flex; flex-direction: column; gap: 4px; z-index: 20; }
+        .wall-view-zoom-controls { position: absolute; bottom: 56px; left: 24px; display: flex; flex-direction: column; gap: 4px; z-index: 20; }
         .wall-view-zoom-btn { width: 32px; height: 32px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.9); color: #666; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .wall-view-zoom-btn:hover { background: #333; color: #fff; border-color: #333; }
         .wall-view-modal.wall-black .wall-view-zoom-btn { background: rgba(30,30,30,0.9); border-color: rgba(255,255,255,0.1); color: #888; }
         .wall-view-modal.wall-black .wall-view-zoom-btn:hover { background: #fff; color: #000; }
+        /* Recenter button grid icon */
+        .recenter-btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: 14px; height: 14px; }
+        .recenter-btn-grid span { background: #666; border-radius: 1px; }
+        .wall-view-zoom-btn:hover .recenter-btn-grid span { background: #fff; }
+        .wall-view-modal.wall-black .recenter-btn-grid span { background: #888; }
+        .wall-view-modal.wall-black .wall-view-zoom-btn:hover .recenter-btn-grid span { background: #000; }
         /* Empty slot for aspirational grid - darker background, more visible */
         .wall-view-frame.empty-slot { background: transparent; box-shadow: none; padding: 0; width: 100%; }
         .wall-view-frame.empty-slot .wall-view-empty-frame { width: 100%; background: rgba(255,255,255,0.03); border: 2px dashed rgba(255,255,255,0.15); border-radius: 4px; position: relative; cursor: pointer; transition: all 0.3s ease; aspect-ratio: 9/16; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; transform: scale(0.95); }
@@ -1839,11 +1924,16 @@
         .wall-view-frame.empty-slot .wall-view-empty-frame:hover .slot-plus { color: rgba(255,255,255,0.5); transform: scale(1.1); }
         .wall-view-frame.empty-slot .slot-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.15); transition: color 0.3s ease; }
         .wall-view-frame.empty-slot .wall-view-empty-frame:hover .slot-label { color: rgba(255,255,255,0.4); }
+        .wall-view-frame.empty-slot .slot-hide-btn { position: absolute; top: 6px; right: 6px; background: rgba(255,255,255,0.08); border: none; color: rgba(255,255,255,0.25); font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 8px; border-radius: 10px; cursor: pointer; opacity: 0; transition: all 0.2s ease; }
+        .wall-view-frame.empty-slot .wall-view-empty-frame:hover .slot-hide-btn { opacity: 1; }
+        .wall-view-frame.empty-slot .slot-hide-btn:hover { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); }
         /* Light mode empty frames */
         .wall-view-modal:not(.wall-black):not(.dark-mode) .wall-view-frame.empty-slot .wall-view-empty-frame { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.12); }
         .wall-view-modal:not(.wall-black):not(.dark-mode) .wall-view-frame.empty-slot .wall-view-empty-frame:hover { border-color: rgba(0,0,0,0.18); background: rgba(0,0,0,0.02); }
         .wall-view-modal:not(.wall-black):not(.dark-mode) .wall-view-frame.empty-slot .slot-plus { color: rgba(0,0,0,0.08); }
         .wall-view-modal:not(.wall-black):not(.dark-mode) .wall-view-frame.empty-slot .wall-view-empty-frame:hover .slot-plus { color: rgba(0,0,0,0.25); }
+        .wall-view-modal:not(.wall-black):not(.dark-mode) .wall-view-frame.empty-slot .slot-hide-btn { background: rgba(0,0,0,0.05); color: rgba(0,0,0,0.3); }
+        .wall-view-modal:not(.wall-black):not(.dark-mode) .wall-view-frame.empty-slot .slot-hide-btn:hover { background: rgba(0,0,0,0.1); color: rgba(0,0,0,0.5); }
         /* Grid/Line toggle button - always visible */
         .wall-view-hide-empty { display: block; }
         /* Empty slot dropdown menu */
@@ -1925,7 +2015,7 @@
         .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-suggestion-close:hover { color: rgba(0,0,0,0.6); }
         /* Grid icon - dynamic rectangles at 9:16 ratio */
         .grid-icon { display: inline-grid; gap: 1px; vertical-align: middle; margin: 0 4px; }
-        .grid-icon-rect { background: #c9a227; border-radius: 0.5px; aspect-ratio: 9/16; }
+        .grid-icon-rect { background: currentColor; border-radius: 0.5px; aspect-ratio: 9/16; opacity: 0.7; }
         .grid-icon.grid-2x2 { grid-template-columns: repeat(2, 6px); }
         .grid-icon.grid-3x2 { grid-template-columns: repeat(3, 5px); }
         .grid-icon.grid-3x3 { grid-template-columns: repeat(3, 5px); }
@@ -1934,7 +2024,7 @@
         .grid-icon.grid-5x4 { grid-template-columns: repeat(5, 3px); }
         .grid-icon.grid-5x5 { grid-template-columns: repeat(5, 3px); }
         /* Try/Edit mode toggle */
-        .wall-view-try-mode { background: none; border: 1px solid rgba(201, 162, 39, 0.4); color: rgba(201, 162, 39, 0.8); padding: 5px 12px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
+        .wall-view-try-mode { background: none; border: 1px solid rgba(201, 162, 39, 0.4); color: rgba(201, 162, 39, 0.8); padding: 6px 14px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 50px; cursor: pointer; transition: all 0.2s ease; }
         .wall-view-try-mode:hover { background: rgba(201, 162, 39, 0.15); border-color: rgba(201, 162, 39, 0.7); color: #c9a227; }
         .wall-view-try-mode.active { background: rgba(201, 162, 39, 0.25); border-color: #c9a227; color: #c9a227; box-shadow: 0 0 12px rgba(201, 162, 39, 0.3); }
         .wall-view-modal.dark-mode .wall-view-try-mode, .wall-view-modal.wall-black .wall-view-try-mode { border-color: rgba(201, 162, 39, 0.3); color: rgba(201, 162, 39, 0.6); }
@@ -2046,9 +2136,15 @@
         .print-inquiry-content { background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
         .print-inquiry-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer; line-height: 1; padding: 4px; }
         .print-inquiry-close:hover { color: #fff; }
-        .print-inquiry-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .print-inquiry-subtitle { font-size: 11px; color: #888; margin-bottom: 12px; line-height: 1.5; }
-        .print-inquiry-note { font-size: 10px; color: #666; margin-bottom: 20px; line-height: 1.5; font-style: italic; padding: 10px 12px; background: rgba(201, 162, 39, 0.08); border-left: 2px solid rgba(201, 162, 39, 0.4); border-radius: 0 6px 6px 0; }
+        .print-inquiry-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .print-inquiry-options { display: flex; gap: 12px; margin-bottom: 20px; }
+        .print-option { flex: 1; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 14px; }
+        .print-option-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .print-option-badge { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 6px; border-radius: 4px; background: rgba(201, 162, 39, 0.2); color: #c9a227; }
+        .print-option-badge.open { background: rgba(100, 200, 150, 0.15); color: #6c9; }
+        .print-option-title { font-size: 13px; font-weight: 700; color: #fff; }
+        .print-option-desc { font-size: 11px; color: #888; line-height: 1.5; }
+        .print-inquiry-divider { height: 1px; background: #333; margin: 20px 0; }
         .print-inquiry-field { margin-bottom: 16px; }
         .print-inquiry-field label { display: block; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 6px; }
         .print-inquiry-field input, .print-inquiry-field textarea, .print-inquiry-field select { width: 100%; padding: 12px 14px; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 13px; font-family: inherit; }
@@ -2057,8 +2153,40 @@
         .print-inquiry-field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23888'%3E%3Cpath d='M1 3l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
         .print-inquiry-preview { background: #222; border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 11px; color: #aaa; }
         .print-inquiry-preview-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 8px; }
-        .print-inquiry-preview-cities { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-        .print-inquiry-preview-cities span { background: #333; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; color: #c9a227; }
+        .print-inquiry-preview-cities { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .print-inquiry-city-thumb { position: relative; width: 60px; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; }
+        .print-inquiry-city-thumb img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; }
+        .print-inquiry-city-thumb .city-id { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #c9a227; font-size: 8px; font-weight: 700; text-align: center; padding: 2px 0; }
+        .print-inquiry-city-thumb .city-remove-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: rgba(255,255,255,0.6); border: none; width: 16px; height: 16px; border-radius: 50%; font-size: 10px; cursor: pointer; opacity: 0; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+        .print-inquiry-city-thumb:hover .city-remove-btn { opacity: 1; }
+        .print-inquiry-city-thumb .city-remove-btn:hover { background: #ff6b6b; color: #fff; }
+        .print-inquiry-city-chip { background: #333; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; color: #c9a227; display: inline-flex; align-items: center; gap: 6px; }
+        .print-inquiry-city-chip .city-remove { color: rgba(255,255,255,0.4); cursor: pointer; font-size: 12px; line-height: 1; transition: color 0.2s; }
+        .print-inquiry-city-chip .city-remove:hover { color: #ff6b6b; }
+        .print-inquiry-preview-cities .more-chip { background: #222; color: #888; cursor: default; }
+        .print-inquiry-framing { display: flex; gap: 12px; margin-top: 12px; }
+        .print-inquiry-framing-option { flex: 1; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+        .print-inquiry-framing-option:hover { border-color: #555; }
+        .print-inquiry-framing-option.active { border-color: #c9a227; background: rgba(201, 162, 39, 0.1); }
+        .print-inquiry-framing-option .framing-icon { font-size: 18px; margin-bottom: 4px; }
+        .print-inquiry-framing-option .framing-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; }
+        .print-inquiry-framing-option.active .framing-label { color: #c9a227; }
+        .print-inquiry-sizes { display: flex; gap: 8px; margin-bottom: 8px; }
+        .print-inquiry-size-option { flex: 1; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; padding: 10px 6px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+        .print-inquiry-size-option:hover { border-color: #555; }
+        .print-inquiry-size-option.active { border-color: #c9a227; background: rgba(201, 162, 39, 0.1); }
+        .print-inquiry-size-option .size-dims { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 1px; }
+        .print-inquiry-size-option .size-cm { font-size: 9px; color: #666; margin-bottom: 4px; }
+        .print-inquiry-size-option .size-price { font-size: 12px; font-weight: 700; color: #888; margin-bottom: 2px; }
+        .print-inquiry-size-option.active .size-price { color: #c9a227; }
+        .print-inquiry-size-option .size-label { font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: #666; }
+        .print-inquiry-size-option.active .size-label { color: #a88620; }
+        .print-inquiry-size-note { font-size: 9px; color: #666; font-style: italic; line-height: 1.5; }
+        .print-inquiry-size-note .size-note-signed { color: #c9a227; }
+        .print-inquiry-size-note .size-note-standard { color: #888; }
+        .print-inquiry-shipping-note { font-size: 8px; color: #555; margin-top: 8px; text-align: center; }
+        .print-inquiry-field-row { display: flex; gap: 12px; }
+        .print-inquiry-field-row .print-inquiry-field { flex: 1; }
         .print-inquiry-actions { display: flex; gap: 12px; margin-top: 24px; }
         .print-inquiry-btn { flex: 1; padding: 14px; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
         .print-inquiry-btn.primary { background: #c9a227; color: #000; }
@@ -2163,27 +2291,54 @@
         .patrons-section.expanded .patrons-content { max-height: 200px; }
         .patrons-message { padding: 12px 16px 14px; font-size: 12px; line-height: 1.7; color: rgba(255, 255, 255, 0.6); }
 
-        /* Founding Patron Pill Style - halftone dot pattern */
+        /* Founding Patron Pill Style - Cities texture pattern with solid, dashed, dotted lines */
         .collector-pill.founding-patron, .leaderboard-item.founding-patron .leaderboard-name {
             position: relative;
+            overflow: hidden;
         }
         .collector-pill.founding-patron::before {
             content: '';
             position: absolute;
             inset: 0;
-            background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
-            background-size: 4px 4px;
             border-radius: inherit;
             pointer-events: none;
+            opacity: 0.35;
+        }
+        /* Night mode warm - oranges, yellows (Brooklyn, Heat Wave) */
+        .collector-pill.founding-patron.cities-night-warm::before {
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cline x1='0' y1='10' x2='28' y2='30' stroke='%23FF9100' stroke-width='3.5' opacity='0.55'/%3E%3Cline x1='20' y1='4' x2='50' y2='24' stroke='%23FFBA08' stroke-width='2.5' stroke-dasharray='6 4' opacity='0.5'/%3E%3Cline x1='45' y1='0' x2='78' y2='22' stroke='%23FAA307' stroke-width='2' opacity='0.45'/%3E%3Cline x1='5' y1='38' x2='38' y2='58' stroke='%23DC2F02' stroke-width='2.5' stroke-dasharray='2 3' opacity='0.48'/%3E%3Cline x1='30' y1='32' x2='62' y2='52' stroke='%23E85D04' stroke-width='4' opacity='0.4'/%3E%3Cline x1='55' y1='40' x2='80' y2='56' stroke='%23F48C06' stroke-width='2' stroke-dasharray='8 3' opacity='0.42'/%3E%3Cline x1='0' y1='62' x2='25' y2='78' stroke='%23FFBA08' stroke-width='2.5' opacity='0.38'/%3E%3Cline x1='80' y1='15' x2='55' y2='35' stroke='%23FF9100' stroke-width='2' stroke-dasharray='5 3' opacity='0.4'/%3E%3Cline x1='70' y1='55' x2='42' y2='75' stroke='%23FAA307' stroke-width='2.5' opacity='0.35'/%3E%3Cline x1='60' y1='0' x2='35' y2='18' stroke='%23E85D04' stroke-width='1.5' stroke-dasharray='3 2' opacity='0.38'/%3E%3Ccircle cx='15' cy='48' r='3' fill='%23FFBA08' opacity='0.5'/%3E%3Ccircle cx='50' cy='18' r='2.5' fill='%23DC2F02' opacity='0.45'/%3E%3Ccircle cx='70' cy='50' r='3' fill='%23FAA307' opacity='0.4'/%3E%3Ccircle cx='38' cy='70' r='2' fill='%23FF9100' opacity='0.38'/%3E%3Ccircle cx='8' cy='25' r='2' fill='%23E85D04' opacity='0.35'/%3E%3Ccircle cx='62' cy='68' r='2.5' fill='%23FFBA08' opacity='0.32'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 65px 65px;
+        }
+        /* Night mode cool - blues, purples (Berlin, Bioluminescent) */
+        .collector-pill.founding-patron.cities-night-cool::before {
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cline x1='2' y1='12' x2='32' y2='34' stroke='%237f5ac1' stroke-width='3.5' opacity='0.52'/%3E%3Cline x1='24' y1='3' x2='55' y2='24' stroke='%2358529f' stroke-width='2.5' stroke-dasharray='5 4' opacity='0.48'/%3E%3Cline x1='48' y1='6' x2='78' y2='26' stroke='%23007eff' stroke-width='2' opacity='0.44'/%3E%3Cline x1='0' y1='42' x2='35' y2='62' stroke='%23a23188' stroke-width='2.5' stroke-dasharray='2 3' opacity='0.46'/%3E%3Cline x1='28' y1='35' x2='60' y2='55' stroke='%236e75d3' stroke-width='4' opacity='0.4'/%3E%3Cline x1='52' y1='42' x2='80' y2='60' stroke='%23d54981' stroke-width='2' stroke-dasharray='7 3' opacity='0.42'/%3E%3Cline x1='5' y1='68' x2='30' y2='80' stroke='%2358529f' stroke-width='2.5' opacity='0.36'/%3E%3Cline x1='78' y1='12' x2='50' y2='32' stroke='%23007eff' stroke-width='2' stroke-dasharray='4 3' opacity='0.38'/%3E%3Cline x1='68' y1='58' x2='40' y2='78' stroke='%237f5ac1' stroke-width='2.5' opacity='0.34'/%3E%3Cline x1='55' y1='0' x2='32' y2='16' stroke='%23d54981' stroke-width='1.5' stroke-dasharray='3 2' opacity='0.36'/%3E%3Ccircle cx='18' cy='50' r='3' fill='%237f5ac1' opacity='0.48'/%3E%3Ccircle cx='52' cy='16' r='2.5' fill='%23007eff' opacity='0.42'/%3E%3Ccircle cx='68' cy='52' r='3' fill='%23d54981' opacity='0.38'/%3E%3Ccircle cx='40' cy='72' r='2' fill='%236e75d3' opacity='0.35'/%3E%3Ccircle cx='10' cy='28' r='2' fill='%2358529f' opacity='0.32'/%3E%3Ccircle cx='75' cy='35' r='2.5' fill='%23a23188' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 65px 65px;
+        }
+        /* Day mode warm - creams, tans, oranges (Autumnal, Golden Hum) */
+        .collector-pill.founding-patron.cities-day-warm::before {
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cline x1='0' y1='8' x2='30' y2='30' stroke='%23db5e35' stroke-width='3.5' opacity='0.48'/%3E%3Cline x1='18' y1='2' x2='52' y2='24' stroke='%23f29c6b' stroke-width='2.5' stroke-dasharray='6 4' opacity='0.44'/%3E%3Cline x1='46' y1='4' x2='78' y2='24' stroke='%23b01e1e' stroke-width='2' opacity='0.38'/%3E%3Cline x1='3' y1='40' x2='38' y2='62' stroke='%23ffb76f' stroke-width='2.5' stroke-dasharray='2 3' opacity='0.46'/%3E%3Cline x1='26' y1='34' x2='60' y2='54' stroke='%23E67424' stroke-width='4' opacity='0.4'/%3E%3Cline x1='55' y1='38' x2='80' y2='55' stroke='%23ffa982' stroke-width='2' stroke-dasharray='8 3' opacity='0.38'/%3E%3Cline x1='0' y1='66' x2='28' y2='80' stroke='%23f29c6b' stroke-width='2.5' opacity='0.34'/%3E%3Cline x1='75' y1='10' x2='48' y2='30' stroke='%23db5e35' stroke-width='2' stroke-dasharray='5 3' opacity='0.36'/%3E%3Cline x1='65' y1='55' x2='38' y2='75' stroke='%23E67424' stroke-width='2.5' opacity='0.32'/%3E%3Cline x1='58' y1='0' x2='35' y2='18' stroke='%23ffb76f' stroke-width='1.5' stroke-dasharray='3 2' opacity='0.34'/%3E%3Ccircle cx='16' cy='50' r='3' fill='%23f29c6b' opacity='0.46'/%3E%3Ccircle cx='48' cy='14' r='2.5' fill='%23b01e1e' opacity='0.4'/%3E%3Ccircle cx='70' cy='48' r='3' fill='%23ffb76f' opacity='0.38'/%3E%3Ccircle cx='36' cy='74' r='2' fill='%23E67424' opacity='0.34'/%3E%3Ccircle cx='8' cy='22' r='2' fill='%23db5e35' opacity='0.32'/%3E%3Ccircle cx='60' cy='65' r='2.5' fill='%23ffa982' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 65px 65px;
+        }
+        /* Day mode cool - light blues (Blue Skies, Curious Blue) */
+        .collector-pill.founding-patron.cities-day-cool::before {
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cline x1='0' y1='10' x2='32' y2='32' stroke='%231e7cae' stroke-width='3.5' opacity='0.48'/%3E%3Cline x1='22' y1='3' x2='54' y2='24' stroke='%235baecf' stroke-width='2.5' stroke-dasharray='5 4' opacity='0.44'/%3E%3Cline x1='50' y1='5' x2='80' y2='26' stroke='%232a609e' stroke-width='2' opacity='0.38'/%3E%3Cline x1='2' y1='42' x2='36' y2='62' stroke='%2300adda' stroke-width='2.5' stroke-dasharray='2 3' opacity='0.46'/%3E%3Cline x1='28' y1='36' x2='62' y2='56' stroke='%233d72c0' stroke-width='4' opacity='0.38'/%3E%3Cline x1='56' y1='40' x2='80' y2='58' stroke='%230b7ed0' stroke-width='2' stroke-dasharray='7 3' opacity='0.36'/%3E%3Cline x1='0' y1='68' x2='25' y2='80' stroke='%235baecf' stroke-width='2.5' opacity='0.32'/%3E%3Cline x1='78' y1='14' x2='52' y2='34' stroke='%231e7cae' stroke-width='2' stroke-dasharray='4 3' opacity='0.36'/%3E%3Cline x1='70' y1='56' x2='44' y2='76' stroke='%2300adda' stroke-width='2.5' opacity='0.32'/%3E%3Cline x1='60' y1='0' x2='38' y2='16' stroke='%233d72c0' stroke-width='1.5' stroke-dasharray='3 2' opacity='0.34'/%3E%3Ccircle cx='14' cy='52' r='3' fill='%235baecf' opacity='0.45'/%3E%3Ccircle cx='52' cy='16' r='2.5' fill='%232a609e' opacity='0.4'/%3E%3Ccircle cx='70' cy='50' r='3' fill='%2300adda' opacity='0.38'/%3E%3Ccircle cx='38' cy='72' r='2' fill='%233d72c0' opacity='0.34'/%3E%3Ccircle cx='10' cy='26' r='2' fill='%230b7ed0' opacity='0.32'/%3E%3Ccircle cx='65' cy='68' r='2.5' fill='%231e7cae' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 65px 65px;
+        }
+        /* Vibrant / mixed (Hyper Glow, Carioca) */
+        .collector-pill.founding-patron.cities-vibrant::before {
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cline x1='0' y1='12' x2='30' y2='34' stroke='%23e70688' stroke-width='3.5' opacity='0.52'/%3E%3Cline x1='24' y1='4' x2='56' y2='26' stroke='%2354da82' stroke-width='2.5' stroke-dasharray='6 4' opacity='0.48'/%3E%3Cline x1='48' y1='6' x2='80' y2='28' stroke='%23fda1c2' stroke-width='2' opacity='0.44'/%3E%3Cline x1='3' y1='44' x2='38' y2='64' stroke='%23eeee5f' stroke-width='2.5' stroke-dasharray='2 3' opacity='0.48'/%3E%3Cline x1='30' y1='38' x2='64' y2='58' stroke='%2367e4d7' stroke-width='4' opacity='0.42'/%3E%3Cline x1='54' y1='44' x2='80' y2='62' stroke='%23f25db4' stroke-width='2' stroke-dasharray='8 3' opacity='0.45'/%3E%3Cline x1='0' y1='70' x2='22' y2='80' stroke='%2354da82' stroke-width='2.5' opacity='0.36'/%3E%3Cline x1='76' y1='14' x2='48' y2='34' stroke='%23eeee5f' stroke-width='2' stroke-dasharray='4 3' opacity='0.4'/%3E%3Cline x1='68' y1='58' x2='42' y2='78' stroke='%23e70688' stroke-width='2.5' opacity='0.36'/%3E%3Cline x1='58' y1='0' x2='36' y2='18' stroke='%2367e4d7' stroke-width='1.5' stroke-dasharray='3 2' opacity='0.38'/%3E%3Ccircle cx='16' cy='54' r='3' fill='%23e70688' opacity='0.5'/%3E%3Ccircle cx='52' cy='18' r='2.5' fill='%2354da82' opacity='0.46'/%3E%3Ccircle cx='70' cy='52' r='3' fill='%23eeee5f' opacity='0.42'/%3E%3Ccircle cx='40' cy='74' r='2' fill='%2367e4d7' opacity='0.38'/%3E%3Ccircle cx='8' cy='28' r='2' fill='%23fda1c2' opacity='0.35'/%3E%3Ccircle cx='62' cy='66' r='2.5' fill='%23f25db4' opacity='0.32'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 65px 65px;
+        }
+        /* Monochrome / grayscale (Crosstown, Diffused Grays) */
+        .collector-pill.founding-patron.cities-mono::before {
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cline x1='0' y1='12' x2='34' y2='36' stroke='%23666' stroke-width='3.5' opacity='0.44'/%3E%3Cline x1='22' y1='3' x2='56' y2='26' stroke='%23888' stroke-width='2.5' stroke-dasharray='5 4' opacity='0.38'/%3E%3Cline x1='48' y1='8' x2='80' y2='30' stroke='%23555' stroke-width='2' opacity='0.34'/%3E%3Cline x1='2' y1='46' x2='38' y2='68' stroke='%23777' stroke-width='2.5' stroke-dasharray='2 3' opacity='0.4'/%3E%3Cline x1='30' y1='40' x2='64' y2='60' stroke='%23666' stroke-width='4' opacity='0.36'/%3E%3Cline x1='55' y1='44' x2='80' y2='62' stroke='%23888' stroke-width='2' stroke-dasharray='7 3' opacity='0.32'/%3E%3Cline x1='0' y1='72' x2='24' y2='80' stroke='%23777' stroke-width='2.5' opacity='0.28'/%3E%3Cline x1='76' y1='16' x2='50' y2='36' stroke='%23555' stroke-width='2' stroke-dasharray='4 3' opacity='0.32'/%3E%3Cline x1='68' y1='56' x2='44' y2='76' stroke='%23888' stroke-width='2.5' opacity='0.28'/%3E%3Cline x1='60' y1='0' x2='38' y2='18' stroke='%23666' stroke-width='1.5' stroke-dasharray='3 2' opacity='0.3'/%3E%3Ccircle cx='18' cy='56' r='3' fill='%23777' opacity='0.4'/%3E%3Ccircle cx='54' cy='20' r='2.5' fill='%23555' opacity='0.36'/%3E%3Ccircle cx='72' cy='54' r='3' fill='%23888' opacity='0.34'/%3E%3Ccircle cx='40' cy='76' r='2' fill='%23666' opacity='0.3'/%3E%3Ccircle cx='10' cy='30' r='2' fill='%23777' opacity='0.28'/%3E%3Ccircle cx='64' cy='68' r='2.5' fill='%23555' opacity='0.26'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 65px 65px;
         }
         .leaderboard-item.founding-patron {
-            background: linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+            background: transparent;
         }
         .leaderboard-item.founding-patron .leaderboard-name::after {
-            content: '✦';
-            margin-left: 6px;
-            font-size: 8px;
-            opacity: 0.5;
+            display: none;
         }
 
         .grid-content { flex: 1; overflow-y: auto; padding: 20px; -webkit-overflow-scrolling: touch; }
@@ -2192,7 +2347,8 @@
         .grid-item:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); z-index: 10; }
         .grid-item.selected { outline: 3px solid var(--teal); }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-        .grid-item-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(10, 9, 16, 0.9)); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); text-align: center; pointer-events: none; }
+        .grid-item-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(10, 9, 16, 0.9)); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); text-align: center; pointer-events: none; transition: opacity 0.2s ease; }
+        .grid-panel.hide-numbers .grid-item-label { opacity: 0; }
         /* Desktop: hearts hidden until hover */
         .grid-item-fav { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border: none; background: rgba(10, 9, 16, 0.7); color: rgba(255,255,255,0.6); font-size: 14px; cursor: pointer; border-radius: 50%; opacity: 0; transition: all 0.2s ease; z-index: 2; display: flex; align-items: center; justify-content: center; }
         .grid-item:hover .grid-item-fav { opacity: 1; }
@@ -2305,6 +2461,12 @@
             .grid-content { order: 5; padding-bottom: 90px; }
         }
 
+        /* Compact nav buttons when space is tight */
+        @media (max-width: 900px) {
+            .grid-mode-btn { padding: 10px 14px; font-size: 10px; }
+            .grid-controls { gap: 6px; }
+        }
+
         /* Condensed sidebar for narrow windows */
         @media (max-width: 1200px) {
             .supply-tracker, .grid-supply-tracker { display: none; }
@@ -2352,7 +2514,7 @@
             .sidebar-overlay.visible { opacity: 1; pointer-events: auto; }
             .main-content { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; padding: 16px; padding-top: 50px; padding-bottom: 16px; justify-content: center; align-items: center; box-sizing: border-box; display: flex; flex-direction: column; }
             .frame-container { width: auto; max-width: calc(100% - 24px); display: flex; align-items: center; justify-content: center; overflow: visible; flex: 1; min-height: 0; }
-            .preview-image { max-height: calc(100vh - 100px); max-width: 100%; width: auto; height: auto; object-fit: contain; }
+            .preview-image { max-height: calc(100vh - 160px); max-width: 100%; width: auto; height: auto; object-fit: contain; }
             .bottom-info { margin-top: 12px; }
             .top-nav-fixed { top: 12px; right: 12px; gap: 6px; }
             .view-toggle-btn { width: 32px; height: 32px; min-width: 32px; }
@@ -2360,8 +2522,9 @@
             .mint-letter { height: 12px; }
             .grid-toggle { bottom: 16px; left: 50%; transform: translateX(-50%); padding: 12px 24px; font-size: 10px; }
             .collectors-toggle { display: none; }
-            .gallery-panel, .collectors-panel { width: 100%; right: 0; transform: translateX(100%); }
+            .gallery-panel, .collectors-panel { width: 100%; max-width: 100vw; right: 0; left: 0; transform: translateX(100%); padding: 20px 16px; box-sizing: border-box; }
             .gallery-panel.open, .collectors-panel.open { transform: translateX(0); }
+            .collectors-panel::before { display: none; } /* Hide drag handle on mobile */
             /* Hide the top-nav view toggle when collectors panel is open on mobile to avoid double X */
             body.collectors-open .top-nav-fixed { display: none; }
             .info-display { padding: 8px 12px; font-size: 9px; }
@@ -2374,7 +2537,7 @@
             .filter-grid { grid-template-columns: 1fr; }
             .btn-group, .share-group { flex-direction: column; }
             .main-content { padding: 10px; padding-top: 50px; padding-bottom: 16px; }
-            .preview-image { max-height: calc(100vh - 90px); }
+            .preview-image { max-height: calc(100vh - 150px); }
             .bottom-info { margin-top: 6px; gap: 3px; }
             .info-display { padding: 6px 10px; font-size: 8px; }
         }
@@ -2471,7 +2634,7 @@
             .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
             .mint-toggle { padding: 1px; }
             .mint-letter { height: 10px; }
-            .preview-image { max-height: calc(100vh - 80px); }
+            .preview-image { max-height: calc(100vh - 140px); }
             .pull-refresh-indicator { padding: 8px 16px; font-size: 9px; }
         }
 
@@ -2486,7 +2649,7 @@
             .filter-toggle-bar { padding: 6px 10px; position: static; }
             .grid-filter-bar { position: static; max-height: none; }
             .main-content { padding-top: 40px !important; padding-bottom: 16px !important; }
-            .preview-image { max-height: calc(100vh - 70px); }
+            .preview-image { max-height: calc(100vh - 130px); }
         }
 
         /* Smooth orientation change transitions */
@@ -2991,10 +3154,10 @@
             <span class="countdown-timer" id="countdownTimer"></span>
         </div>
 
-        <a href="https://www.artblocks.io/collection/0x7c78f67700e700b4005c8a3d920a1a99e6004800-0" target="_blank" class="supply-tracker" id="supplyTracker">
+        <a href="https://www.artblocks.io/collection/0x7c78f67700e700b4005c8a3d920a1a99e6004800-0" target="_blank" class="supply-tracker" id="supplyTracker" onclick="return confirm('You are about to leave Cities Explorer and visit Art Blocks. Continue?');">
             <div class="supply-bar">
-                <div class="supply-fill" id="supplyFill" style="width: 64%;"></div>
-                <div class="supply-label"><span id="mintedCount">320</span>&nbsp;MINTED</div>
+                <div class="supply-fill" id="supplyFill" style="width: 0%;"></div>
+                <div class="supply-label"><span id="mintedCount"></span>&nbsp;MINTED</div>
             </div>
             <span class="mint-text">VIEW ON ARTBLOCKS</span>
         </a>
@@ -3096,7 +3259,14 @@
     </div>
 
     <div class="top-nav-fixed">
-        <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="mint-toggle" id="mintToggle"><img src="mint-m.png" alt="M" class="mint-letter"><img src="mint-i.png" alt="I" class="mint-letter"><img src="mint-n.png" alt="N" class="mint-letter"><img src="mint-t.png" alt="T" class="mint-letter"></a>
+        <div class="collect-btn-wrapper">
+            <button class="mint-toggle" id="mintToggle" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
+            <div class="collect-popover" id="collectPopoverNav">
+                <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
+                <a href="https://efdot.store/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Shopify</span></a>
+                <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
+            </div>
+        </div>
         <button class="view-toggle-btn" id="viewToggleBtn" title="Toggle Grid/Single View" aria-label="Toggle between grid and single view" aria-expanded="false">
             <img src="glyph-blob-static.png" alt="" class="glyph-img glyph-static glyph-blob">
             <img src="glyph-blob.gif" alt="" class="glyph-img glyph-animated glyph-blob">
@@ -3107,11 +3277,11 @@
 
     <div class="gallery-panel" id="galleryPanel" role="dialog" aria-label="Favorites panel" aria-hidden="true">
         <div class="gallery-header">
-            <h2>FAVORITES</h2>
+            <h2 class="gallery-title-close" id="galleryTitleClose">FAVORITES <span class="gallery-close-arrow">›</span></h2>
             <button class="gallery-close" id="closeGallery">&times;</button>
         </div>
         <div class="fav-palettes-section" id="favPalettesSection">
-            <div class="fav-palettes-header">FAVORITE PALETTES</div>
+            <div class="fav-palettes-header" id="favPalettesToggle">FAVORITE PALETTES <span class="collapse-arrow">▼</span></div>
             <div class="fav-palettes-grid" id="favPalettesGrid">
                 <div class="fav-palette-item" data-palette="Beach Day">
                     <div class="fav-palette-swatch" style="background: #f1e9d2;"></div>
@@ -3135,6 +3305,7 @@
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
         </div>
+        <button class="not-collector-link" id="notCollectorTop">Not a collector yet? ✦</button>
         <div class="pills-view" id="pillsView">
             <!-- Daily Collector Feature - collapsed by default -->
             <div class="collector-feature collapsed" id="collectorFeature">
@@ -3158,6 +3329,7 @@
             </div>
             <div class="collectors-stats"><span id="collectorCountStats">164</span> collectors · <span id="citiesCountStats">321</span> cities</div>
             <div class="collectors-pills" id="collectorsPills"></div>
+            <button class="become-collector-btn" id="becomeCollectorBtn">✦ Become a Collector</button>
         </div>
         <!-- Citizen Guide View - Step-by-step onboarding -->
         <div class="collector-guide-view" id="collectorGuideView">
@@ -3186,7 +3358,7 @@
                 <div class="collector-guide-desc">
                     Every mint adds another block to the grid. Collectors get first access to future drops.
                 </div>
-                <div class="collector-guide-highlight">Set holders? They get the drops for free.</div>
+                <div class="collector-guide-highlight">Set holders? They get future drops for free.</div>
                 <button class="collector-guide-pill-btn secondary" id="guideExploreGrid">
                     Explore the grid
                 </button>
@@ -3194,7 +3366,7 @@
 
             <!-- Step 3: Claim Your City -->
             <div class="collector-guide-step" data-step="3">
-                <div class="collector-guide-title">Find your corner</div>
+                <div class="collector-guide-title">Find your city</div>
                 <div class="collector-guide-desc"></div>
                 <a href="https://www.artblocks.io/marketplace/collections/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn">
                     Mint on Art Blocks
@@ -3202,7 +3374,6 @@
                 <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn secondary">
                     Browse on OpenSea
                 </a>
-                <div class="collector-guide-highlight" style="margin-top: 20px;">Population: growing.</div>
             </div>
 
             <div class="collector-guide-nav">
@@ -3259,10 +3430,10 @@
                 <button class="grid-size-toggle" id="gridSizeToggle" title="Change grid size">
                     <span class="size-icon" id="sizeIcon"></span>
                 </button>
-                <button class="grid-mode-btn" data-mode="grid" id="gridAllFavBtn">ALL</button>
-                <button class="grid-mode-btn active" data-mode="palette" id="paletteColorToggle">BY PALETTE <span class="palette-sort-arrow">↓</span></button>
-                <button class="grid-mode-btn origins-btn" data-mode="origins" id="gridOriginsBtn">ORIGINS</button>
-                <button class="grid-mode-btn collectors-btn" id="gridCollectorsBtn">COLLECTORS</button>
+                <button class="grid-mode-btn" data-mode="grid" id="gridAllFavBtn" title="All Cities">ALL</button>
+                <button class="grid-mode-btn active" data-mode="palette" id="paletteColorToggle" title="Sort by Palette">BY PALETTE <span class="palette-sort-arrow">↓</span></button>
+                <button class="grid-mode-btn origins-btn" data-mode="origins" id="gridOriginsBtn" title="Origins">ORIGINS</button>
+                <button class="grid-mode-btn collectors-btn" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
             </div>
         </div>
         <div class="filter-toggle-bar" id="filterToggleBar"><span>FILTERS</span><span class="arrow">▼</span></div>
@@ -3293,16 +3464,18 @@
             </div>
             <label class="grid-checkbox"><input type="checkbox" id="gridWaterFilter"> WATER</label>
             <button class="grid-sort-toggle sort-desc" id="gridSortToggle" title="Sort order">NEW <span class="sort-arrow">↑</span></button>
+            <button class="grid-numbers-toggle active" id="gridNumbersToggle" title="Toggle output numbers">#</button>
             <div class="grid-filter-spacer"></div>
             <span class="grid-showing-count" id="gridShowingCount">318 showing</span>
-            <div class="grid-supply-tracker">
+            <a href="https://www.artblocks.io/collection/0x7c78f67700e700b4005c8a3d920a1a99e6004800-0" target="_blank" class="grid-supply-tracker" id="gridSupplyTracker" onclick="return confirm('You are about to leave Cities Explorer and visit Art Blocks. Continue?');">
                 <div class="grid-supply-bar">
-                    <div class="grid-supply-fill" id="gridSupplyFill" style="width: 63.6%;"></div>
-                    <div class="grid-supply-label"><span id="gridMintedCount">318</span>&nbsp;MINTED</div>
+                    <div class="grid-supply-fill" id="gridSupplyFill" style="width: 0%;"></div>
+                    <div class="grid-supply-label"><span id="gridMintedCount"></span>&nbsp;MINTED</div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="collector-banner" id="collectorBanner">
+            <button class="collector-banner-nav collector-banner-prev" id="collectorBannerPrev" onclick="event.stopPropagation(); navigateToPrevCollector();" title="Previous collector (←)">‹</button>
             <div class="collector-banner-left">
                 <span class="collector-banner-label">COLLECTION OF</span>
                 <span class="collector-banner-name" id="collectorBannerName" title="Click to view wall" onclick="event.stopPropagation(); handleCollectorNameClick();"></span>
@@ -3312,6 +3485,7 @@
                 <button class="collector-banner-wall" id="collectorWallView" onclick="event.stopPropagation(); handleWallButtonClick();">WALL →</button>
                 <span class="collector-banner-count" id="collectorBannerCount"></span>
             </div>
+            <button class="collector-banner-nav collector-banner-next" id="collectorBannerNext" onclick="event.stopPropagation(); navigateToNextCollector();" title="Next collector (→)">›</button>
             <button class="collector-banner-close" id="collectorBannerClose">&times;</button>
         </div>
         <div class="grid-content" id="gridContent"></div>
@@ -3339,7 +3513,14 @@
                 <button class="wall-view-hide-empty" id="wallViewHideEmpty" title="Toggle grid/line view"><span class="line-icon">⊞</span> GRID</button>
                 <button class="wall-view-try-mode" id="wallViewTryMode" title="Try adding cities to your grid">✦ TRY</button>
                 <button class="wall-view-back-btn" id="wallViewBackBtn">← COLLECTORS</button>
-                <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn"><img src="mint-m.png" alt="M" class="mint-letter"><img src="mint-i.png" alt="I" class="mint-letter"><img src="mint-n.png" alt="N" class="mint-letter"><img src="mint-t.png" alt="T" class="mint-letter"></a>
+                <div class="collect-btn-wrapper">
+                    <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
+                    <div class="collect-popover" id="collectPopoverWall">
+                        <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
+                        <a href="https://efdot.store/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Shopify</span></a>
+                        <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
+                    </div>
+                </div>
                 <button class="wall-view-close" id="wallViewClose">&times;</button>
             </div>
         </div>
@@ -3365,18 +3546,18 @@
         </div>
         <button class="wall-view-print-btn" id="wallViewPrint">ORDER PRINT</button>
         <div class="wall-view-zoom-controls">
+            <button class="wall-view-zoom-btn" id="wallViewShuffle" title="Shuffle order">⟳</button>
             <button class="wall-view-zoom-btn" id="wallViewZoomIn" title="Zoom in">+</button>
             <button class="wall-view-zoom-btn" id="wallViewZoomOut" title="Zoom out">−</button>
-            <button class="wall-view-zoom-btn" id="wallViewShuffle" title="Shuffle order">⟳</button>
+            <button class="wall-view-zoom-btn" id="wallViewRecenter" title="Re-center view">
+                <span class="recenter-btn-grid">
+                    <span></span><span></span><span></span><span></span>
+                </span>
+            </button>
         </div>
         <!-- Grid status nudge bar -->
         <div class="wall-view-grid-nudge" id="wallViewGridNudge">
             <span class="wall-view-grid-nudge-text" id="wallViewGridNudgeText"></span>
-            <button class="wall-view-nudge-btn" id="wallViewNudgeBtn" title="View collector's wall">
-                <span class="nudge-btn-grid">
-                    <span></span><span></span><span></span><span></span>
-                </span>
-            </button>
         </div>
         <!-- Collector tips toggle button -->
         <button class="wall-view-tips-toggle" id="wallViewTipsToggle" title="Collection tips">
@@ -3396,13 +3577,54 @@
         <div class="print-inquiry-content">
             <button class="print-inquiry-close" id="printInquiryClose">&times;</button>
             <div id="printInquiryForm">
-                <div class="print-inquiry-title">Request Print Info</div>
-                <div class="print-inquiry-subtitle">Interested in a custom print or painted commission? Fill out the quick form below and we'll get back to you.</div>
-                <div class="print-inquiry-note">Signed prints of specific cities are exclusive to owners. Posters and prints inspired by the collection are available to all in the shop.</div>
+                <div class="print-inquiry-title">Get a Print</div>
+
+                <div class="print-inquiry-options">
+                    <div class="print-option">
+                        <div class="print-option-header">
+                            <span class="print-option-badge">Owner Only</span>
+                            <span class="print-option-title">Signed Print</span>
+                        </div>
+                        <div class="print-option-desc">A signed print of your specific City. Only available to the owner of that token.</div>
+                    </div>
+                    <div class="print-option">
+                        <div class="print-option-header">
+                            <span class="print-option-badge open">Open</span>
+                            <span class="print-option-title">Poster</span>
+                        </div>
+                        <div class="print-option-desc">Unsigned posters available to anyone. <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" style="color: var(--warm);">Browse the shop →</a></div>
+                    </div>
+                </div>
+
+                <div class="print-inquiry-divider"></div>
 
                 <div class="print-inquiry-preview">
-                    <div class="print-inquiry-preview-label">Cities of Interest</div>
+                    <div class="print-inquiry-preview-label">Your Cities</div>
                     <div class="print-inquiry-preview-cities" id="printInquiryCities"></div>
+                </div>
+
+                <div class="print-inquiry-field">
+                    <label>Print Size</label>
+                    <div class="print-inquiry-sizes">
+                        <div class="print-inquiry-size-option active" data-size="9x16" data-price="50" data-signed="false" data-framed="false">
+                            <div class="size-dims">9 × 16"</div>
+                            <div class="size-cm">23 × 41 cm</div>
+                            <div class="size-price">$50</div>
+                        </div>
+                        <div class="print-inquiry-size-option" data-size="18x32" data-price="240" data-signed="true" data-framed="false">
+                            <div class="size-dims">18 × 32"</div>
+                            <div class="size-cm">46 × 81 cm</div>
+                            <div class="size-price">$240</div>
+                            <div class="size-label">hand-signed</div>
+                        </div>
+                        <div class="print-inquiry-size-option" data-size="18x32-framed" data-price="400" data-signed="true" data-framed="true">
+                            <div class="size-dims">18 × 32"</div>
+                            <div class="size-cm">46 × 81 cm</div>
+                            <div class="size-price">$400</div>
+                            <div class="size-label">signed + framed</div>
+                        </div>
+                    </div>
+                    <div class="print-inquiry-shipping-note">+ shipping</div>
                 </div>
 
                 <div class="print-inquiry-field">
@@ -3411,26 +3633,19 @@
                 </div>
 
                 <div class="print-inquiry-field">
-                    <label>I'm interested in...</label>
-                    <select id="printInquiryType">
-                        <option value="single">Single print of my City</option>
-                        <option value="grid">Grid arrangement of my collection</option>
-                        <option value="large">Large format print</option>
-                        <option value="custom">Custom commission / other</option>
-                    </select>
+                    <label>Country (for shipping estimate)</label>
+                    <input type="text" id="printInquiryCountry" placeholder="Country" value="United States">
                 </div>
 
                 <div class="print-inquiry-field">
                     <label>Notes (optional)</label>
-                    <textarea id="printInquiryNotes" placeholder="Any specific requests, sizes, or questions..."></textarea>
+                    <textarea id="printInquiryNotes" placeholder="Questions, special requests..."></textarea>
                 </div>
 
                 <div class="print-inquiry-actions">
                     <button class="print-inquiry-btn secondary" id="printInquiryCancel">Cancel</button>
                     <button class="print-inquiry-btn primary" id="printInquirySend">Send Request</button>
                 </div>
-
-                <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" class="print-inquiry-shop-link">Or browse ready-to-ship prints in the shop →</a>
             </div>
             <div id="printInquirySuccess" style="display: none;">
                 <div class="print-inquiry-success">
@@ -3638,25 +3853,46 @@
                         </div>
                     </div>
 
-                    <div class="about-section" data-section="grid">
+                    <div class="about-section open" data-section="grid">
                         <div class="about-section-header" onclick="this.closest('.about-section').classList.toggle('open'); event.stopPropagation();">
-                            <span class="about-section-title">Build Your Grid</span>
+                            <span class="about-section-title">Find Your Grid</span>
                             <span class="about-section-arrow">▼</span>
                         </div>
                         <div class="about-section-content">
-                            <p style="margin-bottom: 16px;">Part of collecting Cities is participating in an experiment in color and energy. Each City has one of four energies: <strong>Rising</strong>, <strong>Living</strong>, <strong>Fading</strong>, or <strong>Resting</strong>.</p>
+                            <p style="margin-bottom: 16px;">Collectors build grids — arrangements of cities that tell a story. Some chase harmony, others chase rarity.</p>
 
-                            <p style="margin-bottom: 16px;"><strong>Complete an Energy Set:</strong></p>
-                            <ul style="margin-left: 20px; margin-bottom: 16px; color: var(--text-muted);">
-                                <li style="margin-bottom: 8px;">Collect one City from each energy to form a 2×2 set</li>
-                                <li>OR collect 4 Cities sharing the same energy</li>
-                            </ul>
+                            <div class="about-set-types">
+                                <div class="about-set-type" onclick="showSetExample('spectrum', 'Oblivion')">
+                                    <span class="about-set-icon">🌈</span>
+                                    <div class="about-set-info">
+                                        <span class="about-set-name">Spectrum</span>
+                                        <span class="about-set-desc">One of each energy</span>
+                                    </div>
+                                </div>
+                                <div class="about-set-type" onclick="showSetExample('rising', 'WillEP')">
+                                    <span class="about-set-icon">☀️</span>
+                                    <div class="about-set-info">
+                                        <span class="about-set-name">Rising Set</span>
+                                        <span class="about-set-desc">4+ rising cities</span>
+                                    </div>
+                                </div>
+                                <div class="about-set-type" onclick="showSetExample('living', 'Oblivion')">
+                                    <span class="about-set-icon">🏙️</span>
+                                    <div class="about-set-info">
+                                        <span class="about-set-name">Living Set</span>
+                                        <span class="about-set-desc">4+ living cities</span>
+                                    </div>
+                                </div>
+                                <div class="about-set-type" onclick="showSetExample('resting', 'WillEP')">
+                                    <span class="about-set-icon">🌃</span>
+                                    <div class="about-set-info">
+                                        <span class="about-set-name">Resting Set</span>
+                                        <span class="about-set-desc">4+ resting cities</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <p style="margin-bottom: 12px; padding: 12px; background: rgba(255,179,71,0.1); border-radius: 8px; border-left: 3px solid var(--warm);"><strong>Efdrop:</strong> Every complete Energy Set you hold = 1 efdrop from an upcoming Efdot project.</p>
-
-                            <p style="margin-bottom: 16px; padding: 12px; background: rgba(185,103,255,0.1); border-radius: 8px; border-left: 3px solid var(--purple);"><strong>Mega Set:</strong> Collectors who hold 8 Cities (2 of each energy) unlock a free commission painting from Efdot.</p>
-
-                            <p style="color: var(--text-muted); font-size: 11px;">Your grid progress shows on the leaderboard. Mint randomly on Art Blocks, or place offers on OpenSea for specific pieces.</p>
+                            <p style="margin-top: 16px;"><a href="#" onclick="closeAboutModal(); document.querySelector('.grid-mode-btn[data-mode=\'collectors\']')?.click(); return false;" style="color: var(--teal);">Explore all collections →</a></p>
                         </div>
                     </div>
 
@@ -3666,10 +3902,8 @@
                             <span class="about-section-arrow">▼</span>
                         </div>
                         <div class="about-section-content">
-                            <p style="margin-bottom: 16px;">Every City is a key to what comes next. Collectors get first access to future efdrops, and set holders receive them automatically.</p>
-                            <p style="margin-bottom: 12px;"><strong style="color: var(--text);">1+ Cities</strong> <span style="color: var(--text-dim);">→ First access to future efdrops</span></p>
-                            <p style="margin-bottom: 12px;"><strong style="color: var(--text);">4 Cities</strong> <span style="color: var(--text-dim);">→ Efdrop delivered to your wallet</span></p>
-                            <p style="margin-bottom: 16px;"><strong style="color: var(--text);">8 Cities</strong> <span style="color: var(--text-dim);">→ 2 efdrops + a commission from Efdot</span></p>
+                            <p style="margin-bottom: 12px;"><strong style="color: var(--text);">4 Cities</strong> <span style="color: var(--text-dim);">→ 1/1 airdrop of Efdot's upcoming project, *****</span></p>
+                            <p style="margin-bottom: 12px;"><strong style="color: var(--text);">8 Cities</strong> <span style="color: var(--text-dim);">→ 2 airdrops + a commission from Efdot</span></p>
                         </div>
                     </div>
 
@@ -3700,7 +3934,14 @@
                     <span class="about-stat"><strong>112</strong> palettes</span>
                 </div>
                 <div class="about-buttons">
-                    <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="about-mint-btn" id="aboutMintBtn"><img src="mint-m.png" alt="M" class="mint-letter"><img src="mint-i.png" alt="I" class="mint-letter"><img src="mint-n.png" alt="N" class="mint-letter"><img src="mint-t.png" alt="T" class="mint-letter"></a>
+                    <div class="collect-btn-wrapper">
+                        <button class="about-mint-btn" id="aboutMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
+                        <div class="collect-popover" id="collectPopoverAbout">
+                            <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
+                            <a href="https://efdot.store/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Shopify</span></a>
+                            <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
+                        </div>
+                    </div>
                 </div>
                 <div class="about-countdown" id="aboutCountdown">
                     <div class="countdown-cells">
@@ -3709,6 +3950,9 @@
                         <div class="countdown-cell"><span class="countdown-value" id="countdownMins">51</span><span class="countdown-label">min</span></div>
                         <div class="countdown-cell"><span class="countdown-value" id="countdownSecs">00</span><span class="countdown-label">sec</span></div>
                     </div>
+                </div>
+                <div class="about-newsletter" style="margin-top: 24px;">
+                    <script async data-uid="95cd1fc649" src="https://efdot-studio.kit.com/95cd1fc649/index.js"></script>
                 </div>
             </div>
         </div>
@@ -3770,22 +4014,22 @@
                     <div class="timeline-group-grid cols-2 openminds-grid">
                         <div class="timeline-group-item" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" data-link="https://opensea.io/collection/efdot-openminds" data-title="You Are Here" data-year="2020">
                             <div class="timeline-group-item-img">
-                                <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" alt="You Are Here">
+                                <img loading="lazy" src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" alt="You Are Here">
                             </div>
                         </div>
                         <div class="timeline-group-item" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128174409-8EGQR3U2UDYK7SK91Z19/Efdot_Open+Mind+2_Night+Mode.gif" data-link="https://opensea.io/collection/efdot-openminds" data-title="Night Mode" data-year="2020">
                             <div class="timeline-group-item-img">
-                                <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128174409-8EGQR3U2UDYK7SK91Z19/Efdot_Open+Mind+2_Night+Mode.gif" alt="Night Mode">
+                                <img loading="lazy" src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128174409-8EGQR3U2UDYK7SK91Z19/Efdot_Open+Mind+2_Night+Mode.gif" alt="Night Mode">
                             </div>
                         </div>
                         <div class="timeline-group-item" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128270023-9JC2N4SS09UHMA4LR5NN/Efdot_Open+Minds+3_Passing+Through.gif" data-link="https://opensea.io/collection/efdot-openminds" data-title="Passing Through" data-year="2020">
                             <div class="timeline-group-item-img">
-                                <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128270023-9JC2N4SS09UHMA4LR5NN/Efdot_Open+Minds+3_Passing+Through.gif" alt="Passing Through">
+                                <img loading="lazy" src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128270023-9JC2N4SS09UHMA4LR5NN/Efdot_Open+Minds+3_Passing+Through.gif" alt="Passing Through">
                             </div>
                         </div>
                         <div class="timeline-group-item" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128443026-X974A5CT72RIUD8KFZY7/Efdot_Open+Minds+6_Sweet+Streets.gif" data-link="https://opensea.io/collection/efdot-openminds" data-title="Sweet Streets" data-year="2020">
                             <div class="timeline-group-item-img">
-                                <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128443026-X974A5CT72RIUD8KFZY7/Efdot_Open+Minds+6_Sweet+Streets.gif" alt="Sweet Streets">
+                                <img loading="lazy" src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128443026-X974A5CT72RIUD8KFZY7/Efdot_Open+Minds+6_Sweet+Streets.gif" alt="Sweet Streets">
                             </div>
                         </div>
                     </div>
@@ -3797,7 +4041,7 @@
                 <div class="timeline-story">The turning point. Hand-drawn layers become a rules-based system. Same hand, new process.</div>
 
                 <div class="timeline-item featured" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiek2l25mxxsd54ptgtmnlmr4gsd4tgtd7nnee3uckh4hn3zdb52ce" data-title="O.M.A.G.E." data-year="2021" data-link="https://opensea.io/collection/efdot-openminds">
-                    <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiek2l25mxxsd54ptgtmnlmr4gsd4tgtd7nnee3uckh4hn3zdb52ce" alt="O.M.A.G.E.">
+                    <img loading="lazy" src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiek2l25mxxsd54ptgtmnlmr4gsd4tgtd7nnee3uckh4hn3zdb52ce" alt="O.M.A.G.E.">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">O.M.A.G.E.</span>
                         <span class="timeline-item-year">2021 · Open Minds Analog Generative Experiment</span>
@@ -3805,7 +4049,7 @@
                             <button class="timeline-more-btn">more</button>
                             <span class="timeline-item-desc">Where it all shifted. Hand-drawn layers stacked by rules, not random. Still analog, but thinking in probabilities, rules and physics. Screen print series.</span>
                         </div>
-                        <a href="mailto:eric@efdotstudio.com?subject=O.M.A.G.E.%20Inquiry" class="timeline-inquiry-link">Inquire about O.M.A.G.E. →</a>
+                        <a href="#" onclick="openOmageInquiry(); return false;" class="timeline-inquiry-link">Inquire about O.M.A.G.E. →</a>
                     </div>
                 </div>
 
@@ -3813,7 +4057,7 @@
                     <div class="timeline-group-grid cols-2">
                         <div class="timeline-group-item" data-img="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1" data-link="https://foundation.app/mint/eth/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1" data-title="Summer 365" data-year="2021">
                             <div class="timeline-group-item-img">
-                                <img src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1" alt="Summer 365">
+                                <img loading="lazy" src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1" alt="Summer 365">
                             </div>
                             <div class="timeline-group-item-info">
                                 <span class="timeline-group-item-title">Summer 365</span>
@@ -3821,7 +4065,7 @@
                         </div>
                         <div class="timeline-group-item" data-img="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1" data-link="https://foundation.app/mint/eth/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2" data-title="Winterplay" data-year="2021">
                             <div class="timeline-group-item-img">
-                                <img src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1" alt="Winterplay">
+                                <img loading="lazy" src="https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1" alt="Winterplay">
                             </div>
                             <div class="timeline-group-item-info">
                                 <span class="timeline-group-item-title">Winterplay</span>
@@ -3836,13 +4080,13 @@
                 <div class="timeline-story">The grid gets an eye. Cities start looking back to history and forward to a greater form.</div>
 
                 <div class="timeline-item featured" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiga6qzupgcz3joz3jdywwyk2fuzc2jukmohfij5tzs44rw5rzhqba" data-title="Eye of the City" data-year="2022" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/22">
-                    <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiga6qzupgcz3joz3jdywwyk2fuzc2jukmohfij5tzs44rw5rzhqba" alt="Eye of the City">
+                    <img loading="lazy" src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiga6qzupgcz3joz3jdywwyk2fuzc2jukmohfij5tzs44rw5rzhqba" alt="Eye of the City">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Eye of the City</span>
                         <span class="timeline-item-year">2022</span>
                         <div class="timeline-desc-wrapper">
                             <button class="timeline-more-btn">more</button>
-                            <span class="timeline-item-desc">The first eye in a cityscape. Looking down, the grid looking back.</span>
+                            <span class="timeline-item-desc">Urban observations frozen in motion. A reflection of simplicity and chaos. Created live at The Gateway, Miami during Art Basel 2022.</span>
                         </div>
                         <div class="timeline-provenance">
                             <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/22" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Reginald de la Grarbs</span>
@@ -3852,7 +4096,7 @@
 
                 <!-- Two Bridges -->
                 <div class="timeline-item hero-center" data-img="https://ipfs.io/ipfs/bafybeidjajtk5byo2cg7ipid24lywtlqcnlnnkcztmfk3mu7fnqtwavaji" data-title="Two Bridges" data-year="2022" data-link="https://opensea.io/item/ethereum/0xc80d40e86c91dc4a713c5e2e9d8fc47c6b6a68fd/181000100001">
-                    <img src="https://ipfs.io/ipfs/bafybeidjajtk5byo2cg7ipid24lywtlqcnlnnkcztmfk3mu7fnqtwavaji" alt="Two Bridges">
+                    <img loading="lazy" src="https://ipfs.io/ipfs/bafybeidjajtk5byo2cg7ipid24lywtlqcnlnnkcztmfk3mu7fnqtwavaji" alt="Two Bridges">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Two Bridges</span>
                         <span class="timeline-item-year">2022 · Edition of 10</span>
@@ -3862,7 +4106,7 @@
 
                 <!-- Light Pulp -->
                 <div class="timeline-item featured" data-img="https://nft-cdn.alchemy.com/eth-mainnet/24cacdfcf8625283c2cd21244136ae80" data-title="Light Pulp" data-year="2022" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/17">
-                    <img src="https://nft-cdn.alchemy.com/eth-mainnet/24cacdfcf8625283c2cd21244136ae80" alt="Light Pulp">
+                    <img loading="lazy" src="https://nft-cdn.alchemy.com/eth-mainnet/24cacdfcf8625283c2cd21244136ae80" alt="Light Pulp">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Light Pulp</span>
                         <span class="timeline-item-year">2022</span>
@@ -3877,7 +4121,7 @@
                     <div class="timeline-group-grid cols-2">
                         <div class="timeline-group-item" data-img="https://arweave.net/dUzBTD-4kZZHEITC_6HEWrHb4HzIxKzslAEeLznkHRQ" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/27" data-title="Midnight In Manhattan" data-year="2022">
                             <div class="timeline-group-item-img">
-                                <img src="https://arweave.net/dUzBTD-4kZZHEITC_6HEWrHb4HzIxKzslAEeLznkHRQ" alt="Midnight In Manhattan">
+                                <img loading="lazy" src="https://arweave.net/dUzBTD-4kZZHEITC_6HEWrHb4HzIxKzslAEeLznkHRQ" alt="Midnight In Manhattan">
                             </div>
                             <div class="timeline-group-item-info">
                                 <span class="timeline-group-item-title">Midnight In Manhattan</span>
@@ -3886,7 +4130,7 @@
                         </div>
                         <div class="timeline-group-item" data-img="https://arweave.net/hEokztJ9b7fxAtGf1eiwi2QRWkMY5F8UlJOa0rlHqag" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/28" data-title="Hazy Day" data-year="2022">
                             <div class="timeline-group-item-img">
-                                <img src="https://arweave.net/hEokztJ9b7fxAtGf1eiwi2QRWkMY5F8UlJOa0rlHqag" alt="Hazy Day">
+                                <img loading="lazy" src="https://arweave.net/hEokztJ9b7fxAtGf1eiwi2QRWkMY5F8UlJOa0rlHqag" alt="Hazy Day">
                             </div>
                             <div class="timeline-group-item-info">
                                 <span class="timeline-group-item-title">Hazy Day</span>
@@ -3903,7 +4147,7 @@
 
                 <!-- Luminosity -->
                 <div class="timeline-item featured" data-img="https://e7bvegr35i4w3uqygtu2op3rwjaglmdnrovpbvwg6j66wh2a7mvq.arweave.net/J8NSGjvqOW3SGDTppz9xskBlsG2LqvDWxvJ96x9A-ys" data-title="Luminosity" data-year="2023" data-link="https://foundation.app/mint/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/23">
-                    <img src="https://e7bvegr35i4w3uqygtu2op3rwjaglmdnrovpbvwg6j66wh2a7mvq.arweave.net/J8NSGjvqOW3SGDTppz9xskBlsG2LqvDWxvJ96x9A-ys" alt="Luminosity">
+                    <img loading="lazy" src="https://e7bvegr35i4w3uqygtu2op3rwjaglmdnrovpbvwg6j66wh2a7mvq.arweave.net/J8NSGjvqOW3SGDTppz9xskBlsG2LqvDWxvJ96x9A-ys" alt="Luminosity">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Luminosity</span>
                         <span class="timeline-item-year">2023</span>
@@ -3915,7 +4159,7 @@
 
                 <!-- Street View -->
                 <div class="timeline-item right" data-img="https://arweave.net/pk00hY7LdV6c8q6l3OiVP6GSRYG-Sx_KeDIearNK878" data-title="Street View" data-year="2023" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/29">
-                    <img src="https://arweave.net/pk00hY7LdV6c8q6l3OiVP6GSRYG-Sx_KeDIearNK878" alt="Street View">
+                    <img loading="lazy" src="https://arweave.net/pk00hY7LdV6c8q6l3OiVP6GSRYG-Sx_KeDIearNK878" alt="Street View">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Street View</span>
                         <span class="timeline-item-year">2023</span>
@@ -3927,7 +4171,7 @@
 
                 <!-- Brain Fog -->
                 <div class="timeline-item left available" data-img="https://arweave.net/cTSB-Acjliv_eqJqlWFtsbNB5Wpwwr_j-ck1cshWaTk" data-title="Brain Fog" data-year="2023" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/31">
-                    <img src="https://arweave.net/cTSB-Acjliv_eqJqlWFtsbNB5Wpwwr_j-ck1cshWaTk" alt="Brain Fog">
+                    <img loading="lazy" src="https://arweave.net/cTSB-Acjliv_eqJqlWFtsbNB5Wpwwr_j-ck1cshWaTk" alt="Brain Fog">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Brain Fog</span>
                         <span class="timeline-item-year">2023 · Available</span>
@@ -3936,7 +4180,7 @@
 
                 <!-- Traffic on the Avenue -->
                 <div class="timeline-item right" data-img="https://arweave.net/3Hlm3Mo0by9mqa7H2hH6TT4ioB0vI1LaVgWXD61Addk" data-title="Traffic on the Avenue" data-year="2023" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/33">
-                    <img src="https://arweave.net/3Hlm3Mo0by9mqa7H2hH6TT4ioB0vI1LaVgWXD61Addk" alt="Traffic on the Avenue">
+                    <img loading="lazy" src="https://arweave.net/3Hlm3Mo0by9mqa7H2hH6TT4ioB0vI1LaVgWXD61Addk" alt="Traffic on the Avenue">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Traffic on the Avenue</span>
                         <span class="timeline-item-year">2023</span>
@@ -3948,7 +4192,7 @@
 
                 <!-- Roundabout -->
                 <div class="timeline-item left" data-img="https://arweave.net/6ucEGXVGd9S5s2f9fnIEQqUc4-X0zCnuUD-_XNwpsVM" data-title="Roundabout" data-year="2023" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/34">
-                    <img src="https://arweave.net/6ucEGXVGd9S5s2f9fnIEQqUc4-X0zCnuUD-_XNwpsVM" alt="Roundabout">
+                    <img loading="lazy" src="https://arweave.net/6ucEGXVGd9S5s2f9fnIEQqUc4-X0zCnuUD-_XNwpsVM" alt="Roundabout">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Roundabout</span>
                         <span class="timeline-item-year">2023</span>
@@ -3964,7 +4208,7 @@
 
                 <!-- Silent Skyline -->
                 <div class="timeline-item right" data-img="https://arweave.net/qEiCFd9Y3U0UAE63z3sCZkmDDlZ1sKKQgkzQWZQkJBg" data-title="Silent Skyline" data-year="2024" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/36">
-                    <img src="https://arweave.net/qEiCFd9Y3U0UAE63z3sCZkmDDlZ1sKKQgkzQWZQkJBg" alt="Silent Skyline">
+                    <img loading="lazy" src="https://arweave.net/qEiCFd9Y3U0UAE63z3sCZkmDDlZ1sKKQgkzQWZQkJBg" alt="Silent Skyline">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Silent Skyline</span>
                         <span class="timeline-item-year">2024</span>
@@ -3976,7 +4220,7 @@
 
                 <!-- Standalone: Vibrancy -->
                 <div class="timeline-item featured" data-img="https://arweave.net/QovS8UL0HHe8Cex0owceng4YdWhW08gMm_zg-Jzx7dY" data-title="Vibrancy" data-year="2024" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/42">
-                    <img src="https://arweave.net/QovS8UL0HHe8Cex0owceng4YdWhW08gMm_zg-Jzx7dY" alt="Vibrancy">
+                    <img loading="lazy" src="https://arweave.net/QovS8UL0HHe8Cex0owceng4YdWhW08gMm_zg-Jzx7dY" alt="Vibrancy">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Vibrancy</span>
                         <span class="timeline-item-year">2024</span>
@@ -3993,8 +4237,8 @@
                 <!-- Standalone: Over the Bridge -->
                 <div class="timeline-item left over-the-bridge-item" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/Qmdo2hzEGfXV6Ep3A2K8KHK7mg4XVUvKMbDG4Xu2Pj8LB2" data-title="Over the Bridge" data-year="2024" data-link="https://opensea.io/item/ethereum/0xdb1f952239c6e89af76dd1226e7cb1fa57463e5e/127">
                     <div class="over-bridge-img-container">
-                        <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/Qmdo2hzEGfXV6Ep3A2K8KHK7mg4XVUvKMbDG4Xu2Pj8LB2" alt="Over the Bridge" class="over-bridge-static">
-                        <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiacjsh45e2uduoi2odkp4ldy4z5wxu2za3cgzwoyonscgudx75u3i" alt="Over the Bridge Animation" class="over-bridge-animated">
+                        <img loading="lazy" src="https://blush-worried-heron-358.mypinata.cloud/ipfs/Qmdo2hzEGfXV6Ep3A2K8KHK7mg4XVUvKMbDG4Xu2Pj8LB2" alt="Over the Bridge" class="over-bridge-static">
+                        <img loading="lazy" src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiacjsh45e2uduoi2odkp4ldy4z5wxu2za3cgzwoyonscgudx75u3i" alt="Over the Bridge Animation" class="over-bridge-animated">
                     </div>
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Over the Bridge</span>
@@ -4005,7 +4249,7 @@
 
                 <!-- Standalone: City in Bloom -->
                 <div class="timeline-item right" data-img="https://nft-cdn.alchemy.com/eth-mainnet/bf524597b88d4936737d66df0ba5f368" data-title="City in Bloom" data-year="2024" data-link="https://superrare.com/artwork/eth/0x51650bf8cda4d93b00dbfa97f65aba14a82b2a9e/1">
-                    <img src="https://nft-cdn.alchemy.com/eth-mainnet/bf524597b88d4936737d66df0ba5f368" alt="City in Bloom">
+                    <img loading="lazy" src="https://nft-cdn.alchemy.com/eth-mainnet/bf524597b88d4936737d66df0ba5f368" alt="City in Bloom">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">City in Bloom</span>
                         <span class="timeline-item-year">2024 · Rio de Janeiro</span>
@@ -4025,15 +4269,15 @@
 
                 <div class="timeline-item center italy" data-title="Cities // Italy" data-link="https://citiesitaly.ninfa.io/">
                     <div class="timeline-italy-grid">
-                        <img src="https://images.ninfa.io/nfts/original/c8330669474b599172d9caf56c186cb5d60a1483ae7a114734313a20ca8b8df1.jpeg" alt="Echo Hill">
-                        <img src="https://images.ninfa.io/nfts/original/ea9a2b42ef67db20ce7fb63c592e9f75036e874df9ea593835384ede046be449.jpeg" alt="Around the Duomo">
-                        <img src="https://images.ninfa.io/nfts/original/e9ff95e5215d28b765cabcb3b2360520266c86d74683b7ecaa59630f5e0db086.jpeg" alt="Through The Piazza">
-                        <img src="https://images.ninfa.io/nfts/original/c16d801ae69e5ed00046d63b8ed30be387e477297a62767d1178f142add4a31b.jpeg" alt="Shifted Shadow">
-                        <img src="https://images.ninfa.io/nfts/original/ed64013129837544d5fe74e63f414a6c74fee743b95f9e5223e911ac0303a476.jpeg" alt="Last Lap">
-                        <img src="https://images.ninfa.io/nfts/original/a2cc2905f3f49f56757890038b3cf715bcc4139a05660b378f43b4fa9c93b9af.jpeg" alt="Radial Intent">
-                        <img src="https://images.ninfa.io/nfts/original/d3ca7d2aa862e1ff132864f703c8680d1038bc470c279db28909cbaa0c8c79ad.jpeg" alt="Across the Arno">
-                        <img src="https://images.ninfa.io/nfts/original/fa42a57fcc480226220ec5cf90dd1a6b58a567ccf49b52f35c9ee91170498a63.jpeg" alt="Drawn To Center">
-                        <img src="https://images.ninfa.io/nfts/original/f9bd77a279884e9b4ed1edeaa8f213cec0f8c210a4558eb2f6c01c021f540200.jpeg" alt="Walled Memory">
+                        <img loading="lazy" src="https://images.ninfa.io/nfts/original/c8330669474b599172d9caf56c186cb5d60a1483ae7a114734313a20ca8b8df1.jpeg" alt="Echo Hill">
+                        <img loading="lazy" src="https://images.ninfa.io/nfts/original/ea9a2b42ef67db20ce7fb63c592e9f75036e874df9ea593835384ede046be449.jpeg" alt="Around the Duomo">
+                        <img loading="lazy" src="https://images.ninfa.io/nfts/original/e9ff95e5215d28b765cabcb3b2360520266c86d74683b7ecaa59630f5e0db086.jpeg" alt="Through The Piazza">
+                        <img loading="lazy" src="https://images.ninfa.io/nfts/original/c16d801ae69e5ed00046d63b8ed30be387e477297a62767d1178f142add4a31b.jpeg" alt="Shifted Shadow">
+                        <img loading="lazy" src="https://images.ninfa.io/nfts/original/ed64013129837544d5fe74e63f414a6c74fee743b95f9e5223e911ac0303a476.jpeg" alt="Last Lap">
+                        <img loading="lazy" src="https://images.ninfa.io/nfts/original/a2cc2905f3f49f56757890038b3cf715bcc4139a05660b378f43b4fa9c93b9af.jpeg" alt="Radial Intent">
+                        <img loading="lazy" src="https://images.ninfa.io/nfts/original/d3ca7d2aa862e1ff132864f703c8680d1038bc470c279db28909cbaa0c8c79ad.jpeg" alt="Across the Arno">
+                        <img loading="lazy" src="https://images.ninfa.io/nfts/original/fa42a57fcc480226220ec5cf90dd1a6b58a567ccf49b52f35c9ee91170498a63.jpeg" alt="Drawn To Center">
+                        <img loading="lazy" src="https://images.ninfa.io/nfts/original/f9bd77a279884e9b4ed1edeaa8f213cec0f8c210a4558eb2f6c01c021f540200.jpeg" alt="Walled Memory">
                     </div>
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Cities // Italy</span>
@@ -4041,7 +4285,7 @@
                         <div class="timeline-item-actions-inline">
                             <a class="timeline-action-inline share-btn" href="#" title="Share on X">𝕏</a>
                         </div>
-                        <div class="timeline-italy-collectors">Collected by: Batsoupyum · Sorenwrenn · M Studio · Almost Serious Gallery · Georgie · R Alderman</div>
+                        <div class="timeline-italy-collectors">Collected by: Soren Wrenn · BatSoupYum · M Studio · Almost Serious Gallery · Georgie · R Alderman</div>
                     </div>
                 </div>
 
@@ -4251,7 +4495,7 @@
         const CONTRACT = '0x7c78f67700e700b4005c8a3d920a1a99e6004800';
         const GENERATOR = 'https://generator.artblocks.io';
         const MEDIA_BASE = 'https://media-proxy.artblocks.io/1';
-        let MAX_TOKEN = 319; // Max token ID (320 minted, 0-indexed) - will be updated from API
+        let MAX_TOKEN = 320; // Max token ID (321 minted, 0-indexed) - will be updated from API
         const CACHE_VERSION = 'v1';
         const TRAITS_CACHE_KEY = `cities-traits-${CACHE_VERSION}`;
         const CACHE_EXPIRY = 24 * 60 * 60 * 1000;
@@ -4310,12 +4554,12 @@
             'valisdao.eth': 'WillEP',
             'willep': 'WillEP',
             'willep.eth': 'WillEP',
-            // OblivionNFT variations
-            'nyc': 'OblivionNFT',
-            'nftoblivion': 'OblivionNFT',
-            'oblivionnft': 'OblivionNFT',
-            'oblivionnft.eth': 'OblivionNFT',
-            'oblivion': 'OblivionNFT',
+            // Oblivion variations
+            'nyc': 'Oblivion',
+            'nftoblivion': 'Oblivion',
+            'oblivionnft': 'Oblivion',
+            'oblivionnft.eth': 'Oblivion',
+            'oblivion': 'Oblivion',
             // Redbeard variations
             'dr. whet faartz': 'Redbeard',
             'dr whet faartz': 'Redbeard',
@@ -4358,7 +4602,23 @@
             'danielko.eth': 'Daniel Koeth',
             // codincowboy -> Codin Cowboy
             'codincowboy': 'Codin Cowboy',
-            'codincowboy.eth': 'Codin Cowboy'
+            'codincowboy.eth': 'Codin Cowboy',
+            // tortitatrades -> Tortita
+            'tortitatrades': 'Tortita',
+            'tortitatrades.eth': 'Tortita',
+            // ogtheartist -> OG
+            'ogtheartist': 'OG',
+            'ogtheartist.eth': 'OG',
+            'og the artist': 'OG',
+            // paperbuddha -> Paper Buddha
+            'paperbuddha': 'Paper Buddha',
+            'paperbuddha.eth': 'Paper Buddha',
+            // soren -> Soren Wrenn
+            'soren': 'Soren Wrenn',
+            'soren.eth': 'Soren Wrenn',
+            // shillrmedia -> SHILLR
+            'shillrmedia': 'SHILLR',
+            'shillrmedia.eth': 'SHILLR'
         };
 
         // Function to apply name aliases and clean up ENS names
@@ -4926,6 +5186,13 @@
         mobileMenuToggle.addEventListener('click', toggleMobileMenu);
         sidebarOverlay.addEventListener('click', closeMobileMenu);
 
+        // Prevent browser zoom from Ctrl+wheel or pinch gestures
+        document.addEventListener('wheel', (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
         // Handle window resize to fix responsive state
         let resizeTimeout;
         let resizeEndTimeout;
@@ -5169,7 +5436,7 @@
             { id: 'inverted', title: 'Inverted Reality', year: 2021, collection: 'Cities // Efdot Originals', collector: 'WillEP', img: 'https://qld2vwvxjaq7lqoy36pbvgqnoipqegjl4xvl2kihw6vedyy3yb5a.arweave.net/gseq2rdIIfXB2N-eGpoNch8CGSvl6r0pB7eqQeMbwHo', link: 'https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/11', desc: 'The city flipped. A new perspective on the familiar grid.', colors: ['#1a1a2e', '#4a5568', '#E8B86D'], energy: 'Living', hideFromGrid: true },
 
             // 2022-2024 - Cities // Efdot Originals (SuperRare)
-            { id: 'eye', title: 'Eye of the City', year: 2022, collection: 'Cities // Efdot Originals', collector: 'Reginald de la Grarbs', img: 'https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiga6qzupgcz3joz3jdywwyk2fuzc2jukmohfij5tzs44rw5rzhqba', link: 'https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/22', desc: 'The first eye in a cityscape. Looking down, the grid looking back.', colors: ['#2D3047', '#93B7BE', '#E0CA3C'], energy: 'Living', featured: true },
+            { id: 'eye', title: 'Eye of the City', year: 2022, collection: 'Cities // Efdot Originals', collector: 'Reginald de la Grarbs', img: 'https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiga6qzupgcz3joz3jdywwyk2fuzc2jukmohfij5tzs44rw5rzhqba', link: 'https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/22', desc: 'Urban observations frozen in motion. A reflection of simplicity and chaos. Created live at The Gateway, Miami during Art Basel 2022.', colors: ['#2D3047', '#93B7BE', '#E0CA3C'], energy: 'Living', featured: true },
             { id: 'lightpulp', title: 'Light Pulp', year: 2022, collection: 'Cities // Efdot Originals', collector: 'Easp0rts', img: 'https://nft-cdn.alchemy.com/eth-mainnet/24cacdfcf8625283c2cd21244136ae80', link: 'https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/17', desc: 'Like pulp floating in orange juice. A city on an island.', colors: ['#FF9500', '#FFB347', '#FFCC00'], energy: 'Rising' },
             { id: 'midnight', title: 'Midnight In Manhattan', year: 2022, collection: 'Cities // Efdot Originals', collector: 'Sendrock', img: 'https://arweave.net/dUzBTD-4kZZHEITC_6HEWrHb4HzIxKzslAEeLznkHRQ', link: 'https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/27', desc: 'Manhattan at midnight. Could be more than one-offs.', colors: ['#0D0D0D', '#1A1A2E', '#4A5568'], energy: 'Resting' },
             { id: 'hazyday', title: 'Hazy Day', year: 2022, collection: 'Cities // Efdot Originals', collector: 'Cosimo De Medici', img: 'https://arweave.net/hEokztJ9b7fxAtGf1eiwi2QRWkMY5F8UlJOa0rlHqag', link: 'https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/28', desc: 'Orange and pink fog. Some days you can\'t see past the next block.', colors: ['#FF8C42', '#FFA07A', '#DDA0DD'], energy: 'Fading' },
@@ -5183,15 +5450,15 @@
             { id: 'desertgrid', title: 'Desert Grid', year: 2025, collection: 'Cities // Marfa', collector: 'Norcal & Klutch', img: 'https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeigq7rytbitvgnmil3i5h3tqvekqcw5f2z4zy5pzfjcbk5dtnbc2yy', link: 'https://opensea.io/item/ethereum/0x10abb881add1de70d4a9b2c712b9a8ac8853418b/4', desc: 'One piece with two dynamic states. Day and night in the Texas desert.', colors: ['#F4A460', '#DEB887', '#1a1a2e'], energy: 'Living' },
 
             // 2025 - Cities // Italy (9 pieces on Ninfa)
-            { id: 'italy1', title: 'Echo Hill', year: 2025, collection: 'Cities // Italy', collector: 'BatSoupYum', img: 'https://images.ninfa.io/nfts/original/c8330669474b599172d9caf56c186cb5d60a1483ae7a114734313a20ca8b8df1.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Italian hilltop echoes.', colors: ['#D4A574', '#8B4513', '#CD853F'], energy: 'Living' },
-            { id: 'italy2', title: 'Around the Duomo', year: 2025, collection: 'Cities // Italy', collector: 'Sorenwrenn', img: 'https://images.ninfa.io/nfts/original/ea9a2b42ef67db20ce7fb63c592e9f75036e874df9ea593835384ede046be449.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Circling the cathedral.', colors: ['#DAA520', '#B8860B', '#CD853F'], energy: 'Living' },
+            { id: 'italy1', title: 'Echo Hill', year: 2025, collection: 'Cities // Italy', collector: 'Soren Wrenn', img: 'https://images.ninfa.io/nfts/original/c8330669474b599172d9caf56c186cb5d60a1483ae7a114734313a20ca8b8df1.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Italian hilltop echoes.', colors: ['#D4A574', '#8B4513', '#CD853F'], energy: 'Living' },
+            { id: 'italy2', title: 'Around the Duomo', year: 2025, collection: 'Cities // Italy', collector: 'Soren Wrenn', img: 'https://images.ninfa.io/nfts/original/ea9a2b42ef67db20ce7fb63c592e9f75036e874df9ea593835384ede046be449.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Circling the cathedral.', colors: ['#DAA520', '#B8860B', '#CD853F'], energy: 'Living' },
             { id: 'italy3', title: 'Through The Piazza', year: 2025, collection: 'Cities // Italy', collector: 'M Studio', img: 'https://images.ninfa.io/nfts/original/e9ff95e5215d28b765cabcb3b2360520266c86d74683b7ecaa59630f5e0db086.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Crossing the square.', colors: ['#4682B4', '#5F9EA0', '#20B2AA'], energy: 'Living' },
             { id: 'italy4', title: 'Shifted Shadow', year: 2025, collection: 'Cities // Italy', collector: 'Almost Serious Gallery', img: 'https://images.ninfa.io/nfts/original/c16d801ae69e5ed00046d63b8ed30be387e477297a62767d1178f142add4a31b.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Light moving across stone.', colors: ['#6B7280', '#9CA3AF', '#D1D5DB'], energy: 'Fading' },
             { id: 'italy5', title: 'Last Lap', year: 2025, collection: 'Cities // Italy', collector: 'Georgie', img: 'https://images.ninfa.io/nfts/original/ed64013129837544d5fe74e63f414a6c74fee743b95f9e5223e911ac0303a476.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Final circuit around the city.', colors: ['#FF6B6B', '#4ECDC4', '#FFE66D'], energy: 'Living' },
             { id: 'italy6', title: 'Radial Intent', year: 2025, collection: 'Cities // Italy', collector: 'R Alderman', img: 'https://images.ninfa.io/nfts/original/a2cc2905f3f49f56757890038b3cf715bcc4139a05660b378f43b4fa9c93b9af.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Radiating from center.', colors: ['#E8B86D', '#FF8C42', '#D4A574'], energy: 'Rising' },
-            { id: 'italy7', title: 'Across the Arno', year: 2025, collection: 'Cities // Italy', img: 'https://images.ninfa.io/nfts/original/d3ca7d2aa862e1ff132864f703c8680d1038bc470c279db28909cbaa0c8c79ad.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Bridging the river in Florence.', colors: ['#4682B4', '#87CEEB', '#B0E0E6'], energy: 'Living' },
-            { id: 'italy8', title: 'Drawn To Center', year: 2025, collection: 'Cities // Italy', img: 'https://images.ninfa.io/nfts/original/fa42a57fcc480226220ec5cf90dd1a6b58a567ccf49b52f35c9ee91170498a63.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Pulled toward the heart.', colors: ['#9333EA', '#A855F7', '#C084FC'], energy: 'Living' },
-            { id: 'italy9', title: 'Walled Memory', year: 2025, collection: 'Cities // Italy', img: 'https://images.ninfa.io/nfts/original/f9bd77a279884e9b4ed1edeaa8f213cec0f8c210a4558eb2f6c01c021f540200.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Ancient walls holding stories.', colors: ['#D4A574', '#A0522D', '#8B4513'], energy: 'Resting' },
+            { id: 'italy7', title: 'Across the Arno', year: 2025, collection: 'Cities // Italy', collector: 'BatSoupYum', img: 'https://images.ninfa.io/nfts/original/d3ca7d2aa862e1ff132864f703c8680d1038bc470c279db28909cbaa0c8c79ad.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Bridging the river in Florence.', colors: ['#4682B4', '#87CEEB', '#B0E0E6'], energy: 'Living' },
+            { id: 'italy8', title: 'Drawn To Center', year: 2025, collection: 'Cities // Italy', collector: 'BatSoupYum', img: 'https://images.ninfa.io/nfts/original/fa42a57fcc480226220ec5cf90dd1a6b58a567ccf49b52f35c9ee91170498a63.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Pulled toward the heart.', colors: ['#9333EA', '#A855F7', '#C084FC'], energy: 'Living' },
+            { id: 'italy9', title: 'Walled Memory', year: 2025, collection: 'Cities // Italy', collector: 'BatSoupYum', img: 'https://images.ninfa.io/nfts/original/f9bd77a279884e9b4ed1edeaa8f213cec0f8c210a4558eb2f6c01c021f540200.jpeg', link: 'https://citiesitaly.ninfa.io/', desc: 'Ancient walls holding stories.', colors: ['#D4A574', '#A0522D', '#8B4513'], energy: 'Resting' },
 
             // Editions
             { id: 'twobridges', title: 'Two Bridges', year: 2022, collection: 'Editions', img: 'https://ipfs.io/ipfs/bafybeidjajtk5byo2cg7ipid24lywtlqcnlnnkcztmfk3mu7fnqtwavaji', link: 'https://opensea.io/item/ethereum/0xc80d40e86c91dc4a713c5e2e9d8fc47c6b6a68fd/181000100001', desc: 'An ode to the LES. Dynamic, changes with seasons.', colors: ['#4ECDC4', '#45B7D1', '#96E6A1'], energy: 'Living', edition: 10 },
@@ -5379,12 +5646,12 @@
                         </div>
                         <div class="omage-inquiry-body">
                             <div class="omage-inquiry-image">
-                                <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiek2l25mxxsd54ptgtmnlmr4gsd4tgtd7nnee3uckh4hn3zdb52ce" alt="O.M.A.G.E.">
+                                <img loading="lazy" src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiek2l25mxxsd54ptgtmnlmr4gsd4tgtd7nnee3uckh4hn3zdb52ce" alt="O.M.A.G.E.">
                             </div>
                             <div class="omage-inquiry-details">
-                                <p><strong>18×18" Screen Prints</strong></p>
-                                <p>Each O.M.A.G.E. monoprint is one of a kind — layered by hand from three Open Minds pieces. Efdot's first analog generative system, created before Cities existed.</p>
-                                <p style="margin-top: 12px; font-size: 11px; color: var(--text-muted);">Limited availability. Inquire for pricing and current inventory.</p>
+                                <p><strong>18" × 18" Screen Prints</strong></p>
+                                <p>12 unique monoprints available via private sale. Each O.M.A.G.E. is one of a kind, layered by hand from three Open Minds pieces. This is Efdot's first generative series, created before Cities existed.</p>
+                                <p style="margin-top: 12px; font-size: 11px; color: var(--text-muted);">Inquire for pricing and availability.</p>
                             </div>
                         </div>
                         <div class="omage-inquiry-form">
@@ -5409,35 +5676,70 @@
             if (modal) modal.classList.remove('open');
         };
 
-        window.submitOmageInquiry = function() {
-            const name = document.getElementById('omageInquiryName').value;
-            const email = document.getElementById('omageInquiryEmail').value;
-            const message = document.getElementById('omageInquiryMessage').value;
+        window.submitOmageInquiry = async function() {
+            const name = document.getElementById('omageInquiryName').value.trim();
+            const email = document.getElementById('omageInquiryEmail').value.trim();
+            const message = document.getElementById('omageInquiryMessage').value.trim();
 
             if (!name || !email) {
                 alert('Please enter your name and email.');
                 return;
             }
 
-            // Create mailto link
-            const subject = encodeURIComponent('O.M.A.G.E. Monoprint Inquiry');
-            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message || 'I am interested in purchasing an O.M.A.G.E. monoprint.'}`);
-            window.location.href = `mailto:studio@efdot.com?subject=${subject}&body=${body}`;
+            // Email validation
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
 
-            // Show success state
-            document.querySelector('.omage-inquiry-form').style.display = 'none';
-            document.getElementById('omageInquirySuccess').style.display = 'block';
+            const submitBtn = document.querySelector('.omage-inquiry-submit');
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
 
-            // Close after delay
-            setTimeout(() => {
-                closeOmageInquiry();
-                // Reset form
-                document.querySelector('.omage-inquiry-form').style.display = 'block';
-                document.getElementById('omageInquirySuccess').style.display = 'none';
-                document.getElementById('omageInquiryName').value = '';
-                document.getElementById('omageInquiryEmail').value = '';
-                document.getElementById('omageInquiryMessage').value = '';
-            }, 2000);
+            try {
+                // Send via FormSubmit (no backend needed)
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('email', email);
+                formData.append('message', message || 'I am interested in purchasing an O.M.A.G.E. monoprint.');
+                formData.append('_subject', 'O.M.A.G.E. Monoprint Inquiry from ' + name);
+                formData.append('_template', 'table');
+
+                const response = await fetch('https://formsubmit.co/ajax/eric@efdotstudio.com', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    // Show success state
+                    document.querySelector('.omage-inquiry-form').style.display = 'none';
+                    document.getElementById('omageInquirySuccess').style.display = 'block';
+
+                    // Close after delay
+                    setTimeout(() => {
+                        closeOmageInquiry();
+                        // Reset form
+                        document.querySelector('.omage-inquiry-form').style.display = 'block';
+                        document.getElementById('omageInquirySuccess').style.display = 'none';
+                        document.getElementById('omageInquiryName').value = '';
+                        document.getElementById('omageInquiryEmail').value = '';
+                        document.getElementById('omageInquiryMessage').value = '';
+                        submitBtn.textContent = 'Send Inquiry';
+                        submitBtn.disabled = false;
+                    }, 2500);
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (e) {
+                console.error('Form submission error:', e);
+                // Fallback to mailto
+                const subject = encodeURIComponent('O.M.A.G.E. Monoprint Inquiry');
+                const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message || 'I am interested in purchasing an O.M.A.G.E. monoprint.'}`);
+                window.location.href = `mailto:eric@efdotstudio.com?subject=${subject}&body=${body}`;
+
+                submitBtn.textContent = 'Send Inquiry';
+                submitBtn.disabled = false;
+            }
         };
 
         // Render origins grid grouped by collection
@@ -5864,38 +6166,6 @@
         function renderCollectorsPills() {
             const pillsContainer = document.getElementById('collectorsPills');
 
-            // Vibrant colors that pop off dark background
-            const VIBRANT_PILLS = [
-                { bg: '#FF6B6B', text: '#000' },      // Coral red
-                { bg: '#4ECDC4', text: '#000' },      // Teal
-                { bg: '#FFE66D', text: '#000' },      // Yellow
-                { bg: '#95E1D3', text: '#000' },      // Mint
-                { bg: '#F38181', text: '#000' },      // Salmon
-                { bg: '#AA96DA', text: '#000' },      // Lavender
-                { bg: '#FCBAD3', text: '#000' },      // Pink
-                { bg: '#A8D8EA', text: '#000' },      // Sky blue
-                { bg: '#FF9F43', text: '#000' },      // Orange
-                { bg: '#5DD39E', text: '#000' },      // Green
-                { bg: '#BCE784', text: '#000' },      // Lime
-                { bg: '#DDA0DD', text: '#000' },      // Plum
-                { bg: '#87CEEB', text: '#000' },      // Light blue
-                { bg: '#F0E68C', text: '#000' },      // Khaki
-                { bg: '#98D8C8', text: '#000' },      // Seafoam
-                { bg: '#FFB6C1', text: '#000' },      // Light pink
-                { bg: '#77DD77', text: '#000' },      // Pastel green
-                { bg: '#FDFD96', text: '#000' },      // Pastel yellow
-                { bg: '#B19CD9', text: '#000' },      // Pastel purple
-                { bg: '#FF6961', text: '#000' },      // Pastel red
-                { bg: '#FFB347', text: '#000' },      // Pastel orange
-                { bg: '#03C6FC', text: '#000' },      // Bright cyan
-                { bg: '#FC6C85', text: '#000' },      // Watermelon
-                { bg: '#C1E1C1', text: '#000' },      // Tea green
-            ];
-
-            // Shuffle the vibrant colors
-            const shuffledColors = shuffleArray(VIBRANT_PILLS);
-
-            // Build HTML string (faster than DOM manipulation)
             // Exclude "The Lost Cities" distribution wallet (by name or address prefix 0xcf22)
             const LOST_CITIES_PREFIX = '0xcf22';
             const filteredCollectors = COLLECTORS_DATA.filter(c =>
@@ -5903,16 +6173,88 @@
                 !(c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX))
             );
 
+            // Helper to get full palette info from collector's tokens
+            function getCollectorPaletteInfo(collector) {
+                if (collector.tokens && collector.tokens.length > 0) {
+                    const randomToken = collector.tokens[Math.floor(Math.random() * collector.tokens.length)];
+                    const traits = tokenTraits[randomToken];
+                    if (traits) {
+                        const paletteName = traits['Palette'];
+                        const paletteInfo = PALETTE_DATA[paletteName];
+                        if (paletteInfo) {
+                            return { bg: paletteInfo.bg, colors: paletteInfo.colors || [] };
+                        }
+                    }
+                }
+                return { bg: '#333333', colors: ['#666', '#888', '#aaa'] };
+            }
+
+            // Get a pop color from palette that contrasts with background
+            function getPopTextColor(paletteInfo) {
+                const bg = paletteInfo.bg;
+                const colors = paletteInfo.colors || [];
+                const hex = bg.replace('#', '');
+                const bgR = parseInt(hex.substr(0, 2), 16);
+                const bgG = parseInt(hex.substr(2, 2), 16);
+                const bgB = parseInt(hex.substr(4, 2), 16);
+                const bgLum = (0.299 * bgR + 0.587 * bgG + 0.114 * bgB) / 255;
+
+                // Find the color with best contrast from the palette
+                let bestColor = bgLum > 0.5 ? '#000000' : '#ffffff';
+                let bestContrast = 0;
+
+                for (const color of colors) {
+                    if (!color || typeof color !== 'string') continue;
+                    const cHex = color.replace('#', '');
+                    if (cHex.length < 6) continue;
+                    const cR = parseInt(cHex.substr(0, 2), 16);
+                    const cG = parseInt(cHex.substr(2, 2), 16);
+                    const cB = parseInt(cHex.substr(4, 2), 16);
+                    const cLum = (0.299 * cR + 0.587 * cG + 0.114 * cB) / 255;
+                    const contrast = Math.abs(bgLum - cLum);
+                    const saturation = Math.max(cR, cG, cB) - Math.min(cR, cG, cB);
+                    if (contrast > 0.25 && (contrast > bestContrast || (saturation > 60 && contrast > bestContrast * 0.8))) {
+                        bestContrast = contrast;
+                        bestColor = color;
+                    }
+                }
+                return bestColor;
+            }
+
+            // Helper to get palette class for founding patron texture
+            function getPaletteClass(bgColor) {
+                const hex = bgColor.replace('#', '');
+                const r = parseInt(hex.substr(0, 2), 16);
+                const g = parseInt(hex.substr(2, 2), 16);
+                const b = parseInt(hex.substr(4, 2), 16);
+                const brightness = (r + g + b) / 3;
+                const isLight = brightness > 160;
+                const saturation = Math.max(r, g, b) - Math.min(r, g, b);
+
+                if (saturation < 40) return 'cities-mono';
+                if (saturation > 100 && ((r > 150 && b > 80) || (g > 150 && b > 80))) return 'cities-vibrant';
+                if (r > b && r > g * 0.8) return isLight ? 'cities-day-warm' : 'cities-night-warm';
+                if (b > r * 0.9 || b > g) return isLight ? 'cities-day-cool' : 'cities-night-cool';
+                return isLight ? 'cities-day-warm' : 'cities-night-warm';
+            }
+
             const htmlParts = [];
             const len = filteredCollectors.length;
             for (let i = 0; i < len; i++) {
                 const collector = filteredCollectors[i];
-                const palette = shuffledColors[i % shuffledColors.length];
                 const emoji = CITY_EMOJIS[i % CITY_EMOJIS.length];
                 const multiClass = collector.count >= 2 ? ' multi-holder' : '';
-                const patronClass = isFoundingPatron(collector.name) ? ' founding-patron' : '';
+                const isPatron = isFoundingPatron(collector.name);
+                const patronClass = isPatron ? ' founding-patron' : '';
                 const gridBadge = collector.count >= 4 ? '<span class="pill-grid-badge">⊞</span>' : '';
-                htmlParts.push(`<span class="collector-pill${multiClass}${patronClass}" data-collector="${collector.name}" style="background: ${palette.bg}; color: ${palette.text}; --pill-index: ${i};">${collector.name}<span class="pill-count">×${collector.count}</span>${gridBadge}<span class="pill-emoji">${emoji} × ${collector.count}</span></span>`);
+
+                // Get palette info from one of their Cities
+                const paletteInfo = getCollectorPaletteInfo(collector);
+                const bgColor = paletteInfo.bg;
+                const textColor = getPopTextColor(paletteInfo);
+                const paletteClass = isPatron ? ' ' + getPaletteClass(bgColor) : '';
+
+                htmlParts.push(`<span class="collector-pill${multiClass}${patronClass}${paletteClass}" data-collector="${collector.name}" style="background: ${bgColor}; color: ${textColor}; --pill-index: ${i};">${collector.name}<span class="pill-count">×${collector.count}</span>${gridBadge}<span class="pill-emoji">${emoji} × ${collector.count}</span></span>`);
             }
             pillsContainer.innerHTML = htmlParts.join('');
 
@@ -6020,8 +6362,10 @@
 
             renderGrid();
 
-            // Don't auto-open wall view - let user click name or wall button
-            // Previously: if (!skipWallView && tokens.length > 0) { openWallView(collectorName, tokens); }
+            // Auto-open wall view as default view for collectors
+            if (!skipWallView && tokens.length > 0) {
+                openWallView(collectorName, tokens);
+            }
         }
 
         function generateCollectorPhraseWithOriginals(tokens, originals) {
@@ -6246,9 +6590,16 @@
                 '#C7CEEA', '#E0BBE4', '#FEC8D8', '#D4F0F0', '#FCE1E4'
             ];
 
-            // Helper to calculate grid badge for a collector
-            // Shows a 4x2 grid (4 energies across, 2 rows) with complete grid count
-            function getGridBadge(tokens) {
+            // Helper to calculate achievement badges for a collector
+            function getAchievementBadges(tokens, collectorName) {
+                let badges = [];
+
+                // Check for OG status (owns original or pre-Art Blocks piece)
+                const ogCollectors = ['WILLEP', 'Shillr', 'SimonSays', 'BatSoupYum', 'Valdi', 'OG', 'Oblivion', 'DIID'];
+                if (ogCollectors.some(og => og.toLowerCase() === collectorName.toLowerCase())) {
+                    badges.push('<span class="achievement-badge og" title="Owns an Efdot Original">OG</span>');
+                }
+
                 // Count energies
                 const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
                 tokens.forEach(id => {
@@ -6262,46 +6613,39 @@
                 const living = energyCounts.Living;
                 const fading = energyCounts.Fading;
                 const resting = energyCounts.Resting;
+                const totalCities = tokens.length;
 
-                // Count complete 2x2 grids (one of each energy)
-                const completeGrids = Math.min(rising, living, fading, resting);
-
-                // Only show badge if they have at least 2 different energies
-                const totalEnergies = (rising > 0 ? 1 : 0) + (living > 0 ? 1 : 0) + (fading > 0 ? 1 : 0) + (resting > 0 ? 1 : 0);
-                if (totalEnergies < 2) return '';
-
-                // Build 4x2 grid: each column is one energy, 2 rows show up to 2 of each
-                // Row 1: first of each, Row 2: second of each (for visual balance)
-                const tooltip = `Rising: ${rising}, Living: ${living}, Fading: ${fading}, Resting: ${resting}` +
-                    (completeGrids > 0 ? ` • ${completeGrids} complete set${completeGrids > 1 ? 's' : ''}` : '');
-
-                let html = `<div class="leaderboard-grid-wrap${completeGrids > 0 ? ' has-complete' : ''}" title="${tooltip}">`;
-
-                // 4 columns (one per energy), 2 rows each
-                const energies = [
-                    { name: 'rising', count: rising },
-                    { name: 'living', count: living },
-                    { name: 'fading', count: fading },
-                    { name: 'resting', count: resting }
-                ];
-
-                energies.forEach(e => {
-                    html += '<div class="leaderboard-grid-col">';
-                    // Show 2 cells per energy (filled based on count, max visual is 2)
-                    for (let row = 0; row < 2; row++) {
-                        const filled = e.count > row;
-                        html += `<div class="leaderboard-grid-cell${filled ? ' ' + e.name : ''}"></div>`;
-                    }
-                    html += '</div>';
-                });
-
-                // Show multiplier if they have complete grids
-                if (completeGrids > 0) {
-                    html += `<span class="leaderboard-grid-multiplier">×${completeGrids}</span>`;
+                // Grid badge (4+ cities)
+                if (totalCities >= 4) {
+                    const gridCount = Math.floor(totalCities / 4);
+                    const multiplier = gridCount > 1 ? `<span class="grid-multiplier">x${gridCount}</span>` : '';
+                    badges.push(`<span class="achievement-badge grid" title="Grid (${totalCities} cities)"><span class="grid-icon-mini"><b></b><b></b><b></b><b></b></span>${multiplier}</span>`);
                 }
 
-                html += '</div>';
-                return html;
+                // Spectrum badge (one of each energy)
+                if (rising >= 1 && living >= 1 && fading >= 1 && resting >= 1) {
+                    badges.push('<span class="achievement-badge spectrum" title="Spectrum (one of each energy)">🌈</span>');
+                }
+
+                // Mono set badges (4+ of same energy)
+                if (rising >= 4) {
+                    const count = Math.floor(rising / 4);
+                    badges.push(`<span class="achievement-badge rising-set" title="Rising Set (${rising} rising energy)">☀️${count > 1 ? count : ''}</span>`);
+                }
+                if (living >= 4) {
+                    const count = Math.floor(living / 4);
+                    badges.push(`<span class="achievement-badge living-set" title="Living Set (${living} living energy)">🏙️${count > 1 ? count : ''}</span>`);
+                }
+                if (fading >= 4) {
+                    const count = Math.floor(fading / 4);
+                    badges.push(`<span class="achievement-badge fading-set" title="Fading Set (${fading} fading energy)">🌆${count > 1 ? count : ''}</span>`);
+                }
+                if (resting >= 4) {
+                    const count = Math.floor(resting / 4);
+                    badges.push(`<span class="achievement-badge resting-set" title="Resting Set (${resting} resting energy)">🌃${count > 1 ? count : ''}</span>`);
+                }
+
+                return badges.length > 0 ? `<span class="achievement-badges">${badges.join('')}</span>` : '';
             }
 
             const leaderboardList = document.getElementById('leaderboardList');
@@ -6318,17 +6662,21 @@
                 const barWidth = (collector.count / maxCount) * 100;
                 const tokens = collector.tokens || [];
                 const patronClass = isFoundingPatron(collector.name) ? ' founding-patron' : '';
-                // Create 9:16 mini thumbnails for each city
+                // Create 9:16 color swatches for each city using actual background color
                 const swatchChipsHtml = tokens.slice(0, 12).map(id => {
-                    return `<div class="leaderboard-chip" title="#${id}"><img src="${getSmallThumbnailUrl(id)}" alt="#${id}" loading="lazy" decoding="async"></div>`;
+                    const traits = tokenTraits[id];
+                    const paletteName = traits?.['Palette'];
+                    const paletteInfo = PALETTE_DATA[paletteName];
+                    const bgColor = paletteInfo?.bg || '#333';
+                    return `<div class="leaderboard-chip" title="#${id} - ${paletteName || 'Unknown'}" style="background: ${bgColor};"></div>`;
                 }).join('');
-                // Get grid badge
-                const gridBadge = getGridBadge(tokens);
+                // Get achievement badges
+                const achievementBadges = getAchievementBadges(tokens, collector.name);
                 return `<li class="leaderboard-item${patronClass}" data-collector="${collector.name}" style="cursor: pointer;">
                     <div class="leaderboard-name-wrap">
                         <span class="leaderboard-rank">${i + 1}</span>
                         <span class="leaderboard-name" style="color: ${color}">${collector.name}</span>
-                        <span class="leaderboard-grid-wrap">${gridBadge}</span>
+                        ${achievementBadges}
                     </div>
                     <div class="leaderboard-chips-wrap">
                         <div class="leaderboard-chips">${swatchChipsHtml}</div>
@@ -6405,6 +6753,11 @@
 
             if (becomeBtn) {
                 becomeBtn.addEventListener('click', showCollectorGuideView);
+            }
+
+            const notCollectorTop = document.getElementById('notCollectorTop');
+            if (notCollectorTop) {
+                notCollectorTop.addEventListener('click', showCollectorGuideView);
             }
 
             if (backBtn) {
@@ -6515,7 +6868,8 @@
                         '0xec9e512fe7e90134d8ca7295329ccb0a57c91ecb': 'Max Karlan',
                         '0x2531b2ff6a7f08c6ab12c29d1b394788f819deb1': 'Raul On A Stool',
                         '0x1b052edc4df735f0a5e62c1335c94667e7fdc55e': 'Goonie Goo Goo',
-                        '0x56bdc5fe7f9752e7f5a381e394acfe72a724462b': 'Cath Simard'
+                        '0x56bdc5fe7f9752e7f5a381e394acfe72a724462b': 'Cath Simard',
+                        '0x9128233a0e77dca38c5abc0810bcfb3663120123': 'OG'
                     };
 
                     // Prefix-based aliases (for partial matching)
@@ -6604,13 +6958,18 @@
                     // Update stats
                     const totalCollectors = COLLECTORS_DATA.length;
                     const totalCollected = data.data.tokens_metadata.length;
-                    document.querySelector('.collectors-stats').innerHTML = `<strong>${totalCollectors}</strong> COLLECTORS • <strong>${totalCollected}</strong> CITIES COLLECTED`;
+                    document.querySelector('.collectors-stats').innerHTML = `<strong>${totalCollected}</strong> 🏙️ collected by <strong>${totalCollectors}</strong> citizens`;
                     const statsEl = document.getElementById('statsCollectors');
                     if (statsEl) statsEl.textContent = totalCollectors;
 
                     // Re-render
                     renderCollectorsPills();
                     renderLeaderboard();
+
+                    // Re-render grid to show collectors on palette bars
+                    if (document.getElementById('gridPanel')?.classList.contains('open')) {
+                        renderGrid();
+                    }
 
                     // Initialize daily spotlight
                     initSpotlight();
@@ -6917,11 +7276,29 @@
             });
 
             // Try mode toggle - allows temporarily adding cities to see how they'd look
-            document.getElementById('wallViewTryMode')?.addEventListener('click', () => {
+            document.getElementById('wallViewTryMode')?.addEventListener('click', (e) => {
                 const btn = document.getElementById('wallViewTryMode');
                 const modal = document.getElementById('wallViewModal');
                 const wall = document.getElementById('wallViewWall');
                 const isLineView = modal?.classList.contains('line-view');
+
+                // Check if there's already an empty slot visible (from the 2x2 grid for small collections)
+                const existingEmptySlot = wall?.querySelector('.wall-view-frame.empty-slot .wall-view-empty-frame');
+                if (existingEmptySlot && !wallViewTryMode) {
+                    // Open dropdown on the existing empty slot instead of adding more
+                    const artwork = existingEmptySlot.closest('.wall-view-artwork');
+                    if (artwork) {
+                        // Create a fake click event positioned at the empty slot
+                        const rect = existingEmptySlot.getBoundingClientRect();
+                        const fakeEvent = {
+                            clientX: rect.left + rect.width / 2,
+                            clientY: rect.top + rect.height / 2,
+                            stopPropagation: () => {}
+                        };
+                        showEmptySlotOptions(fakeEvent, artwork);
+                        return; // Don't toggle TRY mode, just show options
+                    }
+                }
 
                 btn?.classList.toggle('active');
                 wallViewTryMode = btn?.classList.contains('active') || false;
@@ -7044,6 +7421,8 @@
             });
 
             // Print inquiry modal handlers
+            let printInquirySelectedCities = [];
+
             function openPrintInquiryModal() {
                 const modal = document.getElementById('printInquiryModal');
                 const citiesContainer = document.getElementById('printInquiryCities');
@@ -7054,13 +7433,62 @@
                 form.style.display = 'block';
                 success.style.display = 'none';
 
-                // Populate cities preview
-                const tokenIds = wallViewTokenIds || [];
-                citiesContainer.innerHTML = tokenIds.slice(0, 10).map(id => `<span>#${id}</span>`).join('') +
-                    (tokenIds.length > 10 ? `<span>+${tokenIds.length - 10} more</span>` : '');
+                // Initialize selected cities from wall view
+                printInquirySelectedCities = [...(wallViewTokenIds || [])];
+                renderPrintInquiryCities();
 
                 modal.classList.add('open');
             }
+
+            function renderPrintInquiryCities() {
+                const citiesContainer = document.getElementById('printInquiryCities');
+                if (!citiesContainer) return;
+
+                const displayCount = 8;
+                const visibleCities = printInquirySelectedCities.slice(0, displayCount);
+                const extraCount = printInquirySelectedCities.length - displayCount;
+
+                citiesContainer.innerHTML = visibleCities.map(id =>
+                    `<div class="print-inquiry-city-thumb" data-id="${id}">
+                        <img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}">
+                        <span class="city-id">#${id}</span>
+                        <button class="city-remove-btn" title="Remove">×</button>
+                    </div>`
+                ).join('') + (extraCount > 0 ? `<span class="print-inquiry-city-chip more-chip">+${extraCount} more</span>` : '');
+
+                // Add click handlers for remove buttons
+                citiesContainer.querySelectorAll('.city-remove-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const thumb = btn.closest('.print-inquiry-city-thumb');
+                        const id = parseInt(thumb.dataset.id);
+                        printInquirySelectedCities = printInquirySelectedCities.filter(cid => cid !== id);
+                        renderPrintInquiryCities();
+                    });
+                });
+            }
+
+            // Framing toggle
+            let printInquiryFraming = 'unframed';
+            document.querySelectorAll('.print-inquiry-framing-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    document.querySelectorAll('.print-inquiry-framing-option').forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                    printInquiryFraming = opt.dataset.framing;
+                });
+            });
+
+            // Size toggle
+            let printInquirySize = '16x9';
+            let printInquiryPrice = 120;
+            document.querySelectorAll('.print-inquiry-size-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    document.querySelectorAll('.print-inquiry-size-option').forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                    printInquirySize = opt.dataset.size;
+                    printInquiryPrice = parseInt(opt.dataset.price);
+                });
+            });
 
             document.getElementById('printInquiryClose')?.addEventListener('click', () => {
                 document.getElementById('printInquiryModal').classList.remove('open');
@@ -7076,40 +7504,83 @@
                 document.getElementById('printInquiryForm').style.display = 'block';
                 document.getElementById('printInquirySuccess').style.display = 'none';
                 document.getElementById('printInquiryEmail').value = '';
+                document.getElementById('printInquiryName').value = '';
+                document.getElementById('printInquiryAddress').value = '';
+                document.getElementById('printInquiryCity').value = '';
+                document.getElementById('printInquiryState').value = '';
+                document.getElementById('printInquiryZip').value = '';
+                document.getElementById('printInquiryCountry').value = 'United States';
                 document.getElementById('printInquiryNotes').value = '';
                 document.getElementById('printInquiryType').selectedIndex = 0;
+                // Reset size and framing toggles
+                document.querySelectorAll('.print-inquiry-size-option').forEach((o, i) => o.classList.toggle('active', i === 0));
+                document.querySelectorAll('.print-inquiry-framing-option').forEach((o, i) => o.classList.toggle('active', i === 0));
+                printInquirySize = '16x9';
+                printInquiryPrice = 120;
+                printInquiryFraming = 'unframed';
             });
 
             document.getElementById('printInquirySend')?.addEventListener('click', () => {
                 const email = document.getElementById('printInquiryEmail').value;
+                const name = document.getElementById('printInquiryName').value;
+                const address = document.getElementById('printInquiryAddress').value;
+                const city = document.getElementById('printInquiryCity').value;
+                const state = document.getElementById('printInquiryState').value;
+                const zip = document.getElementById('printInquiryZip').value;
+                const country = document.getElementById('printInquiryCountry').value;
                 const type = document.getElementById('printInquiryType').value;
                 const notes = document.getElementById('printInquiryNotes').value;
-                const collectorName = document.getElementById('wallViewCollectorName').textContent;
-                const tokenIds = wallViewTokenIds || [];
+                const collectorName = document.getElementById('wallViewCollectorLabel')?.dataset.rawName || 'Collector';
+                const tokenIds = printInquirySelectedCities || [];
 
                 if (!email || !email.includes('@')) {
                     alert('Please enter a valid email address');
                     return;
                 }
 
+                if (!name) {
+                    alert('Please enter your name');
+                    return;
+                }
+
+                if (!address || !city || !zip || !country) {
+                    alert('Please enter your shipping address');
+                    return;
+                }
+
                 // Build mailto link with pre-filled content
                 const typeLabels = {
-                    'single': 'Single print of my City',
+                    'single': 'Signed print of specific Output(s)',
                     'grid': 'Grid arrangement of my collection',
                     'large': 'Large format print',
-                    'custom': 'Custom commission / other'
+                    'mural': 'Mural / wall installation',
+                    'collab': 'Collaboration / commission',
+                    'custom': 'Something else'
                 };
 
-                const subject = encodeURIComponent(`Cities Print Inquiry - ${collectorName}`);
+                const sizeLabels = {
+                    '16x9': '16 × 9" ($120)',
+                    '18x32': '18 × 32" ($350)'
+                };
+
+                const subject = encodeURIComponent(`Cities Print Order - ${collectorName}`);
                 const body = encodeURIComponent(
                     `Hi Eric,\n\n` +
-                    `I'm interested in ordering a print!\n\n` +
+                    `I'd like to order a signed print!\n\n` +
+                    `== ORDER DETAILS ==\n` +
                     `Collector: ${collectorName}\n` +
                     `Cities: ${tokenIds.map(id => '#' + id).join(', ')}\n` +
+                    `Size: ${sizeLabels[printInquirySize]}\n` +
+                    `Framing: ${printInquiryFraming === 'framed' ? 'Framed' : 'Unframed'}\n` +
                     `Type: ${typeLabels[type]}\n` +
+                    `\n== SHIPPING ADDRESS ==\n` +
+                    `${name}\n` +
+                    `${address}\n` +
+                    `${city}, ${state} ${zip}\n` +
+                    `${country}\n` +
+                    `\nEmail: ${email}\n` +
                     (notes ? `\nNotes: ${notes}\n` : '') +
-                    `\nMy email: ${email}\n\n` +
-                    `Looking forward to hearing from you!`
+                    `\nLooking forward to the quote!`
                 );
 
                 // Open email client
@@ -7151,6 +7622,14 @@
                 applyWallZoom();
             });
             document.getElementById('wallViewZoomReset')?.addEventListener('click', () => {
+                wallViewZoom = 1;
+                wallPanX = 0;
+                wallPanY = 0;
+                applyWallZoom();
+            });
+
+            // Recenter button - resets pan and zoom
+            document.getElementById('wallViewRecenter')?.addEventListener('click', () => {
                 wallViewZoom = 1;
                 wallPanX = 0;
                 wallPanY = 0;
@@ -7313,7 +7792,7 @@
             const totalCities = realCities + tempCities;
             const labelEl = document.getElementById('wallViewCollectorLabel');
             const rawName = labelEl?.dataset.rawName || '';
-            const collectorName = labelEl?.textContent || 'Collector';
+            const collectorName = labelEl?.querySelector('.collector-name-value')?.textContent || labelEl?.dataset.rawName || 'Collector';
             const isTrying = tempCities > 0;
 
             // Check if this collector is in the top collectors
@@ -7642,29 +8121,59 @@
 
         function navigateToPrevCollector() {
             if (COLLECTORS_DATA.length === 0) return;
-            const labelEl = document.getElementById('wallViewCollectorLabel');
-            const currentName = labelEl ? labelEl.dataset.rawName : '';
+            // Check if we're in wall view or grid collector view
+            const wallModal = document.getElementById('wallViewModal');
+            const isWallView = wallModal && wallModal.classList.contains('open');
+
+            let currentName = '';
+            if (isWallView) {
+                const labelEl = document.getElementById('wallViewCollectorLabel');
+                currentName = labelEl ? labelEl.dataset.rawName : '';
+            } else if (currentCollectorFilter) {
+                currentName = currentCollectorFilter.name;
+            }
+
             let currentIdx = COLLECTORS_DATA.findIndex(c => c.name === currentName);
             if (currentIdx === -1) currentIdx = 0;
             const prevIdx = (currentIdx - 1 + COLLECTORS_DATA.length) % COLLECTORS_DATA.length;
             const prevCollector = COLLECTORS_DATA[prevIdx];
             if (prevCollector && prevCollector.tokens && prevCollector.tokens.length > 0) {
-                openWallView(prevCollector.name, prevCollector.tokens);
+                if (isWallView) {
+                    openWallView(prevCollector.name, prevCollector.tokens);
+                } else {
+                    fetchCollectorTokens(prevCollector.name);
+                }
             }
         }
+        window.navigateToPrevCollector = navigateToPrevCollector;
 
         function navigateToNextCollector() {
             if (COLLECTORS_DATA.length === 0) return;
-            const labelEl = document.getElementById('wallViewCollectorLabel');
-            const currentName = labelEl ? labelEl.dataset.rawName : '';
+            // Check if we're in wall view or grid collector view
+            const wallModal = document.getElementById('wallViewModal');
+            const isWallView = wallModal && wallModal.classList.contains('open');
+
+            let currentName = '';
+            if (isWallView) {
+                const labelEl = document.getElementById('wallViewCollectorLabel');
+                currentName = labelEl ? labelEl.dataset.rawName : '';
+            } else if (currentCollectorFilter) {
+                currentName = currentCollectorFilter.name;
+            }
+
             let currentIdx = COLLECTORS_DATA.findIndex(c => c.name === currentName);
             if (currentIdx === -1) currentIdx = 0;
             const nextIdx = (currentIdx + 1) % COLLECTORS_DATA.length;
             const nextCollector = COLLECTORS_DATA[nextIdx];
             if (nextCollector && nextCollector.tokens && nextCollector.tokens.length > 0) {
-                openWallView(nextCollector.name, nextCollector.tokens);
+                if (isWallView) {
+                    openWallView(nextCollector.name, nextCollector.tokens);
+                } else {
+                    fetchCollectorTokens(nextCollector.name);
+                }
             }
         }
+        window.navigateToNextCollector = navigateToNextCollector;
 
         // Show options when clicking empty slot in collector wall
         function showEmptySlotOptions(event, slotElement) {
@@ -8386,8 +8895,9 @@
             };
 
             // Calculate optimal grid layout
+            // For collectors with 1-3 cities, always use 2x2 grid to show the goal
             wall.className = 'wall-view-wall';
-            const layout = getOptimalGridLayout(count);
+            const layout = count < 4 ? { cols: 2, rows: 2 } : getOptimalGridLayout(count);
             wall.classList.add(`cols-${layout.cols}`);
 
             // Get accent color from first city's palette
@@ -8447,20 +8957,25 @@
                 wall.appendChild(artwork);
             });
 
-            // Add empty slots to fill the current row (grid view always fills rows)
-            // But only for collections with 4+ cities - smaller collections should use TRY mode
+            // Add empty slots to show grid goal (2x2 for collectors with 1-3 cities)
             const modal = document.getElementById('wallViewModal');
             modal.classList.remove('has-empty-slots');
 
-            // Calculate how many empty slots needed to complete the current row
-            const remainder = count % layout.cols;
-            const slotsToFillRow = remainder === 0 ? 0 : layout.cols - remainder;
+            // For collectors with 1-3 cities, show empty slots to complete a 2x2 grid
+            // For collectors with 4+, fill the current row
+            let slotsToAdd = 0;
+            if (count < 4) {
+                // Show 2x2 grid format with empty slots (layout already set to cols-2 above)
+                slotsToAdd = 4 - count;
+            } else {
+                // Fill the current row for larger collections
+                const remainder = count % layout.cols;
+                slotsToAdd = remainder === 0 ? 0 : layout.cols - remainder;
+            }
 
-            // Only add static GRID slots for collections of 4+ (already have a grid)
-            // Smaller collections should use TRY mode to build toward their first grid
-            if (slotsToFillRow > 0 && count >= 4) {
+            if (slotsToAdd > 0) {
                 modal.classList.add('has-empty-slots');
-                for (let i = 0; i < slotsToFillRow; i++) {
+                for (let i = 0; i < slotsToAdd; i++) {
                     // Create matching structure: artwork > frame.empty-slot > empty-frame
                     const artwork = document.createElement('div');
                     artwork.className = 'wall-view-artwork';
@@ -8470,10 +8985,19 @@
 
                     const emptyFrame = document.createElement('div');
                     emptyFrame.className = 'wall-view-empty-frame';
-                    emptyFrame.innerHTML = '<span class="slot-plus">+</span><span class="slot-label"><span class="slot-grid-icon">▦</span> grid</span>';
+                    const slotsRemaining = count < 4 ? (4 - count - i) : 1;
+                    const labelText = count < 4 ? `${slotsRemaining} to grid` : 'grid';
+                    emptyFrame.innerHTML = `<span class="slot-plus">+</span><span class="slot-label">${labelText}</span><button class="slot-hide-btn">hide</button>`;
                     emptyFrame.addEventListener('click', (e) => {
                         e.stopPropagation();
+                        if (e.target.classList.contains('slot-hide-btn')) return;
                         showEmptySlotOptions(e, artwork);
+                    });
+                    // Hide button - switches to line view
+                    emptyFrame.querySelector('.slot-hide-btn').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const modal = document.getElementById('wallViewModal');
+                        modal.classList.add('line-view');
                     });
 
                     frame.appendChild(emptyFrame);
@@ -8513,6 +9037,7 @@
             const wrapper = document.getElementById('wallViewWrapper');
 
             // Auto zoom out based on row count to ensure collections fit
+            // For small collections (2x2 grid), zoom out slightly so collector name isn't cut off
             if (layout.rows >= 5) {
                 wallViewZoom = 0.65;
             } else if (layout.rows >= 4) {
@@ -8521,6 +9046,9 @@
                 wallViewZoom = 0.85;
             } else if (count > 9) {
                 wallViewZoom = 0.9;
+            } else if (count < 4) {
+                // Small collections with 2x2 grid - zoom out to show collector name
+                wallViewZoom = 0.85;
             }
             if (wrapper) wrapper.style.transform = `scale(${wallViewZoom})`;
 
@@ -8632,7 +9160,8 @@
 
             const ownedEnergies = Object.keys(energyCounts);
             const missingEnergies = ALL_ENERGIES.filter(e => !energyCounts[e]);
-            const collectorName = document.getElementById('wallViewCollectorName')?.textContent || 'This collector';
+            const collectorLabelEl = document.getElementById('wallViewCollectorLabel');
+            const collectorName = collectorLabelEl?.dataset.rawName || collectorLabelEl?.textContent || 'This collector';
 
             // Determine suggestion strategy
             let suggestions = [];
@@ -10941,10 +11470,12 @@
 
         // Founding patrons - special collectors highlighted in lists
         const FOUNDING_PATRONS = new Set([
-            'selkie', 'willep', 'oblivionnft', 'valdi', 'simonsays', 'batsoupyum', 'jasmina', 'wsavas', 'diid',
-            'georgie', 'blondie23lmd', 'zanzibar', 'redbeard', 'cosimo de medici', 'snowfro', 'paperbuddha',
+            'selkie', 'willep', 'oblivion', 'valdi', 'simonsays', 'batsoupyum', 'jasmina', 'wsavas', 'diid',
+            'georgie', 'blondie23lmd', 'zanzibar', 'redbeard', 'cosimo de medici', 'snowfro',
             'brynbrinkman', 'pinstripedgator', 'rhynotic', 'dave krugman', 'sendrock', 'yungwknd',
-            'batz', 'm0dest'
+            'batz', 'm0dest', 'funghibull', 'alderman', 'healing lens', 'hardart', 'goonie goo goo',
+            'elmookador', 'tortita', 'paper buddha', 'sighduck', 'og',
+            'defianceworks', 'hjfcfo', 'ryanis', 'soren wrenn', 'shillr'
         ]);
 
         function isFoundingPatron(name) {
@@ -11019,6 +11550,10 @@
 
         document.getElementById('toggleGallery')?.addEventListener('click', () => { galleryPanel.classList.toggle('open'); closeCollectorsPanel(); updateGallery(); });
         document.getElementById('closeGallery')?.addEventListener('click', () => galleryPanel.classList.remove('open'));
+        document.getElementById('galleryTitleClose')?.addEventListener('click', () => galleryPanel.classList.remove('open'));
+        document.getElementById('favPalettesToggle')?.addEventListener('click', () => {
+            document.getElementById('favPalettesSection')?.classList.toggle('collapsed');
+        });
         document.getElementById('toggleCollectors')?.addEventListener('click', toggleCollectorsPanel);
         document.getElementById('sidebarCollectorsBtn')?.addEventListener('click', toggleCollectorsPanel);
         document.getElementById('closeCollectors')?.addEventListener('click', () => {
@@ -11631,6 +12166,9 @@
                         fanNavigatePrev();
                     } else if (document.getElementById('frameMockup')?.classList.contains('open')) {
                         frameMockupPrev();
+                    } else if (currentCollectorFilter && document.getElementById('gridPanel')?.classList.contains('open')) {
+                        // Navigate collectors in grid view
+                        navigateToPrevCollector();
                     } else if (!document.getElementById('gridPanel')?.classList.contains('open')) {
                         // Navigate in single view (only if grid panel not open)
                         document.getElementById('prevToken')?.click();
@@ -11646,6 +12184,9 @@
                         fanNavigateNext();
                     } else if (document.getElementById('frameMockup')?.classList.contains('open')) {
                         frameMockupNext();
+                    } else if (currentCollectorFilter && document.getElementById('gridPanel')?.classList.contains('open')) {
+                        // Navigate collectors in grid view
+                        navigateToNextCollector();
                     } else if (!document.getElementById('gridPanel')?.classList.contains('open')) {
                         // Navigate in single view (only if grid panel not open)
                         document.getElementById('nextToken')?.click();
@@ -11658,6 +12199,8 @@
                 case 'l': copyLink(); break;
                 case ' ': e.preventDefault(); if (!gridPanel.classList.contains('open')) toggleFullscreen(); break;
                 case 'escape':
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
                     // Priority 0: Close about modal
                     if (document.getElementById('aboutModal')?.classList.contains('open')) {
                         document.getElementById('aboutModal').classList.remove('open');
@@ -12020,19 +12563,14 @@
         const sizeModes = ['auto', '12-col', '11-col', '8-col', '6-col', '4-col', '3-col', '2-col'];
         const sizeIcons = ['size-auto', 'size-12', 'size-10', 'size-8', 'size-6', 'size-4', 'size-3', 'size-2'];
 
-        // Calculate responsive initial grid size based on window width
+        // Always start with 12-col (zoomed out, many thumbnails)
         function getResponsiveGridSize() {
-            const w = window.innerWidth;
-            // Wider windows get more columns, narrower get fewer
-            if (w >= 1600) return '11-col';  // Wide screens: 11 columns
-            if (w >= 1200) return '8-col';   // Medium-large: 8 columns
-            return '6-col';                   // Smaller: 6 columns
+            return '12-col';
         }
 
-        // Initialize with responsive size
-        let gridSize = getResponsiveGridSize();
-        let gridSizeIndex = sizeModes.indexOf(gridSize);
-        if (gridSizeIndex === -1) gridSizeIndex = 4; // fallback to 6-col
+        // Initialize with 12-col (zoomed out)
+        let gridSize = '12-col';
+        let gridSizeIndex = 1; // 12-col is second in sizeModes
 
         function updateSizeIcon() {
             const icon = document.getElementById('sizeIcon');
@@ -12075,6 +12613,14 @@
             btn.classList.toggle('sort-desc', gridSortOrder === 'desc');
             btn.innerHTML = gridSortOrder === 'desc' ? 'NEW <span class="sort-arrow">↑</span>' : 'OLD <span class="sort-arrow">↓</span>';
             renderGrid();
+        });
+
+        // Grid numbers toggle
+        document.getElementById('gridNumbersToggle')?.addEventListener('click', () => {
+            const btn = document.getElementById('gridNumbersToggle');
+            const gridPanel = document.getElementById('gridPanel');
+            btn.classList.toggle('active');
+            gridPanel.classList.toggle('hide-numbers');
         });
 
         // Energy clock - displays current energy based on user's timezone
@@ -12240,6 +12786,19 @@
 
             itemCheckboxes.forEach(cb => {
                 cb.addEventListener('change', () => {
+                    // When user clicks to SELECT an item while all are currently selected,
+                    // deselect the others (starting to filter = single-select behavior)
+                    const allCurrentlySelected = gridFilterState[filterKey].size === sortedValues.length;
+                    if (cb.checked && allCurrentlySelected) {
+                        // User is starting to filter - deselect all others
+                        itemCheckboxes.forEach(otherCb => {
+                            if (otherCb !== cb) {
+                                otherCb.checked = false;
+                                gridFilterState[filterKey].delete(otherCb.value);
+                            }
+                        });
+                    }
+
                     if (cb.checked) gridFilterState[filterKey].add(cb.value);
                     else gridFilterState[filterKey].delete(cb.value);
                     selectAllCheckbox.checked = gridFilterState[filterKey].size === sortedValues.length;
@@ -13243,56 +13802,96 @@
         loadOutput(validInitialToken, true);
         loadAllTokenData();
 
-        // Fetch and update minted count from Art Blocks API
+        // Helper to update minted count UI
+        function updateMintedUI(minted) {
+            const newMaxToken = minted - 1; // Token IDs are 0-indexed
+
+            // Update UI
+            const percent = Math.round((minted / 500) * 100);
+            console.log('Updating minted UI:', minted, 'percent:', percent);
+
+            const mintedCountEl = document.getElementById('mintedCount');
+            const statsCitiesEl = document.getElementById('statsCities');
+            if (mintedCountEl) mintedCountEl.textContent = minted;
+            if (statsCitiesEl) statsCitiesEl.textContent = minted;
+
+            // Update progress bars (sidebar and grid header)
+            const supplyFill = document.getElementById('supplyFill');
+            console.log('supplyFill element:', supplyFill, 'setting width to:', percent + '%');
+            if (supplyFill) supplyFill.style.width = percent + '%';
+            const gridSupplyFill = document.getElementById('gridSupplyFill');
+            const gridMintedCount = document.getElementById('gridMintedCount');
+            if (gridSupplyFill) gridSupplyFill.style.width = percent + '%';
+            if (gridMintedCount) gridMintedCount.textContent = minted;
+
+            // If new tokens have been minted, fetch their data
+            if (newMaxToken > MAX_TOKEN) {
+                console.log(`New mints detected: ${MAX_TOKEN + 1} to ${newMaxToken}`);
+                // Fetch traits for new tokens
+                (async () => {
+                    for (let i = MAX_TOKEN + 1; i <= newMaxToken; i++) {
+                        await fetchTokenTraits(i);
+                    }
+                    MAX_TOKEN = newMaxToken;
+                    // Update filters and counts with new data
+                    extractTraitValues();
+                    populateFilters();
+                    updateMatchCount();
+                    saveCachedTraits();
+                    // Re-render grid if it's open to show new mints
+                    if (gridMode) renderGrid();
+                })();
+            }
+            // Also set MAX_TOKEN from server data if we have fewer tokens loaded
+            else if (newMaxToken !== MAX_TOKEN && newMaxToken >= 0) {
+                MAX_TOKEN = newMaxToken;
+            }
+
+            if (minted >= 500) {
+                document.getElementById('supplyTracker').classList.add('sold-out');
+                const dots = document.querySelector('.supply-label .dots');
+                if (dots) dots.style.display = 'none';
+            }
+        }
+
+        // Fetch and update minted count from Art Blocks API, fallback to OpenSea
         async function updateMintedCount() {
+            // Try Art Blocks API first
             try {
                 const response = await fetch(`https://token.artblocks.io/${CONTRACT}/0`);
                 const data = await response.json();
                 console.log('Art Blocks API response:', data);
-                // The invocations field shows total minted
                 if (data.invocations) {
                     const minted = parseInt(data.invocations);
-                    console.log('Minted count from API:', minted);
-                    const newMaxToken = minted - 1; // Token IDs are 0-indexed
-
-                    // Update UI
-                    const percent = Math.round((minted / 500) * 100);
-                    document.getElementById('mintedCount').textContent = minted;
-                    document.getElementById('statsCities').textContent = minted;
-
-                    // Update progress bar
-                    document.getElementById('supplyFill').style.width = percent + '%';
-
-                    // If new tokens have been minted, fetch their data
-                    if (newMaxToken > MAX_TOKEN) {
-                        console.log(`New mints detected: ${MAX_TOKEN + 1} to ${newMaxToken}`);
-                        // Fetch traits for new tokens
-                        for (let i = MAX_TOKEN + 1; i <= newMaxToken; i++) {
-                            await fetchTokenTraits(i);
-                        }
-                        MAX_TOKEN = newMaxToken;
-                        // Update filters and counts with new data
-                        extractTraitValues();
-                        populateFilters();
-                        updateMatchCount();
-                        saveCachedTraits();
-                        // Re-render grid if it's open to show new mints
-                        if (gridMode) renderGrid();
-                    }
-                    // Also set MAX_TOKEN from server data if we have fewer tokens loaded
-                    else if (newMaxToken !== MAX_TOKEN && newMaxToken >= 0) {
-                        MAX_TOKEN = newMaxToken;
-                    }
-
-                    if (minted >= 500) {
-                        document.getElementById('supplyTracker').classList.add('sold-out');
-                        document.querySelector('.supply-label .dots').style.display = 'none';
-                    }
+                    console.log('Minted count from Art Blocks:', minted);
+                    updateMintedUI(minted);
+                    return;
                 }
             } catch (e) {
-                console.log('Could not fetch minted count');
+                console.log('Art Blocks API failed, trying OpenSea...');
             }
+
+            // Fallback to OpenSea API (v1 endpoint, no key required)
+            try {
+                const response = await fetch('https://api.opensea.io/api/v1/collection/cities-by-efdot-x-diid/stats');
+                const data = await response.json();
+                console.log('OpenSea API response:', data);
+                if (data.stats && data.stats.total_supply) {
+                    const minted = parseInt(data.stats.total_supply);
+                    console.log('Minted count from OpenSea:', minted);
+                    updateMintedUI(minted);
+                    return;
+                }
+            } catch (e) {
+                console.log('OpenSea API also failed');
+            }
+
+            // Final fallback: use MAX_TOKEN + 1
+            console.log('Using MAX_TOKEN fallback for minted count');
+            updateMintedUI(MAX_TOKEN + 1);
         }
+        // Set initial value immediately from MAX_TOKEN, then update from API
+        updateMintedUI(MAX_TOKEN + 1);
         updateMintedCount();
         // Refresh every 30 seconds to catch new mints
         setInterval(updateMintedCount, 30000);
@@ -14838,6 +15437,49 @@
         }
         window.closeAboutModal = closeAboutModal;
 
+        // Collect popover toggle
+        function toggleCollectPopover(btn) {
+            const wrapper = btn.closest('.collect-btn-wrapper');
+            const popover = wrapper.querySelector('.collect-popover');
+            const isOpen = popover.classList.contains('open');
+
+            // Close all other popovers first
+            document.querySelectorAll('.collect-popover.open').forEach(p => p.classList.remove('open'));
+
+            if (!isOpen) {
+                popover.classList.add('open');
+            }
+        }
+        window.toggleCollectPopover = toggleCollectPopover;
+
+        // Close popover when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.collect-btn-wrapper')) {
+                document.querySelectorAll('.collect-popover.open').forEach(p => p.classList.remove('open'));
+            }
+        });
+
+        // Show set example in wall view
+        function showSetExample(setType, collectorName) {
+            // Find the collector
+            const collector = COLLECTORS_DATA.find(c =>
+                c.name.toLowerCase() === collectorName.toLowerCase()
+            );
+            if (!collector || !collector.tokens || collector.tokens.length === 0) {
+                console.warn('Collector not found:', collectorName);
+                return;
+            }
+
+            // Close about modal first
+            closeAboutModal();
+
+            // Small delay to let about modal close, then open wall view
+            setTimeout(() => {
+                openWallView(collector.name, collector.tokens);
+            }, 150);
+        }
+        window.showSetExample = showSetExample;
+
         function toggleAboutModal(e) {
             if (e) e.preventDefault();
             const modal = document.getElementById('aboutModal');
@@ -15722,15 +16364,15 @@
         const italyGalleryClose = document.getElementById('italyGalleryClose');
 
         const italyPieces = [
-            { title: 'Echo Hill', collector: 'BatSoupYum', img: 'https://images.ninfa.io/nfts/original/c8330669474b599172d9caf56c186cb5d60a1483ae7a114734313a20ca8b8df1.jpeg' },
-            { title: 'Around the Duomo', collector: 'Sorenwrenn', img: 'https://images.ninfa.io/nfts/original/ea9a2b42ef67db20ce7fb63c592e9f75036e874df9ea593835384ede046be449.jpeg' },
+            { title: 'Echo Hill', collector: 'Soren Wrenn', img: 'https://images.ninfa.io/nfts/original/c8330669474b599172d9caf56c186cb5d60a1483ae7a114734313a20ca8b8df1.jpeg' },
+            { title: 'Around the Duomo', collector: 'Soren Wrenn', img: 'https://images.ninfa.io/nfts/original/ea9a2b42ef67db20ce7fb63c592e9f75036e874df9ea593835384ede046be449.jpeg' },
             { title: 'Through The Piazza', collector: 'M Studio', img: 'https://images.ninfa.io/nfts/original/e9ff95e5215d28b765cabcb3b2360520266c86d74683b7ecaa59630f5e0db086.jpeg' },
             { title: 'Shifted Shadow', collector: 'Almost Serious Gallery', img: 'https://images.ninfa.io/nfts/original/c16d801ae69e5ed00046d63b8ed30be387e477297a62767d1178f142add4a31b.jpeg' },
             { title: 'Last Lap', collector: 'Georgie', img: 'https://images.ninfa.io/nfts/original/ed64013129837544d5fe74e63f414a6c74fee743b95f9e5223e911ac0303a476.jpeg' },
             { title: 'Radial Intent', collector: 'R Alderman', img: 'https://images.ninfa.io/nfts/original/a2cc2905f3f49f56757890038b3cf715bcc4139a05660b378f43b4fa9c93b9af.jpeg' },
-            { title: 'Across the Arno', collector: null, img: 'https://images.ninfa.io/nfts/original/d3ca7d2aa862e1ff132864f703c8680d1038bc470c279db28909cbaa0c8c79ad.jpeg' },
-            { title: 'Drawn To Center', collector: null, img: 'https://images.ninfa.io/nfts/original/fa42a57fcc480226220ec5cf90dd1a6b58a567ccf49b52f35c9ee91170498a63.jpeg' },
-            { title: 'Walled Memory', collector: null, img: 'https://images.ninfa.io/nfts/original/f9bd77a279884e9b4ed1edeaa8f213cec0f8c210a4558eb2f6c01c021f540200.jpeg' }
+            { title: 'Across the Arno', collector: 'BatSoupYum', img: 'https://images.ninfa.io/nfts/original/d3ca7d2aa862e1ff132864f703c8680d1038bc470c279db28909cbaa0c8c79ad.jpeg' },
+            { title: 'Drawn To Center', collector: 'BatSoupYum', img: 'https://images.ninfa.io/nfts/original/fa42a57fcc480226220ec5cf90dd1a6b58a567ccf49b52f35c9ee91170498a63.jpeg' },
+            { title: 'Walled Memory', collector: 'BatSoupYum', img: 'https://images.ninfa.io/nfts/original/f9bd77a279884e9b4ed1edeaa8f213cec0f8c210a4558eb2f6c01c021f540200.jpeg' }
         ];
 
         function openItalyGallery() {
