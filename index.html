@@ -1114,10 +1114,10 @@
             pointer-events: none;
         }
         .frame-mockup-content { display: flex; align-items: center; justify-content: center; padding: 60px; width: 100%; height: 100%; position: relative; }
-        /* Off-white floater frame */
+        /* Light wood floater frame */
         .frame-wrapper {
             position: relative;
-            background: #faf9f7; /* Off-white frame */
+            background: #c4a47a; /* Light wood frame */
             padding: 12px; /* Thin frame face */
             max-width: 80vw;
             max-height: 80vh;
@@ -1133,7 +1133,7 @@
         .frame-inner {
             position: relative;
             /* Subtle dark gap between frame and art */
-            background: #4a4846;
+            background: #a88b62;
             padding: 4px; /* Float gap */
             /* Lighter inner shadow for subtle depth */
             box-shadow:
@@ -1175,6 +1175,23 @@
         .frame-mockup.dark-mode .frame-mockup-close, .frame-mockup.dark-mode .frame-mockup-download, .frame-mockup.dark-mode .frame-mockup-nav, .frame-mockup.dark-mode .frame-mockup-mode, .frame-mockup.dark-mode .frame-mockup-order { background: rgba(30,30,30,0.9); color: #888; }
         .frame-mockup.dark-mode .frame-mockup-close:hover, .frame-mockup.dark-mode .frame-mockup-download:hover, .frame-mockup.dark-mode .frame-mockup-nav:hover, .frame-mockup.dark-mode .frame-mockup-mode:hover, .frame-mockup.dark-mode .frame-mockup-order:hover { background: #fff; color: #000; }
         .frame-mockup.dark-mode .frame-mockup-mode { background: rgba(255,255,255,0.1); color: #c9a227; }
+        /* Frame color picker */
+        .frame-mockup-colors { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; background: rgba(255,255,255,0.9); padding: 6px 14px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+        .frame-mockup.dark-mode .frame-mockup-colors { background: rgba(30,30,30,0.9); }
+        .frame-color-btn { width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+        .frame-color-btn:hover { transform: scale(1.15); }
+        .frame-color-btn.active { border-color: var(--warm); box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.3); }
+        .frame-color-btn[data-color="light-wood"] { background: #c4a47a; }
+        .frame-color-btn[data-color="white"] { background: #f5f3f0; }
+        .frame-color-btn[data-color="black"] { background: #1a1a1a; }
+        .frame-color-btn[data-color="dark-wood"] { background: #5a3d2b; }
+        /* Frame color overrides */
+        .frame-mockup .frame-wrapper.frame-white { background: #faf9f7; }
+        .frame-mockup .frame-wrapper.frame-white .frame-inner { background: #4a4846; }
+        .frame-mockup .frame-wrapper.frame-black { background: #1a1a1a; }
+        .frame-mockup .frame-wrapper.frame-black .frame-inner { background: #0a0a0a; }
+        .frame-mockup .frame-wrapper.frame-dark-wood { background: #5a3d2b; }
+        .frame-mockup .frame-wrapper.frame-dark-wood .frame-inner { background: #3d2a1c; }
 
         /* Timeline Framed View - starts in dark mode */
         .timeline-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0a; z-index: 2700; display: none; align-items: center; justify-content: center; flex-direction: column; }
@@ -3146,6 +3163,7 @@
             <a href="#" id="iconOpenSea" target="_blank" class="icon-btn opensea-icon" title="View on OpenSea">⛵</a>
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
+            <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print">🖨</button>
         </div>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
@@ -3346,9 +3364,6 @@
             <!-- Step 1: The Experience -->
             <div class="collector-guide-step active" data-step="1">
                 <div class="collector-guide-title">The view from above</div>
-                <div class="collector-guide-desc">
-                    You know that moment on a flight when you look down and see a city you've never been to? That.
-                </div>
                 <div class="collector-guide-highlight">Streets you'll never walk. Somehow familiar anyway.</div>
             </div>
 
@@ -3712,8 +3727,14 @@
         <button class="frame-mockup-nav prev" id="frameMockupPrev" title="Previous city">‹</button>
         <button class="frame-mockup-nav next" id="frameMockupNext" title="Next city">›</button>
         <button class="frame-mockup-download" id="downloadFramed" title="Download framed image">↓</button>
-        <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500?variant=45646651490466" target="_blank" class="frame-mockup-order" id="orderPrint" title="Order a print">🖼️</a>
+        <button class="frame-mockup-order" id="orderPrint" title="Order a print">🖨</button>
         <button class="frame-mockup-close" id="closeFrameMockup">×</button>
+        <div class="frame-mockup-colors">
+            <button class="frame-color-btn active" data-color="light-wood" title="Light Wood"></button>
+            <button class="frame-color-btn" data-color="white" title="White"></button>
+            <button class="frame-color-btn" data-color="black" title="Black"></button>
+            <button class="frame-color-btn" data-color="dark-wood" title="Dark Wood"></button>
+        </div>
     </div>
 
     <!-- Immersive Gallery Room -->
@@ -7423,7 +7444,7 @@
             // Print inquiry modal handlers
             let printInquirySelectedCities = [];
 
-            function openPrintInquiryModal() {
+            function openPrintInquiryModal(cities) {
                 const modal = document.getElementById('printInquiryModal');
                 const citiesContainer = document.getElementById('printInquiryCities');
                 const form = document.getElementById('printInquiryForm');
@@ -7433,8 +7454,16 @@
                 form.style.display = 'block';
                 success.style.display = 'none';
 
-                // Initialize selected cities from wall view
-                printInquirySelectedCities = [...(wallViewTokenIds || [])];
+                // Initialize selected cities - use passed cities, wall view, or current token
+                if (cities && cities.length > 0) {
+                    printInquirySelectedCities = [...cities];
+                } else if (wallViewTokenIds && wallViewTokenIds.length > 0) {
+                    printInquirySelectedCities = [...wallViewTokenIds];
+                } else if (typeof currentTokenId !== 'undefined' && currentTokenId !== null) {
+                    printInquirySelectedCities = [currentTokenId];
+                } else {
+                    printInquirySelectedCities = [];
+                }
                 renderPrintInquiryCities();
 
                 modal.classList.add('open');
@@ -10067,78 +10096,139 @@
         }
 
         async function downloadPng() {
-            showStatus('CREATING SOCIAL IMAGE...');
+            showStatus('CREATING PRINT MOCKUP...');
             try {
-                // Fetch the original image
+                // Load artwork image
                 const response = await fetch(getPreviewUrl(currentTokenId));
                 const blob = await response.blob();
-
-                // Create image element to get dimensions
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
-
                 await new Promise((resolve, reject) => {
                     img.onload = resolve;
                     img.onerror = reject;
                     img.src = URL.createObjectURL(blob);
                 });
 
-                // Target size: 1080x1920 (9:16 for Stories/X)
-                const targetWidth = 1080;
-                const targetHeight = 1920;
+                // Load logos
+                const loadLogo = (src) => new Promise((resolve) => {
+                    const logo = new Image();
+                    logo.crossOrigin = 'anonymous';
+                    logo.onload = () => resolve(logo);
+                    logo.onerror = () => resolve(null);
+                    logo.src = src;
+                });
+                const [efLogo, diidLogo] = await Promise.all([
+                    loadLogo('ef-logo.png'),
+                    loadLogo('diid-logo.png')
+                ]);
 
-                // Create canvas
+                // Target size: 1080x1920 (9:16 museum print)
+                const W = 1080;
+                const H = 1920;
                 const canvas = document.createElement('canvas');
-                canvas.width = targetWidth;
-                canvas.height = targetHeight;
+                canvas.width = W;
+                canvas.height = H;
                 const ctx = canvas.getContext('2d');
 
-                // Fill with dark background matching the art style
-                ctx.fillStyle = '#0A0910';
-                ctx.fillRect(0, 0, targetWidth, targetHeight);
+                // Warm white museum paper background
+                ctx.fillStyle = '#f8f6f2';
+                ctx.fillRect(0, 0, W, H);
 
-                // Calculate art placement - centered with padding
-                const padding = 60;
-                const availableWidth = targetWidth - (padding * 2);
-                const availableHeight = targetHeight - (padding * 2);
+                // Art placement - generous top/side margins, more space below for title area
+                const sideMargin = 100;
+                const topMargin = 160;
+                const bottomReserve = 420; // space for title + logos + signature
+                const availW = W - sideMargin * 2;
+                const availH = H - topMargin - bottomReserve;
 
-                // Scale to fit while maintaining aspect ratio
                 const imgRatio = img.width / img.height;
-                let drawWidth, drawHeight;
-
-                if (imgRatio > availableWidth / availableHeight) {
-                    // Image is wider - fit to width
-                    drawWidth = availableWidth;
-                    drawHeight = availableWidth / imgRatio;
+                let drawW, drawH;
+                if (imgRatio > availW / availH) {
+                    drawW = availW;
+                    drawH = availW / imgRatio;
                 } else {
-                    // Image is taller - fit to height
-                    drawHeight = availableHeight;
-                    drawWidth = availableHeight * imgRatio;
+                    drawH = availH;
+                    drawW = availH * imgRatio;
                 }
 
-                const x = (targetWidth - drawWidth) / 2;
-                const y = (targetHeight - drawHeight) / 2;
+                const artX = (W - drawW) / 2;
+                const artY = topMargin + (availH - drawH) / 2;
 
-                // Draw the art
-                ctx.drawImage(img, x, y, drawWidth, drawHeight);
+                // Subtle shadow behind artwork
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.08)';
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 4;
+                ctx.drawImage(img, artX, artY, drawW, drawH);
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
 
-                // Convert to JPG and download
+                // Title: "Cities #XXX" - centered below artwork
+                const titleY = artY + drawH + 60;
+                ctx.fillStyle = '#333';
+                ctx.font = '300 28px "Nunito", Helvetica, Arial, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.letterSpacing = '4px';
+                ctx.fillText(`Cities #${currentTokenId}`, W / 2, titleY);
+                ctx.letterSpacing = '0px';
+
+                // Thin separator line
+                const lineY = titleY + 24;
+                ctx.strokeStyle = '#ddd';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(W / 2 - 60, lineY);
+                ctx.lineTo(W / 2 + 60, lineY);
+                ctx.stroke();
+
+                // Logos at the bottom - Efdot bottom-left, Diid bottom-right
+                const logoY = H - 120;
+                const logoMaxH = 32;
+                const logoMargin = sideMargin + 10;
+
+                if (efLogo) {
+                    const efRatio = efLogo.width / efLogo.height;
+                    const efH = logoMaxH;
+                    const efW = efH * efRatio;
+                    // Draw logo in grayscale/muted
+                    ctx.globalAlpha = 0.4;
+                    ctx.drawImage(efLogo, logoMargin, logoY - efH / 2, efW, efH);
+                    ctx.globalAlpha = 1.0;
+                }
+
+                if (diidLogo) {
+                    const diidRatio = diidLogo.width / diidLogo.height;
+                    const diidH = logoMaxH;
+                    const diidW = diidH * diidRatio;
+                    ctx.globalAlpha = 0.4;
+                    ctx.drawImage(diidLogo, W - logoMargin - diidW, logoY - diidH / 2, diidW, diidH);
+                    ctx.globalAlpha = 1.0;
+                }
+
+                // Signature - very small, bottom right corner above the logo
+                ctx.fillStyle = '#999';
+                ctx.font = 'italic 14px "Nunito", Georgia, serif';
+                ctx.textAlign = 'right';
+                ctx.fillText('Efdot', W - logoMargin, logoY + logoMaxH + 16);
+                ctx.textAlign = 'center';
+
+                // Download
                 canvas.toBlob((jpgBlob) => {
                     const url = URL.createObjectURL(jpgBlob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `Cities-by-Efdot-x-Diid-${currentTokenId}.jpg`;
+                    a.download = `Cities-${currentTokenId}-print.jpg`;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                     URL.revokeObjectURL(img.src);
-                    showStatus('DOWNLOADED FOR STORIES');
+                    showStatus('PRINT MOCKUP SAVED');
                 }, 'image/jpeg', 0.95);
 
             } catch (e) {
                 console.error('Download error:', e);
-                // Fallback to original PNG
                 window.open(getPreviewUrl(currentTokenId), '_blank');
                 showStatus('RIGHT-CLICK TO SAVE');
             }
@@ -10266,14 +10356,23 @@
                 const frameX = (canvasWidth - totalFrameWidth) / 2;
                 const frameY = (canvasHeight - totalFrameHeight) / 2;
 
+                // Use currently selected frame color
+                const dlFrameColors = typeof frameColorMap !== 'undefined' ? frameColorMap : {
+                    'light-wood': { frame: '#c4a47a', inner: '#a88b62' },
+                    'white': { frame: '#faf9f7', inner: '#4a4846' },
+                    'black': { frame: '#1a1a1a', inner: '#0a0a0a' },
+                    'dark-wood': { frame: '#5a3d2b', inner: '#3d2a1c' }
+                };
+                const dlColor = dlFrameColors[typeof currentFrameColor !== 'undefined' ? currentFrameColor : 'light-wood'] || dlFrameColors['light-wood'];
+
                 // Draw shadow
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
                 ctx.shadowBlur = 40;
                 ctx.shadowOffsetX = 8;
                 ctx.shadowOffsetY = 12;
 
-                // Draw outer frame (white/light frame)
-                ctx.fillStyle = '#ffffff';
+                // Draw outer frame (uses selected color)
+                ctx.fillStyle = dlColor.frame;
                 ctx.fillRect(frameX, frameY, totalFrameWidth, totalFrameHeight);
 
                 // Reset shadow
@@ -10282,8 +10381,8 @@
                 ctx.shadowOffsetX = 0;
                 ctx.shadowOffsetY = 0;
 
-                // Draw inner mat/border (slight gray)
-                ctx.fillStyle = '#f0f0f0';
+                // Draw inner mat/border
+                ctx.fillStyle = dlColor.inner;
                 ctx.fillRect(
                     frameX + frameThickness,
                     frameY + frameThickness,
@@ -10333,6 +10432,46 @@
         document.getElementById('frameMockupMode')?.addEventListener('click', (e) => {
             e.stopPropagation();
             toggleFrameMockupDarkMode();
+        });
+
+        // Frame color picker
+        const frameColorMap = {
+            'light-wood': { frame: '#c4a47a', inner: '#a88b62' },
+            'white': { frame: '#faf9f7', inner: '#4a4846' },
+            'black': { frame: '#1a1a1a', inner: '#0a0a0a' },
+            'dark-wood': { frame: '#5a3d2b', inner: '#3d2a1c' }
+        };
+        let currentFrameColor = 'light-wood';
+        document.querySelectorAll('.frame-color-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.frame-color-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFrameColor = btn.dataset.color;
+                const wrapper = document.getElementById('frameWrapper');
+                const inner = wrapper.querySelector('.frame-inner');
+                // Remove any existing frame color classes
+                wrapper.classList.remove('frame-white', 'frame-black', 'frame-dark-wood');
+                if (currentFrameColor !== 'light-wood') {
+                    wrapper.classList.add('frame-' + currentFrameColor);
+                }
+                // Also set inline for immediate visual feedback
+                const colors = frameColorMap[currentFrameColor];
+                wrapper.style.background = colors.frame;
+                inner.style.background = colors.inner;
+            });
+        });
+
+        // Order print from frame mockup
+        document.getElementById('orderPrint')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeFrameMockup();
+            openPrintInquiryModal([currentTokenId]);
+        });
+
+        // Order print from sidebar
+        document.getElementById('sidebarOrderPrint')?.addEventListener('click', () => {
+            openPrintInquiryModal([currentTokenId]);
         });
 
         // Close frame mockup when clicking outside the frame
