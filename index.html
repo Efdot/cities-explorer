@@ -7111,6 +7111,62 @@
             }
         }
 
+        // Print inquiry modal - defined at top level so all handlers can access directly
+        let printInquirySelectedCities = [];
+
+        function openPrintInquiryModal(cities) {
+            const modal = document.getElementById('printInquiryModal');
+            const form = document.getElementById('printInquiryForm');
+            const success = document.getElementById('printInquirySuccess');
+
+            // Show form, hide success
+            if (form) form.style.display = 'block';
+            if (success) success.style.display = 'none';
+
+            // Initialize selected cities - use passed cities, wall view, or current token
+            if (cities && cities.length > 0) {
+                printInquirySelectedCities = [...cities];
+            } else if (typeof wallViewTokenIds !== 'undefined' && wallViewTokenIds && wallViewTokenIds.length > 0) {
+                printInquirySelectedCities = [...wallViewTokenIds];
+            } else if (typeof currentTokenId !== 'undefined' && currentTokenId !== null) {
+                printInquirySelectedCities = [currentTokenId];
+            } else {
+                printInquirySelectedCities = [];
+            }
+            renderPrintInquiryCities();
+
+            if (modal) modal.classList.add('open');
+        }
+        window.openPrintInquiryModal = openPrintInquiryModal;
+
+        function renderPrintInquiryCities() {
+            const citiesContainer = document.getElementById('printInquiryCities');
+            if (!citiesContainer) return;
+
+            const displayCount = 8;
+            const visibleCities = printInquirySelectedCities.slice(0, displayCount);
+            const extraCount = printInquirySelectedCities.length - displayCount;
+
+            citiesContainer.innerHTML = visibleCities.map(id =>
+                `<div class="print-inquiry-city-thumb" data-id="${id}">
+                    <img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}">
+                    <span class="city-id">#${id}</span>
+                    <button class="city-remove-btn" title="Remove">×</button>
+                </div>`
+            ).join('') + (extraCount > 0 ? `<span class="print-inquiry-city-chip more-chip">+${extraCount} more</span>` : '');
+
+            // Add click handlers for remove buttons
+            citiesContainer.querySelectorAll('.city-remove-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const thumb = btn.closest('.print-inquiry-city-thumb');
+                    const id = parseInt(thumb.dataset.id);
+                    printInquirySelectedCities = printInquirySelectedCities.filter(cid => cid !== id);
+                    renderPrintInquiryCities();
+                });
+            });
+        }
+
         function initCollectorsPanel() {
             // Show loading state
             document.getElementById('collectorsPills').innerHTML = '<span style="color: var(--text-muted); font-size: 10px;">Loading collectors...</span>';
@@ -7473,63 +7529,8 @@
                 openPrintInquiryModal();
             });
 
-            // Print inquiry modal handlers
-            let printInquirySelectedCities = [];
-
-            function openPrintInquiryModal(cities) {
-                const modal = document.getElementById('printInquiryModal');
-                const citiesContainer = document.getElementById('printInquiryCities');
-                const form = document.getElementById('printInquiryForm');
-                const success = document.getElementById('printInquirySuccess');
-
-                // Show form, hide success
-                form.style.display = 'block';
-                success.style.display = 'none';
-
-                // Initialize selected cities - use passed cities, wall view, or current token
-                if (cities && cities.length > 0) {
-                    printInquirySelectedCities = [...cities];
-                } else if (wallViewTokenIds && wallViewTokenIds.length > 0) {
-                    printInquirySelectedCities = [...wallViewTokenIds];
-                } else if (typeof currentTokenId !== 'undefined' && currentTokenId !== null) {
-                    printInquirySelectedCities = [currentTokenId];
-                } else {
-                    printInquirySelectedCities = [];
-                }
-                renderPrintInquiryCities();
-
-                modal.classList.add('open');
-            }
-            // Expose globally so handlers outside initCollectorsPanel can access it
-            window.openPrintInquiryModal = openPrintInquiryModal;
-
-            function renderPrintInquiryCities() {
-                const citiesContainer = document.getElementById('printInquiryCities');
-                if (!citiesContainer) return;
-
-                const displayCount = 8;
-                const visibleCities = printInquirySelectedCities.slice(0, displayCount);
-                const extraCount = printInquirySelectedCities.length - displayCount;
-
-                citiesContainer.innerHTML = visibleCities.map(id =>
-                    `<div class="print-inquiry-city-thumb" data-id="${id}">
-                        <img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}">
-                        <span class="city-id">#${id}</span>
-                        <button class="city-remove-btn" title="Remove">×</button>
-                    </div>`
-                ).join('') + (extraCount > 0 ? `<span class="print-inquiry-city-chip more-chip">+${extraCount} more</span>` : '');
-
-                // Add click handlers for remove buttons
-                citiesContainer.querySelectorAll('.city-remove-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const thumb = btn.closest('.print-inquiry-city-thumb');
-                        const id = parseInt(thumb.dataset.id);
-                        printInquirySelectedCities = printInquirySelectedCities.filter(cid => cid !== id);
-                        renderPrintInquiryCities();
-                    });
-                });
-            }
+            // Print inquiry state and rendering now at top-level scope (before initCollectorsPanel)
+            // so handlers outside initCollectorsPanel can access them directly
 
             // Framing toggle
             let printInquiryFraming = 'unframed';
@@ -10462,12 +10463,12 @@
             e.stopPropagation();
             const tokenId = frameMockupTokens[frameMockupCurrentIndex] || currentTokenId;
             closeFrameMockup();
-            window.openPrintInquiryModal([tokenId]);
+            openPrintInquiryModal([tokenId]);
         });
 
         // Order print from sidebar
         document.getElementById('sidebarOrderPrint')?.addEventListener('click', () => {
-            window.openPrintInquiryModal([currentTokenId]);
+            openPrintInquiryModal([currentTokenId]);
         });
 
         // Close frame mockup when clicking outside the frame
