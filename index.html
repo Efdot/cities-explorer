@@ -226,8 +226,8 @@
         .icon-buttons-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; margin-top: 8px; }
         .icon-buttons-row .icon-btn { flex: 0 0 auto; text-decoration: none; background: transparent; border-radius: 8px; width: 44px; height: 36px; font-size: 16px; display: flex; align-items: center; justify-content: center; }
         .icon-buttons-row .icon-btn:hover { transform: translateY(-1px); background: var(--bg-input); }
-        .icon-buttons-row .icon-btn.text-btn { width: auto; padding: 0 8px; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; border-radius: 8px; border: none; color: var(--text-muted); opacity: 0.5; transition: all 0.2s ease; }
-        .icon-buttons-row .icon-btn.text-btn:hover { opacity: 1; color: var(--warm); background: transparent; }
+        .icon-buttons-row .icon-btn.text-btn { width: auto; padding: 0 6px; font-size: 7px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; border-radius: 8px; border: none; color: var(--text-muted); opacity: 0.3; transition: all 0.2s ease; }
+        .icon-buttons-row .icon-btn.text-btn:hover { opacity: 0.7; color: var(--warm); background: transparent; }
         .icon-buttons-row .opensea-icon { filter: grayscale(100%); }
         .icon-buttons-row .opensea-icon:hover { filter: grayscale(0%); }
 
@@ -7455,6 +7455,11 @@
             document.getElementById('printInquiryDetailsToggle')?.classList.remove('open');
             document.getElementById('printInquiryDetailsExtra')?.classList.remove('open');
 
+            // Hide frame preview for default non-framed size
+            const activeSize = document.querySelector('.print-inquiry-size-option.active');
+            const framePreviewEl = document.getElementById('printInquiryFramePreview');
+            if (framePreviewEl) framePreviewEl.style.display = (activeSize && activeSize.dataset.framed === 'true') ? '' : 'none';
+
             if (modal) modal.classList.add('open');
         }
         window.openPrintInquiryModal = openPrintInquiryModal;
@@ -7898,6 +7903,10 @@
                     opt.classList.add('active');
                     printInquirySize = opt.dataset.size;
                     printInquiryPrice = parseInt(opt.dataset.price);
+                    // Show frame preview/colors only for framed option
+                    const isFramed = opt.dataset.framed === 'true';
+                    const framePreview = document.getElementById('printInquiryFramePreview');
+                    if (framePreview) framePreview.style.display = isFramed ? '' : 'none';
                 });
             });
 
@@ -7951,6 +7960,9 @@
                 document.querySelectorAll('.print-inquiry-size-option').forEach((o, i) => o.classList.toggle('active', i === 0));
                 printInquirySize = '9x16';
                 printInquiryPrice = 50;
+                // Hide frame preview for non-framed default
+                const fp = document.getElementById('printInquiryFramePreview');
+                if (fp) fp.style.display = 'none';
             });
 
             document.getElementById('printInquirySend')?.addEventListener('click', () => {
