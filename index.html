@@ -2227,6 +2227,18 @@
         .print-inquiry-success-sub { font-size: 11px; color: #888; }
         .print-inquiry-shop-link { display: block; margin-top: 20px; text-align: center; font-size: 10px; color: #666; text-decoration: none; transition: color 0.2s; }
         .print-inquiry-shop-link:hover { color: #c9a227; }
+        /* Print inquiry dark mode (inherits from wall view dark mode) */
+        .print-inquiry-modal.dark { background: rgba(0,0,0,0.95); }
+        .print-inquiry-modal.dark .print-inquiry-content { background: #0f0f0f; }
+        .print-inquiry-modal.dark .print-option { background: #1a1a1a; }
+        .print-inquiry-modal.dark .print-inquiry-divider { background: #1a1a1a; }
+        .print-inquiry-modal.dark .print-inquiry-preview { background: #1a1a1a; }
+        .print-inquiry-modal.dark .print-inquiry-field input,
+        .print-inquiry-modal.dark .print-inquiry-field textarea,
+        .print-inquiry-modal.dark .print-inquiry-field select { background: #1a1a1a; border-color: #222; }
+        .print-inquiry-modal.dark .print-inquiry-size-option { background: #1a1a1a; border-color: #222; }
+        .print-inquiry-modal.dark .print-inquiry-size-option:hover { border-color: #444; }
+        .print-inquiry-modal.dark .print-inquiry-btn.secondary { background: #1a1a1a; }
         .wall-view-download { background: none; border: 1px solid #ddd; color: #888; padding: 5px 10px; font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
         .wall-view-download:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-download, .wall-view-modal.wall-black .wall-view-download { border-color: #333; color: #666; }
@@ -3375,7 +3387,7 @@
             <button class="mint-toggle" id="mintToggle" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
             <div class="collect-popover" id="collectPopoverNav">
                 <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
-                <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Studio Shop</span></a>
+                <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Shop</span></a>
                 <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
             </div>
         </div>
@@ -3624,7 +3636,7 @@
                     <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
                     <div class="collect-popover" id="collectPopoverWall">
                         <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
-                        <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Studio Shop</span></a>
+                        <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Shop</span></a>
                         <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
                     </div>
                 </div>
@@ -4045,7 +4057,7 @@
                         <button class="about-mint-btn" id="aboutMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
                         <div class="collect-popover" id="collectPopoverAbout">
                             <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
-                            <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Studio Shop</span></a>
+                            <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Shop</span></a>
                             <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
                         </div>
                     </div>
@@ -7127,6 +7139,14 @@
             if (form) form.style.display = 'block';
             if (success) success.style.display = 'none';
 
+            // Inherit dark mode from wall view if active
+            const wallModal = document.getElementById('wallViewModal');
+            if (wallModal && wallModal.classList.contains('open') && wallModal.classList.contains('wall-black')) {
+                modal?.classList.add('dark');
+            } else {
+                modal?.classList.remove('dark');
+            }
+
             // Initialize selected cities - use passed cities, wall view, or current token
             if (cities && cities.length > 0) {
                 printInquirySelectedCities = [...cities];
@@ -7675,10 +7695,15 @@
             const wallRoom = document.getElementById('wallViewRoom');
             let isPanning = false;
             let panStartX, panStartY;
+            let wallDragDistance = 0;
+            let wallMouseDownX = 0, wallMouseDownY = 0;
 
             wallRoom?.addEventListener('mousedown', (e) => {
                 if (e.target.closest('.wall-view-frame') || e.target.closest('.wall-view-empty-frame')) return;
                 isPanning = true;
+                wallDragDistance = 0;
+                wallMouseDownX = e.clientX;
+                wallMouseDownY = e.clientY;
                 panStartX = e.clientX - wallPanX;
                 panStartY = e.clientY - wallPanY;
                 wallRoom.style.cursor = 'grabbing';
@@ -7688,12 +7713,26 @@
                 if (!isPanning) return;
                 wallPanX = e.clientX - panStartX;
                 wallPanY = e.clientY - panStartY;
+                wallDragDistance = Math.abs(e.clientX - wallMouseDownX) + Math.abs(e.clientY - wallMouseDownY);
                 applyWallZoom();
             });
 
             document.addEventListener('mouseup', () => {
                 isPanning = false;
                 if (wallRoom) wallRoom.style.cursor = 'grab';
+            });
+
+            // Click on empty wall area (not a drag) → back to collectors panel
+            wallRoom?.addEventListener('click', (e) => {
+                if (wallDragDistance > 5) return;
+                if (e.target.closest('.wall-view-frame') || e.target.closest('.wall-view-empty-frame') || e.target.closest('button') || e.target.closest('a') || e.target.closest('.wall-view-collector-info')) return;
+                closeWallView();
+                currentCollectorFilter = null;
+                document.getElementById('collectorBanner')?.classList.remove('visible');
+                collectorsPanel.classList.add('open');
+                document.body.classList.add('collectors-open');
+                startPatronsAutoReveal();
+                renderGrid();
             });
 
             // Mouse wheel / trackpad zoom - very smooth and gradual
