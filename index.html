@@ -6450,16 +6450,38 @@
 
         async function loadAllTokenData() {
             // First, fetch the current minted count to know how many tokens exist
+            let mintedCountFetched = false;
             try {
                 const response = await fetch(`https://token.artblocks.io/${CONTRACT}/0`);
                 const data = await response.json();
                 if (data.invocations) {
                     const minted = parseInt(data.invocations);
                     MAX_TOKEN = minted - 1; // Token IDs are 0-indexed
+                    mintedCountFetched = true;
                     console.log(`Current minted count: ${minted}, MAX_TOKEN set to ${MAX_TOKEN}`);
                 }
             } catch (e) {
-                console.log('Could not fetch minted count, using default MAX_TOKEN');
+                console.log('Token API unavailable for minted count, trying GraphQL...');
+            }
+
+            // Fallback: get minted count from GraphQL aggregate
+            if (!mintedCountFetched) {
+                try {
+                    const countQuery = `{ tokens_metadata_aggregate(where: {contract_address: {_eq: "${CONTRACT}"}}) { aggregate { count } } }`;
+                    const countResp = await fetch('https://data.artblocks.io/v1/graphql', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ query: countQuery })
+                    });
+                    const countData = await countResp.json();
+                    const count = countData.data?.tokens_metadata_aggregate?.aggregate?.count;
+                    if (count > 0) {
+                        MAX_TOKEN = count - 1;
+                        console.log(`GraphQL minted count: ${count}, MAX_TOKEN set to ${MAX_TOKEN}`);
+                    }
+                } catch (e2) {
+                    console.log('Could not fetch minted count from any source, using default MAX_TOKEN');
+                }
             }
 
             const hasCached = loadCachedTraits();
@@ -6486,17 +6508,60 @@
             }
             matchCount.textContent = 'LOADING TRAITS...';
             showLoadingBar();
-            const batchSize = 20;
-            let loaded = 0;
-            const total = MAX_TOKEN + 1;
-            for (let i = 0; i <= MAX_TOKEN; i += batchSize) {
-                const batch = [];
-                for (let j = i; j < Math.min(i + batchSize, MAX_TOKEN + 1); j++) { batch.push(fetchTokenTraits(j)); }
-                await Promise.all(batch);
-                loaded += batch.length;
-                updateLoadingBar(Math.round((loaded / total) * 100));
-                matchCount.textContent = `TRAITS ${Math.min(loaded, total)}/${total}`;
+
+            // Strategy 1: Try GraphQL batch fetch (single request for all tokens)
+            let graphqlSuccess = false;
+            try {
+                const query = `{
+                    tokens_metadata(where: {contract_address: {_eq: "${CONTRACT}"}}) {
+                        token_id
+                        features
+                    }
+                }`;
+                const response = await fetch('https://data.artblocks.io/v1/graphql', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const data = await response.json();
+                if (data.data?.tokens_metadata?.length > 0) {
+                    const tokens = data.data.tokens_metadata;
+                    let maxId = 0;
+                    tokens.forEach((token, i) => {
+                        const tokenId = parseInt(token.token_id);
+                        if (tokenId > maxId) maxId = tokenId;
+                        const traits = {};
+                        const features = typeof token.features === 'string' ? JSON.parse(token.features) : token.features;
+                        if (features) {
+                            for (const [key, value] of Object.entries(features)) { traits[key] = value; }
+                        }
+                        if (Object.keys(traits).length > 0) tokenTraits[tokenId] = traits;
+                        if (i % 50 === 0) updateLoadingBar(Math.round((i / tokens.length) * 100));
+                    });
+                    if (maxId > 0) MAX_TOKEN = maxId;
+                    graphqlSuccess = Object.keys(tokenTraits).length > 0;
+                    console.log(`GraphQL batch: loaded ${Object.keys(tokenTraits).length} tokens with traits`);
+                }
+            } catch (e) {
+                console.log('GraphQL batch fetch failed:', e);
             }
+
+            // Strategy 2: Fall back to individual REST calls
+            if (!graphqlSuccess) {
+                console.log('Falling back to individual token API calls...');
+                const batchSize = 20;
+                let loaded = 0;
+                const total = MAX_TOKEN + 1;
+                for (let i = 0; i <= MAX_TOKEN; i += batchSize) {
+                    const batch = [];
+                    for (let j = i; j < Math.min(i + batchSize, MAX_TOKEN + 1); j++) { batch.push(fetchTokenTraits(j)); }
+                    await Promise.all(batch);
+                    loaded += batch.length;
+                    updateLoadingBar(Math.round((loaded / total) * 100));
+                    matchCount.textContent = `TRAITS ${Math.min(loaded, total)}/${total}`;
+                }
+            }
+
             hideLoadingBar();
             saveCachedTraits();
             tokenDataReady = true;
