@@ -4951,6 +4951,9 @@
             traffic: new Set()
         };
 
+        // Flag: set to true after loadAllTokenData() completes
+        let tokenDataReady = false;
+
         // Filter state variables (moved up for early access)
         let currentEnergyFilter = null;
         let showingFavoritesOnly = false;
@@ -6222,8 +6225,8 @@
                 groups[collection].push(origin);
             });
 
-            // Order: Open Minds, O.M.A.G.E., Cities // Efdot Originals, Cities // Italy, Editions
-            const collectionOrder = ['Open Minds', 'O.M.A.G.E.', 'Cities // Efdot Originals', 'Cities // Italy', 'Editions'];
+            // Order: Open Minds, O.M.A.G.E., Cities // Efdot Originals, Cities // Marfa, Cities // Italy, Editions
+            const collectionOrder = ['Open Minds', 'O.M.A.G.E.', 'Cities // Efdot Originals', 'Cities // Marfa', 'Cities // Italy', 'Editions'];
             const sortedCollections = collectionOrder.filter(c => groups[c]);
 
             // Build intro header with Past Chapters title and Timeline button
@@ -6465,6 +6468,7 @@
             // Use cache if we have enough data (at least 90% of minted tokens)
             if (hasCached && cachedCount > 0 && cachedCount >= MAX_TOKEN * 0.9) {
                 matchCount.textContent = 'LOADING FROM CACHE...';
+                tokenDataReady = true;
                 extractTraitValues(); populateFilters(); updateMatchCount();
                 // Always open grid on load
                 openGridOnLoad();
@@ -6495,6 +6499,7 @@
             }
             hideLoadingBar();
             saveCachedTraits();
+            tokenDataReady = true;
             extractTraitValues(); populateFilters(); updateMatchCount();
             // Always open grid on load
             openGridOnLoad();
@@ -7521,7 +7526,7 @@
                     renderTopCollectors();
 
                     // Re-render grid to show collectors on palette bars
-                    if (document.getElementById('gridPanel')?.classList.contains('open')) {
+                    if (tokenDataReady && document.getElementById('gridPanel')?.classList.contains('open')) {
                         renderGrid();
                     }
 
