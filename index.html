@@ -3221,6 +3221,45 @@
             .mob-menu-icon { font-size: 16px; }
         }
 
+        /* Second mobile bottom bar (art view nav) - yellow/black theme */
+        @media (max-width: 768px) {
+            .mobile-bottom-bar#mobileBottomBar2 {
+                display: flex !important;
+                padding: 0 20px;
+                height: 56px;
+                background: #111;
+                border-top: 1px solid rgba(201, 162, 39, 0.2);
+                justify-content: space-between;
+                align-items: center;
+            }
+            .mobile-bottom-bar#mobileBottomBar2 button {
+                background: none;
+                border: none;
+                color: #c9a227;
+                font-size: 20px;
+                width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border-radius: 50%;
+                transition: all 0.15s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .mobile-bottom-bar#mobileBottomBar2 button:active {
+                background: rgba(201, 162, 39, 0.15);
+                transform: scale(0.92);
+            }
+            .mobile-bottom-bar#mobileBottomBar2 .mobile-heart-btn {
+                font-size: 24px;
+                color: #c9a227;
+            }
+            .mobile-bottom-bar#mobileBottomBar2 .mobile-heart-btn.favorited {
+                color: #ff6b6b;
+            }
+        }
+
         /* Print form responsive */
         @media (max-width: 900px) {
             .print-inquiry-content { max-width: 360px; }
@@ -3727,7 +3766,7 @@
     <button class="btn btn-secondary grid-toggle" id="toggleGrid" aria-label="Open grid view of all cities">GRID VIEW</button>
 
     <!-- Mobile elements - must be before script -->
-    <div class="mobile-bottom-bar" id="mobileBottomBar">
+    <div class="mobile-bottom-bar" id="mobileBottomBar2">
         <button id="mobileMenuBtn" title="Menu">☰</button>
         <button id="mobilePrevBtn" title="Previous">◀</button>
         <button id="mobileHeartBtn" class="mobile-heart-btn" title="Favorite">♥</button>
@@ -15756,7 +15795,8 @@
         }
 
         // Mobile bottom bar controls
-        const mobileBottomBar = document.getElementById('mobileBottomBar');
+        const mobileBottomBar = document.getElementById('mobileBottomBar') || document.getElementById('mobileBottomBar2');
+        const mobileBottomBar2 = document.getElementById('mobileBottomBar2');
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobilePrevBtn = document.getElementById('mobilePrevBtn');
         const mobileHeartBtn = document.getElementById('mobileHeartBtn');
@@ -15773,7 +15813,15 @@
         if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', () => {
                 haptic('light');
-                document.querySelector('.mobile-menu-toggle')?.click();
+                const mobSheet = document.getElementById('mobileSheet');
+                const mobOverlay = document.getElementById('mobileSheetOverlay');
+                if (mobSheet?.classList.contains('open')) {
+                    mobSheet.classList.remove('open');
+                    mobOverlay?.classList.remove('open');
+                } else {
+                    mobSheet?.classList.add('open');
+                    mobOverlay?.classList.add('open');
+                }
             });
         }
 
@@ -15827,6 +15875,9 @@
                         if (mobileGridBtn) mobileGridBtn.classList.toggle('active', isOpen);
                         if (mobileBottomBar) {
                             mobileBottomBar.style.display = (isOpen || window.innerWidth > 768) ? 'none' : 'flex';
+                        }
+                        if (mobileBottomBar2) {
+                            mobileBottomBar2.style.display = (isOpen || window.innerWidth > 768) ? 'none' : 'flex';
                         }
                     }
                 });
@@ -16006,10 +16057,10 @@
 
         // Resize handler
         window.addEventListener('resize', () => {
-            if (mobileBottomBar) {
-                const isGridOpen = gridPanel && gridPanel.classList.contains('open');
-                mobileBottomBar.style.display = (window.innerWidth <= 768 && !isGridOpen) ? 'flex' : 'none';
-            }
+            const isGridOpen = gridPanel && gridPanel.classList.contains('open');
+            const showBar = (window.innerWidth <= 768 && !isGridOpen) ? 'flex' : 'none';
+            if (mobileBottomBar) mobileBottomBar.style.display = showBar;
+            if (mobileBottomBar2) mobileBottomBar2.style.display = showBar;
         });
 
         // About modal
