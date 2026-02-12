@@ -2402,7 +2402,7 @@
         .favorites-grid .grid-item:hover .grid-item-fav { opacity: 1; }
         /* Mobile: hearts always visible but translucent */
         @media (pointer: coarse) {
-            .grid-item-fav { opacity: 0.4; width: 36px; height: 36px; font-size: 16px; background: rgba(10, 9, 16, 0.6); color: rgba(255,255,255,0.5); }
+            .grid-item-fav { opacity: 0.4; width: 40px; height: 40px; font-size: 18px; background: rgba(10, 9, 16, 0.6); color: rgba(255,255,255,0.5); }
             .grid-item-fav.favorited { opacity: 1; }
         }
         .grid-item-rank { position: absolute; top: 6px; left: 6px; background: var(--spot-color, var(--yellow)); color: var(--spot-text, #000); font-size: 8px; font-weight: 700; padding: 3px 6px; border-radius: 4px; z-index: 2; letter-spacing: 0.03em; border: none; pointer-events: none; box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
@@ -2476,13 +2476,13 @@
             .grid-filter-bar select { min-width: 100px; font-size: 10px; padding: 8px 10px; }
             .grid-checkbox { padding: 6px 10px; font-size: 9px; }
             .grid-content { padding: 8px; }
-            .grid-items, .grid-group-items { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+            .grid-items, .grid-group-items { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
             /* Grid size overrides for mobile */
             .grid-items.grid-2-col, .grid-group-items.grid-2-col { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
             .grid-items.grid-3-col, .grid-group-items.grid-3-col { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
-            .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(4, 1fr) !important; gap: 6px !important; }
-            .grid-items.grid-6-col, .grid-group-items.grid-6-col { grid-template-columns: repeat(6, 1fr) !important; gap: 4px !important; }
-            .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(8, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+            .grid-items.grid-6-col, .grid-group-items.grid-6-col { grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; }
+            .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
             .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
             .grid-mode-btn { padding: 6px 10px; font-size: 8px; border-width: 1.5px; min-height: 32px; white-space: nowrap; flex-shrink: 0; }
             .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; flex-shrink: 0; }
