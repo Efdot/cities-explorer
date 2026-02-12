@@ -617,6 +617,14 @@
         .about-collab-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-bottom: 16px; max-width: 320px; margin-left: auto; margin-right: auto; }
         .about-collab-btn { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 24px; border-radius: 50px; border: 1px solid var(--text-muted); background: none; color: var(--text-dim); cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
         .about-collab-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(232, 184, 109, 0.08); }
+        .say-hey-form { display: none; flex-direction: column; gap: 10px; margin-top: 16px; max-width: 320px; margin-left: auto; margin-right: auto; width: 100%; }
+        .say-hey-input { background: var(--bg-input); border: none; border-radius: 8px; padding: 12px 16px; color: var(--text); font-size: 13px; font-family: inherit; text-align: left; }
+        .say-hey-input::placeholder { color: var(--text-muted); }
+        .say-hey-input:focus { outline: none; box-shadow: 0 0 0 2px rgba(232, 184, 109, 0.3); }
+        .say-hey-textarea { min-height: 70px; resize: vertical; }
+        .say-hey-submit { background: none; border: 1px solid var(--text-muted); border-radius: 50px; padding: 10px 24px; color: var(--text-dim); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
+        .say-hey-submit:hover { border-color: var(--warm); color: var(--warm); background: rgba(232, 184, 109, 0.08); }
+        .say-hey-success { color: var(--teal); font-size: 13px; margin-top: 16px; }
         .about-footer { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); text-align: center; }
         .about-footer-text { font-size: 14px; font-style: italic; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
         .about-countdown { margin-top: 20px; text-align: center; }
@@ -4310,7 +4318,14 @@
             <div class="about-collab-cta">
                 <div class="about-collab-title">Be Part of It</div>
                 <div class="about-collab-desc">Have a wall, a city, or an idea? Murals, prints, editions, and community projects happen through conversation.</div>
-                <a href="mailto:eric@efdotstudio.com?subject=Hey%20-%20Cities%20idea" class="about-collab-btn">Say Hey →</a>
+                <button class="about-collab-btn" onclick="this.style.display='none'; this.closest('.about-collab-cta').querySelector('.say-hey-form').style.display='flex';">Say Hey →</button>
+                <div class="say-hey-form">
+                    <input type="text" placeholder="Your name" class="say-hey-input">
+                    <input type="email" placeholder="Your email" class="say-hey-input">
+                    <textarea placeholder="What's on your mind?" class="say-hey-input say-hey-textarea"></textarea>
+                    <button class="say-hey-submit" onclick="submitSayHey(this)">Send →</button>
+                </div>
+                <div class="say-hey-success" style="display: none;">Sent! We'll be in touch.</div>
             </div>
 
             <div class="about-footer">
@@ -4748,7 +4763,14 @@
                     <div class="whats-next">
                         <div class="whats-next-title">What City Next?</div>
                         <div class="whats-next-desc">Have a wall, a city, or an idea? Murals, editions, and community projects happen through conversation.</div>
-                        <a href="mailto:eric@efdotstudio.com?subject=Hey%20-%20Cities%20idea" class="whats-next-btn">Say Hey →</a>
+                        <button class="whats-next-btn" onclick="this.style.display='none'; this.closest('.whats-next').querySelector('.say-hey-form').style.display='flex';">Say Hey →</button>
+                        <div class="say-hey-form">
+                            <input type="text" placeholder="Your name" class="say-hey-input">
+                            <input type="email" placeholder="Your email" class="say-hey-input">
+                            <textarea placeholder="What's on your mind?" class="say-hey-input say-hey-textarea"></textarea>
+                            <button class="say-hey-submit" onclick="submitSayHey(this)">Send →</button>
+                        </div>
+                        <div class="say-hey-success" style="display: none;">Sent! We'll be in touch.</div>
                     </div>
                 </div>
 
@@ -6128,6 +6150,55 @@
 
                 submitBtn.textContent = 'Send Inquiry';
                 submitBtn.disabled = false;
+            }
+        };
+
+        window.submitSayHey = async function(btn) {
+            var container = btn.closest('.say-hey-form').parentElement;
+            var form = container.querySelector('.say-hey-form');
+            var inputs = form.querySelectorAll('.say-hey-input');
+            var name = inputs[0].value.trim();
+            var email = inputs[1].value.trim();
+            var message = inputs[2].value.trim();
+
+            if (!name || !email) {
+                alert('Please enter your name and email.');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            try {
+                var formData = new FormData();
+                formData.append('name', name);
+                formData.append('email', email);
+                formData.append('message', message || 'Hey - Cities idea');
+                formData.append('_subject', 'Hey - Cities idea from ' + name);
+                formData.append('_template', 'table');
+
+                var response = await fetch('https://formsubmit.co/ajax/eric@efdotstudio.com', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    form.style.display = 'none';
+                    container.querySelector('.say-hey-success').style.display = 'block';
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (e) {
+                console.error('Say Hey form error:', e);
+                var subject = encodeURIComponent('Hey - Cities idea');
+                var body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + message);
+                window.location.href = 'mailto:eric@efdotstudio.com?subject=' + subject + '&body=' + body;
+                btn.textContent = 'Send →';
+                btn.disabled = false;
             }
         };
 
