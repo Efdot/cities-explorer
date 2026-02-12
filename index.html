@@ -1456,6 +1456,14 @@
         body:not(.grid-open) .mint-toggle:hover .cs-3 { width: calc(var(--cw) * 0.119); opacity: 1; }
         body:not(.grid-open) .mint-toggle:hover .cs-4 { width: calc(var(--cw) * 0.118); opacity: 1; }
         body:not(.grid-open) .mint-toggle:hover .cs-5 { width: calc(var(--cw) * 0.305); opacity: 1; }
+        /* Collapse COLLECT to C when collectors panel is open — less clutter */
+        body.collectors-open .mint-toggle { opacity: 0.3; }
+        body.collectors-open .mint-toggle:hover { opacity: 0.8; }
+        body.collectors-open .collect-seg:not(.cs-1) { width: 0; opacity: 0; transition: width 0.25s ease, opacity 0.25s ease; }
+        body.collectors-open .mint-toggle:hover .cs-2 { width: calc(var(--cw) * 0.291); opacity: 1; }
+        body.collectors-open .mint-toggle:hover .cs-3 { width: calc(var(--cw) * 0.119); opacity: 1; }
+        body.collectors-open .mint-toggle:hover .cs-4 { width: calc(var(--cw) * 0.118); opacity: 1; }
+        body.collectors-open .mint-toggle:hover .cs-5 { width: calc(var(--cw) * 0.305); opacity: 1; }
         @keyframes segWave { 0% { transform: translateY(0) rotate(0deg); } 30% { transform: translateY(-5px) rotate(-4deg); } 50% { transform: translateY(-2px) rotate(2deg); } 70% { transform: translateY(-3px) rotate(-1deg); } 100% { transform: translateY(0) rotate(0deg); } }
         @keyframes segVibrate { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 20% { transform: translate(0.6px, -0.8px) rotate(0.7deg); } 40% { transform: translate(-0.4px, 0.6px) rotate(-0.6deg); } 60% { transform: translate(0.5px, -0.3px) rotate(0.4deg); } 80% { transform: translate(-0.3px, 0.5px) rotate(-0.3deg); } }
 
