@@ -2160,28 +2160,28 @@
         /* Print Inquiry Modal */
         .print-inquiry-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         .print-inquiry-modal.open { display: flex; }
-        .print-inquiry-content { background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
+        .print-inquiry-content { background: #1a1a1a; border-radius: 16px; padding: 24px; max-width: 380px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
         .print-inquiry-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer; line-height: 1; padding: 4px; }
         .print-inquiry-close:hover { color: #fff; }
-        .print-inquiry-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .print-inquiry-options { display: flex; gap: 12px; margin-bottom: 20px; }
-        .print-option { flex: 1; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 14px; }
-        .print-option-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-        .print-option-badge { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 6px; border-radius: 4px; background: rgba(201, 162, 39, 0.2); color: #c9a227; }
+        .print-inquiry-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .print-inquiry-options { display: flex; gap: 8px; margin-bottom: 14px; }
+        .print-option { flex: 1; background: #222; border-radius: 8px; padding: 10px 12px; }
+        .print-option-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+        .print-option-badge { font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 5px; border-radius: 3px; background: rgba(201, 162, 39, 0.2); color: #c9a227; }
         .print-option-badge.open { background: rgba(100, 200, 150, 0.15); color: #6c9; }
-        .print-option-title { font-size: 13px; font-weight: 700; color: #fff; }
-        .print-option-desc { font-size: 11px; color: #888; line-height: 1.5; }
-        .print-inquiry-divider { height: 1px; background: #333; margin: 20px 0; }
-        .print-inquiry-field { margin-bottom: 16px; }
-        .print-inquiry-field label { display: block; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 6px; }
-        .print-inquiry-field input, .print-inquiry-field textarea, .print-inquiry-field select { width: 100%; padding: 12px 14px; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 13px; font-family: inherit; }
+        .print-option-title { font-size: 12px; font-weight: 700; color: #fff; }
+        .print-option-desc { font-size: 10px; color: #777; line-height: 1.4; }
+        .print-inquiry-divider { height: 1px; background: #2a2a2a; margin: 14px 0; }
+        .print-inquiry-field { margin-bottom: 12px; }
+        .print-inquiry-field label { display: block; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 5px; }
+        .print-inquiry-field input, .print-inquiry-field textarea, .print-inquiry-field select { width: 100%; padding: 10px 12px; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 12px; font-family: inherit; }
         .print-inquiry-field input:focus, .print-inquiry-field textarea:focus, .print-inquiry-field select:focus { outline: none; border-color: #c9a227; }
-        .print-inquiry-field textarea { resize: vertical; min-height: 80px; }
+        .print-inquiry-field textarea { resize: vertical; min-height: 60px; }
         .print-inquiry-field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23888'%3E%3Cpath d='M1 3l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
-        .print-inquiry-preview { background: #222; border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 11px; color: #aaa; }
-        .print-inquiry-preview-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 8px; }
-        .print-inquiry-preview-cities { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-        .print-inquiry-city-thumb { position: relative; width: 60px; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; }
+        .print-inquiry-preview { background: #222; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-size: 11px; color: #aaa; }
+        .print-inquiry-preview-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px; }
+        .print-inquiry-preview-cities { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+        .print-inquiry-city-thumb { position: relative; width: 50px; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; }
         .print-inquiry-city-thumb img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; }
         .print-inquiry-city-thumb .city-id { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #c9a227; font-size: 8px; font-weight: 700; text-align: center; padding: 2px 0; }
         .print-inquiry-city-thumb .city-remove-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: rgba(255,255,255,0.6); border: none; width: 16px; height: 16px; border-radius: 50%; font-size: 10px; cursor: pointer; opacity: 0; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
@@ -2198,13 +2198,13 @@
         .print-inquiry-framing-option .framing-icon { font-size: 18px; margin-bottom: 4px; }
         .print-inquiry-framing-option .framing-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; }
         .print-inquiry-framing-option.active .framing-label { color: #c9a227; }
-        .print-inquiry-sizes { display: flex; gap: 8px; margin-bottom: 8px; }
-        .print-inquiry-size-option { flex: 1; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; padding: 10px 6px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+        .print-inquiry-sizes { display: flex; gap: 6px; margin-bottom: 6px; }
+        .print-inquiry-size-option { flex: 1; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; padding: 8px 4px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
         .print-inquiry-size-option:hover { border-color: #555; }
         .print-inquiry-size-option.active { border-color: #c9a227; background: rgba(201, 162, 39, 0.1); }
-        .print-inquiry-size-option .size-dims { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 1px; }
-        .print-inquiry-size-option .size-cm { font-size: 9px; color: #666; margin-bottom: 4px; }
-        .print-inquiry-size-option .size-price { font-size: 12px; font-weight: 700; color: #888; margin-bottom: 2px; }
+        .print-inquiry-size-option .size-dims { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 1px; }
+        .print-inquiry-size-option .size-cm { font-size: 8px; color: #666; margin-bottom: 3px; }
+        .print-inquiry-size-option .size-price { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 2px; }
         .print-inquiry-size-option.active .size-price { color: #c9a227; }
         .print-inquiry-size-option .size-label { font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: #666; }
         .print-inquiry-size-option.active .size-label { color: #a88620; }
@@ -2214,8 +2214,8 @@
         .print-inquiry-shipping-note { font-size: 8px; color: #555; margin-top: 8px; text-align: center; }
         .print-inquiry-field-row { display: flex; gap: 12px; }
         .print-inquiry-field-row .print-inquiry-field { flex: 1; }
-        .print-inquiry-actions { display: flex; gap: 12px; margin-top: 24px; }
-        .print-inquiry-btn { flex: 1; padding: 14px; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
+        .print-inquiry-actions { display: flex; gap: 10px; margin-top: 18px; }
+        .print-inquiry-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
         .print-inquiry-btn.primary { background: #c9a227; color: #000; }
         .print-inquiry-btn.primary:hover { background: #ddb840; }
         .print-inquiry-btn.secondary { background: #333; color: #888; }
@@ -3440,7 +3440,7 @@
             </div>
             <div class="collectors-stats"><span id="collectorCountStats">164</span> collectors · <span id="citiesCountStats">321</span> cities</div>
             <div class="collectors-pills" id="collectorsPills"></div>
-            <button class="become-collector-btn" id="becomeCollectorBtn">✦ Become a Collector</button>
+            <button class="become-collector-btn" id="becomeCollectorBtn">✦ Join the Movement</button>
         </div>
         <!-- Citizen Guide View - Step-by-step onboarding -->
         <div class="collector-guide-view" id="collectorGuideView">
@@ -3454,19 +3454,22 @@
                 </div>
             </div>
 
-            <!-- Step 1: The Experience -->
+            <!-- Step 1: The Culture -->
             <div class="collector-guide-step active" data-step="1">
-                <div class="collector-guide-title">The view from above</div>
-                <div class="collector-guide-highlight">Streets you'll never walk. Somehow familiar anyway.</div>
+                <div class="collector-guide-title">A visual culture</div>
+                <div class="collector-guide-desc">
+                    Cities is more than art on a wall. It's a living visual language — a movement built by collectors, artists, and the energy of the city itself.
+                </div>
+                <div class="collector-guide-highlight">Every City is unique. Every collector owns a piece of the culture.</div>
             </div>
 
-            <!-- Step 2: Join the Build -->
+            <!-- Step 2: The Community -->
             <div class="collector-guide-step" data-step="2">
                 <div class="collector-guide-title">164 collectors. One city.</div>
                 <div class="collector-guide-desc">
-                    Every mint adds another block to the grid. Collectors get first access to future drops.
+                    Collectors shape this world. Build your wall, discover your palette, find the cities that feel like yours. Set holders get future drops for free.
                 </div>
-                <div class="collector-guide-highlight">Set holders? They get future drops for free.</div>
+                <div class="collector-guide-highlight">Your identity. Your collection. Your city.</div>
                 <button class="collector-guide-pill-btn secondary" id="guideExploreGrid">
                     Explore the grid
                 </button>
@@ -3475,7 +3478,7 @@
             <!-- Step 3: Claim Your City -->
             <div class="collector-guide-step" data-step="3">
                 <div class="collector-guide-title">Find your city</div>
-                <div class="collector-guide-desc"></div>
+                <div class="collector-guide-desc">Browse, collect, and make it yours.</div>
                 <a href="https://www.artblocks.io/marketplace/collections/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn">
                     Mint on Art Blocks
                 </a>
@@ -3685,14 +3688,14 @@
                             <span class="print-option-badge">Owner Only</span>
                             <span class="print-option-title">Signed Print</span>
                         </div>
-                        <div class="print-option-desc">A signed print of your specific City. Only available to the owner of that token.</div>
+                        <div class="print-option-desc">Hand-signed by the artist. Token owners only.</div>
                     </div>
                     <div class="print-option">
                         <div class="print-option-header">
                             <span class="print-option-badge open">Open</span>
                             <span class="print-option-title">Poster</span>
                         </div>
-                        <div class="print-option-desc">Unsigned posters available to anyone. <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" style="color: var(--warm);">Browse the shop →</a></div>
+                        <div class="print-option-desc">Open to anyone. <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" style="color: var(--warm);">Shop →</a></div>
                     </div>
                 </div>
 
@@ -3883,7 +3886,7 @@
         <div class="about-content">
             <h1 class="about-title">Cities</h1>
             <p class="about-collab">A code-based art collaboration between <a href="https://efdotstudio.com" target="_blank">Efdot</a> and <a href="https://diid.art" target="_blank">Diid</a>, minting on <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank">Art Blocks</a>.</p>
-            <p class="about-intro">The energy of a city is too complex to understand from street level. So we built a system to observe it from above. From up there, relationships collapse into <span class="about-highlight teal">patterns</span>. Traffic hums. <span class="about-highlight warm">Light shifts</span>. An infinite city emerges, <span class="about-highlight purple">always in motion</span>, never the same view twice.</p>
+            <p class="about-intro">Cities is a <span class="about-highlight teal">visual culture</span> — a living art system where 500 unique cities form one collective identity. Each piece carries its own energy, palette, and rhythm. Collectors don't just own art — they own a <span class="about-highlight warm">piece of the movement</span>. Build your wall, find your palette, and become part of something <span class="about-highlight purple">always in motion</span>.</p>
             <p class="about-journey-link"><a href="#" onclick="if(window.openTimeline) { window.openTimeline(); } event.preventDefault(); event.stopPropagation();">See the journey from hand to code →</a></p>
 
             <div class="about-video">
@@ -3952,7 +3955,7 @@
                             <span class="about-section-arrow">▼</span>
                         </div>
                         <div class="about-section-content">
-                            <p style="margin-bottom: 16px;">Collectors build grids — arrangements of cities that tell a story. Some chase harmony, others chase rarity.</p>
+                            <p style="margin-bottom: 16px;">Your collection is your identity. Collectors build grids — arrangements of cities that reflect who they are. Some chase harmony, others chase rarity, all build something uniquely theirs.</p>
 
                             <div class="about-set-types">
                                 <div class="about-set-type" onclick="showSetExample('spectrum', 'Oblivion')">
@@ -4013,8 +4016,8 @@
             </div>
 
             <div class="about-collab-cta">
-                <div class="about-collab-title">What City Next?</div>
-                <div class="about-collab-desc">Have a wall, a city, or an idea? Murals, editions, and community projects happen through conversation.</div>
+                <div class="about-collab-title">Be Part of It</div>
+                <div class="about-collab-desc">Have a wall, a city, or an idea? Murals, prints, editions, and community projects happen through conversation.</div>
                 <a href="mailto:eric@efdotstudio.com?subject=Hey%20-%20Cities%20idea" class="about-collab-btn">Say Hey →</a>
             </div>
 
@@ -6444,6 +6447,8 @@
 
         function showCollectorInGrid(collectorName, tokens, skipWallView = false) {
             currentCollectorFilter = { name: collectorName, tokens: tokens };
+            // Persist collector context for wall button fallback
+            try { sessionStorage.setItem('cities-gallery-context', JSON.stringify(currentCollectorFilter)); } catch(e) {}
 
             // Check for originals owned by this collector
             const collectorOriginals = getCollectorOriginals(collectorName);
@@ -7472,6 +7477,8 @@
 
                 modal.classList.add('open');
             }
+            // Expose globally so handlers outside initCollectorsPanel can access it
+            window.openPrintInquiryModal = openPrintInquiryModal;
 
             function renderPrintInquiryCities() {
                 const citiesContainer = document.getElementById('printInquiryCities');
@@ -9083,48 +9090,52 @@
 
         // Global handler for wall button click (called from inline onclick)
         window.handleWallButtonClick = function() {
-            const name = document.getElementById('collectorBannerName')?.textContent;
             let tokens = null;
             let collectorName = null;
 
+            // 1. Try currentCollectorFilter (set by showCollectorInGrid)
             if (currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
                 tokens = currentCollectorFilter.tokens;
                 collectorName = currentCollectorFilter.name;
-            } else if (name) {
-                const collector = COLLECTORS_DATA.find(c => c.name === name);
-                if (collector && collector.tokens && collector.tokens.length > 0) {
-                    tokens = collector.tokens;
-                    collectorName = collector.name;
+            }
+
+            // 2. Try banner name → COLLECTORS_DATA lookup
+            if (!tokens) {
+                const rawName = document.getElementById('collectorBannerName')?.textContent?.replace(/\.{3}$/, '');
+                if (rawName) {
+                    const collector = COLLECTORS_DATA.find(c => c.name === rawName);
+                    if (collector && collector.tokens && collector.tokens.length > 0) {
+                        tokens = collector.tokens;
+                        collectorName = collector.name;
+                    }
                 }
             }
 
+            // 3. Try sessionStorage (saved by closeGridView)
+            if (!tokens) {
+                try {
+                    const saved = sessionStorage.getItem('cities-gallery-context');
+                    if (saved) {
+                        const ctx = JSON.parse(saved);
+                        if (ctx && ctx.tokens && ctx.tokens.length > 0) {
+                            tokens = ctx.tokens;
+                            collectorName = ctx.name;
+                        }
+                    }
+                } catch (e) {}
+            }
+
             if (tokens && tokens.length > 0 && collectorName) {
+                // Re-set currentCollectorFilter so subsequent calls work
+                currentCollectorFilter = { name: collectorName, tokens: tokens };
                 openWallView(collectorName, tokens);
             }
         };
 
         // Global handler for collector name click (called from inline onclick)
         window.handleCollectorNameClick = function() {
-            console.log('handleCollectorNameClick called');
-            const name = document.getElementById('collectorBannerName')?.textContent;
-            let tokens = null;
-            let collectorName = null;
-
-            if (currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
-                tokens = currentCollectorFilter.tokens;
-                collectorName = currentCollectorFilter.name;
-            } else if (name) {
-                const collector = COLLECTORS_DATA.find(c => c.name === name);
-                if (collector && collector.tokens && collector.tokens.length > 0) {
-                    tokens = collector.tokens;
-                    collectorName = collector.name;
-                }
-            }
-
-            if (tokens && tokens.length > 0 && collectorName) {
-                console.log('Opening wall for:', collectorName, 'with', tokens.length, 'tokens');
-                openWallView(collectorName, tokens);
-            }
+            // Reuse the same robust lookup as the wall button
+            window.handleWallButtonClick();
         };
 
         // Suggestion engine - suggests cities based on what collector has
@@ -10415,12 +10426,12 @@
             e.stopPropagation();
             const tokenId = frameMockupTokens[frameMockupCurrentIndex] || currentTokenId;
             closeFrameMockup();
-            openPrintInquiryModal([tokenId]);
+            window.openPrintInquiryModal([tokenId]);
         });
 
         // Order print from sidebar
         document.getElementById('sidebarOrderPrint')?.addEventListener('click', () => {
-            openPrintInquiryModal([currentTokenId]);
+            window.openPrintInquiryModal([currentTokenId]);
         });
 
         // Close frame mockup when clicking outside the frame
