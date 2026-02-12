@@ -629,22 +629,15 @@
         .about-btn-essay, .about-btn-explore, .about-btn-origins { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; text-decoration: none; text-transform: uppercase; background: none; border: 0.5px dashed var(--text-muted); padding: 10px 24px; color: var(--text-muted); border-radius: 50px; height: 38px; display: flex; align-items: center; }
         .about-btn-essay:hover, .about-btn-explore:hover, .about-btn-origins:hover { color: var(--text); border-color: var(--text); }
         .about-mint-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
-        .about-mint-btn { display: flex; align-items: center; text-decoration: none; padding: 8px 12px; gap: 0; opacity: 0.8; transition: opacity 0.3s ease; background: transparent; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 0.05em; color: #F5B731; text-transform: uppercase; }
+        .about-mint-btn { --ch: 26px; --cw: calc(var(--ch) * 3.985); display: flex; align-items: center; height: var(--ch); padding: 8px 12px; gap: 0; opacity: 0.8; transition: opacity 0.3s ease; background: transparent; border: none; cursor: pointer; }
         .about-mint-btn:hover { opacity: 1; }
-        .about-mint-btn .mint-letter { height: 24px; width: auto; display: block; transition: transform 0.15s ease, filter 0.3s ease; }
-        .about-mint-btn .collect-letter { display: inline-block; transition: transform 0.15s ease; }
-        .about-mint-btn:hover .mint-letter { filter: brightness(1.1); animation: letterVibrate 0.3s ease-in-out infinite; }
-        .about-mint-btn:hover .collect-letter { animation: letterVibrate 0.3s ease-in-out infinite; }
-        .about-mint-btn:hover .collect-letter:nth-child(1) { animation-delay: 0s; }
-        .about-mint-btn:hover .collect-letter:nth-child(2) { animation-delay: 0.04s; }
-        .about-mint-btn:hover .collect-letter:nth-child(3) { animation-delay: 0.08s; }
-        .about-mint-btn:hover .collect-letter:nth-child(4) { animation-delay: 0.12s; }
-        .about-mint-btn:hover .collect-letter:nth-child(5) { animation-delay: 0.16s; }
-        .about-mint-btn:hover .collect-letter:nth-child(6) { animation-delay: 0.20s; }
-        .about-mint-btn:hover .collect-letter:nth-child(7) { animation-delay: 0.24s; }
-        .about-mint-btn:hover .mint-letter:nth-child(2) { animation-delay: 0.06s; }
-        .about-mint-btn:hover .mint-letter:nth-child(3) { animation-delay: 0.12s; }
-        .about-mint-btn:hover .mint-letter:nth-child(4) { animation-delay: 0.18s; }
+        .about-mint-btn .collect-seg { background-size: var(--cw) var(--ch); }
+        .about-mint-btn:hover .collect-seg { animation: segVibrate 0.35s ease-in-out infinite; }
+        .about-mint-btn:hover .cs-1 { animation-delay: 0s; }
+        .about-mint-btn:hover .cs-2 { animation-delay: 0.06s; }
+        .about-mint-btn:hover .cs-3 { animation-delay: 0.12s; }
+        .about-mint-btn:hover .cs-4 { animation-delay: 0.18s; }
+        .about-mint-btn:hover .cs-5 { animation-delay: 0.24s; }
         .about-mint-tooltip { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); font-size: 10px; font-style: italic; color: var(--text-muted); white-space: nowrap; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; margin-top: 4px; }
         .about-mint-wrapper:hover .about-mint-tooltip { opacity: 0.7; }
 
@@ -1415,33 +1408,46 @@
             .view-toggle-btn.grid-open:hover .glyph-blob.glyph-animated { display: none !important; }
             .view-toggle-btn.grid-open:hover .glyph-textile.glyph-animated { display: block; }
         }
-        .mint-toggle { display: flex; align-items: flex-end; text-decoration: none; padding: 4px 3px; flex-shrink: 0; gap: 1px; opacity: 0.6; transition: opacity 0.3s ease; margin-right: 16px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.02em; color: #F5B731; text-transform: uppercase; background: none; border: none; cursor: pointer; }
+        /* COLLECT image button — uses COLLECT.PNG split into 5 segments via CSS sprites */
+        /* Segments: C | OLL | E | C | T — based on natural gaps in the hand-drawn lettering */
+        .mint-toggle {
+            --ch: 22px;
+            --cw: calc(var(--ch) * 3.985);
+            display: flex; align-items: center; height: var(--ch); padding: 4px 3px; flex-shrink: 0; gap: 0;
+            opacity: 0.6; transition: opacity 0.3s ease; margin-right: 16px;
+            background: none; border: none; cursor: pointer;
+        }
         .mint-toggle:hover { opacity: 1; }
-        .mint-letter { height: 20px; width: auto; display: block; transition: transform 0.15s ease, filter 0.3s ease; }
-        .collect-letter { display: inline-block; transition: transform 0.15s ease; }
-        .mint-toggle:hover .mint-letter { filter: brightness(1.1); animation: letterVibrate 0.3s ease-in-out infinite; }
-        .mint-toggle:hover .collect-letter { animation: letterVibrate 0.3s ease-in-out infinite; }
-        .mint-toggle:hover .collect-letter:nth-child(1) { animation-delay: 0s; }
-        .mint-toggle:hover .collect-letter:nth-child(2) { animation-delay: 0.04s; }
-        .mint-toggle:hover .collect-letter:nth-child(3) { animation-delay: 0.08s; }
-        .mint-toggle:hover .collect-letter:nth-child(4) { animation-delay: 0.12s; }
-        .mint-toggle:hover .collect-letter:nth-child(5) { animation-delay: 0.16s; }
-        .mint-toggle:hover .collect-letter:nth-child(6) { animation-delay: 0.20s; }
-        .mint-toggle:hover .collect-letter:nth-child(7) { animation-delay: 0.24s; }
-        .mint-toggle:hover .mint-letter:nth-child(2) { animation-delay: 0.06s; }
-        .mint-toggle:hover .mint-letter:nth-child(3) { animation-delay: 0.12s; }
-        .mint-toggle:hover .mint-letter:nth-child(4) { animation-delay: 0.18s; }
-        .mint-letter.wave { animation: letterWave 0.6s ease-out !important; }
-        /* Subtle C only in single view - reveal full COLLECT on hover */
+        .collect-seg {
+            display: block; height: 100%;
+            background: url(COLLECT.PNG) no-repeat;
+            background-size: var(--cw) var(--ch);
+            transition: transform 0.15s ease;
+        }
+        .cs-1 { width: calc(var(--cw) * 0.166); background-position: 0 0; }
+        .cs-2 { width: calc(var(--cw) * 0.291); background-position: calc(var(--cw) * -0.166) 0; }
+        .cs-3 { width: calc(var(--cw) * 0.119); background-position: calc(var(--cw) * -0.457) 0; }
+        .cs-4 { width: calc(var(--cw) * 0.118); background-position: calc(var(--cw) * -0.576) 0; }
+        .cs-5 { width: calc(var(--cw) * 0.305); background-position: calc(var(--cw) * -0.695) 0; }
+        /* Hover: staggered vibrate across segments */
+        .mint-toggle:hover .collect-seg { animation: segVibrate 0.35s ease-in-out infinite; }
+        .mint-toggle:hover .cs-1 { animation-delay: 0s; }
+        .mint-toggle:hover .cs-2 { animation-delay: 0.06s; }
+        .mint-toggle:hover .cs-3 { animation-delay: 0.12s; }
+        .mint-toggle:hover .cs-4 { animation-delay: 0.18s; }
+        .mint-toggle:hover .cs-5 { animation-delay: 0.24s; }
+        /* Periodic wave animation triggered by JS */
+        .collect-seg.wave { animation: segWave 0.6s ease-out !important; }
+        /* Subtle C-only in single view — reveal full COLLECT on hover */
         body:not(.grid-open) .mint-toggle { opacity: 0.3; }
         body:not(.grid-open) .mint-toggle:hover { opacity: 0.8; }
-        body:not(.grid-open) .mint-letter { height: 14px; transition: all 0.2s ease; }
-        body:not(.grid-open) .collect-letter:not(:first-child) { display: none; width: 0; opacity: 0; transition: all 0.2s ease; }
-        body:not(.grid-open) .mint-toggle:hover .collect-letter:not(:first-child) { display: inline-block; width: auto; opacity: 1; }
-        body:not(.grid-open) .mint-letter:not(:first-child) { display: none; width: 0; opacity: 0; }
-        body:not(.grid-open) .mint-toggle:hover .mint-letter:not(:first-child) { display: block; width: auto; opacity: 1; }
-        @keyframes letterWave { 0% { transform: translateY(0) rotate(0deg); } 30% { transform: translateY(-5px) rotate(-4deg); } 50% { transform: translateY(-2px) rotate(2deg); } 70% { transform: translateY(-3px) rotate(-1deg); } 100% { transform: translateY(0) rotate(0deg); } }
-        @keyframes letterVibrate { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 50% { transform: translate(0.5px, -0.5px) rotate(0.5deg); } }
+        body:not(.grid-open) .collect-seg:not(.cs-1) { width: 0; opacity: 0; transition: width 0.25s ease, opacity 0.25s ease; }
+        body:not(.grid-open) .mint-toggle:hover .cs-2 { width: calc(var(--cw) * 0.291); opacity: 1; }
+        body:not(.grid-open) .mint-toggle:hover .cs-3 { width: calc(var(--cw) * 0.119); opacity: 1; }
+        body:not(.grid-open) .mint-toggle:hover .cs-4 { width: calc(var(--cw) * 0.118); opacity: 1; }
+        body:not(.grid-open) .mint-toggle:hover .cs-5 { width: calc(var(--cw) * 0.305); opacity: 1; }
+        @keyframes segWave { 0% { transform: translateY(0) rotate(0deg); } 30% { transform: translateY(-5px) rotate(-4deg); } 50% { transform: translateY(-2px) rotate(2deg); } 70% { transform: translateY(-3px) rotate(-1deg); } 100% { transform: translateY(0) rotate(0deg); } }
+        @keyframes segVibrate { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 20% { transform: translate(0.6px, -0.8px) rotate(0.7deg); } 40% { transform: translate(-0.4px, 0.6px) rotate(-0.6deg); } 60% { transform: translate(0.5px, -0.3px) rotate(0.4deg); } 80% { transform: translate(-0.3px, 0.5px) rotate(-0.3deg); } }
 
         .gallery-panel { position: fixed; top: 0; right: 0; width: 380px; height: 100vh; background: var(--bg-panel); padding: 28px 24px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 99; will-change: transform; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
         .gallery-panel.open { transform: translateX(0); }
@@ -1934,8 +1940,7 @@
         .wall-view-back-btn:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-back-btn, .wall-view-modal.wall-black .wall-view-back-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
         .wall-view-modal.dark-mode .wall-view-back-btn:hover, .wall-view-modal.wall-black .wall-view-back-btn:hover { background: #fff; border-color: #fff; color: #000; }
-        .wall-view-mint-btn { padding: 4px 8px; }
-        .wall-view-mint-btn .mint-letter { height: 18px; }
+        .wall-view-mint-btn { --ch: 20px; --cw: calc(var(--ch) * 3.985); padding: 4px 8px; }
         .wall-view-close { background: none; border: 1px solid #ddd; color: #999; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .wall-view-close:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-close { border-color: #333; color: #666; }
@@ -2665,8 +2670,7 @@
             .main-content { padding-top: 50px !important; padding-bottom: 16px !important; }
             .top-nav-fixed { top: 8px; right: 8px; gap: 4px; }
             .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
-            .mint-toggle { padding: 1px; }
-            .mint-letter { height: 10px; }
+            .mint-toggle { --ch: 14px; --cw: calc(var(--ch) * 3.985); padding: 1px; }
             .preview-image { max-height: calc(100vh - 140px); }
             .pull-refresh-indicator { padding: 8px 16px; font-size: 9px; }
         }
@@ -3068,7 +3072,7 @@
             /* Top nav: keep collect button, shrink */
             .top-nav-fixed { top: 8px; right: 8px; gap: 4px; }
             .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
-            .mint-toggle { padding: 2px; gap: 0px; font-size: 12px; }
+            .mint-toggle { --ch: 16px; --cw: calc(var(--ch) * 3.985); padding: 2px; }
 
             /* Collectors/Gallery panels still slide from right, full width */
             .gallery-panel, .collectors-panel { width: 100%; max-width: 100vw; right: 0; left: 0; transform: translateX(100%); padding: 20px 16px; box-sizing: border-box; }
@@ -3639,7 +3643,7 @@
 
     <div class="top-nav-fixed">
         <div class="collect-btn-wrapper">
-            <button class="mint-toggle" id="mintToggle" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
+            <button class="mint-toggle" id="mintToggle" onclick="toggleCollectPopover(this)"><span class="collect-seg cs-1"></span><span class="collect-seg cs-2"></span><span class="collect-seg cs-3"></span><span class="collect-seg cs-4"></span><span class="collect-seg cs-5"></span></button>
             <div class="collect-popover" id="collectPopoverNav">
                 <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
                 <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Shop</span></a>
@@ -3889,7 +3893,7 @@
                 <button class="wall-view-try-mode" id="wallViewTryMode" title="Try adding cities to your grid">✦ TRY</button>
                 <button class="wall-view-back-btn" id="wallViewBackBtn">← COLLECTORS</button>
                 <div class="collect-btn-wrapper">
-                    <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
+                    <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-seg cs-1"></span><span class="collect-seg cs-2"></span><span class="collect-seg cs-3"></span><span class="collect-seg cs-4"></span><span class="collect-seg cs-5"></span></button>
                     <div class="collect-popover" id="collectPopoverWall">
                         <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
                         <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Shop</span></a>
@@ -4317,7 +4321,7 @@
                 </div>
                 <div class="about-buttons">
                     <div class="collect-btn-wrapper">
-                        <button class="about-mint-btn" id="aboutMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
+                        <button class="about-mint-btn" id="aboutMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-seg cs-1"></span><span class="collect-seg cs-2"></span><span class="collect-seg cs-3"></span><span class="collect-seg cs-4"></span><span class="collect-seg cs-5"></span></button>
                         <div class="collect-popover" id="collectPopoverAbout">
                             <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
                             <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Shop</span></a>
@@ -14704,14 +14708,14 @@
         // Refresh every 30 seconds to catch new mints
         setInterval(updateMintedCount, 30000);
 
-        // Mint button wave animation - each letter waves independently
+        // Mint button wave animation - each segment waves independently
         function triggerMintWave() {
-            const letters = document.querySelectorAll('#mintToggle .mint-letter');
-            letters.forEach((letter, i) => {
+            const segs = document.querySelectorAll('#mintToggle .collect-seg');
+            segs.forEach((seg, i) => {
                 setTimeout(() => {
-                    letter.classList.add('wave');
-                    setTimeout(() => letter.classList.remove('wave'), 500);
-                }, i * 80);
+                    seg.classList.add('wave');
+                    setTimeout(() => seg.classList.remove('wave'), 600);
+                }, i * 100);
             });
         }
         // Initial wave after 2 seconds, then every 5 seconds
