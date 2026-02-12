@@ -11583,21 +11583,13 @@
 
         // Favorite palettes
         let favoritePalettes = JSON.parse(localStorage.getItem('cities-fav-palettes') || '[]');
-        // Debug: add a test palette if none exist
-        if (favoritePalettes.length === 0) {
-            favoritePalettes = ['Beach Day', 'Autumnal'];
-            console.log('Added test palettes:', favoritePalettes);
-        }
 
         function toggleFavoritePalette(palette) {
-            console.log('toggleFavoritePalette called with:', palette);
             const idx = favoritePalettes.indexOf(palette);
             if (idx > -1) {
                 favoritePalettes.splice(idx, 1);
-                console.log('Removed palette, now:', favoritePalettes);
             } else {
                 favoritePalettes.push(palette);
-                console.log('Added palette, now:', favoritePalettes);
             }
             localStorage.setItem('cities-fav-palettes', JSON.stringify(favoritePalettes));
             updateGallery(); // Update the favorites panel
@@ -11929,15 +11921,12 @@
             const palettesSection = document.getElementById('favPalettesSection');
             const palettesGrid = document.getElementById('favPalettesGrid');
 
-            console.log('updateGallery - favoritePalettes:', favoritePalettes, 'palettesSection:', palettesSection);
-
             // Update total count (cities + palettes)
             const totalFavs = favorites.length + favoritePalettes.length;
             favCount.textContent = totalFavs;
 
             // Render favorited palettes
             if (favoritePalettes.length > 0) {
-                console.log('Rendering', favoritePalettes.length, 'favorite palettes');
                 palettesSection.style.display = 'block';
                 palettesGrid.innerHTML = favoritePalettes.map(palette => {
                     const paletteInfo = PALETTE_DATA[palette];
@@ -13962,8 +13951,6 @@
                     e.stopPropagation();
                     const palette = btn.dataset.palette;
                     toggleFavoritePalette(palette);
-                    const isFav = btn.classList.toggle('favorited');
-                    btn.textContent = isFav ? '♥' : '♡';
                 });
             });
 
@@ -14390,8 +14377,6 @@
                     e.stopPropagation();
                     const palette = btn.dataset.palette;
                     toggleFavoritePalette(palette);
-                    const isFav = btn.classList.toggle('favorited');
-                    btn.textContent = isFav ? '♥' : '♡';
                 });
             });
 
