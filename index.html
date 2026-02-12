@@ -6472,6 +6472,13 @@
                 : generateCollectorPhrase(tokens);
             document.getElementById('collectorBannerPhrase').textContent = phrase;
 
+            // Store tokens on wall button for direct access
+            const wallBtn = document.getElementById('collectorWallView');
+            if (wallBtn) {
+                wallBtn.dataset.collector = collectorName;
+                wallBtn.dataset.tokens = tokens.join(',');
+            }
+
             // Show the collector banner
             document.getElementById('collectorBanner').classList.add('visible');
 
@@ -7123,10 +7130,13 @@
 
             // Clicking the banner bar (not name or wall button) collapses the collector view
             document.getElementById('collectorBanner')?.addEventListener('click', (e) => {
-                // If clicked on name, wall button, or close button, don't collapse
+                // If clicked on interactive elements, don't collapse
                 if (e.target.closest('.collector-banner-name') ||
                     e.target.closest('.collector-banner-wall') ||
-                    e.target.closest('.collector-banner-close')) {
+                    e.target.closest('.collector-banner-close') ||
+                    e.target.closest('.collector-banner-nav') ||
+                    e.target.closest('.collector-banner-count') ||
+                    e.target.closest('.collector-banner-phrase')) {
                     return;
                 }
                 clearCollectorFilter();
@@ -9106,17 +9116,27 @@
             let tokens = null;
             let collectorName = null;
 
-            // 1. Try currentCollectorFilter (set by showCollectorInGrid)
-            if (currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
+            // 1. Try wall button data attributes (set by showCollectorInGrid)
+            const wallBtn = document.getElementById('collectorWallView');
+            if (wallBtn && wallBtn.dataset.tokens && wallBtn.dataset.collector) {
+                const parsed = wallBtn.dataset.tokens.split(',').map(id => parseInt(id)).filter(id => !isNaN(id));
+                if (parsed.length > 0) {
+                    tokens = parsed;
+                    collectorName = wallBtn.dataset.collector;
+                }
+            }
+
+            // 2. Try currentCollectorFilter
+            if (!tokens && currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
                 tokens = currentCollectorFilter.tokens;
                 collectorName = currentCollectorFilter.name;
             }
 
-            // 2. Try banner name → COLLECTORS_DATA lookup
+            // 3. Try banner name → COLLECTORS_DATA lookup
             if (!tokens) {
                 const rawName = document.getElementById('collectorBannerName')?.textContent?.replace(/\.{3}$/, '');
                 if (rawName) {
-                    const collector = COLLECTORS_DATA.find(c => c.name === rawName);
+                    const collector = COLLECTORS_DATA.find(c => c.name === rawName || c.name.toLowerCase() === rawName.toLowerCase());
                     if (collector && collector.tokens && collector.tokens.length > 0) {
                         tokens = collector.tokens;
                         collectorName = collector.name;
@@ -9124,7 +9144,7 @@
                 }
             }
 
-            // 3. Try sessionStorage (saved by closeGridView)
+            // 4. Try sessionStorage
             if (!tokens) {
                 try {
                     const saved = sessionStorage.getItem('cities-gallery-context');
@@ -9139,7 +9159,6 @@
             }
 
             if (tokens && tokens.length > 0 && collectorName) {
-                // Re-set currentCollectorFilter so subsequent calls work
                 currentCollectorFilter = { name: collectorName, tokens: tokens };
                 openWallView(collectorName, tokens);
             }
