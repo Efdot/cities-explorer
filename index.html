@@ -1102,7 +1102,7 @@
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             /* Off-white warm wall */
             background: #f5f3f0;
-            z-index: 2000; display: none; align-items: center; justify-content: center;
+            z-index: 2100; display: none; align-items: center; justify-content: center;
         }
         .frame-mockup.open { display: flex; }
         /* Subtle lighting on wall - soft gray shadow rectangles */
@@ -1189,6 +1189,11 @@
         .frame-color-btn[data-color="white"] { background: #f5f3f0; }
         .frame-color-btn[data-color="black"] { background: #1a1a1a; }
         .frame-color-btn[data-color="dark-wood"] { background: #5a3d2b; }
+        .frame-mockup-artwork { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+        .frame-mockup-label { font-size: 12px; font-weight: 600; color: #666; letter-spacing: 0.1em; }
+        .frame-mockup.dark-mode .frame-mockup-label { color: #888; }
+        .frame-mockup-collector { font-size: 10px; font-weight: 500; color: #999; letter-spacing: 0.08em; text-transform: uppercase; }
+        .frame-mockup.dark-mode .frame-mockup-collector { color: #555; }
         /* Frame color overrides */
         .frame-mockup .frame-wrapper.frame-white { background: #faf9f7; }
         .frame-mockup .frame-wrapper.frame-white .frame-inner { background: #4a4846; }
@@ -2238,33 +2243,6 @@
         .wall-view-modal.dark-mode .wall-view-tagline { color: #555; }
 
         /* Single Piece Framed Overlay */
-        .single-piece-overlay { position: fixed; inset: 0; background: rgba(240, 236, 230, 0.98); z-index: 2100; display: none; align-items: center; justify-content: center; }
-        .single-piece-overlay.open { display: flex; }
-        .single-piece-overlay.dark-mode { background: rgba(10, 10, 10, 0.98); }
-        .single-piece-close { position: absolute; top: 20px; right: 20px; background: none; border: 1px solid #ddd; color: #999; width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
-        .single-piece-close:hover { background: #333; border-color: #333; color: #fff; }
-        .single-piece-overlay.dark-mode .single-piece-close { border-color: #444; color: #666; }
-        .single-piece-overlay.dark-mode .single-piece-close:hover { background: #fff; border-color: #fff; color: #000; }
-        .single-piece-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); border: 1px solid rgba(0,0,0,0.3); color: #fff; width: 44px; height: 44px; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
-        .single-piece-nav:hover { background: rgba(0,0,0,0.7); border-color: rgba(0,0,0,0.5); color: #fff; }
-        .single-piece-overlay.dark-mode .single-piece-nav { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.2); color: #fff; }
-        .single-piece-overlay.dark-mode .single-piece-nav:hover { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.4); color: #fff; }
-        .single-piece-nav.prev { left: 24px; }
-        .single-piece-nav.next { right: 24px; }
-        .single-piece-download { position: absolute; bottom: 20px; right: 20px; background: none; border: 1px solid #ccc; color: #999; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
-        .single-piece-download:hover { background: #333; border-color: #333; color: #fff; }
-        .single-piece-overlay.dark-mode .single-piece-download { border-color: #444; color: #666; }
-        .single-piece-overlay.dark-mode .single-piece-download:hover { background: #fff; border-color: #fff; color: #000; }
-        .single-piece-content { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-        .single-piece-frame { background: #d8d4cc; padding: 8px; border-radius: 2px; box-shadow: 0 8px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3); }
-        .single-piece-mat { background: #f8f6f2; padding: 16px; }
-        .single-piece-overlay.dark-mode .single-piece-frame { background: #1a1a1a; box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05); }
-        .single-piece-overlay.dark-mode .single-piece-mat { background: #0d0d0d; }
-        .single-piece-mat img { max-height: 65vh; max-width: 80vw; width: auto; height: auto; display: block; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .single-piece-label { font-size: 12px; font-weight: 600; color: #666; letter-spacing: 0.1em; }
-        .single-piece-overlay.dark-mode .single-piece-label { color: #888; }
-        .single-piece-collector { font-size: 10px; font-weight: 500; color: #999; letter-spacing: 0.08em; margin-top: 4px; text-transform: uppercase; }
-        .single-piece-overlay.dark-mode .single-piece-collector { color: #555; }
 
         /* Collector Feature - Subtle Dark Style */
         .collector-feature { display: none; position: relative; margin: -16px -16px 16px -16px; border-radius: 0 0 16px 16px; overflow: hidden; background: transparent; }
@@ -3779,23 +3757,6 @@
         </div>
     </div>
 
-    <!-- Single Piece Framed View (overlay within wall view) -->
-    <div class="single-piece-overlay" id="singlePieceOverlay">
-        <button class="single-piece-close" id="singlePieceClose">&times;</button>
-        <button class="single-piece-nav prev" id="singlePiecePrev">‹</button>
-        <button class="single-piece-nav next" id="singlePieceNext">›</button>
-        <button class="single-piece-download" id="singlePieceDownload" title="Download">↓</button>
-        <div class="single-piece-content">
-            <div class="single-piece-frame">
-                <div class="single-piece-mat">
-                    <img id="singlePieceImage" src="" alt="City artwork">
-                </div>
-            </div>
-            <div class="single-piece-label" id="singlePieceLabel">#0</div>
-            <div class="single-piece-collector" id="singlePieceCollector"></div>
-        </div>
-    </div>
-
     <div class="palette-inspector" id="paletteInspector">
         <div class="palette-inspector-content">
             <div class="palette-fan-container" id="paletteFanContainer" style="display: none;">
@@ -3823,10 +3784,14 @@
     <!-- Framed Mockup View -->
     <div class="frame-mockup" id="frameMockup">
         <div class="frame-mockup-content">
-            <div class="frame-wrapper" id="frameWrapper">
-                <div class="frame-inner">
-                    <img id="frameMockupImage" src="" alt="Framed city artwork">
+            <div class="frame-mockup-artwork">
+                <div class="frame-wrapper" id="frameWrapper">
+                    <div class="frame-inner">
+                        <img id="frameMockupImage" src="" alt="Framed city artwork">
+                    </div>
                 </div>
+                <div class="frame-mockup-label" id="frameMockupLabel">#0</div>
+                <div class="frame-mockup-collector" id="frameMockupCollector"></div>
             </div>
         </div>
         <button class="frame-mockup-mode" id="frameMockupMode" title="Toggle dark mode">☾</button>
@@ -7260,88 +7225,6 @@
             document.getElementById('wallViewPrev')?.addEventListener('click', navigateToPrevCollector);
             document.getElementById('wallViewNext')?.addEventListener('click', navigateToNextCollector);
 
-            // Single piece framed overlay controls
-            document.getElementById('singlePieceClose')?.addEventListener('click', closeSinglePieceView);
-            document.getElementById('singlePiecePrev')?.addEventListener('click', singlePiecePrev);
-            document.getElementById('singlePieceNext')?.addEventListener('click', singlePieceNext);
-            document.getElementById('singlePieceDownload')?.addEventListener('click', () => {
-                const tokenId = singlePieceTokens[singlePieceCurrentIndex];
-                if (tokenId !== undefined) {
-                    const link = document.createElement('a');
-                    link.href = `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png`;
-                    link.download = `cities-${tokenId}.png`;
-                    link.click();
-                }
-            });
-
-            // Click on frame/image to open OpenSea offer page
-            document.querySelector('.single-piece-frame')?.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const tokenId = singlePieceTokens[singlePieceCurrentIndex];
-                if (tokenId !== undefined) {
-                    const confirmed = confirm('You are about to leave this page and go to OpenSea to make an offer on City #' + tokenId + '. Continue?');
-                    if (confirmed) {
-                        window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`, '_blank');
-                    }
-                }
-            });
-
-            // Click/tap to close single piece view
-            const singlePieceOverlayEl = document.getElementById('singlePieceOverlay');
-            singlePieceOverlayEl?.addEventListener('click', (e) => {
-                // Close if clicking background, close button area, or on mobile tap anywhere except nav/download buttons
-                const isNavButton = e.target.closest('.single-piece-nav');
-                const isCloseButton = e.target.closest('.single-piece-close');
-                const isDownloadButton = e.target.closest('.single-piece-download');
-                const isFrame = e.target.closest('.single-piece-frame');
-                if (isCloseButton || e.target.id === 'singlePieceOverlay') {
-                    closeSinglePieceView();
-                    return;
-                }
-                // Don't close if clicking the frame (handled separately)
-                if (isFrame) return;
-                // On mobile (touch device), tap anywhere except nav/download/frame to close
-                if ('ontouchstart' in window && !isNavButton && !isDownloadButton) {
-                    closeSinglePieceView();
-                }
-            });
-
-            // Pinch zoom for single piece view on mobile
-            let singlePieceScale = 1;
-            let singlePieceLastDistance = 0;
-            singlePieceOverlayEl?.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 2) {
-                    singlePieceLastDistance = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                }
-            }, { passive: true });
-            singlePieceOverlayEl?.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 2) {
-                    e.preventDefault();
-                    const distance = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                    const delta = distance / singlePieceLastDistance;
-                    singlePieceScale = Math.max(0.5, Math.min(3, singlePieceScale * delta));
-                    const img = document.getElementById('singlePieceImage');
-                    if (img) img.style.transform = `scale(${singlePieceScale})`;
-                    singlePieceLastDistance = distance;
-                }
-            }, { passive: false });
-            singlePieceOverlayEl?.addEventListener('touchend', () => {
-                // Reset zoom when releasing
-                if (singlePieceScale !== 1) {
-                    setTimeout(() => {
-                        singlePieceScale = 1;
-                        const img = document.getElementById('singlePieceImage');
-                        if (img) img.style.transform = 'scale(1)';
-                    }, 200);
-                }
-            });
-
             // Download button - directly downloads with current wall color
             document.getElementById('wallViewDownloadBtn')?.addEventListener('click', () => {
                 downloadWallView(currentWallColor);
@@ -9085,11 +8968,11 @@
                 };
                 fullImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png`;
 
-                // Click frame to open single piece framed view
+                // Click frame to open framed mockup view
                 frame.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const tokenId = parseInt(frame.dataset.tokenId);
-                    openSinglePieceFramedView(tokenId, name);
+                    openFrameMockup(tokenId, name);
                 });
 
                 inner.appendChild(frameImg);
@@ -9538,76 +9421,6 @@
         document.getElementById('suggestionClose')?.addEventListener('click', () => {
             document.getElementById('wallViewSuggestion').classList.remove('visible');
         });
-
-        // Single piece framed view (zoomed in on one piece)
-        // Single piece framed view state
-        let singlePieceTokens = [];
-        let singlePieceCurrentIndex = 0;
-        let singlePieceCollectorName = '';
-
-        function openSinglePieceFramedView(tokenId, collectorName) {
-            const overlay = document.getElementById('singlePieceOverlay');
-            const wallModal = document.getElementById('wallViewModal');
-
-            // Use all minted tokens for sequential navigation
-            const allMintedTokens = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
-            singlePieceTokens = allMintedTokens.length > 0 ? allMintedTokens : [tokenId];
-            singlePieceCurrentIndex = singlePieceTokens.indexOf(tokenId);
-            if (singlePieceCurrentIndex === -1) singlePieceCurrentIndex = 0;
-            singlePieceCollectorName = collectorName;
-
-            // Match dark mode from wall view, or default to dark if opening from grid
-            if (wallModal?.classList.contains('open')) {
-                // Opening from wall view - match its mode
-                if (wallModal.classList.contains('wall-black') || wallModal.classList.contains('dark-mode')) {
-                    overlay.classList.add('dark-mode');
-                } else {
-                    overlay.classList.remove('dark-mode');
-                }
-            } else {
-                // Opening from grid - default to dark mode
-                overlay.classList.add('dark-mode');
-            }
-
-            updateSinglePieceView();
-            overlay.classList.add('open');
-        }
-
-        function updateSinglePieceView() {
-            const tokenId = singlePieceTokens[singlePieceCurrentIndex];
-            const img = document.getElementById('singlePieceImage');
-            const label = document.getElementById('singlePieceLabel');
-            const collectorEl = document.getElementById('singlePieceCollector');
-
-            img.src = `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png`;
-            label.textContent = `#${tokenId}`;
-
-            // Get current owner for this specific token
-            const collector = COLLECTORS_DATA?.find(c => c.tokens && c.tokens.includes(tokenId));
-            const ownerName = collector ? collector.name : null;
-
-            // Show collector name - creates subtle FOMO since each city can only be owned by one person
-            if (ownerName && collectorEl) {
-                collectorEl.textContent = `owned by ${ownerName}`;
-                collectorEl.style.display = 'block';
-            } else if (collectorEl) {
-                collectorEl.style.display = 'none';
-            }
-        }
-
-        function closeSinglePieceView() {
-            document.getElementById('singlePieceOverlay').classList.remove('open');
-        }
-
-        function singlePiecePrev() {
-            singlePieceCurrentIndex = (singlePieceCurrentIndex - 1 + singlePieceTokens.length) % singlePieceTokens.length;
-            updateSinglePieceView();
-        }
-
-        function singlePieceNext() {
-            singlePieceCurrentIndex = (singlePieceCurrentIndex + 1) % singlePieceTokens.length;
-            updateSinglePieceView();
-        }
 
         function generateCollectorTagline(tokenIds) {
             if (!tokenIds || tokenIds.length === 0) return '';
@@ -10378,10 +10191,41 @@
             }).catch(() => prompt('Copy this caption:', caption));
         }
 
-        function openFrameMockup() {
+        // Frame mockup token list for navigation (all minted or collector-specific)
+        let frameMockupTokens = [];
+        let frameMockupCurrentIndex = 0;
+        let frameMockupCollectorName = '';
+
+        function openFrameMockup(tokenId, collectorName) {
             const frameMockup = document.getElementById('frameMockup');
             const frameImage = document.getElementById('frameMockupImage');
-            frameImage.src = getPreviewUrl(currentTokenId);
+            const wallModal = document.getElementById('wallViewModal');
+
+            // Determine which token to show
+            const showToken = tokenId || currentTokenId;
+
+            // Build token list for navigation
+            const allMintedTokens = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
+            frameMockupTokens = allMintedTokens.length > 0 ? allMintedTokens : [showToken];
+            frameMockupCurrentIndex = frameMockupTokens.indexOf(showToken);
+            if (frameMockupCurrentIndex === -1) frameMockupCurrentIndex = 0;
+            frameMockupCollectorName = collectorName || '';
+
+            // Match dark mode from wall view context
+            if (wallModal?.classList.contains('open')) {
+                if (wallModal.classList.contains('wall-black') || wallModal.classList.contains('dark-mode')) {
+                    frameMockup.classList.add('dark-mode');
+                    const modeBtn = document.getElementById('frameMockupMode');
+                    if (modeBtn) modeBtn.textContent = '\u2600';
+                } else {
+                    frameMockup.classList.remove('dark-mode');
+                    const modeBtn = document.getElementById('frameMockupMode');
+                    if (modeBtn) modeBtn.textContent = '\u263E';
+                }
+            }
+
+            frameImage.src = `${MEDIA_BASE}/${CONTRACT}/${showToken}.png`;
+            updateFrameMockupInfo(showToken);
             frameMockup.classList.add('open');
             updateFrameMockupNav();
         }
@@ -10390,40 +10234,47 @@
             document.getElementById('frameMockup').classList.remove('open');
         }
 
+        function updateFrameMockupInfo(tokenId) {
+            const label = document.getElementById('frameMockupLabel');
+            const collectorEl = document.getElementById('frameMockupCollector');
+            if (label) label.textContent = `#${tokenId}`;
+
+            // Look up current owner
+            const collector = COLLECTORS_DATA?.find(c => c.tokens && c.tokens.includes(tokenId));
+            const ownerName = collector ? collector.name : null;
+            if (ownerName && collectorEl) {
+                collectorEl.textContent = `owned by ${ownerName}`;
+                collectorEl.style.display = 'block';
+            } else if (collectorEl) {
+                collectorEl.style.display = 'none';
+            }
+        }
+
         function updateFrameMockupNav() {
-            const matches = getFilteredTokens();
-            const currentIndex = matches.indexOf(currentTokenId);
             const prevBtn = document.getElementById('frameMockupPrev');
             const nextBtn = document.getElementById('frameMockupNext');
-            // Navigation now wraps around, so buttons are always enabled if there are matches
-            if (prevBtn) {
-                prevBtn.disabled = matches.length <= 1;
-            }
-            if (nextBtn) {
-                nextBtn.disabled = currentIndex >= matches.length - 1 || currentIndex === -1;
-            }
+            if (prevBtn) prevBtn.disabled = frameMockupTokens.length <= 1;
+            if (nextBtn) nextBtn.disabled = frameMockupTokens.length <= 1;
         }
 
         function frameMockupPrev() {
-            const matches = getFilteredTokens();
-            if (matches.length === 0) return;
-            const currentIndex = matches.indexOf(currentTokenId);
-            // Wrap around to end if at start
-            const newToken = currentIndex <= 0 ? matches[matches.length - 1] : matches[currentIndex - 1];
+            if (frameMockupTokens.length === 0) return;
+            frameMockupCurrentIndex = (frameMockupCurrentIndex - 1 + frameMockupTokens.length) % frameMockupTokens.length;
+            const newToken = frameMockupTokens[frameMockupCurrentIndex];
+            document.getElementById('frameMockupImage').src = `${MEDIA_BASE}/${CONTRACT}/${newToken}.png`;
+            updateFrameMockupInfo(newToken);
+            // Also update the main view behind
             loadOutput(newToken, true, false);
-            document.getElementById('frameMockupImage').src = getPreviewUrl(newToken);
-            updateFrameMockupNav();
         }
 
         function frameMockupNext() {
-            const matches = getFilteredTokens();
-            if (matches.length === 0) return;
-            const currentIndex = matches.indexOf(currentTokenId);
-            // Wrap around to start if at end
-            const newToken = (currentIndex === -1 || currentIndex >= matches.length - 1) ? matches[0] : matches[currentIndex + 1];
+            if (frameMockupTokens.length === 0) return;
+            frameMockupCurrentIndex = (frameMockupCurrentIndex + 1) % frameMockupTokens.length;
+            const newToken = frameMockupTokens[frameMockupCurrentIndex];
+            document.getElementById('frameMockupImage').src = `${MEDIA_BASE}/${CONTRACT}/${newToken}.png`;
+            updateFrameMockupInfo(newToken);
+            // Also update the main view behind
             loadOutput(newToken, true, false);
-            document.getElementById('frameMockupImage').src = getPreviewUrl(newToken);
-            updateFrameMockupNav();
         }
 
         function toggleFrameMockupDarkMode() {
@@ -10601,8 +10452,9 @@
         // Order print from frame mockup
         document.getElementById('orderPrint')?.addEventListener('click', (e) => {
             e.stopPropagation();
+            const tokenId = frameMockupTokens[frameMockupCurrentIndex] || currentTokenId;
             closeFrameMockup();
-            openPrintInquiryModal([currentTokenId]);
+            openPrintInquiryModal([tokenId]);
         });
 
         // Order print from sidebar
@@ -10620,10 +10472,11 @@
         // Click on frame/image to open OpenSea offer page
         document.getElementById('frameWrapper')?.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (currentTokenId !== undefined) {
-                const confirmed = confirm('You are about to leave this page and go to OpenSea to make an offer on City #' + currentTokenId + '. Continue?');
+            const tokenId = frameMockupTokens[frameMockupCurrentIndex] || currentTokenId;
+            if (tokenId !== undefined) {
+                const confirmed = confirm('You are about to leave this page and go to OpenSea to make an offer on City #' + tokenId + '. Continue?');
                 if (confirmed) {
-                    window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${currentTokenId}`, '_blank');
+                    window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`, '_blank');
                 }
             }
         });
@@ -12450,37 +12303,29 @@
                 case 'd': downloadPng(); break;
                 case 'arrowleft':
                     e.preventDefault();
-                    if (document.getElementById('singlePieceOverlay')?.classList.contains('open')) {
-                        singlePiecePrev();
+                    if (document.getElementById('frameMockup')?.classList.contains('open')) {
+                        frameMockupPrev();
                     } else if (document.getElementById('wallViewModal')?.classList.contains('open')) {
                         navigateToPrevCollector();
                     } else if (document.getElementById('paletteInspector')?.classList.contains('open') && paletteHistory.length > 1) {
                         fanNavigatePrev();
-                    } else if (document.getElementById('frameMockup')?.classList.contains('open')) {
-                        frameMockupPrev();
                     } else if (currentCollectorFilter && document.getElementById('gridPanel')?.classList.contains('open')) {
-                        // Navigate collectors in grid view
                         navigateToPrevCollector();
                     } else if (!document.getElementById('gridPanel')?.classList.contains('open')) {
-                        // Navigate in single view (only if grid panel not open)
                         document.getElementById('prevToken')?.click();
                     }
                     break;
                 case 'arrowright':
                     e.preventDefault();
-                    if (document.getElementById('singlePieceOverlay')?.classList.contains('open')) {
-                        singlePieceNext();
+                    if (document.getElementById('frameMockup')?.classList.contains('open')) {
+                        frameMockupNext();
                     } else if (document.getElementById('wallViewModal')?.classList.contains('open')) {
                         navigateToNextCollector();
                     } else if (document.getElementById('paletteInspector')?.classList.contains('open') && paletteHistory.length > 1) {
                         fanNavigateNext();
-                    } else if (document.getElementById('frameMockup')?.classList.contains('open')) {
-                        frameMockupNext();
                     } else if (currentCollectorFilter && document.getElementById('gridPanel')?.classList.contains('open')) {
-                        // Navigate collectors in grid view
                         navigateToNextCollector();
                     } else if (!document.getElementById('gridPanel')?.classList.contains('open')) {
-                        // Navigate in single view (only if grid panel not open)
                         document.getElementById('nextToken')?.click();
                     }
                     break;
@@ -12497,9 +12342,9 @@
                     if (document.getElementById('aboutModal')?.classList.contains('open')) {
                         document.getElementById('aboutModal').classList.remove('open');
                     }
-                    // Priority 1: Close single piece framed view (within collector wall)
-                    else if (document.getElementById('singlePieceOverlay')?.classList.contains('open')) {
-                        closeSinglePieceView();
+                    // Priority 1: Close frame mockup (single piece view)
+                    else if (document.getElementById('frameMockup').classList.contains('open')) {
+                        closeFrameMockup();
                     }
                     // Priority 2: Close wall view modal
                     else if (document.getElementById('wallViewModal').classList.contains('open')) {
@@ -12508,10 +12353,6 @@
                         if (currentCollectorFilter) {
                             openGridView();
                         }
-                    }
-                    // Priority 2: Close frame mockup
-                    else if (document.getElementById('frameMockup').classList.contains('open')) {
-                        closeFrameMockup();
                     }
                     // Priority 3: Close palette inspector
                     else if (document.getElementById('paletteInspector').classList.contains('open')) {
@@ -16620,13 +16461,8 @@
 
         // Keyboard navigation for zoom (arrows only)
         document.addEventListener('keydown', (e) => {
-            // Single piece framed view navigation
-            const singlePieceOverlay = document.getElementById('singlePieceOverlay');
-            if (singlePieceOverlay?.classList.contains('open')) {
-                if (e.key === 'ArrowLeft') singlePiecePrev();
-                if (e.key === 'ArrowRight') singlePieceNext();
-                return;
-            }
+            // Frame mockup navigation handled by main keydown handler
+            if (document.getElementById('frameMockup')?.classList.contains('open')) return;
             if (!timelineZoom.classList.contains('open')) return;
             if (e.key === 'ArrowLeft') timelineZoomPrev?.click();
             if (e.key === 'ArrowRight') timelineZoomNext?.click();
@@ -16705,7 +16541,7 @@
             if (e.key === 'Escape') {
                 const lightbox = document.getElementById('originsLightbox');
                 const playgroundOverlay = document.getElementById('playgroundOverlay');
-                const singlePieceOverlay = document.getElementById('singlePieceOverlay');
+                const frameMockupEl = document.getElementById('frameMockup');
                 const italyGalleryEl = document.getElementById('italyGallery');
                 const timelineFrameEl = document.getElementById('timelineFrame');
 
@@ -16729,9 +16565,9 @@
                     return;
                 }
 
-                // Priority 2: Close single piece framed view if open
-                if (singlePieceOverlay?.classList.contains('open')) {
-                    closeSinglePieceView();
+                // Priority 2: Close frame mockup if open
+                if (frameMockupEl?.classList.contains('open')) {
+                    closeFrameMockup();
                     return;
                 }
 
