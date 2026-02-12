@@ -506,10 +506,15 @@
         .pantone-category { margin-bottom: 20px; }
         .pantone-category-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
         .pantone-color-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .pantone-color-chip { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); }
+        .pantone-color-chip { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.25s ease; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); }
         .pantone-color-chip:hover { transform: scale(1.2); z-index: 2; box-shadow: 0 6px 20px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.3); }
-        .pantone-color-chip .chip-hex { position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 700; font-family: monospace; white-space: nowrap; opacity: 0; transition: opacity 0.2s; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.7); color: #fff; }
+        .pantone-color-chip .chip-hex { position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 700; font-family: monospace; white-space: nowrap; opacity: 0; transition: all 0.25s ease; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.7); color: #fff; }
         .pantone-color-chip:hover .chip-hex { opacity: 1; }
+        /* Hex visible mode: circles become pills with hex codes inside */
+        .hex-visible .pantone-color-chip { width: auto; height: 34px; border-radius: 17px; padding: 0 12px; gap: 0; }
+        .hex-visible .pantone-color-chip:hover { transform: scale(1.08); }
+        .hex-visible .pantone-color-chip .chip-hex { position: static; transform: none; opacity: 1; background: transparent; padding: 0; border-radius: 0; font-size: 10px; line-height: 34px; }
+        .hex-visible .pantone-color-row { gap: 8px; }
         /* Hex codes display - hidden by default */
         .pantone-hex-section { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; margin-top: 16px; display: none; }
         .pantone-hex-section.visible { display: block; }
@@ -641,7 +646,7 @@
         /* Collect popover menu */
         .collect-popover { position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%) scale(0.95); background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 6px 0; min-width: 160px; opacity: 0; visibility: hidden; transition: all 0.15s ease; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
         .collect-popover.open { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
-        .collect-popover-option { display: block; width: 100%; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-decoration: none; text-align: left; background: none; border: none; cursor: pointer; transition: all 0.15s ease; font-family: inherit; }
+        .collect-popover-option { display: block; width: 100%; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-decoration: none; text-align: left; background: none; border: none; cursor: pointer; transition: all 0.15s ease; font-family: inherit; white-space: nowrap; }
         .collect-popover-option:hover { background: rgba(255,255,255,0.05); color: var(--text); }
         .collect-popover-option span { opacity: 0.5; font-weight: 400; margin-left: 4px; }
         .collect-btn-wrapper { position: relative; display: inline-block; }
@@ -3390,7 +3395,7 @@
             <button class="mint-toggle" id="mintToggle" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
             <div class="collect-popover" id="collectPopoverNav">
                 <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
-                <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Shopify</span></a>
+                <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Studio Shop</span></a>
                 <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
             </div>
         </div>
@@ -3633,7 +3638,7 @@
                     <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
                     <div class="collect-popover" id="collectPopoverWall">
                         <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
-                        <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Shopify</span></a>
+                        <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Studio Shop</span></a>
                         <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
                     </div>
                 </div>
@@ -4060,7 +4065,7 @@
                         <button class="about-mint-btn" id="aboutMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
                         <div class="collect-popover" id="collectPopoverAbout">
                             <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
-                            <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Shopify</span></a>
+                            <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Studio Shop</span></a>
                             <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
                         </div>
                     </div>
@@ -12157,8 +12162,8 @@
 
             function renderPantoneChip(color) {
                 const chipTextColor = getContrastColor(color);
-                return `<div class="pantone-color-chip" style="background: ${color};">
-                    <span class="chip-hex" style="background: ${color}; color: ${chipTextColor};">${color.toUpperCase()}</span>
+                return `<div class="pantone-color-chip" style="background: ${color};" onclick="navigator.clipboard.writeText('${color.toUpperCase()}')">
+                    <span class="chip-hex" style="color: ${chipTextColor};">${color.toUpperCase()}</span>
                 </div>`;
             }
 
@@ -12340,6 +12345,7 @@
                 hexToggle.textContent = 'Show Hex';
             }
             hexSection.classList.remove('visible');
+            colorsEl.classList.remove('hex-visible');
 
             inspector.classList.add('open');
         }
@@ -12369,13 +12375,13 @@
             }
         });
 
-        // Hex codes toggle
+        // Hex codes toggle - transforms circle swatches into pills with hex codes
         document.getElementById('pantoneHexToggle')?.addEventListener('click', (e) => {
             e.stopPropagation();
             const btn = e.currentTarget;
-            const hexSection = document.getElementById('pantoneHexSection');
+            const colorsContainer = document.getElementById('pantoneColors');
             btn.classList.toggle('active');
-            hexSection.classList.toggle('visible');
+            colorsContainer.classList.toggle('hex-visible');
             btn.textContent = btn.classList.contains('active') ? 'Hide Hex' : 'Show Hex';
         });
         document.getElementById('paletteInspector').addEventListener('click', (e) => {
