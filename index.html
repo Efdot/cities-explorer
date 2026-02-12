@@ -1976,8 +1976,9 @@
         .empty-slot-dropdown-desc { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 2px; }
         .empty-slot-dropdown-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 6px 0; }
         /* Grid status nudge - bottom bar message */
-        .wall-view-grid-nudge { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(20,20,20,0.95); border-top: 1px solid rgba(255,255,255,0.08); padding: 14px 24px; display: none; align-items: center; justify-content: center; gap: 16px; z-index: 25; backdrop-filter: blur(12px); }
-        .wall-view-grid-nudge.visible { display: flex; }
+        .wall-view-grid-nudge { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(20,20,20,0.95); border-top: 1px solid rgba(255,255,255,0.08); padding: 14px 24px; display: flex; align-items: center; justify-content: center; gap: 16px; z-index: 25; backdrop-filter: blur(12px); opacity: 0; transform: translateY(100%); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
+        .wall-view-grid-nudge.ready { display: flex; }
+        .wall-view-grid-nudge.ready.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
         .wall-view-grid-nudge-text { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.7); letter-spacing: 0.05em; text-transform: uppercase; }
         .wall-view-grid-nudge-text span { color: #fff; font-weight: 700; }
         .wall-view-grid-nudge-text .grid-count { color: #c9a227; }
@@ -7730,6 +7731,31 @@
                 lastTouchDistance = 0;
             }, { passive: true });
 
+            // Show nudge bar only when mouse is near bottom of screen
+            const wallModal = document.getElementById('wallViewModal');
+            let nudgeHideTimer = null;
+            wallModal?.addEventListener('mousemove', (e) => {
+                const nudge = document.getElementById('wallViewGridNudge');
+                if (!nudge || !nudge.classList.contains('ready')) return;
+                const distFromBottom = window.innerHeight - e.clientY;
+                if (distFromBottom < 100) {
+                    nudge.classList.add('show');
+                    if (nudgeHideTimer) { clearTimeout(nudgeHideTimer); nudgeHideTimer = null; }
+                } else {
+                    if (!nudgeHideTimer) {
+                        nudgeHideTimer = setTimeout(() => {
+                            nudge.classList.remove('show');
+                            nudgeHideTimer = null;
+                        }, 400);
+                    }
+                }
+            });
+            wallModal?.addEventListener('mouseleave', () => {
+                const nudge = document.getElementById('wallViewGridNudge');
+                if (nudge) nudge.classList.remove('show');
+                if (nudgeHideTimer) { clearTimeout(nudgeHideTimer); nudgeHideTimer = null; }
+            });
+
         }
 
         let wallViewTokenIds = [];
@@ -7810,55 +7836,13 @@
             const tempCities = wall?.querySelectorAll('.wall-view-frame.temp-city').length || 0;
             const totalCities = realCities + tempCities;
             const labelEl = document.getElementById('wallViewCollectorLabel');
-            const rawName = labelEl?.dataset.rawName || '';
             const collectorName = labelEl?.querySelector('.collector-name-value')?.textContent || labelEl?.dataset.rawName || 'Collector';
-            const isTrying = tempCities > 0;
 
-            // Check if this collector is in the top collectors
-            const collectorRank = COLLECTORS_DATA.findIndex(c => c.name === rawName) + 1;
-            const isTopCollector = collectorRank > 0 && collectorRank <= 10;
-
-            const status = analyzeGridStatus(totalCities);
-            const realStatus = analyzeGridStatus(realCities);
-
-            if (status.isPerfect) {
-                let message = '';
-                if (status.isMassive) {
-                    // Massive collection
-                    const verb = isTrying ? 'is trying out' : 'has';
-                    message = `<span>${collectorName}</span> ${verb} a legendary collection of <span class="grid-count">${totalCities}</span> cities! ✦✦✦`;
-                } else if (status.superGrid) {
-                    // Super grid (multiple 2x2s)
-                    const gridIcon = generateGridIcon('2×2');
-                    const verb = isTrying ? 'is trying out' : 'has';
-                    message = `<span>${collectorName}</span> ${verb} a super grid! ${gridIcon} <span class="grid-count">${status.superGrid}</span> grids ✦`;
-                } else {
-                    // Regular perfect grid
-                    const gridIcon = generateGridIcon(status.dims);
-                    if (isTrying) {
-                        message = `<span>${collectorName}</span> is trying a ${gridIcon} <span class="grid-count">${status.dims}</span> grid! ✦`;
-                    } else {
-                        message = `<span>${collectorName}</span> has a perfect ${gridIcon} <span class="grid-count">${status.dims}</span> grid! ✦`;
-                    }
-                }
-                // Add top collector congratulations
-                if (isTopCollector && !isTrying) {
-                    message += ` <span style="margin-left: 8px; color: #c9a227;">🏆 Top ${collectorRank} Collector!</span>`;
-                }
-                nudgeText.innerHTML = message;
-                nudge.classList.add('visible');
-            } else if (status.needed <= 5) {
-                // Close to a grid
-                const gridIcon = generateGridIcon(status.dims);
-                if (status.isFirst) {
-                    // First grid messaging
-                    nudgeText.innerHTML = `<span>${collectorName}</span> is <span class="grid-count">${status.needed}</span> away from their first ${gridIcon} grid`;
-                } else {
-                    nudgeText.innerHTML = `<span>${collectorName}</span> is <span class="grid-count">${status.needed}</span> away from a ${gridIcon} <span style="margin-left: 2px;">${status.dims} GRID</span>`;
-                }
-                nudge.classList.add('visible');
+            if (totalCities > 0) {
+                nudgeText.innerHTML = `<span>${collectorName}</span> is building a set 🏙️ <span class="grid-count">${totalCities}</span> cities and counting`;
+                nudge.classList.add('ready');
             } else {
-                nudge.classList.remove('visible');
+                nudge.classList.remove('ready');
             }
         }
 
@@ -9607,6 +9591,10 @@
                 lineBtn.classList.remove('active');
                 lineBtn.innerHTML = '<span class="line-icon">⊞</span> GRID';
             }
+
+            // Reset nudge bar
+            const nudge = document.getElementById('wallViewGridNudge');
+            if (nudge) nudge.classList.remove('ready', 'show');
 
             // Clean up any lingering overlays
             document.querySelector('.try-city-picker')?.remove();
