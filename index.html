@@ -11569,6 +11569,22 @@
                     return `<div class="gallery-item"><div class="item-info"><img src="${thumbUrl}" alt="City #${fav.tokenId}" loading="eager" onerror="this.src='${fullUrl}'" style="width:100%;height:100%;object-fit:cover;"><span class="gallery-item-id">#${fav.tokenId}</span></div><div class="item-actions"><button class="load-btn" onclick="loadFavorite(${i})">LOAD</button><button class="delete-btn" onclick="deleteFavorite(${i})">REMOVE</button></div></div>`;
                 }).join('');
             }
+
+            // Sync grid-group-fav buttons across grid view
+            document.querySelectorAll('.grid-group-fav').forEach(btn => {
+                const palette = btn.dataset.palette;
+                const isFav = isPaletteFavorited(palette);
+                btn.classList.toggle('favorited', isFav);
+                btn.textContent = isFav ? '♥' : '♡';
+            });
+
+            // Sync palette inspector fav button if open
+            const inspectorFavBtn = document.getElementById('pantoneFavBtn');
+            if (inspectorFavBtn && inspectorFavBtn.dataset.palette) {
+                const isFav = isPaletteFavorited(inspectorFavBtn.dataset.palette);
+                inspectorFavBtn.classList.toggle('favorited', isFav);
+                inspectorFavBtn.textContent = isFav ? '♥' : '♡';
+            }
         }
         // Expose to window for inline onclick
         window.updateGallery = updateGallery;
