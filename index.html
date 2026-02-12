@@ -2207,7 +2207,7 @@
         .print-inquiry-frame-preview::before { content: ''; position: absolute; inset: 0; border-radius: 10px; background: radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,0.5) 0%, transparent 50%); pointer-events: none; }
         .print-inquiry-mini-frame { background: #c4a47a; padding: 6px; box-shadow: 4px 6px 16px rgba(0,0,0,0.15), 2px 3px 6px rgba(0,0,0,0.1); position: relative; z-index: 1; }
         .print-inquiry-mini-inner { background: #a88b62; padding: 2px; box-shadow: inset 0 0 2px rgba(0,0,0,0.2); }
-        .print-inquiry-mini-inner img { display: block; width: 100%; height: auto; max-height: 180px; object-fit: contain; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .print-inquiry-mini-inner img { display: block; width: 100%; height: auto; max-height: 180px; object-fit: contain; box-shadow: 0 1px 2px rgba(0,0,0,0.2); border: 3px solid #fff; box-sizing: border-box; }
         .print-inquiry-frame-label { font-size: 10px; font-weight: 600; color: #888; letter-spacing: 0.1em; margin-top: 10px; position: relative; z-index: 1; }
         .print-inquiry-frame-colors { display: flex; gap: 8px; margin-top: 8px; position: relative; z-index: 1; }
         .print-inquiry-frame-color { width: 20px; height: 20px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
@@ -3952,7 +3952,7 @@
         <div class="print-inquiry-content">
             <button class="print-inquiry-close" id="printInquiryClose">&times;</button>
             <div id="printInquiryForm">
-                <div class="print-inquiry-title">Get a Print</div>
+                <div class="print-inquiry-title" id="printInquiryTitle">Get a Print</div>
 
                 <!-- Frame preview with artwork -->
                 <div class="print-inquiry-frame-preview" id="printInquiryFramePreview">
@@ -3977,13 +3977,13 @@
                 <div class="print-inquiry-field">
                     <label>Size</label>
                     <div class="print-inquiry-sizes">
-                        <div class="print-inquiry-size-option active" data-size="9x16" data-price="50" data-signed="false" data-framed="false">
+                        <div class="print-inquiry-size-option" data-size="9x16" data-price="50" data-signed="false" data-framed="false">
                             <div class="size-dims">9 × 16"</div>
                             <div class="size-cm">23 × 41 cm</div>
                             <div class="size-price">$50</div>
                             <div class="size-price-converted"></div>
                         </div>
-                        <div class="print-inquiry-size-option" data-size="18x32" data-price="250" data-signed="true" data-framed="false">
+                        <div class="print-inquiry-size-option active" data-size="18x32" data-price="250" data-signed="true" data-framed="false">
                             <div class="size-dims">18 × 32"</div>
                             <div class="size-cm">46 × 81 cm</div>
                             <div class="size-price">$250</div>
@@ -7522,6 +7522,14 @@
             if (frameColorsEl) frameColorsEl.style.display = isFramed ? '' : 'none';
             if (wallToggleEl) wallToggleEl.style.display = isFramed ? '' : 'none';
 
+            // Set title based on active selection
+            const titleEl = document.getElementById('printInquiryTitle');
+            if (titleEl && activeSize) {
+                if (activeSize.dataset.size === '9x16') titleEl.textContent = 'Get a Poster';
+                else if (activeSize.dataset.framed === 'true') titleEl.textContent = 'Get a Framed Print';
+                else titleEl.textContent = 'Get a Print';
+            }
+
             if (modal) modal.classList.add('open');
         }
         window.openPrintInquiryModal = openPrintInquiryModal;
@@ -7957,8 +7965,8 @@
             // so handlers outside initCollectorsPanel can access them directly
 
             // Size toggle
-            let printInquirySize = '9x16';
-            let printInquiryPrice = 50;
+            let printInquirySize = '18x32';
+            let printInquiryPrice = 250;
             document.querySelectorAll('.print-inquiry-size-option').forEach(opt => {
                 opt.addEventListener('click', () => {
                     document.querySelectorAll('.print-inquiry-size-option').forEach(o => o.classList.remove('active'));
@@ -7973,6 +7981,13 @@
                     if (miniFrame) miniFrame.classList.toggle('frameless', !isFramed);
                     if (frameColors) frameColors.style.display = isFramed ? '' : 'none';
                     if (wallToggle) wallToggle.style.display = isFramed ? '' : 'none';
+                    // Update title based on selected product
+                    const titleEl = document.getElementById('printInquiryTitle');
+                    if (titleEl) {
+                        if (opt.dataset.size === '9x16') titleEl.textContent = 'Get a Poster';
+                        else if (opt.dataset.framed === 'true') titleEl.textContent = 'Get a Framed Print';
+                        else titleEl.textContent = 'Get a Print';
+                    }
                 });
             });
 
@@ -8053,13 +8068,21 @@
                 document.getElementById('printInquiryEmail').value = '';
                 document.getElementById('printInquiryCountry').value = 'United States';
                 document.getElementById('printInquiryNotes').value = '';
-                // Reset size toggle
-                document.querySelectorAll('.print-inquiry-size-option').forEach((o, i) => o.classList.toggle('active', i === 0));
-                printInquirySize = '9x16';
-                printInquiryPrice = 50;
-                // Hide frame preview for non-framed default
+                // Reset size toggle to default (signed print, index 1)
+                document.querySelectorAll('.print-inquiry-size-option').forEach((o, i) => o.classList.toggle('active', i === 1));
+                printInquirySize = '18x32';
+                printInquiryPrice = 250;
+                // Reset title
+                const titleEl = document.getElementById('printInquiryTitle');
+                if (titleEl) titleEl.textContent = 'Get a Print';
+                // Reset frame preview for non-framed default
                 const fp = document.getElementById('printInquiryFramePreview');
-                if (fp) fp.style.display = 'none';
+                const mf = document.getElementById('printInquiryMiniFrame');
+                const fc = document.querySelector('.print-inquiry-frame-colors');
+                const wt = document.getElementById('printInquiryWallToggle');
+                if (mf) mf.classList.add('frameless');
+                if (fc) fc.style.display = 'none';
+                if (wt) wt.style.display = 'none';
             });
 
             document.getElementById('printInquirySend')?.addEventListener('click', () => {
