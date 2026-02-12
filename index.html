@@ -2955,6 +2955,150 @@
         .drift-mode:hover .drift-hint { opacity: 0.4; }
         .drift-mode.light .drift-hint { color: #999; }
 
+        /* ===== Mobile Redesign: sidebar below output, nav arrows, bigger text/buttons ===== */
+        @media (max-width: 768px) {
+            /* Make page scrollable vertically */
+            body { overflow-y: auto !important; overflow-x: hidden !important; display: flex; flex-direction: column; }
+            .app-wrapper { order: 2; height: auto; flex-direction: column; }
+
+            /* Sidebar flows below output instead of hidden drawer */
+            .sidebar {
+                position: relative !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow-y: visible;
+                padding: 20px 20px 32px;
+                border-top: 1px solid var(--border);
+            }
+            .sidebar.open { left: 0 !important; }
+
+            /* Hide hamburger and overlay - sidebar is always visible below */
+            .mobile-menu-toggle { display: none !important; }
+            .sidebar-overlay { display: none !important; }
+
+            /* Main content: relative-positioned at top, not fixed */
+            .main-content {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                width: 100% !important;
+                order: 1;
+                padding: 44px 48px 8px !important;
+                min-height: 0;
+                flex: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                pointer-events: auto;
+            }
+
+            /* Frame container fills available width between arrows */
+            .frame-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: none !important;
+            }
+
+            /* Image: size to fit nicely, leave room for sidebar peek */
+            .preview-image {
+                max-height: 55vh !important;
+                max-width: 100%;
+            }
+
+            /* Show nav arrows on either side of output */
+            .side-nav-arrow {
+                display: flex !important;
+                position: fixed;
+                top: 30vh;
+                transform: translateY(-50%);
+                opacity: 0.5 !important;
+                width: 40px;
+                height: 56px;
+                font-size: 28px;
+                z-index: 60;
+                background: rgba(20, 19, 28, 0.6);
+                border-radius: 8px;
+                color: var(--text);
+                -webkit-tap-highlight-color: transparent;
+            }
+            .side-nav-arrow:active { opacity: 0.9 !important; background: rgba(20, 19, 28, 0.85); }
+            .side-nav-arrow.left { left: 4px !important; }
+            .side-nav-arrow.right { right: 4px !important; }
+
+            /* Swipe hint */
+            .main-content { touch-action: pan-y; }
+
+            /* Bottom info: bigger text */
+            .bottom-info { margin-top: 10px !important; gap: 6px !important; }
+            .info-display { font-size: 12px !important; padding: 10px 16px !important; }
+
+            /* Sidebar text and controls: bigger */
+            .sidebar h1 { font-size: 24px; }
+            .section-label { font-size: 10px !important; }
+            .control-group label { font-size: 10px !important; }
+            .control-group input[type="text"],
+            .control-group input[type="number"],
+            .control-group select { padding: 14px 18px !important; font-size: 14px !important; border-radius: 50px; }
+
+            /* Token nav: bigger buttons */
+            .token-nav { gap: 10px; }
+            .token-nav button { min-width: 52px; min-height: 52px; font-size: 18px !important; font-weight: 700; }
+
+            /* Bigger general buttons */
+            .btn { min-height: 50px; font-size: 12px !important; padding: 14px 16px; }
+            .btn-sm { min-height: 42px; font-size: 10px !important; padding: 12px 14px; }
+            .icon-btn { width: 46px; height: 46px; font-size: 18px; }
+            .heart-btn { width: 50px; height: 50px; font-size: 22px; }
+
+            /* Filters and metadata toggles: bigger */
+            .filters-toggle, .metadata-toggle { padding: 12px 18px; }
+            .filters-toggle span, .metadata-toggle span { font-size: 10px !important; }
+            .filter-grid select { font-size: 13px !important; padding: 12px 14px !important; }
+            .filter-grid .control-group label { font-size: 9px !important; }
+            .checkbox-filter label { font-size: 11px; }
+
+            /* Owner display */
+            .owner-display { font-size: 12px; }
+
+            /* Sidebar footer: static within sidebar */
+            .sidebar-footer {
+                display: block !important;
+                position: relative !important;
+                width: 100% !important;
+                padding: 16px 0 0 !important;
+                background: none !important;
+            }
+
+            /* Similar outputs: bigger */
+            .similar-outputs-grid { max-width: 100%; }
+
+            /* Action bar buttons */
+            .action-bar .icon-btn { width: 44px; height: 44px; }
+
+            /* Studio credit */
+            .studio-credit { padding-top: 16px; padding-bottom: 8px; }
+
+            /* Sidebar note area */
+            .sidebar-note-area { min-height: 40px; }
+
+            /* Efdot shop icon - adjust for scrollable layout */
+            .efdot-shop-fixed { bottom: auto; position: relative; margin: 8px auto; display: block; }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .main-content { padding: 44px 40px 8px !important; }
+            .preview-image { max-height: 50vh !important; }
+            .side-nav-arrow { width: 36px; height: 48px; font-size: 24px; }
+            .side-nav-arrow.left { left: 2px !important; }
+            .side-nav-arrow.right { right: 2px !important; }
+            .sidebar { padding: 16px 16px 28px; }
+        }
+
     </style>
 </head>
 <body>
