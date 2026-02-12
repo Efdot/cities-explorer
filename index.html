@@ -226,7 +226,8 @@
         .icon-buttons-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; margin-top: 8px; }
         .icon-buttons-row .icon-btn { flex: 0 0 auto; text-decoration: none; background: transparent; border-radius: 8px; width: 44px; height: 36px; font-size: 16px; display: flex; align-items: center; justify-content: center; }
         .icon-buttons-row .icon-btn:hover { transform: translateY(-1px); background: var(--bg-input); }
-        .icon-buttons-row .icon-btn.text-btn { width: auto; padding: 0 12px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 18px; border: 1px solid var(--border); color: var(--text-muted); }
+        .icon-buttons-row .icon-btn.text-btn { width: auto; padding: 0 8px; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; border-radius: 8px; border: none; color: var(--text-muted); opacity: 0.5; transition: all 0.2s ease; }
+        .icon-buttons-row .icon-btn.text-btn:hover { opacity: 1; color: var(--warm); background: transparent; }
         .icon-buttons-row .opensea-icon { filter: grayscale(100%); }
         .icon-buttons-row .opensea-icon:hover { filter: grayscale(0%); }
 
@@ -1205,6 +1206,27 @@
         .frame-mockup .frame-wrapper.frame-black .frame-inner { background: #0a0a0a; }
         .frame-mockup .frame-wrapper.frame-dark-wood { background: #5a3d2b; }
         .frame-mockup .frame-wrapper.frame-dark-wood .frame-inner { background: #3d2a1c; }
+        /* Frame mockup responsive */
+        @media (max-width: 768px) {
+            .frame-mockup-content { padding: 20px; }
+            .frame-wrapper { padding: 8px; max-width: 85vw; max-height: 70vh; }
+            .frame-inner { padding: 3px; }
+            .frame-inner img { max-height: calc(70vh - 24px); }
+            .frame-mockup-close { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 18px; }
+            .frame-mockup-download { top: 12px; right: 56px; width: 36px; height: 36px; font-size: 16px; }
+            .frame-mockup-order { top: 12px; right: 100px; height: 36px; font-size: 9px; padding: 0 14px; border-radius: 18px; }
+            .frame-mockup-mode { top: 12px; left: 12px; width: 36px; height: 36px; font-size: 14px; }
+            .frame-mockup-nav { width: 36px; height: 36px; font-size: 16px; }
+            .frame-mockup-nav.prev { left: 12px; }
+            .frame-mockup-nav.next { right: 12px; }
+            .frame-mockup-colors { bottom: 12px; padding: 5px 10px; gap: 8px; }
+            .frame-color-btn { width: 20px; height: 20px; }
+            .frame-mockup-label { font-size: 10px; }
+        }
+        @media (max-width: 480px) {
+            .frame-mockup-order { display: none; }
+            .frame-mockup-download { right: 56px; }
+        }
 
         /* Timeline Framed View - starts in dark mode */
         .timeline-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0a; z-index: 2700; display: none; align-items: center; justify-content: center; flex-direction: column; }
@@ -3199,12 +3221,13 @@
             .mob-menu-icon { font-size: 16px; }
         }
 
-        /* Print inquiry mobile: full-screen, scrollable */
+        /* Print form responsive */
+        @media (max-width: 900px) {
+            .print-inquiry-content { max-width: 360px; }
+            .print-inquiry-mini-inner img { max-height: 160px; }
+        }
         @media (max-width: 768px) {
-            .print-inquiry-modal {
-                align-items: stretch;
-                justify-content: stretch;
-            }
+            .print-inquiry-modal { align-items: stretch; justify-content: stretch; }
             .print-inquiry-content {
                 border-radius: 0;
                 max-width: 100%;
@@ -3213,8 +3236,18 @@
                 height: 100%;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
+                padding: 20px 16px;
             }
+            .print-inquiry-frame-preview { padding: 16px 12px 10px; margin-bottom: 12px; }
             .print-inquiry-mini-inner img { max-height: 140px; }
+            .print-inquiry-sizes { gap: 4px; }
+            .print-inquiry-size-option { padding: 6px 2px; }
+            .print-inquiry-size-option .size-dims { font-size: 11px; }
+            .print-inquiry-size-option .size-price { font-size: 10px; }
+        }
+        @media (max-width: 380px) {
+            .print-inquiry-mini-inner img { max-height: 120px; }
+            .print-inquiry-frame-color { width: 18px; height: 18px; }
         }
 
     </style>
