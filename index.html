@@ -2419,6 +2419,8 @@
             .grid-brand { position: static; flex-wrap: nowrap; justify-content: flex-start; gap: 8px; align-items: baseline; }
             .grid-brand h1 { font-size: 18px; }
             .grid-controls { order: 2; justify-content: flex-start; }
+            .grid-about-link { margin-left: 4px; margin-right: 40px; }
+            .grid-about-link img { height: 14px; }
             .grid-artist-logos { gap: 4px; display: flex; }
             .grid-artist-logo { height: 11px; top: 0; }
             .grid-artist-logo.diid-logo { height: 14px; }
@@ -2456,6 +2458,16 @@
             .grid-filter-bar { order: 11; position: fixed; bottom: 50px; left: 0; right: 0; z-index: 159; border-radius: 0; overflow-y: auto; max-height: 50vh; }
             .grid-filter-bar.open { display: flex; padding: 16px; }
             .grid-content { order: 5; padding-bottom: 90px; }
+            /* Collector banner: center name above artworks on mobile */
+            .collector-banner { flex-direction: column; gap: 6px; padding: 10px 48px; align-items: center; text-align: center; }
+            .collector-banner-left { flex-direction: column; align-items: center; gap: 4px; }
+            .collector-banner-name { font-size: 13px; letter-spacing: 0.1em; }
+            .collector-banner-right { gap: 10px; }
+            .collector-banner-phrase { display: none; }
+            .collector-banner-nav { width: 28px; height: 28px; font-size: 16px; }
+            .collector-banner-prev { left: 10px; }
+            .collector-banner-next { right: 40px; }
+            .collector-banner-close { right: 10px; }
         }
 
         /* Compact nav buttons when space is tight */
@@ -2513,10 +2525,10 @@
             .frame-container { width: auto; max-width: calc(100% - 24px); display: flex; align-items: center; justify-content: center; overflow: visible; flex: 1; min-height: 0; }
             .preview-image { max-height: calc(100vh - 160px); max-width: 100%; width: auto; height: auto; object-fit: contain; }
             .bottom-info { margin-top: 12px; }
-            .top-nav-fixed { top: 12px; right: 12px; gap: 6px; }
-            .view-toggle-btn { width: 32px; height: 32px; min-width: 32px; }
-            .mint-toggle { display: flex; padding: 2px; gap: 0px; }
-            .mint-letter { height: 12px; }
+            .top-nav-fixed { top: 8px; right: 12px; gap: 4px; }
+            .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
+            .mint-toggle { display: flex; padding: 2px; gap: 0px; font-size: 13px; }
+            .mint-letter { height: 10px; }
             .grid-toggle { bottom: 16px; left: 50%; transform: translateX(-50%); padding: 12px 24px; font-size: 10px; }
             .collectors-toggle { display: none; }
             .gallery-panel, .collectors-panel { width: 100%; max-width: 100vw; right: 0; left: 0; transform: translateX(100%); padding: 20px 16px; box-sizing: border-box; }
