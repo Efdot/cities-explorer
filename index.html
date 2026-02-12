@@ -128,7 +128,10 @@
             .artist-logos:hover .logo-x { opacity: 0.5; }
         }
         @media (max-width: 768px) {
-            .artist-logo, .artist-logos .logo-x { opacity: 0.5; }
+            /* Logos hidden on mobile - shown in action sheet footer */
+            .artist-logo, .artist-logos .logo-x { opacity: 0; pointer-events: none; }
+            .artist-logos { display: none; }
+            .sidebar h1 { display: none; }
         }
         .artist-logo:hover { opacity: 0.9; filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(212, 165, 116, 0.5)); }
         .artist-logo.ef-logo:hover { animation: logoWiggle 0.4s ease-in-out; }
@@ -2534,41 +2537,9 @@
         .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.8); z-index: 9; opacity: 0; transition: opacity 0.3s; }
         .sidebar-overlay.visible { opacity: 1; }
 
+        /* Legacy mobile (Layout A) - now handled by Layout C below */
         @media (max-width: 768px) {
-            body { overflow: hidden; }
-            .mobile-menu-toggle { display: flex; }
-            .sidebar { position: fixed; left: -300px; top: 0; height: 100vh; width: 280px; z-index: 100; transition: left 0.3s ease; overflow-y: auto; }
-            .sidebar.open { left: 0; }
-            .sidebar-overlay { display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.85); z-index: 99; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-            .sidebar-overlay.visible { opacity: 1; pointer-events: auto; }
-            .main-content { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; padding: 16px; padding-top: 50px; padding-bottom: 16px; justify-content: center; align-items: center; box-sizing: border-box; display: flex; flex-direction: column; }
-            .frame-container { width: auto; max-width: calc(100% - 24px); display: flex; align-items: center; justify-content: center; overflow: visible; flex: 1; min-height: 0; }
-            .preview-image { max-height: calc(100vh - 160px); max-width: 100%; width: auto; height: auto; object-fit: contain; }
-            .bottom-info { margin-top: 12px; }
-            .top-nav-fixed { top: 8px; right: 12px; gap: 4px; }
-            .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
-            .mint-toggle { display: flex; padding: 2px; gap: 0px; font-size: 13px; }
-            .mint-letter { height: 10px; }
-            .grid-toggle { bottom: 16px; left: 50%; transform: translateX(-50%); padding: 12px 24px; font-size: 10px; }
             .collectors-toggle { display: none; }
-            .gallery-panel, .collectors-panel { width: 100%; max-width: 100vw; right: 0; left: 0; transform: translateX(100%); padding: 20px 16px; box-sizing: border-box; }
-            .gallery-panel.open, .collectors-panel.open { transform: translateX(0); }
-            .collectors-panel::before { display: none; } /* Hide drag handle on mobile */
-            /* Hide the top-nav view toggle when collectors panel is open on mobile to avoid double X */
-            body.collectors-open .top-nav-fixed { display: none; }
-            .info-display { padding: 8px 12px; font-size: 9px; }
-            .status-message { bottom: 20px; padding: 12px 20px; font-size: 10px; }
-            .keyboard-hints { display: none; }
-            .section-label:first-of-type { margin-top: 0; }
-            .similar-outputs { margin-top: 4px; }
-        }
-        @media (max-width: 480px) {
-            .filter-grid { grid-template-columns: 1fr; }
-            .btn-group, .share-group { flex-direction: column; }
-            .main-content { padding: 10px; padding-top: 50px; padding-bottom: 16px; }
-            .preview-image { max-height: calc(100vh - 150px); }
-            .bottom-info { margin-top: 6px; gap: 3px; }
-            .info-display { padding: 6px 10px; font-size: 8px; }
         }
         @media (pointer: coarse) {
             .btn { min-height: 48px; }
@@ -2996,148 +2967,236 @@
         .drift-mode:hover .drift-hint { opacity: 0.4; }
         .drift-mode.light .drift-hint { color: #999; }
 
-        /* ===== Mobile Redesign: sidebar below output, nav arrows, bigger text/buttons ===== */
+        /* ===== Mobile Redesign: Art-first with bottom toolbar + action sheet ===== */
+
+        /* Mobile bottom bar - hidden on desktop */
+        .mobile-bottom-bar { display: none; }
+        .mobile-sheet-overlay { display: none; }
+        .mobile-sheet { display: none; }
+
         @media (max-width: 768px) {
-            /* Make page scrollable vertically */
-            body { overflow-y: auto !important; overflow-x: hidden !important; display: flex; flex-direction: column; }
-            .app-wrapper { order: 2; height: auto; flex-direction: column; }
-
-            /* Sidebar flows below output instead of hidden drawer */
-            .sidebar {
-                position: relative !important;
-                left: 0 !important;
-                width: 100% !important;
-                height: auto !important;
-                overflow-y: visible;
-                padding: 20px 20px 32px;
-                border-top: 1px solid var(--border);
-            }
-            .sidebar.open { left: 0 !important; }
-
-            /* Hide hamburger and overlay - sidebar is always visible below */
+            /* Override Layout A: no drawer, no hamburger */
+            body { overflow: hidden !important; }
             .mobile-menu-toggle { display: none !important; }
             .sidebar-overlay { display: none !important; }
 
-            /* Main content: relative-positioned at top, not fixed */
+            /* Hide sidebar completely on mobile */
+            .sidebar {
+                display: none !important;
+            }
+
+            /* Art fills the screen above the bottom bar */
             .main-content {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                right: auto !important;
-                bottom: auto !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 52px !important;
                 width: 100% !important;
-                order: 1;
-                padding: 44px 48px 8px !important;
-                min-height: 0;
-                flex: none;
-                display: flex;
+                padding: 8px 12px !important;
+                display: flex !important;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 pointer-events: auto;
+                box-sizing: border-box;
             }
 
-            /* Frame container fills available width between arrows */
             .frame-container {
-                width: 100% !important;
+                width: auto !important;
                 max-width: 100% !important;
-                flex: none !important;
+                flex: 1 !important;
+                min-height: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
-            /* Image: size to fit nicely, leave room for sidebar peek */
             .preview-image {
-                max-height: 55vh !important;
-                max-width: 100%;
+                max-height: calc(100vh - 100px) !important;
+                max-width: 100% !important;
+                width: auto;
+                height: auto;
+                object-fit: contain;
             }
 
-            /* Show nav arrows on either side of output */
-            .side-nav-arrow {
+            /* Hide bottom info - token shown in bottom bar */
+            .bottom-info { display: none !important; }
+
+            /* Hide side nav arrows - use bottom bar instead */
+            .side-nav-arrow { display: none !important; }
+
+            /* Hide grid toggle - it's in the sheet */
+            .grid-toggle { display: none !important; }
+
+            /* Hide efdot fixed shop icon */
+            .efdot-shop-fixed { display: none !important; }
+
+            /* Top nav: keep collect button, shrink */
+            .top-nav-fixed { top: 8px; right: 8px; gap: 4px; }
+            .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
+            .mint-toggle { padding: 2px; gap: 0px; font-size: 12px; }
+
+            /* Collectors/Gallery panels still slide from right, full width */
+            .gallery-panel, .collectors-panel { width: 100%; max-width: 100vw; right: 0; left: 0; transform: translateX(100%); padding: 20px 16px; box-sizing: border-box; }
+            .gallery-panel.open, .collectors-panel.open { transform: translateX(0); }
+            .collectors-panel::before { display: none; }
+            body.collectors-open .top-nav-fixed { display: none; }
+
+            .status-message { bottom: 64px; }
+            .keyboard-hints { display: none; }
+
+            /* ===== Mobile Bottom Bar ===== */
+            .mobile-bottom-bar {
                 display: flex !important;
                 position: fixed;
-                top: 30vh;
-                transform: translateY(-50%);
-                opacity: 0.5 !important;
-                width: 40px;
-                height: 56px;
-                font-size: 28px;
-                z-index: 60;
-                background: rgba(20, 19, 28, 0.6);
-                border-radius: 8px;
-                color: var(--text);
+                bottom: 0; left: 0; right: 0;
+                height: 52px;
+                background: var(--bg-panel);
+                border-top: 1px solid var(--border);
+                z-index: 500;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 12px;
                 -webkit-tap-highlight-color: transparent;
             }
-            .side-nav-arrow:active { opacity: 0.9 !important; background: rgba(20, 19, 28, 0.85); }
-            .side-nav-arrow.left { left: 4px !important; }
-            .side-nav-arrow.right { right: 4px !important; }
-
-            /* Swipe hint */
-            .main-content { touch-action: pan-y; }
-
-            /* Bottom info: bigger text */
-            .bottom-info { margin-top: 10px !important; gap: 6px !important; }
-            .info-display { font-size: 12px !important; padding: 10px 16px !important; }
-
-            /* Sidebar text and controls: bigger */
-            .sidebar h1 { font-size: 24px; }
-            .section-label { font-size: 10px !important; }
-            .control-group label { font-size: 10px !important; }
-            .control-group input[type="text"],
-            .control-group input[type="number"],
-            .control-group select { padding: 14px 18px !important; font-size: 14px !important; border-radius: 50px; }
-
-            /* Token nav: bigger buttons */
-            .token-nav { gap: 10px; }
-            .token-nav button { min-width: 52px; min-height: 52px; font-size: 18px !important; font-weight: 700; }
-
-            /* Bigger general buttons */
-            .btn { min-height: 50px; font-size: 12px !important; padding: 14px 16px; }
-            .btn-sm { min-height: 42px; font-size: 10px !important; padding: 12px 14px; }
-            .icon-btn { width: 46px; height: 46px; font-size: 18px; }
-            .heart-btn { width: 50px; height: 50px; font-size: 22px; }
-
-            /* Filters and metadata toggles: bigger */
-            .filters-toggle, .metadata-toggle { padding: 12px 18px; }
-            .filters-toggle span, .metadata-toggle span { font-size: 10px !important; }
-            .filter-grid select { font-size: 13px !important; padding: 12px 14px !important; }
-            .filter-grid .control-group label { font-size: 9px !important; }
-            .checkbox-filter label { font-size: 11px; }
-
-            /* Owner display */
-            .owner-display { font-size: 12px; }
-
-            /* Sidebar footer: static within sidebar */
-            .sidebar-footer {
-                display: block !important;
-                position: relative !important;
-                width: 100% !important;
-                padding: 16px 0 0 !important;
-                background: none !important;
+            .mob-nav-group {
+                display: flex;
+                align-items: center;
+                gap: 2px;
+            }
+            .mob-btn {
+                background: none;
+                border: none;
+                color: var(--text-dim);
+                font-size: 18px;
+                width: 42px;
+                height: 42px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border-radius: 50%;
+                transition: all 0.15s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .mob-btn:active { background: var(--bg-input); color: var(--text); transform: scale(0.92); }
+            .mob-token {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--warm);
+                letter-spacing: 0.04em;
+                min-width: 48px;
+                text-align: center;
+                cursor: pointer;
+            }
+            .mob-actions {
+                display: flex;
+                align-items: center;
+                gap: 0;
+            }
+            .mob-fav { font-size: 20px; }
+            .mob-fav.active { color: #ff6b6b; }
+            .mob-more-btn {
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--text-muted);
             }
 
-            /* Similar outputs: bigger */
-            .similar-outputs-grid { max-width: 100%; }
+            /* ===== Mobile Action Sheet ===== */
+            .mobile-sheet-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.6);
+                z-index: 600;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.25s ease;
+            }
+            .mobile-sheet-overlay.open { opacity: 1; pointer-events: auto; }
 
-            /* Action bar buttons */
-            .action-bar .icon-btn { width: 44px; height: 44px; }
+            .mobile-sheet {
+                display: block;
+                position: fixed;
+                bottom: 0; left: 0; right: 0;
+                background: var(--bg-panel);
+                border-radius: 16px 16px 0 0;
+                z-index: 650;
+                transform: translateY(100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                padding: 8px 16px 24px;
+                max-height: 70vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .mobile-sheet.open { transform: translateY(0); }
 
-            /* Studio credit */
-            .studio-credit { padding-top: 16px; padding-bottom: 8px; }
+            .mobile-sheet-handle {
+                width: 36px;
+                height: 4px;
+                background: var(--border);
+                border-radius: 2px;
+                margin: 4px auto 16px;
+            }
 
-            /* Sidebar note area */
-            .sidebar-note-area { min-height: 40px; }
+            .mobile-sheet-section { margin-bottom: 16px; }
+            .mobile-sheet-section-label {
+                font-size: 8px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                color: var(--text-muted);
+                margin-bottom: 8px;
+                padding-left: 4px;
+            }
+            .mobile-sheet-row {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            .mob-menu-btn {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                padding: 12px 4px;
+                background: var(--bg-input);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.15s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .mob-menu-btn:active { background: var(--bg-card); transform: scale(0.95); border-color: var(--warm); }
+            .mob-menu-icon { font-size: 18px; color: var(--text); }
+            .mob-menu-label { font-size: 9px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; }
 
-            /* Efdot shop icon - adjust for scrollable layout */
-            .efdot-shop-fixed { bottom: auto; position: relative; margin: 8px auto; display: block; }
+            .mobile-sheet-owner {
+                font-size: 10px;
+                color: var(--text-muted);
+                text-align: center;
+                padding: 8px 0;
+                border-top: 1px solid var(--border);
+                margin-top: 8px;
+            }
+            .mobile-sheet-owner:empty { display: none; }
+
+            .mobile-sheet-footer {
+                text-align: center;
+                padding: 12px 0 4px;
+                font-size: 9px;
+                color: var(--text-muted);
+                opacity: 0.4;
+            }
+            .mobile-sheet-footer a { color: var(--text-muted); text-decoration: none; }
+            .mobile-sheet-footer span { margin: 0 4px; }
         }
 
-        /* Extra small screens */
         @media (max-width: 480px) {
-            .main-content { padding: 44px 40px 8px !important; }
-            .preview-image { max-height: 50vh !important; }
-            .side-nav-arrow { width: 36px; height: 48px; font-size: 24px; }
-            .side-nav-arrow.left { left: 2px !important; }
-            .side-nav-arrow.right { right: 2px !important; }
-            .sidebar { padding: 16px 16px 28px; }
+            .preview-image { max-height: calc(100vh - 90px) !important; }
+            .mob-menu-btn { padding: 10px 2px; }
+            .mob-menu-icon { font-size: 16px; }
         }
 
         /* Print inquiry mobile: full-screen, scrollable */
@@ -3417,6 +3476,57 @@
                     <a href="https://www.artblocks.io/collection/0x7c78f67700e700b4005c8a3d920a1a99e6004800-0" target="_blank">MINT MORE →</a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Bar -->
+    <div class="mobile-bottom-bar" id="mobileBottomBar">
+        <div class="mob-nav-group">
+            <button class="mob-btn" id="mobPrev" aria-label="Previous">‹</button>
+            <div class="mob-token" id="mobToken">#0</div>
+            <button class="mob-btn" id="mobNext" aria-label="Next">›</button>
+        </div>
+        <div class="mob-actions">
+            <button class="mob-btn" id="mobRandom" title="Random">⟳</button>
+            <button class="mob-btn mob-fav" id="mobFav" title="Favorite">♡</button>
+            <button class="mob-btn mob-more-btn" id="mobMore" title="More">⋮</button>
+        </div>
+    </div>
+
+    <!-- Mobile Action Sheet -->
+    <div class="mobile-sheet-overlay" id="mobileSheetOverlay"></div>
+    <div class="mobile-sheet" id="mobileSheet">
+        <div class="mobile-sheet-handle"></div>
+        <div class="mobile-sheet-section">
+            <div class="mobile-sheet-section-label">Tools</div>
+            <div class="mobile-sheet-row">
+                <button class="mob-menu-btn" id="mobFullscreen"><span class="mob-menu-icon">⛶</span><span class="mob-menu-label">Fullscreen</span></button>
+                <button class="mob-menu-btn" id="mobFrame"><span class="mob-menu-icon">▣</span><span class="mob-menu-label">Frame</span></button>
+                <button class="mob-menu-btn" id="mobDownload"><span class="mob-menu-icon">↓</span><span class="mob-menu-label">Download</span></button>
+                <button class="mob-menu-btn" id="mobPrint"><span class="mob-menu-icon">⊡</span><span class="mob-menu-label">Print</span></button>
+            </div>
+        </div>
+        <div class="mobile-sheet-section">
+            <div class="mobile-sheet-section-label">Explore</div>
+            <div class="mobile-sheet-row">
+                <button class="mob-menu-btn" id="mobGrid"><span class="mob-menu-icon">⊞</span><span class="mob-menu-label">Grid</span></button>
+                <button class="mob-menu-btn" id="mobFilters"><span class="mob-menu-icon">⚙</span><span class="mob-menu-label">Filters</span></button>
+                <button class="mob-menu-btn" id="mobPalette"><span class="mob-menu-icon">◐</span><span class="mob-menu-label">Palette</span></button>
+                <button class="mob-menu-btn" id="mobCopyLink"><span class="mob-menu-icon">🔗</span><span class="mob-menu-label">Link</span></button>
+            </div>
+        </div>
+        <div class="mobile-sheet-section">
+            <div class="mobile-sheet-section-label">Community</div>
+            <div class="mobile-sheet-row">
+                <button class="mob-menu-btn" id="mobCollectors"><span class="mob-menu-icon">👥</span><span class="mob-menu-label">Collectors</span></button>
+                <button class="mob-menu-btn" id="mobFavorites"><span class="mob-menu-icon">♡</span><span class="mob-menu-label">Favorites</span></button>
+                <button class="mob-menu-btn" id="mobOpenSea"><span class="mob-menu-icon">⛵</span><span class="mob-menu-label">OpenSea</span></button>
+                <button class="mob-menu-btn" id="mobAbout"><span class="mob-menu-icon">ⓘ</span><span class="mob-menu-label">About</span></button>
+            </div>
+        </div>
+        <div class="mobile-sheet-owner" id="mobOwnerDisplay"></div>
+        <div class="mobile-sheet-footer">
+            <a href="https://www.efdotstudio.com" target="_blank">efdot</a> <span>×</span> <a href="https://diid.art" target="_blank">diid</a>
         </div>
     </div>
 
@@ -10127,6 +10237,9 @@
             currentTokenId = Math.max(0, Math.min(currentTokenId, actualMax));
             displayToken.textContent = currentTokenId;
             tokenIdInput.value = currentTokenId;
+            // Sync mobile bottom bar token
+            const mobTok = document.getElementById('mobToken');
+            if (mobTok) mobTok.textContent = '#' + currentTokenId;
             if (updateUrl) updateUrlWithToken(currentTokenId);
             saveLastViewed();
 
@@ -12678,6 +12791,136 @@
                 if (!isNaN(tokenId) && tokenId >= 0 && tokenId <= MAX_TOKEN) loadOutput(tokenId, false);
             }
         });
+
+        // ===== Mobile Bottom Bar & Action Sheet =====
+        (function initMobileBar() {
+            const mobToken = document.getElementById('mobToken');
+            const mobSheet = document.getElementById('mobileSheet');
+            const mobOverlay = document.getElementById('mobileSheetOverlay');
+
+            // Sync token display
+            function syncMobToken() {
+                if (mobToken && typeof currentTokenId !== 'undefined') {
+                    mobToken.textContent = '#' + currentTokenId;
+                }
+                // Sync favorite state
+                const mobFavBtn = document.getElementById('mobFav');
+                if (mobFavBtn && typeof favorites !== 'undefined') {
+                    mobFavBtn.classList.toggle('active', favorites.includes(currentTokenId));
+                    mobFavBtn.textContent = favorites.includes(currentTokenId) ? '❤' : '♡';
+                }
+                // Sync owner into sheet
+                const mobOwner = document.getElementById('mobOwnerDisplay');
+                const ownerEl = document.getElementById('ownerDisplay');
+                if (mobOwner && ownerEl) {
+                    mobOwner.textContent = ownerEl.textContent || '';
+                }
+            }
+
+            // Observe displayToken changes to sync mobile bar
+            const displayTokenEl = document.getElementById('displayToken');
+            if (displayTokenEl) {
+                const observer = new MutationObserver(syncMobToken);
+                observer.observe(displayTokenEl, { childList: true, characterData: true, subtree: true });
+            }
+
+            // Sheet toggle
+            function openSheet() {
+                mobSheet?.classList.add('open');
+                mobOverlay?.classList.add('open');
+            }
+            function closeSheet() {
+                mobSheet?.classList.remove('open');
+                mobOverlay?.classList.remove('open');
+            }
+
+            document.getElementById('mobMore')?.addEventListener('click', () => {
+                if (mobSheet?.classList.contains('open')) closeSheet();
+                else openSheet();
+            });
+            mobOverlay?.addEventListener('click', closeSheet);
+
+            // Nav buttons
+            document.getElementById('mobPrev')?.addEventListener('click', () => {
+                document.getElementById('prevToken')?.click();
+            });
+            document.getElementById('mobNext')?.addEventListener('click', () => {
+                document.getElementById('nextToken')?.click();
+            });
+            document.getElementById('mobRandom')?.addEventListener('click', () => {
+                document.getElementById('exploreRandom')?.click();
+            });
+            document.getElementById('mobFav')?.addEventListener('click', () => {
+                document.getElementById('saveFavorite')?.click();
+                setTimeout(syncMobToken, 100);
+            });
+
+            // Token tap -> show input
+            mobToken?.addEventListener('click', () => {
+                const val = prompt('Go to City #', currentTokenId);
+                if (val !== null && val !== '') {
+                    const num = parseInt(val);
+                    if (!isNaN(num)) loadOutput(num);
+                }
+            });
+
+            // Sheet action buttons
+            document.getElementById('mobFullscreen')?.addEventListener('click', () => {
+                closeSheet();
+                document.getElementById('fullscreenBtn')?.click();
+            });
+            document.getElementById('mobFrame')?.addEventListener('click', () => {
+                closeSheet();
+                document.getElementById('frameViewBtn')?.click();
+            });
+            document.getElementById('mobDownload')?.addEventListener('click', () => {
+                closeSheet();
+                document.getElementById('downloadPng')?.click();
+            });
+            document.getElementById('mobPrint')?.addEventListener('click', () => {
+                closeSheet();
+                if (typeof openPrintInquiryModal === 'function') openPrintInquiryModal([currentTokenId]);
+            });
+            document.getElementById('mobCopyLink')?.addEventListener('click', () => {
+                closeSheet();
+                document.getElementById('copyLink')?.click();
+            });
+            document.getElementById('mobOpenSea')?.addEventListener('click', () => {
+                closeSheet();
+                const osLink = document.getElementById('iconOpenSea');
+                if (osLink?.href) window.open(osLink.href, '_blank');
+            });
+            document.getElementById('mobPalette')?.addEventListener('click', () => {
+                closeSheet();
+                document.getElementById('inspectPalette')?.click();
+            });
+            document.getElementById('mobFilters')?.addEventListener('click', () => {
+                closeSheet();
+                // Open the grid view with filters
+                if (typeof openGridView === 'function') openGridView();
+            });
+            document.getElementById('mobGrid')?.addEventListener('click', () => {
+                closeSheet();
+                if (typeof openGridView === 'function') openGridView();
+            });
+            document.getElementById('mobCollectors')?.addEventListener('click', () => {
+                closeSheet();
+                if (typeof openCollectorsPanel === 'function') openCollectorsPanel();
+                else document.getElementById('sidebarCollectorsBtn')?.click();
+            });
+            document.getElementById('mobFavorites')?.addEventListener('click', () => {
+                closeSheet();
+                document.getElementById('toggleGallery')?.click();
+            });
+            document.getElementById('mobAbout')?.addEventListener('click', () => {
+                closeSheet();
+                if (typeof window.toggleAboutModal === 'function') window.toggleAboutModal();
+                else if (typeof window.openAboutModal === 'function') window.openAboutModal();
+            });
+
+            // Initial sync
+            setTimeout(syncMobToken, 500);
+        })();
 
         updateGallery();
         setSize('medium');
