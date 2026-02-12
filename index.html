@@ -3688,7 +3688,7 @@
                             <span class="print-option-badge">Owner Only</span>
                             <span class="print-option-title">Signed Print</span>
                         </div>
-                        <div class="print-option-desc">Hand-signed by the artist. Token owners only.</div>
+                        <div class="print-option-desc">Hand-signed by Efdot. You must <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" style="color: var(--warm);">own this City</a> to order a signed print.</div>
                     </div>
                     <div class="print-option">
                         <div class="print-option-header">
@@ -3727,7 +3727,7 @@
                             <div class="size-label">signed + framed</div>
                         </div>
                     </div>
-                    <div class="print-inquiry-shipping-note">+ shipping · Rounded corner frames available on request (additional cost)</div>
+                    <div class="print-inquiry-shipping-note">+ shipping</div>
                 </div>
 
                 <div class="print-inquiry-field">
@@ -10215,17 +10215,21 @@
             if (frameMockupCurrentIndex === -1) frameMockupCurrentIndex = 0;
             frameMockupCollectorName = collectorName || '';
 
-            // Match dark mode from wall view context
-            if (wallModal?.classList.contains('open')) {
-                if (wallModal.classList.contains('wall-black') || wallModal.classList.contains('dark-mode')) {
-                    frameMockup.classList.add('dark-mode');
-                    const modeBtn = document.getElementById('frameMockupMode');
-                    if (modeBtn) modeBtn.textContent = '\u2600';
-                } else {
-                    frameMockup.classList.remove('dark-mode');
-                    const modeBtn = document.getElementById('frameMockupMode');
-                    if (modeBtn) modeBtn.textContent = '\u263E';
-                }
+            // Always start in light mode with light-wood frame
+            frameMockup.classList.remove('dark-mode');
+            const modeBtn = document.getElementById('frameMockupMode');
+            if (modeBtn) modeBtn.textContent = '\u263E';
+
+            // Reset frame color to light-wood
+            currentFrameColor = 'light-wood';
+            document.querySelectorAll('.frame-color-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.frame-color-btn[data-color="light-wood"]')?.classList.add('active');
+            const wrapper = document.getElementById('frameWrapper');
+            if (wrapper) {
+                wrapper.classList.remove('frame-white', 'frame-black', 'frame-dark-wood');
+                wrapper.style.background = '';
+                const inner = wrapper.querySelector('.frame-inner');
+                if (inner) inner.style.background = '';
             }
 
             frameImage.src = `${MEDIA_BASE}/${CONTRACT}/${showToken}.png`;
