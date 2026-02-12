@@ -133,6 +133,10 @@
         .artist-logo:hover { opacity: 0.9; filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(212, 165, 116, 0.5)); }
         .artist-logo.ef-logo:hover { animation: logoWiggle 0.4s ease-in-out; }
         .artist-logo.diid-logo { height: 22px; position: relative; top: 0px; }
+        .sidebar-about-link { display: inline-block; opacity: 0.4; text-decoration: none; transition: all 0.3s ease; margin-left: 8px; }
+        .sidebar-about-link:hover { opacity: 0.8; }
+        .sidebar-about-link img { height: 18px; width: auto; filter: brightness(0) invert(1); transition: all 0.3s ease; }
+        .sidebar-about-link:hover img { filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.3)); }
         @keyframes logoWiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
         .efdot-shop-fixed { position: fixed; bottom: 24px; right: 24px; height: 28px; width: auto; opacity: 0.25; transition: all 0.3s ease; cursor: pointer; z-index: 99; filter: brightness(0) invert(0.5); }
         .efdot-shop-fixed:hover { opacity: 0.6; transform: scale(1.1); }
@@ -277,12 +281,7 @@
         .story-link:hover .timeline-label { display: inline; }
 
         /* Collector message - subtle */
-        .collector-message { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 10px 16px; font-size: 9px; color: var(--text-muted); opacity: 0; pointer-events: none; transition: opacity 0.5s ease, transform 0.3s ease; z-index: 50; max-width: 320px; text-align: center; line-height: 1.5; }
-        .collector-message.visible { opacity: 1; pointer-events: auto; }
-        .collector-message .close-msg { position: absolute; top: 4px; right: 8px; background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; opacity: 0.5; }
-        .collector-message .close-msg:hover { opacity: 1; }
-        .collector-message .msg-highlight { color: var(--warm); font-weight: 700; }
-        .collector-message .msg-icon { margin-right: 6px; }
+        /* Collector message removed - info lives in collector section */
 
         .btn-fullscreen { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 10px 14px; border-radius: 50px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
         .btn-fullscreen:hover { background: var(--bg-card); color: var(--text); border-color: var(--text-muted); }
@@ -2924,10 +2923,7 @@
         .sidebar-footer-btn:hover { background: var(--bg-card); color: var(--text); border-color: var(--text-muted); }
         .footer-icon { font-size: 14px; }
         /* Transform (i) button to X when about modal is open */
-        #aboutTrigger .footer-icon-close { display: none; }
-        body.about-open #aboutTrigger .footer-icon { display: none; }
-        body.about-open #aboutTrigger .footer-icon-close { display: block; font-size: 18px; }
-        body.about-open #aboutTrigger { background: var(--bg-card); border-color: var(--text-muted); }
+        body.about-open #aboutTrigger { opacity: 0.9; }
         .fav-badge { position: absolute; top: -4px; right: -4px; background: var(--warm); color: #000; font-size: 8px; font-weight: 700; padding: 2px 5px; border-radius: 8px; min-width: 14px; text-align: center; }
         .fav-badge:empty, .fav-badge[data-count="0"] { display: none; }
 
@@ -3032,6 +3028,7 @@
             <a href="https://www.efdotstudio.com" target="_blank" title="Efdot Studio"><img src="ef-logo.png" alt="Efdot" class="artist-logo ef-logo"></a>
             <span class="logo-x">×</span>
             <a href="https://diid.art" target="_blank" title="Diid"><img src="diid-logo.png" alt="Diid" class="artist-logo diid-logo"></a>
+            <a href="#" class="sidebar-about-link" id="aboutTrigger" title="About" onclick="window.toggleAboutModal ? window.toggleAboutModal() : (window.openAboutModal && window.openAboutModal()); return false;"><img src="info-icon.png" alt="About"></a>
         </div>
 
         <div class="control-group">
@@ -3192,10 +3189,6 @@
                 <button class="sidebar-footer-btn" id="toggleGallery" title="Favorites">
                     <span class="footer-icon">♡</span>
                     <span class="fav-badge" id="favCount">0</span>
-                </button>
-                <button class="sidebar-footer-btn" id="aboutTrigger" title="About" onclick="window.toggleAboutModal ? window.toggleAboutModal() : (window.openAboutModal && window.openAboutModal()); return false;">
-                    <span class="footer-icon">ⓘ</span>
-                    <span class="footer-icon-close">×</span>
                 </button>
             </div>
         </div>
@@ -3422,14 +3415,6 @@
     </div>
     <div class="double-tap-heart" id="doubleTapHeart">♥</div>
 
-    <!-- Collector Bonus Message -->
-    <div class="collector-message" id="collectorMessage">
-        <button class="close-msg" id="closeCollectorMsg">×</button>
-        <span class="msg-icon">✦</span>
-        <span class="msg-highlight">Collect 4 cities</span> → receive a free piece from the next chapter.<br>
-        <span class="msg-highlight">All 4 energies?</span> (rising · living · fading · resting) → 2 glyphs airdropped.
-    </div>
-
     <div class="grid-panel" id="gridPanel" role="dialog" aria-label="Cities grid view" aria-hidden="true">
         <div class="grid-header">
             <div class="grid-brand">
@@ -3639,7 +3624,7 @@
                             <div class="size-label">signed + framed</div>
                         </div>
                     </div>
-                    <div class="print-inquiry-shipping-note">+ shipping</div>
+                    <div class="print-inquiry-shipping-note">+ shipping · Rounded corner frames available on request (additional cost)</div>
                 </div>
 
                 <div class="print-inquiry-field">
@@ -15798,29 +15783,7 @@
             openTimeline();
         });
 
-        // Collector message - show subtly after a delay, only once per session
-        const collectorMsg = document.getElementById('collectorMessage');
-        const closeMsgBtn = document.getElementById('closeCollectorMsg');
-        const msgShownKey = 'cities-collector-msg-shown';
-
-        function showCollectorMessage() {
-            if (sessionStorage.getItem(msgShownKey)) return;
-            setTimeout(() => {
-                collectorMsg?.classList.add('visible');
-                sessionStorage.setItem(msgShownKey, 'true');
-                // Auto-hide after 12 seconds
-                setTimeout(() => {
-                    collectorMsg?.classList.remove('visible');
-                }, 12000);
-            }, 8000); // Show after 8 seconds of browsing
-        }
-
-        closeMsgBtn?.addEventListener('click', () => {
-            collectorMsg?.classList.remove('visible');
-        });
-
-        // Show message after page loads
-        showCollectorMessage();
+        // Collector message removed from single output view - info lives in collector section
 
         // Close timeline
         function closeTimelineView() {
