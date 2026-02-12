@@ -4615,7 +4615,7 @@
 
                 <!-- 2024 -->
                 <div class="timeline-year" data-year="2024">2024</div>
-                <div class="timeline-story">Hand meets code. The system goes generative.</div>
+                <div class="timeline-story">Hand meets code. The linework sharpens, the palettes expand. Generative experiments begin with Diid—planting seeds for what would launch in 2025.</div>
 
                 <!-- Silent Skyline -->
                 <div class="timeline-item right" data-img="https://arweave.net/qEiCFd9Y3U0UAE63z3sCZkmDDlZ1sKKQgkzQWZQkJBg" data-title="Silent Skyline" data-year="2024" data-link="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/36">
@@ -6705,9 +6705,21 @@
 
             // Exclude "The Lost Cities" distribution wallet (by name or address prefix 0xcf22)
             const LOST_CITIES_PREFIX = '0xcf22';
+            // Get top 3 collector names to exclude from pills (shown in top collectors highlight)
+            const top3Names = new Set(
+                COLLECTORS_DATA
+                    .filter(c => c.count >= 2 &&
+                        c.name !== 'The Lost Cities' &&
+                        !(c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX)) &&
+                        !(c.name.startsWith('0x') && c.name.length >= 40))
+                    .sort((a, b) => b.count - a.count)
+                    .slice(0, 3)
+                    .map(c => c.name)
+            );
             const filteredCollectors = COLLECTORS_DATA.filter(c =>
                 c.name !== 'The Lost Cities' &&
-                !(c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX))
+                !(c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX)) &&
+                !top3Names.has(c.name)
             );
 
             // Helper to get full palette info from collector's tokens
@@ -7281,16 +7293,22 @@
                     return `<div class="top-collector-chip" style="background: ${bgColor};"></div>`;
                 }).join('');
 
-                // Generate a message about their collection
+                // Generate grid-set badges for their collection
+                const gridCount = Math.floor(tokens.length / 4);
+                const gridIcon = '<span class="grid-icon-mini"><b></b><b></b><b></b><b></b></span>';
                 const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
                 tokens.forEach(id => {
                     const traits = tokenTraits[id];
                     if (traits?.Energy) energyCounts[traits.Energy]++;
                 });
-                const topEnergy = Object.entries(energyCounts).sort((a, b) => b[1] - a[1])[0];
-                const meta = topEnergy && topEnergy[1] > 0
-                    ? `Mostly ${topEnergy[0].toLowerCase()} energy`
-                    : `${collector.count} cities`;
+                const hasSpectrum = energyCounts.Rising >= 1 && energyCounts.Living >= 1 && energyCounts.Fading >= 1 && energyCounts.Resting >= 1;
+                let meta = '';
+                if (gridCount >= 1) {
+                    meta = gridIcon + (gridCount > 1 ? ' ×' + gridCount : '');
+                    if (hasSpectrum) meta += ' 🌈';
+                } else {
+                    meta = `${collector.count} cities`;
+                }
 
                 return `<div class="top-collector-row" data-collector="${collector.name}">
                     <span class="top-collector-rank">${medals[i]}</span>
