@@ -589,8 +589,7 @@
         .about-section.open .about-section-content { display: block; }
         /* About page set type examples */
         .about-set-types { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 8px; }
-        .about-set-type { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
-        .about-set-type:hover { background: rgba(255,255,255,0.06); border-color: var(--text-muted); transform: translateY(-1px); }
+        .about-set-type { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; }
         .about-set-icon { font-size: 18px; line-height: 1; flex-shrink: 0; }
         .about-set-info { display: flex; flex-direction: column; gap: 2px; }
         .about-set-name { font-size: 11px; font-weight: 700; color: var(--text); line-height: 1.2; }
@@ -4261,35 +4260,35 @@
                             <p style="margin-bottom: 16px;">Each of the 112 palettes belongs to one of four energy groups. Collectors build grids around these energies.</p>
 
                             <div class="about-set-types">
-                                <div class="about-set-type" onclick="showSetExample('rising', 'WillEP')">
+                                <div class="about-set-type">
                                     <span class="about-set-icon">☀️</span>
                                     <div class="about-set-info">
                                         <span class="about-set-name">Rising</span>
                                         <span class="about-set-desc">Morning light</span>
                                     </div>
                                 </div>
-                                <div class="about-set-type" onclick="showSetExample('living', 'Oblivion')">
+                                <div class="about-set-type">
                                     <span class="about-set-icon">🏙️</span>
                                     <div class="about-set-info">
                                         <span class="about-set-name">Living</span>
                                         <span class="about-set-desc">Daytime</span>
                                     </div>
                                 </div>
-                                <div class="about-set-type" onclick="showSetExample('fading', 'Oblivion')">
+                                <div class="about-set-type">
                                     <span class="about-set-icon">🌆</span>
                                     <div class="about-set-info">
                                         <span class="about-set-name">Fading</span>
                                         <span class="about-set-desc">Dusk and evening</span>
                                     </div>
                                 </div>
-                                <div class="about-set-type" onclick="showSetExample('resting', 'WillEP')">
+                                <div class="about-set-type">
                                     <span class="about-set-icon">🌃</span>
                                     <div class="about-set-info">
                                         <span class="about-set-name">Resting</span>
                                         <span class="about-set-desc">Night</span>
                                     </div>
                                 </div>
-                                <div class="about-set-type" onclick="showSetExample('spectrum', 'Oblivion')">
+                                <div class="about-set-type">
                                     <span class="about-set-icon">🌈</span>
                                     <div class="about-set-info">
                                         <span class="about-set-name">Spectrum</span>
@@ -4297,8 +4296,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <p style="margin-top: 16px;"><a href="#" onclick="closeAboutModal(); document.querySelector('.grid-mode-btn[data-mode=\'collectors\']')?.click(); return false;" style="color: var(--teal);">Explore all collections →</a></p>
                         </div>
                     </div>
 
