@@ -1815,7 +1815,7 @@
         .collector-banner-name:hover { color: var(--warm); border-bottom-color: rgba(232, 184, 109, 0.4); }
         .collector-banner-right { display: flex; align-items: center; gap: 16px; }
         .collector-banner-phrase { font-size: 11px; font-weight: 400; color: rgba(200, 190, 210, 0.6); font-style: italic; letter-spacing: 0.03em; }
-        .collector-banner-wall { background: none; border: 1px solid rgba(232, 184, 109, 0.4); color: rgba(232, 184, 109, 0.8); padding: 6px 14px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px; cursor: pointer; transition: all 0.3s ease; }
+        .collector-banner-wall { background: none; border: 1px solid rgba(232, 184, 109, 0.4); color: rgba(232, 184, 109, 0.8); padding: 6px 14px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px; cursor: pointer; transition: all 0.3s ease; position: relative; z-index: 15; }
         .collector-banner-wall:hover { background: rgba(232, 184, 109, 0.15); border-color: rgba(232, 184, 109, 0.8); color: rgba(232, 184, 109, 1); }
         .collector-banner-count { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 24px; text-align: center; }
         .collector-banner-close { background: rgba(255,255,255,0.08); border: none; color: rgba(200, 190, 210, 0.4); width: 26px; height: 26px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); }
@@ -3581,11 +3581,11 @@
             <button class="collector-banner-nav collector-banner-prev" id="collectorBannerPrev" onclick="event.stopPropagation(); navigateToPrevCollector();" title="Previous collector (←)">‹</button>
             <div class="collector-banner-left">
                 <span class="collector-banner-label">COLLECTION OF</span>
-                <span class="collector-banner-name" id="collectorBannerName" title="Click to view wall" onclick="event.stopPropagation(); handleCollectorNameClick();"></span>
+                <span class="collector-banner-name" id="collectorBannerName" title="Click to view wall"></span>
             </div>
             <div class="collector-banner-right">
                 <span class="collector-banner-phrase" id="collectorBannerPhrase"></span>
-                <button class="collector-banner-wall" id="collectorWallView" onclick="event.stopPropagation(); handleWallButtonClick();">WALL →</button>
+                <button class="collector-banner-wall" id="collectorWallView">WALL →</button>
                 <span class="collector-banner-count" id="collectorBannerCount"></span>
             </div>
             <button class="collector-banner-nav collector-banner-next" id="collectorBannerNext" onclick="event.stopPropagation(); navigateToNextCollector();" title="Next collector (→)">›</button>
@@ -7184,18 +7184,13 @@
                 clearCollectorFilter();
             });
 
-            // Clicking the banner bar (not name or wall button) collapses the collector view
+            // Clicking the banner opens wall view (except close/nav buttons)
             document.getElementById('collectorBanner')?.addEventListener('click', (e) => {
-                // If clicked on interactive elements, don't collapse
-                if (e.target.closest('.collector-banner-name') ||
-                    e.target.closest('.collector-banner-wall') ||
-                    e.target.closest('.collector-banner-close') ||
-                    e.target.closest('.collector-banner-nav') ||
-                    e.target.closest('.collector-banner-count') ||
-                    e.target.closest('.collector-banner-phrase')) {
+                if (e.target.closest('.collector-banner-close') ||
+                    e.target.closest('.collector-banner-nav')) {
                     return;
                 }
-                clearCollectorFilter();
+                handleWallButtonClick();
             });
 
             // Helper function to open wall for current collector (in dark mode)
@@ -9112,64 +9107,74 @@
         window.openWallView = openWallView;
         openWallViewFn = openWallView;
 
-        // Global handler for wall button click (called from inline onclick)
-        window.handleWallButtonClick = function() {
-            let tokens = null;
-            let collectorName = null;
+        // Wall button handler - opens wall view for current collector
+        function handleWallButtonClick() {
+            try {
+                let tokens = null;
+                let collectorName = null;
 
-            // 1. Try wall button data attributes (set by showCollectorInGrid)
-            const wallBtn = document.getElementById('collectorWallView');
-            if (wallBtn && wallBtn.dataset.tokens && wallBtn.dataset.collector) {
-                const parsed = wallBtn.dataset.tokens.split(',').map(id => parseInt(id)).filter(id => !isNaN(id));
-                if (parsed.length > 0) {
-                    tokens = parsed;
-                    collectorName = wallBtn.dataset.collector;
-                }
-            }
-
-            // 2. Try currentCollectorFilter
-            if (!tokens && currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
-                tokens = currentCollectorFilter.tokens;
-                collectorName = currentCollectorFilter.name;
-            }
-
-            // 3. Try banner name → COLLECTORS_DATA lookup
-            if (!tokens) {
-                const rawName = document.getElementById('collectorBannerName')?.textContent?.replace(/\.{3}$/, '');
-                if (rawName) {
-                    const collector = COLLECTORS_DATA.find(c => c.name === rawName || c.name.toLowerCase() === rawName.toLowerCase());
-                    if (collector && collector.tokens && collector.tokens.length > 0) {
-                        tokens = collector.tokens;
-                        collectorName = collector.name;
+                // 1. Try wall button data attributes (most reliable, set by showCollectorInGrid)
+                const wallBtn = document.getElementById('collectorWallView');
+                if (wallBtn && wallBtn.dataset.tokens && wallBtn.dataset.collector) {
+                    const parsed = wallBtn.dataset.tokens.split(',').map(id => parseInt(id)).filter(id => !isNaN(id));
+                    if (parsed.length > 0) {
+                        tokens = parsed;
+                        collectorName = wallBtn.dataset.collector;
                     }
                 }
-            }
 
-            // 4. Try sessionStorage
-            if (!tokens) {
-                try {
-                    const saved = sessionStorage.getItem('cities-gallery-context');
-                    if (saved) {
-                        const ctx = JSON.parse(saved);
-                        if (ctx && ctx.tokens && ctx.tokens.length > 0) {
-                            tokens = ctx.tokens;
-                            collectorName = ctx.name;
+                // 2. Try currentCollectorFilter
+                if (!tokens && currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
+                    tokens = currentCollectorFilter.tokens;
+                    collectorName = currentCollectorFilter.name;
+                }
+
+                // 3. Try banner name → COLLECTORS_DATA lookup
+                if (!tokens) {
+                    const rawName = document.getElementById('collectorBannerName')?.textContent?.replace(/\.{3}$/, '');
+                    if (rawName) {
+                        const collector = COLLECTORS_DATA.find(c => c.name === rawName || c.name.toLowerCase() === rawName.toLowerCase());
+                        if (collector && collector.tokens && collector.tokens.length > 0) {
+                            tokens = collector.tokens;
+                            collectorName = collector.name;
                         }
                     }
-                } catch (e) {}
-            }
+                }
 
-            if (tokens && tokens.length > 0 && collectorName) {
-                currentCollectorFilter = { name: collectorName, tokens: tokens };
-                openWallView(collectorName, tokens);
-            }
-        };
+                // 4. Try sessionStorage
+                if (!tokens) {
+                    try {
+                        const saved = sessionStorage.getItem('cities-gallery-context');
+                        if (saved) {
+                            const ctx = JSON.parse(saved);
+                            if (ctx && ctx.tokens && ctx.tokens.length > 0) {
+                                tokens = ctx.tokens;
+                                collectorName = ctx.name;
+                            }
+                        }
+                    } catch (e) {}
+                }
 
-        // Global handler for collector name click (called from inline onclick)
-        window.handleCollectorNameClick = function() {
-            // Reuse the same robust lookup as the wall button
-            window.handleWallButtonClick();
-        };
+                if (tokens && tokens.length > 0 && collectorName) {
+                    currentCollectorFilter = { name: collectorName, tokens: tokens };
+                    openWallView(collectorName, tokens);
+                }
+            } catch (err) {
+                console.error('Wall button error:', err);
+            }
+        }
+
+        // Attach to wall button, collector name, AND entire banner
+        // The banner acts as a large click target — any tap opens the wall
+        // Only close/nav buttons are excluded
+        document.getElementById('collectorWallView')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleWallButtonClick();
+        });
+        document.getElementById('collectorBannerName')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleWallButtonClick();
+        });
 
         // Suggestion engine - suggests cities based on what collector has
         const ALL_ENERGIES = ['Rising', 'Living', 'Fading', 'Resting'];
