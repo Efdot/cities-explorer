@@ -1593,6 +1593,18 @@
 
         .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 20px; padding: 12px 18px; background: var(--bg-input); border-radius: 50px; }
         .collectors-stats strong { color: var(--teal); }
+        .top-collectors-highlight { display: none; margin-bottom: 16px; padding: 0 2px; }
+        .top-collectors-highlight.visible { display: block; }
+        .top-collectors-highlight-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px; opacity: 0.6; }
+        .top-collector-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 10px; margin-bottom: 4px; cursor: pointer; transition: all 0.15s ease; }
+        .top-collector-row:hover { background: rgba(255,255,255,0.04); }
+        .top-collector-rank { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+        .top-collector-info { flex: 1; min-width: 0; }
+        .top-collector-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .top-collector-meta { font-size: 9px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+        .top-collector-count { font-size: 13px; font-weight: 800; color: var(--teal); flex-shrink: 0; }
+        .top-collector-chips { display: flex; gap: 2px; flex-shrink: 0; }
+        .top-collector-chip { width: 10px; height: 18px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
         .collectors-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .collector-pill { padding: 8px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer; transition: transform 0.15s ease-out, box-shadow 0.15s ease; position: relative; overflow: hidden; white-space: nowrap; will-change: transform; }
         .collector-pill:hover { transform: scale(1.03); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
@@ -3452,6 +3464,7 @@
                 </div>
             </div>
             <div class="collectors-stats"><span id="collectorCountStats">164</span> collectors · <span id="citiesCountStats">321</span> cities</div>
+            <div class="top-collectors-highlight" id="topCollectorsHighlight"></div>
             <div class="collectors-pills" id="collectorsPills"></div>
             <button class="become-collector-btn" id="becomeCollectorBtn">✦ Join the Movement</button>
         </div>
@@ -6837,6 +6850,66 @@
             });
         }
 
+        function renderTopCollectors() {
+            const container = document.getElementById('topCollectorsHighlight');
+            if (!container || COLLECTORS_DATA.length === 0) return;
+
+            const LOST_CITIES_PREFIX = '0xcf22';
+            const top3 = COLLECTORS_DATA
+                .filter(c => c.count >= 2 &&
+                    c.name !== 'The Lost Cities' &&
+                    !(c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX)) &&
+                    !(c.name.startsWith('0x') && c.name.length >= 40))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 3);
+
+            if (top3.length === 0) { container.classList.remove('visible'); return; }
+
+            const medals = ['🥇', '🥈', '🥉'];
+            const rows = top3.map((collector, i) => {
+                const tokens = collector.tokens || [];
+                // Get palette chips for first 5 cities
+                const chipsHtml = tokens.slice(0, 5).map(id => {
+                    const traits = tokenTraits[id];
+                    const paletteName = traits?.['Palette'];
+                    const paletteInfo = PALETTE_DATA[paletteName];
+                    const bgColor = paletteInfo?.bg || '#333';
+                    return `<div class="top-collector-chip" style="background: ${bgColor};"></div>`;
+                }).join('');
+
+                // Generate a message about their collection
+                const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                tokens.forEach(id => {
+                    const traits = tokenTraits[id];
+                    if (traits?.Energy) energyCounts[traits.Energy]++;
+                });
+                const topEnergy = Object.entries(energyCounts).sort((a, b) => b[1] - a[1])[0];
+                const meta = topEnergy && topEnergy[1] > 0
+                    ? `Mostly ${topEnergy[0].toLowerCase()} energy`
+                    : `${collector.count} cities`;
+
+                return `<div class="top-collector-row" data-collector="${collector.name}">
+                    <span class="top-collector-rank">${medals[i]}</span>
+                    <div class="top-collector-info">
+                        <div class="top-collector-name">${collector.name}</div>
+                        <div class="top-collector-meta">${meta}</div>
+                    </div>
+                    <div class="top-collector-chips">${chipsHtml}</div>
+                    <span class="top-collector-count">${collector.count}</span>
+                </div>`;
+            }).join('');
+
+            container.innerHTML = `<div class="top-collectors-highlight-label">Top Collectors</div>${rows}`;
+            container.classList.add('visible');
+
+            // Click to view collector
+            container.querySelectorAll('.top-collector-row').forEach(row => {
+                row.addEventListener('click', () => {
+                    fetchCollectorTokens(row.dataset.collector);
+                });
+            });
+        }
+
         function showLeaderboardView() {
             document.getElementById('pillsView').classList.add('hidden');
             document.getElementById('leaderboardView').classList.add('active');
@@ -7108,6 +7181,7 @@
                     // Re-render
                     renderCollectorsPills();
                     renderLeaderboard();
+                    renderTopCollectors();
 
                     // Re-render grid to show collectors on palette bars
                     if (document.getElementById('gridPanel')?.classList.contains('open')) {
