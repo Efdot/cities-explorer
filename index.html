@@ -3955,35 +3955,42 @@
                             <span class="about-section-arrow">▼</span>
                         </div>
                         <div class="about-section-content">
-                            <p style="margin-bottom: 16px;">Your collection is your identity. Collectors build grids — arrangements of cities that reflect who they are. Some chase harmony, others chase rarity, all build something uniquely theirs.</p>
+                            <p style="margin-bottom: 16px;">Each of the 112 palettes belongs to one of four energy groups. Collectors build grids around these energies.</p>
 
                             <div class="about-set-types">
-                                <div class="about-set-type" onclick="showSetExample('spectrum', 'Oblivion')">
-                                    <span class="about-set-icon">🌈</span>
-                                    <div class="about-set-info">
-                                        <span class="about-set-name">Spectrum</span>
-                                        <span class="about-set-desc">One of each energy</span>
-                                    </div>
-                                </div>
                                 <div class="about-set-type" onclick="showSetExample('rising', 'WillEP')">
                                     <span class="about-set-icon">☀️</span>
                                     <div class="about-set-info">
-                                        <span class="about-set-name">Rising Set</span>
-                                        <span class="about-set-desc">4+ rising cities</span>
+                                        <span class="about-set-name">Rising</span>
+                                        <span class="about-set-desc">Morning light</span>
                                     </div>
                                 </div>
                                 <div class="about-set-type" onclick="showSetExample('living', 'Oblivion')">
                                     <span class="about-set-icon">🏙️</span>
                                     <div class="about-set-info">
-                                        <span class="about-set-name">Living Set</span>
-                                        <span class="about-set-desc">4+ living cities</span>
+                                        <span class="about-set-name">Living</span>
+                                        <span class="about-set-desc">Daytime</span>
+                                    </div>
+                                </div>
+                                <div class="about-set-type" onclick="showSetExample('fading', 'Oblivion')">
+                                    <span class="about-set-icon">🌆</span>
+                                    <div class="about-set-info">
+                                        <span class="about-set-name">Fading</span>
+                                        <span class="about-set-desc">Dusk and evening</span>
                                     </div>
                                 </div>
                                 <div class="about-set-type" onclick="showSetExample('resting', 'WillEP')">
                                     <span class="about-set-icon">🌃</span>
                                     <div class="about-set-info">
-                                        <span class="about-set-name">Resting Set</span>
-                                        <span class="about-set-desc">4+ resting cities</span>
+                                        <span class="about-set-name">Resting</span>
+                                        <span class="about-set-desc">Night</span>
+                                    </div>
+                                </div>
+                                <div class="about-set-type" onclick="showSetExample('spectrum', 'Oblivion')">
+                                    <span class="about-set-icon">🌈</span>
+                                    <div class="about-set-info">
+                                        <span class="about-set-name">Spectrum</span>
+                                        <span class="about-set-desc">One from each group</span>
                                     </div>
                                 </div>
                             </div>
@@ -6380,11 +6387,12 @@
             enteredCollectorFromTimeline = fromTimeline;
             // Show loading state
             const banner = document.getElementById('collectorBanner');
-            document.getElementById('collectorBannerName').textContent = collectorName + '...';
-            banner.classList.add('visible');
+            const bannerNameEl = document.getElementById('collectorBannerName');
+            if (bannerNameEl) bannerNameEl.textContent = collectorName + '...';
+            banner?.classList.add('visible');
 
             // Close collectors panel and open grid
-            collectorsPanel.classList.remove('open');
+            collectorsPanel?.classList.remove('open');
             document.body.classList.remove('collectors-open');
             const gp = document.getElementById('gridPanel');
             const vtb = document.getElementById('viewToggleBtn');
@@ -7088,6 +7096,11 @@
                 }
             } catch (e) {
                 console.log('Error fetching collectors:', e);
+                // Show error state instead of infinite loading
+                const pillsEl = document.getElementById('collectorsPills');
+                if (pillsEl && pillsEl.innerHTML.includes('Loading')) {
+                    pillsEl.innerHTML = '<span style="color: var(--text-muted); font-size: 10px; cursor: pointer;" onclick="initCollectorsPanel()">Collectors unavailable — tap to retry</span>';
+                }
             }
         }
 
