@@ -223,6 +223,7 @@
         .icon-buttons-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; margin-top: 8px; }
         .icon-buttons-row .icon-btn { flex: 0 0 auto; text-decoration: none; background: transparent; border-radius: 8px; width: 44px; height: 36px; font-size: 16px; display: flex; align-items: center; justify-content: center; }
         .icon-buttons-row .icon-btn:hover { transform: translateY(-1px); background: var(--bg-input); }
+        .icon-buttons-row .icon-btn.text-btn { width: auto; padding: 0 12px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 18px; border: 1px solid var(--border); color: var(--text-muted); }
         .icon-buttons-row .opensea-icon { filter: grayscale(100%); }
         .icon-buttons-row .opensea-icon:hover { filter: grayscale(0%); }
 
@@ -506,10 +507,15 @@
         .pantone-category { margin-bottom: 20px; }
         .pantone-category-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
         .pantone-color-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .pantone-color-chip { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); }
+        .pantone-color-chip { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.25s ease; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); }
         .pantone-color-chip:hover { transform: scale(1.2); z-index: 2; box-shadow: 0 6px 20px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.3); }
-        .pantone-color-chip .chip-hex { position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 700; font-family: monospace; white-space: nowrap; opacity: 0; transition: opacity 0.2s; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.7); color: #fff; }
+        .pantone-color-chip .chip-hex { position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 700; font-family: monospace; white-space: nowrap; opacity: 0; transition: all 0.25s ease; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.7); color: #fff; }
         .pantone-color-chip:hover .chip-hex { opacity: 1; }
+        /* Hex visible mode: circles become pills with hex codes inside */
+        .hex-visible .pantone-color-chip { width: auto; height: 34px; border-radius: 17px; padding: 0 12px; gap: 0; }
+        .hex-visible .pantone-color-chip:hover { transform: scale(1.08); }
+        .hex-visible .pantone-color-chip .chip-hex { position: static; transform: none; opacity: 1; background: transparent; padding: 0; border-radius: 0; font-size: 10px; line-height: 34px; }
+        .hex-visible .pantone-color-row { gap: 8px; }
         /* Hex codes display - hidden by default */
         .pantone-hex-section { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; margin-top: 16px; display: none; }
         .pantone-hex-section.visible { display: block; }
@@ -641,7 +647,7 @@
         /* Collect popover menu */
         .collect-popover { position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%) scale(0.95); background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 6px 0; min-width: 160px; opacity: 0; visibility: hidden; transition: all 0.15s ease; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
         .collect-popover.open { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
-        .collect-popover-option { display: block; width: 100%; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-decoration: none; text-align: left; background: none; border: none; cursor: pointer; transition: all 0.15s ease; font-family: inherit; }
+        .collect-popover-option { display: block; width: 100%; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-decoration: none; text-align: left; background: none; border: none; cursor: pointer; transition: all 0.15s ease; font-family: inherit; white-space: nowrap; }
         .collect-popover-option:hover { background: rgba(255,255,255,0.05); color: var(--text); }
         .collect-popover-option span { opacity: 0.5; font-weight: 400; margin-left: 4px; }
         .collect-btn-wrapper { position: relative; display: inline-block; }
@@ -1097,7 +1103,7 @@
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             /* Off-white warm wall */
             background: #f5f3f0;
-            z-index: 2000; display: none; align-items: center; justify-content: center;
+            z-index: 2100; display: none; align-items: center; justify-content: center;
         }
         .frame-mockup.open { display: flex; }
         /* Subtle lighting on wall - soft gray shadow rectangles */
@@ -1154,7 +1160,7 @@
         .frame-mockup-close:hover { background: #333; color: #fff; transform: scale(1.05); }
         .frame-mockup-download { position: absolute; top: 24px; right: 80px; width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 20px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: bold; }
         .frame-mockup-download:hover { background: var(--teal); color: #000; transform: scale(1.05); }
-        .frame-mockup-order { position: absolute; top: 24px; right: 136px; width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 18px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; text-decoration: none; }
+        .frame-mockup-order { position: absolute; top: 24px; right: 136px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border-radius: 22px; padding: 0 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; text-decoration: none; white-space: nowrap; }
         .frame-mockup-order:hover { background: var(--warm); color: #000; transform: scale(1.05); }
         /* Frame mockup navigation */
         .frame-mockup-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.9); color: #555; font-size: 18px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; }
@@ -1184,6 +1190,11 @@
         .frame-color-btn[data-color="white"] { background: #f5f3f0; }
         .frame-color-btn[data-color="black"] { background: #1a1a1a; }
         .frame-color-btn[data-color="dark-wood"] { background: #5a3d2b; }
+        .frame-mockup-artwork { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+        .frame-mockup-label { font-size: 12px; font-weight: 600; color: #666; letter-spacing: 0.1em; }
+        .frame-mockup.dark-mode .frame-mockup-label { color: #888; }
+        .frame-mockup-collector { font-size: 10px; font-weight: 500; color: #999; letter-spacing: 0.08em; text-transform: uppercase; }
+        .frame-mockup.dark-mode .frame-mockup-collector { color: #555; }
         /* Frame color overrides */
         .frame-mockup .frame-wrapper.frame-white { background: #faf9f7; }
         .frame-mockup .frame-wrapper.frame-white .frame-inner { background: #4a4846; }
@@ -1582,6 +1593,18 @@
 
         .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 20px; padding: 12px 18px; background: var(--bg-input); border-radius: 50px; }
         .collectors-stats strong { color: var(--teal); }
+        .top-collectors-highlight { display: none; margin-bottom: 16px; padding: 0 2px; }
+        .top-collectors-highlight.visible { display: block; }
+        .top-collectors-highlight-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px; opacity: 0.6; }
+        .top-collector-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 10px; margin-bottom: 4px; cursor: pointer; transition: all 0.15s ease; }
+        .top-collector-row:hover { background: rgba(255,255,255,0.04); }
+        .top-collector-rank { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+        .top-collector-info { flex: 1; min-width: 0; }
+        .top-collector-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .top-collector-meta { font-size: 9px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+        .top-collector-count { font-size: 13px; font-weight: 800; color: var(--teal); flex-shrink: 0; }
+        .top-collector-chips { display: flex; gap: 2px; flex-shrink: 0; }
+        .top-collector-chip { width: 10px; height: 18px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
         .collectors-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .collector-pill { padding: 8px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer; transition: transform 0.15s ease-out, box-shadow 0.15s ease; position: relative; overflow: hidden; white-space: nowrap; will-change: transform; }
         .collector-pill:hover { transform: scale(1.03); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
@@ -1804,7 +1827,7 @@
         .collector-banner-name:hover { color: var(--warm); border-bottom-color: rgba(232, 184, 109, 0.4); }
         .collector-banner-right { display: flex; align-items: center; gap: 16px; }
         .collector-banner-phrase { font-size: 11px; font-weight: 400; color: rgba(200, 190, 210, 0.6); font-style: italic; letter-spacing: 0.03em; }
-        .collector-banner-wall { background: none; border: 1px solid rgba(232, 184, 109, 0.4); color: rgba(232, 184, 109, 0.8); padding: 6px 14px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px; cursor: pointer; transition: all 0.3s ease; }
+        .collector-banner-wall { background: none; border: 1px solid rgba(232, 184, 109, 0.4); color: rgba(232, 184, 109, 0.8); padding: 6px 14px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px; cursor: pointer; transition: all 0.3s ease; position: relative; z-index: 15; }
         .collector-banner-wall:hover { background: rgba(232, 184, 109, 0.15); border-color: rgba(232, 184, 109, 0.8); color: rgba(232, 184, 109, 1); }
         .collector-banner-count { font-size: 12px; font-weight: 700; color: var(--teal); min-width: 24px; text-align: center; }
         .collector-banner-close { background: rgba(255,255,255,0.08); border: none; color: rgba(200, 190, 210, 0.4); width: 26px; height: 26px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); }
@@ -1965,8 +1988,9 @@
         .empty-slot-dropdown-desc { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 2px; }
         .empty-slot-dropdown-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 6px 0; }
         /* Grid status nudge - bottom bar message */
-        .wall-view-grid-nudge { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(20,20,20,0.95); border-top: 1px solid rgba(255,255,255,0.08); padding: 14px 24px; display: none; align-items: center; justify-content: center; gap: 16px; z-index: 25; backdrop-filter: blur(12px); }
-        .wall-view-grid-nudge.visible { display: flex; }
+        .wall-view-grid-nudge { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(20,20,20,0.95); border-top: 1px solid rgba(255,255,255,0.08); padding: 14px 24px; display: flex; align-items: center; justify-content: center; gap: 16px; z-index: 25; backdrop-filter: blur(12px); opacity: 0; transform: translateY(100%); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; }
+        .wall-view-grid-nudge.ready { display: flex; }
+        .wall-view-grid-nudge.ready.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
         .wall-view-grid-nudge-text { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.7); letter-spacing: 0.05em; text-transform: uppercase; }
         .wall-view-grid-nudge-text span { color: #fff; font-weight: 700; }
         .wall-view-grid-nudge-text .grid-count { color: #c9a227; }
@@ -2149,28 +2173,28 @@
         /* Print Inquiry Modal */
         .print-inquiry-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         .print-inquiry-modal.open { display: flex; }
-        .print-inquiry-content { background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
+        .print-inquiry-content { background: #1a1a1a; border-radius: 16px; padding: 24px; max-width: 380px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
         .print-inquiry-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer; line-height: 1; padding: 4px; }
         .print-inquiry-close:hover { color: #fff; }
-        .print-inquiry-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .print-inquiry-options { display: flex; gap: 12px; margin-bottom: 20px; }
-        .print-option { flex: 1; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 14px; }
-        .print-option-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-        .print-option-badge { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 6px; border-radius: 4px; background: rgba(201, 162, 39, 0.2); color: #c9a227; }
+        .print-inquiry-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .print-inquiry-options { display: flex; gap: 8px; margin-bottom: 14px; }
+        .print-option { flex: 1; background: #222; border-radius: 8px; padding: 10px 12px; }
+        .print-option-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+        .print-option-badge { font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 5px; border-radius: 3px; background: rgba(201, 162, 39, 0.2); color: #c9a227; }
         .print-option-badge.open { background: rgba(100, 200, 150, 0.15); color: #6c9; }
-        .print-option-title { font-size: 13px; font-weight: 700; color: #fff; }
-        .print-option-desc { font-size: 11px; color: #888; line-height: 1.5; }
-        .print-inquiry-divider { height: 1px; background: #333; margin: 20px 0; }
-        .print-inquiry-field { margin-bottom: 16px; }
-        .print-inquiry-field label { display: block; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 6px; }
-        .print-inquiry-field input, .print-inquiry-field textarea, .print-inquiry-field select { width: 100%; padding: 12px 14px; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 13px; font-family: inherit; }
+        .print-option-title { font-size: 12px; font-weight: 700; color: #fff; }
+        .print-option-desc { font-size: 10px; color: #777; line-height: 1.4; }
+        .print-inquiry-divider { height: 1px; background: #2a2a2a; margin: 14px 0; }
+        .print-inquiry-field { margin-bottom: 12px; }
+        .print-inquiry-field label { display: block; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 5px; }
+        .print-inquiry-field input, .print-inquiry-field textarea, .print-inquiry-field select { width: 100%; padding: 10px 12px; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 12px; font-family: inherit; }
         .print-inquiry-field input:focus, .print-inquiry-field textarea:focus, .print-inquiry-field select:focus { outline: none; border-color: #c9a227; }
-        .print-inquiry-field textarea { resize: vertical; min-height: 80px; }
+        .print-inquiry-field textarea { resize: vertical; min-height: 60px; }
         .print-inquiry-field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23888'%3E%3Cpath d='M1 3l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
-        .print-inquiry-preview { background: #222; border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 11px; color: #aaa; }
-        .print-inquiry-preview-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 8px; }
-        .print-inquiry-preview-cities { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-        .print-inquiry-city-thumb { position: relative; width: 60px; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; }
+        .print-inquiry-preview { background: #222; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-size: 11px; color: #aaa; }
+        .print-inquiry-preview-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px; }
+        .print-inquiry-preview-cities { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+        .print-inquiry-city-thumb { position: relative; width: 50px; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; }
         .print-inquiry-city-thumb img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; }
         .print-inquiry-city-thumb .city-id { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #c9a227; font-size: 8px; font-weight: 700; text-align: center; padding: 2px 0; }
         .print-inquiry-city-thumb .city-remove-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: rgba(255,255,255,0.6); border: none; width: 16px; height: 16px; border-radius: 50%; font-size: 10px; cursor: pointer; opacity: 0; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
@@ -2187,13 +2211,13 @@
         .print-inquiry-framing-option .framing-icon { font-size: 18px; margin-bottom: 4px; }
         .print-inquiry-framing-option .framing-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; }
         .print-inquiry-framing-option.active .framing-label { color: #c9a227; }
-        .print-inquiry-sizes { display: flex; gap: 8px; margin-bottom: 8px; }
-        .print-inquiry-size-option { flex: 1; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; padding: 10px 6px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+        .print-inquiry-sizes { display: flex; gap: 6px; margin-bottom: 6px; }
+        .print-inquiry-size-option { flex: 1; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; padding: 8px 4px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
         .print-inquiry-size-option:hover { border-color: #555; }
         .print-inquiry-size-option.active { border-color: #c9a227; background: rgba(201, 162, 39, 0.1); }
-        .print-inquiry-size-option .size-dims { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 1px; }
-        .print-inquiry-size-option .size-cm { font-size: 9px; color: #666; margin-bottom: 4px; }
-        .print-inquiry-size-option .size-price { font-size: 12px; font-weight: 700; color: #888; margin-bottom: 2px; }
+        .print-inquiry-size-option .size-dims { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 1px; }
+        .print-inquiry-size-option .size-cm { font-size: 8px; color: #666; margin-bottom: 3px; }
+        .print-inquiry-size-option .size-price { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 2px; }
         .print-inquiry-size-option.active .size-price { color: #c9a227; }
         .print-inquiry-size-option .size-label { font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: #666; }
         .print-inquiry-size-option.active .size-label { color: #a88620; }
@@ -2203,8 +2227,8 @@
         .print-inquiry-shipping-note { font-size: 8px; color: #555; margin-top: 8px; text-align: center; }
         .print-inquiry-field-row { display: flex; gap: 12px; }
         .print-inquiry-field-row .print-inquiry-field { flex: 1; }
-        .print-inquiry-actions { display: flex; gap: 12px; margin-top: 24px; }
-        .print-inquiry-btn { flex: 1; padding: 14px; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
+        .print-inquiry-actions { display: flex; gap: 10px; margin-top: 18px; }
+        .print-inquiry-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
         .print-inquiry-btn.primary { background: #c9a227; color: #000; }
         .print-inquiry-btn.primary:hover { background: #ddb840; }
         .print-inquiry-btn.secondary { background: #333; color: #888; }
@@ -2215,6 +2239,18 @@
         .print-inquiry-success-sub { font-size: 11px; color: #888; }
         .print-inquiry-shop-link { display: block; margin-top: 20px; text-align: center; font-size: 10px; color: #666; text-decoration: none; transition: color 0.2s; }
         .print-inquiry-shop-link:hover { color: #c9a227; }
+        /* Print inquiry dark mode (inherits from wall view dark mode) */
+        .print-inquiry-modal.dark { background: rgba(0,0,0,0.95); }
+        .print-inquiry-modal.dark .print-inquiry-content { background: #0f0f0f; }
+        .print-inquiry-modal.dark .print-option { background: #1a1a1a; }
+        .print-inquiry-modal.dark .print-inquiry-divider { background: #1a1a1a; }
+        .print-inquiry-modal.dark .print-inquiry-preview { background: #1a1a1a; }
+        .print-inquiry-modal.dark .print-inquiry-field input,
+        .print-inquiry-modal.dark .print-inquiry-field textarea,
+        .print-inquiry-modal.dark .print-inquiry-field select { background: #1a1a1a; border-color: #222; }
+        .print-inquiry-modal.dark .print-inquiry-size-option { background: #1a1a1a; border-color: #222; }
+        .print-inquiry-modal.dark .print-inquiry-size-option:hover { border-color: #444; }
+        .print-inquiry-modal.dark .print-inquiry-btn.secondary { background: #1a1a1a; }
         .wall-view-download { background: none; border: 1px solid #ddd; color: #888; padding: 5px 10px; font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
         .wall-view-download:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-download, .wall-view-modal.wall-black .wall-view-download { border-color: #333; color: #666; }
@@ -2233,33 +2269,6 @@
         .wall-view-modal.dark-mode .wall-view-tagline { color: #555; }
 
         /* Single Piece Framed Overlay */
-        .single-piece-overlay { position: fixed; inset: 0; background: rgba(240, 236, 230, 0.98); z-index: 2100; display: none; align-items: center; justify-content: center; }
-        .single-piece-overlay.open { display: flex; }
-        .single-piece-overlay.dark-mode { background: rgba(10, 10, 10, 0.98); }
-        .single-piece-close { position: absolute; top: 20px; right: 20px; background: none; border: 1px solid #ddd; color: #999; width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
-        .single-piece-close:hover { background: #333; border-color: #333; color: #fff; }
-        .single-piece-overlay.dark-mode .single-piece-close { border-color: #444; color: #666; }
-        .single-piece-overlay.dark-mode .single-piece-close:hover { background: #fff; border-color: #fff; color: #000; }
-        .single-piece-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); border: 1px solid rgba(0,0,0,0.3); color: #fff; width: 44px; height: 44px; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
-        .single-piece-nav:hover { background: rgba(0,0,0,0.7); border-color: rgba(0,0,0,0.5); color: #fff; }
-        .single-piece-overlay.dark-mode .single-piece-nav { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.2); color: #fff; }
-        .single-piece-overlay.dark-mode .single-piece-nav:hover { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.4); color: #fff; }
-        .single-piece-nav.prev { left: 24px; }
-        .single-piece-nav.next { right: 24px; }
-        .single-piece-download { position: absolute; bottom: 20px; right: 20px; background: none; border: 1px solid #ccc; color: #999; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
-        .single-piece-download:hover { background: #333; border-color: #333; color: #fff; }
-        .single-piece-overlay.dark-mode .single-piece-download { border-color: #444; color: #666; }
-        .single-piece-overlay.dark-mode .single-piece-download:hover { background: #fff; border-color: #fff; color: #000; }
-        .single-piece-content { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-        .single-piece-frame { background: #d8d4cc; padding: 8px; border-radius: 2px; box-shadow: 0 8px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3); }
-        .single-piece-mat { background: #f8f6f2; padding: 16px; }
-        .single-piece-overlay.dark-mode .single-piece-frame { background: #1a1a1a; box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05); }
-        .single-piece-overlay.dark-mode .single-piece-mat { background: #0d0d0d; }
-        .single-piece-mat img { max-height: 65vh; max-width: 80vw; width: auto; height: auto; display: block; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .single-piece-label { font-size: 12px; font-weight: 600; color: #666; letter-spacing: 0.1em; }
-        .single-piece-overlay.dark-mode .single-piece-label { color: #888; }
-        .single-piece-collector { font-size: 10px; font-weight: 500; color: #999; letter-spacing: 0.08em; margin-top: 4px; text-transform: uppercase; }
-        .single-piece-overlay.dark-mode .single-piece-collector { color: #555; }
 
         /* Collector Feature - Subtle Dark Style */
         .collector-feature { display: none; position: relative; margin: -16px -16px 16px -16px; border-radius: 0 0 16px 16px; overflow: hidden; background: transparent; }
@@ -2955,6 +2964,213 @@
         .drift-mode:hover .drift-hint { opacity: 0.4; }
         .drift-mode.light .drift-hint { color: #999; }
 
+        /* ===== Mobile Redesign: sidebar below output, nav arrows, bigger text/buttons ===== */
+        @media (max-width: 768px) {
+            /* Make page scrollable vertically */
+            body { overflow-y: auto !important; overflow-x: hidden !important; display: flex; flex-direction: column; }
+            .app-wrapper { order: 2; height: auto; flex-direction: column; }
+
+            /* Sidebar flows below output instead of hidden drawer */
+            .sidebar {
+                position: relative !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow-y: visible;
+                padding: 20px 20px 32px;
+                border-top: 1px solid var(--border);
+            }
+            .sidebar.open { left: 0 !important; }
+
+            /* Hide hamburger and overlay - sidebar is always visible below */
+            .mobile-menu-toggle { display: none !important; }
+            .sidebar-overlay { display: none !important; }
+
+            /* Main content: relative-positioned at top, not fixed */
+            .main-content {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                width: 100% !important;
+                order: 1;
+                padding: 44px 48px 8px !important;
+                min-height: 0;
+                flex: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                pointer-events: auto;
+            }
+
+            /* Frame container fills available width between arrows */
+            .frame-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: none !important;
+            }
+
+            /* Image: size to fit nicely, leave room for sidebar peek */
+            .preview-image {
+                max-height: 55vh !important;
+                max-width: 100%;
+            }
+
+            /* Show nav arrows on either side of output */
+            .side-nav-arrow {
+                display: flex !important;
+                position: fixed;
+                top: 30vh;
+                transform: translateY(-50%);
+                opacity: 0.5 !important;
+                width: 40px;
+                height: 56px;
+                font-size: 28px;
+                z-index: 60;
+                background: rgba(20, 19, 28, 0.6);
+                border-radius: 8px;
+                color: var(--text);
+                -webkit-tap-highlight-color: transparent;
+            }
+            .side-nav-arrow:active { opacity: 0.9 !important; background: rgba(20, 19, 28, 0.85); }
+            .side-nav-arrow.left { left: 4px !important; }
+            .side-nav-arrow.right { right: 4px !important; }
+
+            /* Swipe hint */
+            .main-content { touch-action: pan-y; }
+
+            /* Bottom info: bigger text */
+            .bottom-info { margin-top: 10px !important; gap: 6px !important; }
+            .info-display { font-size: 12px !important; padding: 10px 16px !important; }
+
+            /* Sidebar text and controls: bigger */
+            .sidebar h1 { font-size: 24px; }
+            .section-label { font-size: 10px !important; }
+            .control-group label { font-size: 10px !important; }
+            .control-group input[type="text"],
+            .control-group input[type="number"],
+            .control-group select { padding: 14px 18px !important; font-size: 14px !important; border-radius: 50px; }
+
+            /* Token nav: bigger buttons */
+            .token-nav { gap: 10px; }
+            .token-nav button { min-width: 52px; min-height: 52px; font-size: 18px !important; font-weight: 700; }
+
+            /* Bigger general buttons */
+            .btn { min-height: 50px; font-size: 12px !important; padding: 14px 16px; }
+            .btn-sm { min-height: 42px; font-size: 10px !important; padding: 12px 14px; }
+            .icon-btn { width: 46px; height: 46px; font-size: 18px; }
+            .heart-btn { width: 50px; height: 50px; font-size: 22px; }
+
+            /* Filters and metadata toggles: bigger */
+            .filters-toggle, .metadata-toggle { padding: 12px 18px; }
+            .filters-toggle span, .metadata-toggle span { font-size: 10px !important; }
+            .filter-grid select { font-size: 13px !important; padding: 12px 14px !important; }
+            .filter-grid .control-group label { font-size: 9px !important; }
+            .checkbox-filter label { font-size: 11px; }
+
+            /* Owner display */
+            .owner-display { font-size: 12px; }
+
+            /* Sidebar footer: static within sidebar */
+            .sidebar-footer {
+                display: block !important;
+                position: relative !important;
+                width: 100% !important;
+                padding: 16px 0 0 !important;
+                background: none !important;
+            }
+
+            /* Similar outputs: bigger */
+            .similar-outputs-grid { max-width: 100%; }
+
+            /* Action bar buttons */
+            .action-bar .icon-btn { width: 44px; height: 44px; }
+
+            /* Studio credit */
+            .studio-credit { padding-top: 16px; padding-bottom: 8px; }
+
+            /* Sidebar note area */
+            .sidebar-note-area { min-height: 40px; }
+
+            /* Efdot shop icon - adjust for scrollable layout */
+            .efdot-shop-fixed { bottom: auto; position: relative; margin: 8px auto; display: block; }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .main-content { padding: 44px 40px 8px !important; }
+            .preview-image { max-height: 50vh !important; }
+            .side-nav-arrow { width: 36px; height: 48px; font-size: 24px; }
+            .side-nav-arrow.left { left: 2px !important; }
+            .side-nav-arrow.right { right: 2px !important; }
+            .sidebar { padding: 16px 16px 28px; }
+        }
+
+        /* Print inquiry mobile: full-screen, scrollable, one option at a time */
+        .print-options-dots { display: none; }
+        @media (max-width: 768px) {
+            .print-inquiry-modal {
+                align-items: stretch;
+                justify-content: stretch;
+            }
+            .print-inquiry-content {
+                border-radius: 0;
+                max-width: 100%;
+                width: 100%;
+                max-height: 100%;
+                height: 100%;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            /* One print option at a time - horizontal scroll snap */
+            .print-inquiry-options {
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                gap: 0;
+                scrollbar-width: none;
+            }
+            .print-inquiry-options::-webkit-scrollbar { display: none; }
+            .print-inquiry-options .print-option {
+                min-width: 100%;
+                scroll-snap-align: start;
+                flex-shrink: 0;
+                box-sizing: border-box;
+            }
+            /* Dot indicators for print options carousel */
+            .print-options-dots {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+                margin-top: 10px;
+            }
+            .print-options-dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: #333;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .print-options-dot.active { background: #c9a227; }
+            /* Swipe hint text */
+            .print-options-hint {
+                display: block;
+                text-align: center;
+                font-size: 8px;
+                color: #555;
+                margin-top: 4px;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+            }
+        }
+        /* Hide hint on desktop */
+        .print-options-hint { display: none; }
+
     </style>
 </head>
 <body>
@@ -3132,7 +3348,7 @@
             <a href="#" id="iconOpenSea" target="_blank" class="icon-btn opensea-icon" title="View on OpenSea">⛵</a>
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
-            <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print">🖨</button>
+            <button class="icon-btn text-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print">Order a Print</button>
         </div>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
@@ -3246,7 +3462,7 @@
             <button class="mint-toggle" id="mintToggle" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
             <div class="collect-popover" id="collectPopoverNav">
                 <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
-                <a href="https://efdot.store/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Shopify</span></a>
+                <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Shop</span></a>
                 <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
             </div>
         </div>
@@ -3311,8 +3527,9 @@
                 </div>
             </div>
             <div class="collectors-stats"><span id="collectorCountStats">164</span> collectors · <span id="citiesCountStats">321</span> cities</div>
+            <div class="top-collectors-highlight" id="topCollectorsHighlight"></div>
             <div class="collectors-pills" id="collectorsPills"></div>
-            <button class="become-collector-btn" id="becomeCollectorBtn">✦ Become a Collector</button>
+            <button class="become-collector-btn" id="becomeCollectorBtn">✦ Join the Movement</button>
         </div>
         <!-- Citizen Guide View - Step-by-step onboarding -->
         <div class="collector-guide-view" id="collectorGuideView">
@@ -3326,30 +3543,36 @@
                 </div>
             </div>
 
-            <!-- Step 1: The Experience -->
+            <!-- Step 1: What is digital art ownership? -->
             <div class="collector-guide-step active" data-step="1">
-                <div class="collector-guide-title">The view from above</div>
-                <div class="collector-guide-highlight">Streets you'll never walk. Somehow familiar anyway.</div>
+                <div class="collector-guide-title">Digital ownership 101</div>
+                <div class="collector-guide-desc">
+                    Each City is a unique piece of generative art stored permanently on the Ethereum blockchain. When you collect one, it's yours — verifiably, permanently, and fully owned. No middlemen, no expiration. Think of it like owning an original painting, but digital and provably one-of-one.
+                </div>
+                <div class="collector-guide-highlight">500 unique Cities. Each one exists only once. Ownership is recorded forever on-chain.</div>
             </div>
 
-            <!-- Step 2: Join the Build -->
+            <!-- Step 2: How to collect -->
             <div class="collector-guide-step" data-step="2">
-                <div class="collector-guide-title">164 collectors. One city.</div>
+                <div class="collector-guide-title">How to collect</div>
                 <div class="collector-guide-desc">
-                    Every mint adds another block to the grid. Collectors get first access to future drops.
+                    You can mint directly with ETH on Art Blocks, or buy with a credit card through the Efdot Studio Shop — no crypto wallet needed. Already-collected Cities can be found on OpenSea. Set holders get future drops for free.
                 </div>
-                <div class="collector-guide-highlight">Set holders? They get future drops for free.</div>
+                <div class="collector-guide-highlight">Collect with crypto or credit card. Your choice.</div>
                 <button class="collector-guide-pill-btn secondary" id="guideExploreGrid">
                     Explore the grid
                 </button>
             </div>
 
-            <!-- Step 3: Claim Your City -->
+            <!-- Step 3: Digital + Physical -->
             <div class="collector-guide-step" data-step="3">
-                <div class="collector-guide-title">Find your city</div>
-                <div class="collector-guide-desc"></div>
+                <div class="collector-guide-title">Digital + Physical</div>
+                <div class="collector-guide-desc">Cities aren't just for screens. Owners can order hand-signed prints, and high-quality posters are available to anyone through the Efdot Studio Shop. Collect the art you love, then put it on your wall.</div>
                 <a href="https://www.artblocks.io/marketplace/collections/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn">
                     Mint on Art Blocks
+                </a>
+                <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" class="collector-guide-pill-btn secondary">
+                    Browse Prints
                 </a>
                 <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn secondary">
                     Browse on OpenSea
@@ -3450,11 +3673,11 @@
             <button class="collector-banner-nav collector-banner-prev" id="collectorBannerPrev" onclick="event.stopPropagation(); navigateToPrevCollector();" title="Previous collector (←)">‹</button>
             <div class="collector-banner-left">
                 <span class="collector-banner-label">COLLECTION OF</span>
-                <span class="collector-banner-name" id="collectorBannerName" title="Click to view wall" onclick="event.stopPropagation(); handleCollectorNameClick();"></span>
+                <span class="collector-banner-name" id="collectorBannerName" title="Click to view wall"></span>
             </div>
             <div class="collector-banner-right">
                 <span class="collector-banner-phrase" id="collectorBannerPhrase"></span>
-                <button class="collector-banner-wall" id="collectorWallView" onclick="event.stopPropagation(); handleWallButtonClick();">WALL →</button>
+                <button class="collector-banner-wall" id="collectorWallView">WALL →</button>
                 <span class="collector-banner-count" id="collectorBannerCount"></span>
             </div>
             <button class="collector-banner-nav collector-banner-next" id="collectorBannerNext" onclick="event.stopPropagation(); navigateToNextCollector();" title="Next collector (→)">›</button>
@@ -3489,7 +3712,7 @@
                     <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
                     <div class="collect-popover" id="collectPopoverWall">
                         <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
-                        <a href="https://efdot.store/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Shopify</span></a>
+                        <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Shop</span></a>
                         <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
                     </div>
                 </div>
@@ -3551,22 +3774,27 @@
             <div id="printInquiryForm">
                 <div class="print-inquiry-title">Get a Print</div>
 
-                <div class="print-inquiry-options">
+                <div class="print-inquiry-options" id="printInquiryOptions">
                     <div class="print-option">
                         <div class="print-option-header">
                             <span class="print-option-badge">Owner Only</span>
                             <span class="print-option-title">Signed Print</span>
                         </div>
-                        <div class="print-option-desc">A signed print of your specific City. Only available to the owner of that token.</div>
+                        <div class="print-option-desc">Hand-signed by Efdot. You must <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" style="color: var(--warm);">own this City</a> to order a signed print.</div>
                     </div>
                     <div class="print-option">
                         <div class="print-option-header">
                             <span class="print-option-badge open">Open</span>
                             <span class="print-option-title">Poster</span>
                         </div>
-                        <div class="print-option-desc">Unsigned posters available to anyone. <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" style="color: var(--warm);">Browse the shop →</a></div>
+                        <div class="print-option-desc">Open to anyone. <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" style="color: var(--warm);">Efdot Studio Shop →</a></div>
                     </div>
                 </div>
+                <div class="print-options-dots" id="printOptionsDots">
+                    <button class="print-options-dot active" data-index="0"></button>
+                    <button class="print-options-dot" data-index="1"></button>
+                </div>
+                <div class="print-options-hint">swipe for more</div>
 
                 <div class="print-inquiry-divider"></div>
 
@@ -3596,7 +3824,7 @@
                             <div class="size-label">signed + framed</div>
                         </div>
                     </div>
-                    <div class="print-inquiry-shipping-note">+ shipping · Rounded corner frames available on request (additional cost)</div>
+                    <div class="print-inquiry-shipping-note">+ shipping</div>
                 </div>
 
                 <div class="print-inquiry-field">
@@ -3630,23 +3858,6 @@
         </div>
     </div>
 
-    <!-- Single Piece Framed View (overlay within wall view) -->
-    <div class="single-piece-overlay" id="singlePieceOverlay">
-        <button class="single-piece-close" id="singlePieceClose">&times;</button>
-        <button class="single-piece-nav prev" id="singlePiecePrev">‹</button>
-        <button class="single-piece-nav next" id="singlePieceNext">›</button>
-        <button class="single-piece-download" id="singlePieceDownload" title="Download">↓</button>
-        <div class="single-piece-content">
-            <div class="single-piece-frame">
-                <div class="single-piece-mat">
-                    <img id="singlePieceImage" src="" alt="City artwork">
-                </div>
-            </div>
-            <div class="single-piece-label" id="singlePieceLabel">#0</div>
-            <div class="single-piece-collector" id="singlePieceCollector"></div>
-        </div>
-    </div>
-
     <div class="palette-inspector" id="paletteInspector">
         <div class="palette-inspector-content">
             <div class="palette-fan-container" id="paletteFanContainer" style="display: none;">
@@ -3674,17 +3885,21 @@
     <!-- Framed Mockup View -->
     <div class="frame-mockup" id="frameMockup">
         <div class="frame-mockup-content">
-            <div class="frame-wrapper" id="frameWrapper">
-                <div class="frame-inner">
-                    <img id="frameMockupImage" src="" alt="Framed city artwork">
+            <div class="frame-mockup-artwork">
+                <div class="frame-wrapper" id="frameWrapper">
+                    <div class="frame-inner">
+                        <img id="frameMockupImage" src="" alt="Framed city artwork">
+                    </div>
                 </div>
+                <div class="frame-mockup-label" id="frameMockupLabel">#0</div>
+                <div class="frame-mockup-collector" id="frameMockupCollector"></div>
             </div>
         </div>
         <button class="frame-mockup-mode" id="frameMockupMode" title="Toggle dark mode">☾</button>
         <button class="frame-mockup-nav prev" id="frameMockupPrev" title="Previous city">‹</button>
         <button class="frame-mockup-nav next" id="frameMockupNext" title="Next city">›</button>
         <button class="frame-mockup-download" id="downloadFramed" title="Download framed image">↓</button>
-        <button class="frame-mockup-order" id="orderPrint" title="Order a print">🖨</button>
+        <button class="frame-mockup-order" id="orderPrint" title="Order a print">Order a Print</button>
         <button class="frame-mockup-close" id="closeFrameMockup">×</button>
         <div class="frame-mockup-colors">
             <button class="frame-color-btn active" data-color="light-wood" title="Light Wood"></button>
@@ -3768,7 +3983,7 @@
         <div class="about-content">
             <h1 class="about-title">Cities</h1>
             <p class="about-collab">A code-based art collaboration between <a href="https://efdotstudio.com" target="_blank">Efdot</a> and <a href="https://diid.art" target="_blank">Diid</a>, minting on <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank">Art Blocks</a>.</p>
-            <p class="about-intro">The energy of a city is too complex to understand from street level. So we built a system to observe it from above. From up there, relationships collapse into <span class="about-highlight teal">patterns</span>. Traffic hums. <span class="about-highlight warm">Light shifts</span>. An infinite city emerges, <span class="about-highlight purple">always in motion</span>, never the same view twice.</p>
+            <p class="about-intro">Cities is a <span class="about-highlight teal">visual culture</span> — a living art system where 500 unique cities form one collective identity. Each piece carries its own energy, palette, and rhythm. Collectors don't just own art — they own a <span class="about-highlight warm">piece of the movement</span>. Build your wall, find your palette, and become part of something <span class="about-highlight purple">always in motion</span>.</p>
             <p class="about-journey-link"><a href="#" onclick="if(window.openTimeline) { window.openTimeline(); } event.preventDefault(); event.stopPropagation();">See the journey from hand to code →</a></p>
 
             <div class="about-video">
@@ -3837,35 +4052,42 @@
                             <span class="about-section-arrow">▼</span>
                         </div>
                         <div class="about-section-content">
-                            <p style="margin-bottom: 16px;">Collectors build grids — arrangements of cities that tell a story. Some chase harmony, others chase rarity.</p>
+                            <p style="margin-bottom: 16px;">Each of the 112 palettes belongs to one of four energy groups. Collectors build grids around these energies.</p>
 
                             <div class="about-set-types">
-                                <div class="about-set-type" onclick="showSetExample('spectrum', 'Oblivion')">
-                                    <span class="about-set-icon">🌈</span>
-                                    <div class="about-set-info">
-                                        <span class="about-set-name">Spectrum</span>
-                                        <span class="about-set-desc">One of each energy</span>
-                                    </div>
-                                </div>
                                 <div class="about-set-type" onclick="showSetExample('rising', 'WillEP')">
                                     <span class="about-set-icon">☀️</span>
                                     <div class="about-set-info">
-                                        <span class="about-set-name">Rising Set</span>
-                                        <span class="about-set-desc">4+ rising cities</span>
+                                        <span class="about-set-name">Rising</span>
+                                        <span class="about-set-desc">Morning light</span>
                                     </div>
                                 </div>
                                 <div class="about-set-type" onclick="showSetExample('living', 'Oblivion')">
                                     <span class="about-set-icon">🏙️</span>
                                     <div class="about-set-info">
-                                        <span class="about-set-name">Living Set</span>
-                                        <span class="about-set-desc">4+ living cities</span>
+                                        <span class="about-set-name">Living</span>
+                                        <span class="about-set-desc">Daytime</span>
+                                    </div>
+                                </div>
+                                <div class="about-set-type" onclick="showSetExample('fading', 'Oblivion')">
+                                    <span class="about-set-icon">🌆</span>
+                                    <div class="about-set-info">
+                                        <span class="about-set-name">Fading</span>
+                                        <span class="about-set-desc">Dusk and evening</span>
                                     </div>
                                 </div>
                                 <div class="about-set-type" onclick="showSetExample('resting', 'WillEP')">
                                     <span class="about-set-icon">🌃</span>
                                     <div class="about-set-info">
-                                        <span class="about-set-name">Resting Set</span>
-                                        <span class="about-set-desc">4+ resting cities</span>
+                                        <span class="about-set-name">Resting</span>
+                                        <span class="about-set-desc">Night</span>
+                                    </div>
+                                </div>
+                                <div class="about-set-type" onclick="showSetExample('spectrum', 'Oblivion')">
+                                    <span class="about-set-icon">🌈</span>
+                                    <div class="about-set-info">
+                                        <span class="about-set-name">Spectrum</span>
+                                        <span class="about-set-desc">One from each group</span>
                                     </div>
                                 </div>
                             </div>
@@ -3898,8 +4120,8 @@
             </div>
 
             <div class="about-collab-cta">
-                <div class="about-collab-title">What City Next?</div>
-                <div class="about-collab-desc">Have a wall, a city, or an idea? Murals, editions, and community projects happen through conversation.</div>
+                <div class="about-collab-title">Be Part of It</div>
+                <div class="about-collab-desc">Have a wall, a city, or an idea? Murals, prints, editions, and community projects happen through conversation.</div>
                 <a href="mailto:eric@efdotstudio.com?subject=Hey%20-%20Cities%20idea" class="about-collab-btn">Say Hey →</a>
             </div>
 
@@ -3916,7 +4138,7 @@
                         <button class="about-mint-btn" id="aboutMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-letter">C</span><span class="collect-letter">o</span><span class="collect-letter">l</span><span class="collect-letter">l</span><span class="collect-letter">e</span><span class="collect-letter">c</span><span class="collect-letter">t</span></button>
                         <div class="collect-popover" id="collectPopoverAbout">
                             <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Mint with ETH <span>Art Blocks</span></a>
-                            <a href="https://efdot.store/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Shopify</span></a>
+                            <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collect-popover-option">Buy with Card <span>Efdot Shop</span></a>
                             <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Secondary <span>OpenSea</span></a>
                         </div>
                     </div>
@@ -3989,6 +4211,7 @@
 
                 <div class="timeline-group">
                     <div class="timeline-group-title">Open Minds</div>
+                    <div class="timeline-group-subtitle">What does the mind see,<br>as it expands and connects the dots?<br><br>Hand-drawn lines, frame by frame,<br>finding beauty in the spaces between.</div>
                     <div class="timeline-group-grid cols-2 openminds-grid">
                         <div class="timeline-group-item" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" data-link="https://opensea.io/collection/efdot-openminds" data-title="You Are Here" data-year="2020">
                             <div class="timeline-group-item-img">
@@ -6261,12 +6484,18 @@
             enteredCollectorFromTimeline = fromTimeline;
             // Show loading state
             const banner = document.getElementById('collectorBanner');
-            document.getElementById('collectorBannerName').textContent = collectorName + '...';
-            banner.classList.add('visible');
+            const bannerNameEl = document.getElementById('collectorBannerName');
+            if (bannerNameEl) bannerNameEl.textContent = collectorName + '...';
+            banner?.classList.add('visible');
 
             // Close collectors panel and open grid
-            collectorsPanel.classList.remove('open');
-            document.getElementById('gridPanel').classList.add('open');
+            collectorsPanel?.classList.remove('open');
+            document.body.classList.remove('collectors-open');
+            const gp = document.getElementById('gridPanel');
+            const vtb = document.getElementById('viewToggleBtn');
+            if (gp) gp.classList.add('open');
+            if (vtb) vtb.classList.add('grid-open');
+            document.body.classList.add('grid-open');
 
             // First check if we already have this data from the collectors fetch
             const cachedCollector = COLLECTORS_DATA.find(c => c.name === collectorName);
@@ -6323,6 +6552,8 @@
 
         function showCollectorInGrid(collectorName, tokens, skipWallView = false) {
             currentCollectorFilter = { name: collectorName, tokens: tokens };
+            // Persist collector context for wall button fallback
+            try { sessionStorage.setItem('cities-gallery-context', JSON.stringify(currentCollectorFilter)); } catch(e) {}
 
             // Check for originals owned by this collector
             const collectorOriginals = getCollectorOriginals(collectorName);
@@ -6337,6 +6568,13 @@
                 ? generateCollectorPhraseWithOriginals(tokens, collectorOriginals)
                 : generateCollectorPhrase(tokens);
             document.getElementById('collectorBannerPhrase').textContent = phrase;
+
+            // Store tokens on wall button for direct access
+            const wallBtn = document.getElementById('collectorWallView');
+            if (wallBtn) {
+                wallBtn.dataset.collector = collectorName;
+                wallBtn.dataset.tokens = tokens.join(',');
+            }
 
             // Show the collector banner
             document.getElementById('collectorBanner').classList.add('visible');
@@ -6680,6 +6918,66 @@
             });
         }
 
+        function renderTopCollectors() {
+            const container = document.getElementById('topCollectorsHighlight');
+            if (!container || COLLECTORS_DATA.length === 0) return;
+
+            const LOST_CITIES_PREFIX = '0xcf22';
+            const top3 = COLLECTORS_DATA
+                .filter(c => c.count >= 2 &&
+                    c.name !== 'The Lost Cities' &&
+                    !(c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX)) &&
+                    !(c.name.startsWith('0x') && c.name.length >= 40))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 3);
+
+            if (top3.length === 0) { container.classList.remove('visible'); return; }
+
+            const medals = ['🥇', '🥈', '🥉'];
+            const rows = top3.map((collector, i) => {
+                const tokens = collector.tokens || [];
+                // Get palette chips for first 5 cities
+                const chipsHtml = tokens.slice(0, 5).map(id => {
+                    const traits = tokenTraits[id];
+                    const paletteName = traits?.['Palette'];
+                    const paletteInfo = PALETTE_DATA[paletteName];
+                    const bgColor = paletteInfo?.bg || '#333';
+                    return `<div class="top-collector-chip" style="background: ${bgColor};"></div>`;
+                }).join('');
+
+                // Generate a message about their collection
+                const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                tokens.forEach(id => {
+                    const traits = tokenTraits[id];
+                    if (traits?.Energy) energyCounts[traits.Energy]++;
+                });
+                const topEnergy = Object.entries(energyCounts).sort((a, b) => b[1] - a[1])[0];
+                const meta = topEnergy && topEnergy[1] > 0
+                    ? `Mostly ${topEnergy[0].toLowerCase()} energy`
+                    : `${collector.count} cities`;
+
+                return `<div class="top-collector-row" data-collector="${collector.name}">
+                    <span class="top-collector-rank">${medals[i]}</span>
+                    <div class="top-collector-info">
+                        <div class="top-collector-name">${collector.name}</div>
+                        <div class="top-collector-meta">${meta}</div>
+                    </div>
+                    <div class="top-collector-chips">${chipsHtml}</div>
+                    <span class="top-collector-count">${collector.count}</span>
+                </div>`;
+            }).join('');
+
+            container.innerHTML = `<div class="top-collectors-highlight-label">Top Collectors</div>${rows}`;
+            container.classList.add('visible');
+
+            // Click to view collector
+            container.querySelectorAll('.top-collector-row').forEach(row => {
+                row.addEventListener('click', () => {
+                    fetchCollectorTokens(row.dataset.collector);
+                });
+            });
+        }
+
         function showLeaderboardView() {
             document.getElementById('pillsView').classList.add('hidden');
             document.getElementById('leaderboardView').classList.add('active');
@@ -6951,6 +7249,7 @@
                     // Re-render
                     renderCollectorsPills();
                     renderLeaderboard();
+                    renderTopCollectors();
 
                     // Re-render grid to show collectors on palette bars
                     if (document.getElementById('gridPanel')?.classList.contains('open')) {
@@ -6962,7 +7261,76 @@
                 }
             } catch (e) {
                 console.log('Error fetching collectors:', e);
+                // Show error state instead of infinite loading
+                const pillsEl = document.getElementById('collectorsPills');
+                if (pillsEl && pillsEl.innerHTML.includes('Loading')) {
+                    pillsEl.innerHTML = '<span style="color: var(--text-muted); font-size: 10px; cursor: pointer;" onclick="initCollectorsPanel()">Collectors unavailable — tap to retry</span>';
+                }
             }
+        }
+
+        // Print inquiry modal - defined at top level so all handlers can access directly
+        let printInquirySelectedCities = [];
+
+        function openPrintInquiryModal(cities) {
+            const modal = document.getElementById('printInquiryModal');
+            const form = document.getElementById('printInquiryForm');
+            const success = document.getElementById('printInquirySuccess');
+
+            // Show form, hide success
+            if (form) form.style.display = 'block';
+            if (success) success.style.display = 'none';
+
+            // Inherit dark mode from wall view if active
+            const wallModal = document.getElementById('wallViewModal');
+            if (wallModal && wallModal.classList.contains('open') && wallModal.classList.contains('wall-black')) {
+                modal?.classList.add('dark');
+            } else {
+                modal?.classList.remove('dark');
+            }
+
+            // Initialize selected cities - use passed cities, wall view, or current token
+            if (cities && cities.length > 0) {
+                printInquirySelectedCities = [...cities];
+            } else if (typeof wallViewTokenIds !== 'undefined' && wallViewTokenIds && wallViewTokenIds.length > 0) {
+                printInquirySelectedCities = [...wallViewTokenIds];
+            } else if (typeof currentTokenId !== 'undefined' && currentTokenId !== null) {
+                printInquirySelectedCities = [currentTokenId];
+            } else {
+                printInquirySelectedCities = [];
+            }
+            renderPrintInquiryCities();
+
+            if (modal) modal.classList.add('open');
+        }
+        window.openPrintInquiryModal = openPrintInquiryModal;
+
+        function renderPrintInquiryCities() {
+            const citiesContainer = document.getElementById('printInquiryCities');
+            if (!citiesContainer) return;
+
+            const displayCount = 8;
+            const visibleCities = printInquirySelectedCities.slice(0, displayCount);
+            const extraCount = printInquirySelectedCities.length - displayCount;
+
+            citiesContainer.innerHTML = visibleCities.map(id =>
+                `<div class="print-inquiry-city-thumb" data-id="${id}">
+                    <img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}">
+                    <span class="city-id">#${id}</span>
+                    <button class="city-remove-btn" title="Remove">×</button>
+                </div>`
+            ).join('') + (extraCount > 0 ? `<span class="print-inquiry-city-chip more-chip">+${extraCount} more</span>` : '');
+
+            // Add click handlers for remove buttons
+            citiesContainer.querySelectorAll('.city-remove-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const thumb = btn.closest('.print-inquiry-city-thumb');
+                    const id = parseInt(thumb.dataset.id);
+                    printInquirySelectedCities = printInquirySelectedCities.filter(cid => cid !== id);
+                    renderPrintInquiryCities();
+                });
+            });
         }
 
         function initCollectorsPanel() {
@@ -6982,15 +7350,13 @@
                 clearCollectorFilter();
             });
 
-            // Clicking the banner bar (not name or wall button) collapses the collector view
+            // Clicking the banner opens wall view (except close/nav buttons)
             document.getElementById('collectorBanner')?.addEventListener('click', (e) => {
-                // If clicked on name, wall button, or close button, don't collapse
-                if (e.target.closest('.collector-banner-name') ||
-                    e.target.closest('.collector-banner-wall') ||
-                    e.target.closest('.collector-banner-close')) {
+                if (e.target.closest('.collector-banner-close') ||
+                    e.target.closest('.collector-banner-nav')) {
                     return;
                 }
-                clearCollectorFilter();
+                handleWallButtonClick();
             });
 
             // Helper function to open wall for current collector (in dark mode)
@@ -7104,88 +7470,6 @@
             // Collector navigation
             document.getElementById('wallViewPrev')?.addEventListener('click', navigateToPrevCollector);
             document.getElementById('wallViewNext')?.addEventListener('click', navigateToNextCollector);
-
-            // Single piece framed overlay controls
-            document.getElementById('singlePieceClose')?.addEventListener('click', closeSinglePieceView);
-            document.getElementById('singlePiecePrev')?.addEventListener('click', singlePiecePrev);
-            document.getElementById('singlePieceNext')?.addEventListener('click', singlePieceNext);
-            document.getElementById('singlePieceDownload')?.addEventListener('click', () => {
-                const tokenId = singlePieceTokens[singlePieceCurrentIndex];
-                if (tokenId !== undefined) {
-                    const link = document.createElement('a');
-                    link.href = `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png`;
-                    link.download = `cities-${tokenId}.png`;
-                    link.click();
-                }
-            });
-
-            // Click on frame/image to open OpenSea offer page
-            document.querySelector('.single-piece-frame')?.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const tokenId = singlePieceTokens[singlePieceCurrentIndex];
-                if (tokenId !== undefined) {
-                    const confirmed = confirm('You are about to leave this page and go to OpenSea to make an offer on City #' + tokenId + '. Continue?');
-                    if (confirmed) {
-                        window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`, '_blank');
-                    }
-                }
-            });
-
-            // Click/tap to close single piece view
-            const singlePieceOverlayEl = document.getElementById('singlePieceOverlay');
-            singlePieceOverlayEl?.addEventListener('click', (e) => {
-                // Close if clicking background, close button area, or on mobile tap anywhere except nav/download buttons
-                const isNavButton = e.target.closest('.single-piece-nav');
-                const isCloseButton = e.target.closest('.single-piece-close');
-                const isDownloadButton = e.target.closest('.single-piece-download');
-                const isFrame = e.target.closest('.single-piece-frame');
-                if (isCloseButton || e.target.id === 'singlePieceOverlay') {
-                    closeSinglePieceView();
-                    return;
-                }
-                // Don't close if clicking the frame (handled separately)
-                if (isFrame) return;
-                // On mobile (touch device), tap anywhere except nav/download/frame to close
-                if ('ontouchstart' in window && !isNavButton && !isDownloadButton) {
-                    closeSinglePieceView();
-                }
-            });
-
-            // Pinch zoom for single piece view on mobile
-            let singlePieceScale = 1;
-            let singlePieceLastDistance = 0;
-            singlePieceOverlayEl?.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 2) {
-                    singlePieceLastDistance = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                }
-            }, { passive: true });
-            singlePieceOverlayEl?.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 2) {
-                    e.preventDefault();
-                    const distance = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                    const delta = distance / singlePieceLastDistance;
-                    singlePieceScale = Math.max(0.5, Math.min(3, singlePieceScale * delta));
-                    const img = document.getElementById('singlePieceImage');
-                    if (img) img.style.transform = `scale(${singlePieceScale})`;
-                    singlePieceLastDistance = distance;
-                }
-            }, { passive: false });
-            singlePieceOverlayEl?.addEventListener('touchend', () => {
-                // Reset zoom when releasing
-                if (singlePieceScale !== 1) {
-                    setTimeout(() => {
-                        singlePieceScale = 1;
-                        const img = document.getElementById('singlePieceImage');
-                        if (img) img.style.transform = 'scale(1)';
-                    }, 200);
-                }
-            });
 
             // Download button - directly downloads with current wall color
             document.getElementById('wallViewDownloadBtn')?.addEventListener('click', () => {
@@ -7406,61 +7690,8 @@
                 openPrintInquiryModal();
             });
 
-            // Print inquiry modal handlers
-            let printInquirySelectedCities = [];
-
-            function openPrintInquiryModal(cities) {
-                const modal = document.getElementById('printInquiryModal');
-                const citiesContainer = document.getElementById('printInquiryCities');
-                const form = document.getElementById('printInquiryForm');
-                const success = document.getElementById('printInquirySuccess');
-
-                // Show form, hide success
-                form.style.display = 'block';
-                success.style.display = 'none';
-
-                // Initialize selected cities - use passed cities, wall view, or current token
-                if (cities && cities.length > 0) {
-                    printInquirySelectedCities = [...cities];
-                } else if (wallViewTokenIds && wallViewTokenIds.length > 0) {
-                    printInquirySelectedCities = [...wallViewTokenIds];
-                } else if (typeof currentTokenId !== 'undefined' && currentTokenId !== null) {
-                    printInquirySelectedCities = [currentTokenId];
-                } else {
-                    printInquirySelectedCities = [];
-                }
-                renderPrintInquiryCities();
-
-                modal.classList.add('open');
-            }
-
-            function renderPrintInquiryCities() {
-                const citiesContainer = document.getElementById('printInquiryCities');
-                if (!citiesContainer) return;
-
-                const displayCount = 8;
-                const visibleCities = printInquirySelectedCities.slice(0, displayCount);
-                const extraCount = printInquirySelectedCities.length - displayCount;
-
-                citiesContainer.innerHTML = visibleCities.map(id =>
-                    `<div class="print-inquiry-city-thumb" data-id="${id}">
-                        <img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}">
-                        <span class="city-id">#${id}</span>
-                        <button class="city-remove-btn" title="Remove">×</button>
-                    </div>`
-                ).join('') + (extraCount > 0 ? `<span class="print-inquiry-city-chip more-chip">+${extraCount} more</span>` : '');
-
-                // Add click handlers for remove buttons
-                citiesContainer.querySelectorAll('.city-remove-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const thumb = btn.closest('.print-inquiry-city-thumb');
-                        const id = parseInt(thumb.dataset.id);
-                        printInquirySelectedCities = printInquirySelectedCities.filter(cid => cid !== id);
-                        renderPrintInquiryCities();
-                    });
-                });
-            }
+            // Print inquiry state and rendering now at top-level scope (before initCollectorsPanel)
+            // so handlers outside initCollectorsPanel can access them directly
 
             // Framing toggle
             let printInquiryFraming = 'unframed';
@@ -7498,33 +7729,18 @@
                 document.getElementById('printInquiryForm').style.display = 'block';
                 document.getElementById('printInquirySuccess').style.display = 'none';
                 document.getElementById('printInquiryEmail').value = '';
-                document.getElementById('printInquiryName').value = '';
-                document.getElementById('printInquiryAddress').value = '';
-                document.getElementById('printInquiryCity').value = '';
-                document.getElementById('printInquiryState').value = '';
-                document.getElementById('printInquiryZip').value = '';
                 document.getElementById('printInquiryCountry').value = 'United States';
                 document.getElementById('printInquiryNotes').value = '';
-                document.getElementById('printInquiryType').selectedIndex = 0;
-                // Reset size and framing toggles
+                // Reset size toggle
                 document.querySelectorAll('.print-inquiry-size-option').forEach((o, i) => o.classList.toggle('active', i === 0));
-                document.querySelectorAll('.print-inquiry-framing-option').forEach((o, i) => o.classList.toggle('active', i === 0));
-                printInquirySize = '16x9';
-                printInquiryPrice = 120;
-                printInquiryFraming = 'unframed';
+                printInquirySize = '9x16';
+                printInquiryPrice = 50;
             });
 
             document.getElementById('printInquirySend')?.addEventListener('click', () => {
-                const email = document.getElementById('printInquiryEmail').value;
-                const name = document.getElementById('printInquiryName').value;
-                const address = document.getElementById('printInquiryAddress').value;
-                const city = document.getElementById('printInquiryCity').value;
-                const state = document.getElementById('printInquiryState').value;
-                const zip = document.getElementById('printInquiryZip').value;
-                const country = document.getElementById('printInquiryCountry').value;
-                const type = document.getElementById('printInquiryType').value;
-                const notes = document.getElementById('printInquiryNotes').value;
-                const collectorName = document.getElementById('wallViewCollectorLabel')?.dataset.rawName || 'Collector';
+                const email = document.getElementById('printInquiryEmail')?.value || '';
+                const country = document.getElementById('printInquiryCountry')?.value || '';
+                const notes = document.getElementById('printInquiryNotes')?.value || '';
                 const tokenIds = printInquirySelectedCities || [];
 
                 if (!email || !email.includes('@')) {
@@ -7532,49 +7748,24 @@
                     return;
                 }
 
-                if (!name) {
-                    alert('Please enter your name');
-                    return;
-                }
+                // Get selected size info
+                const activeSize = document.querySelector('.print-inquiry-size-option.active');
+                const sizeDims = activeSize?.querySelector('.size-dims')?.textContent || printInquirySize;
+                const sizePrice = activeSize?.querySelector('.size-price')?.textContent || '';
+                const sizeLabel = activeSize?.querySelector('.size-label')?.textContent || '';
+                const sizeDesc = `${sizeDims} ${sizePrice}${sizeLabel ? ' (' + sizeLabel + ')' : ''}`;
 
-                if (!address || !city || !zip || !country) {
-                    alert('Please enter your shipping address');
-                    return;
-                }
-
-                // Build mailto link with pre-filled content
-                const typeLabels = {
-                    'single': 'Signed print of specific Output(s)',
-                    'grid': 'Grid arrangement of my collection',
-                    'large': 'Large format print',
-                    'mural': 'Mural / wall installation',
-                    'collab': 'Collaboration / commission',
-                    'custom': 'Something else'
-                };
-
-                const sizeLabels = {
-                    '16x9': '16 × 9" ($120)',
-                    '18x32': '18 × 32" ($350)'
-                };
-
-                const subject = encodeURIComponent(`Cities Print Order - ${collectorName}`);
+                const subject = encodeURIComponent(`Cities Print Inquiry`);
                 const body = encodeURIComponent(
                     `Hi Eric,\n\n` +
-                    `I'd like to order a signed print!\n\n` +
+                    `I'd like to order a print!\n\n` +
                     `== ORDER DETAILS ==\n` +
-                    `Collector: ${collectorName}\n` +
                     `Cities: ${tokenIds.map(id => '#' + id).join(', ')}\n` +
-                    `Size: ${sizeLabels[printInquirySize]}\n` +
-                    `Framing: ${printInquiryFraming === 'framed' ? 'Framed' : 'Unframed'}\n` +
-                    `Type: ${typeLabels[type]}\n` +
-                    `\n== SHIPPING ADDRESS ==\n` +
-                    `${name}\n` +
-                    `${address}\n` +
-                    `${city}, ${state} ${zip}\n` +
-                    `${country}\n` +
-                    `\nEmail: ${email}\n` +
+                    `Size: ${sizeDesc}\n` +
+                    `Country: ${country}\n` +
+                    `Email: ${email}\n` +
                     (notes ? `\nNotes: ${notes}\n` : '') +
-                    `\nLooking forward to the quote!`
+                    `\nLooking forward to hearing from you!`
                 );
 
                 // Open email client
@@ -7591,6 +7782,24 @@
                     document.getElementById('printInquiryModal').classList.remove('open');
                 }
             });
+
+            // Print options carousel dots (mobile)
+            const printOptionsEl = document.getElementById('printInquiryOptions');
+            const printDotsEl = document.getElementById('printOptionsDots');
+            if (printOptionsEl && printDotsEl) {
+                printOptionsEl.addEventListener('scroll', () => {
+                    const idx = Math.round(printOptionsEl.scrollLeft / printOptionsEl.offsetWidth);
+                    printDotsEl.querySelectorAll('.print-options-dot').forEach((d, i) => {
+                        d.classList.toggle('active', i === idx);
+                    });
+                });
+                printDotsEl.querySelectorAll('.print-options-dot').forEach(dot => {
+                    dot.addEventListener('click', () => {
+                        const idx = parseInt(dot.dataset.index);
+                        printOptionsEl.scrollTo({ left: idx * printOptionsEl.offsetWidth, behavior: 'smooth' });
+                    });
+                });
+            }
 
             // Shuffle button - randomize city positions
             document.getElementById('wallViewShuffle')?.addEventListener('click', () => {
@@ -7646,10 +7855,15 @@
             const wallRoom = document.getElementById('wallViewRoom');
             let isPanning = false;
             let panStartX, panStartY;
+            let wallDragDistance = 0;
+            let wallMouseDownX = 0, wallMouseDownY = 0;
 
             wallRoom?.addEventListener('mousedown', (e) => {
                 if (e.target.closest('.wall-view-frame') || e.target.closest('.wall-view-empty-frame')) return;
                 isPanning = true;
+                wallDragDistance = 0;
+                wallMouseDownX = e.clientX;
+                wallMouseDownY = e.clientY;
                 panStartX = e.clientX - wallPanX;
                 panStartY = e.clientY - wallPanY;
                 wallRoom.style.cursor = 'grabbing';
@@ -7659,12 +7873,26 @@
                 if (!isPanning) return;
                 wallPanX = e.clientX - panStartX;
                 wallPanY = e.clientY - panStartY;
+                wallDragDistance = Math.abs(e.clientX - wallMouseDownX) + Math.abs(e.clientY - wallMouseDownY);
                 applyWallZoom();
             });
 
             document.addEventListener('mouseup', () => {
                 isPanning = false;
                 if (wallRoom) wallRoom.style.cursor = 'grab';
+            });
+
+            // Click on empty wall area (not a drag) → back to collectors panel
+            wallRoom?.addEventListener('click', (e) => {
+                if (wallDragDistance > 5) return;
+                if (e.target.closest('.wall-view-frame') || e.target.closest('.wall-view-empty-frame') || e.target.closest('button') || e.target.closest('a') || e.target.closest('.wall-view-collector-info')) return;
+                closeWallView();
+                currentCollectorFilter = null;
+                document.getElementById('collectorBanner')?.classList.remove('visible');
+                collectorsPanel.classList.add('open');
+                document.body.classList.add('collectors-open');
+                startPatronsAutoReveal();
+                renderGrid();
             });
 
             // Mouse wheel / trackpad zoom - very smooth and gradual
@@ -7704,6 +7932,31 @@
             wallRoom?.addEventListener('touchend', () => {
                 lastTouchDistance = 0;
             }, { passive: true });
+
+            // Show nudge bar only when mouse is near bottom of screen
+            const wallModal = document.getElementById('wallViewModal');
+            let nudgeHideTimer = null;
+            wallModal?.addEventListener('mousemove', (e) => {
+                const nudge = document.getElementById('wallViewGridNudge');
+                if (!nudge || !nudge.classList.contains('ready')) return;
+                const distFromBottom = window.innerHeight - e.clientY;
+                if (distFromBottom < 100) {
+                    nudge.classList.add('show');
+                    if (nudgeHideTimer) { clearTimeout(nudgeHideTimer); nudgeHideTimer = null; }
+                } else {
+                    if (!nudgeHideTimer) {
+                        nudgeHideTimer = setTimeout(() => {
+                            nudge.classList.remove('show');
+                            nudgeHideTimer = null;
+                        }, 400);
+                    }
+                }
+            });
+            wallModal?.addEventListener('mouseleave', () => {
+                const nudge = document.getElementById('wallViewGridNudge');
+                if (nudge) nudge.classList.remove('show');
+                if (nudgeHideTimer) { clearTimeout(nudgeHideTimer); nudgeHideTimer = null; }
+            });
 
         }
 
@@ -7785,55 +8038,13 @@
             const tempCities = wall?.querySelectorAll('.wall-view-frame.temp-city').length || 0;
             const totalCities = realCities + tempCities;
             const labelEl = document.getElementById('wallViewCollectorLabel');
-            const rawName = labelEl?.dataset.rawName || '';
             const collectorName = labelEl?.querySelector('.collector-name-value')?.textContent || labelEl?.dataset.rawName || 'Collector';
-            const isTrying = tempCities > 0;
 
-            // Check if this collector is in the top collectors
-            const collectorRank = COLLECTORS_DATA.findIndex(c => c.name === rawName) + 1;
-            const isTopCollector = collectorRank > 0 && collectorRank <= 10;
-
-            const status = analyzeGridStatus(totalCities);
-            const realStatus = analyzeGridStatus(realCities);
-
-            if (status.isPerfect) {
-                let message = '';
-                if (status.isMassive) {
-                    // Massive collection
-                    const verb = isTrying ? 'is trying out' : 'has';
-                    message = `<span>${collectorName}</span> ${verb} a legendary collection of <span class="grid-count">${totalCities}</span> cities! ✦✦✦`;
-                } else if (status.superGrid) {
-                    // Super grid (multiple 2x2s)
-                    const gridIcon = generateGridIcon('2×2');
-                    const verb = isTrying ? 'is trying out' : 'has';
-                    message = `<span>${collectorName}</span> ${verb} a super grid! ${gridIcon} <span class="grid-count">${status.superGrid}</span> grids ✦`;
-                } else {
-                    // Regular perfect grid
-                    const gridIcon = generateGridIcon(status.dims);
-                    if (isTrying) {
-                        message = `<span>${collectorName}</span> is trying a ${gridIcon} <span class="grid-count">${status.dims}</span> grid! ✦`;
-                    } else {
-                        message = `<span>${collectorName}</span> has a perfect ${gridIcon} <span class="grid-count">${status.dims}</span> grid! ✦`;
-                    }
-                }
-                // Add top collector congratulations
-                if (isTopCollector && !isTrying) {
-                    message += ` <span style="margin-left: 8px; color: #c9a227;">🏆 Top ${collectorRank} Collector!</span>`;
-                }
-                nudgeText.innerHTML = message;
-                nudge.classList.add('visible');
-            } else if (status.needed <= 5) {
-                // Close to a grid
-                const gridIcon = generateGridIcon(status.dims);
-                if (status.isFirst) {
-                    // First grid messaging
-                    nudgeText.innerHTML = `<span>${collectorName}</span> is <span class="grid-count">${status.needed}</span> away from their first ${gridIcon} grid`;
-                } else {
-                    nudgeText.innerHTML = `<span>${collectorName}</span> is <span class="grid-count">${status.needed}</span> away from a ${gridIcon} <span style="margin-left: 2px;">${status.dims} GRID</span>`;
-                }
-                nudge.classList.add('visible');
+            if (totalCities > 0) {
+                nudgeText.innerHTML = `<span>${collectorName}</span> is building a set 🏙️ <span class="grid-count">${totalCities}</span> cities and counting`;
+                nudge.classList.add('ready');
             } else {
-                nudge.classList.remove('visible');
+                nudge.classList.remove('ready');
             }
         }
 
@@ -8854,18 +9065,27 @@
         function openWallView(collectorName, tokenIds) {
             const name = collectorName || document.getElementById('collectorBannerName').textContent;
             const displayName = formatCollectorName(name);
-            const collectorNameEl = document.getElementById('wallViewCollectorLabel');
-            if (collectorNameEl) {
-                collectorNameEl.textContent = displayName;
-                collectorNameEl.dataset.rawName = name; // Store raw name for navigation
-            }
 
             const wall = document.getElementById('wallViewWall');
-            const collectorLabel = document.getElementById('wallViewCollectorLabel');
             wall.innerHTML = '';
             wallViewZoom = 1;
             wallPanX = 0;
             wallPanY = 0;
+
+            // Recreate collector info (was destroyed by innerHTML clear)
+            const collectorInfo = document.createElement('div');
+            collectorInfo.className = 'wall-view-collector-info';
+            collectorInfo.id = 'wallViewCollectorInfo';
+            const collectorLabel = document.createElement('div');
+            collectorLabel.className = 'wall-view-collector-name';
+            collectorLabel.id = 'wallViewCollectorLabel';
+            collectorLabel.innerHTML = `<span class="collector-label">CITIES COLLECTED BY</span> <span class="collector-name-value">${displayName}</span>`;
+            collectorLabel.dataset.rawName = name;
+            collectorLabel.onclick = () => {
+                closeWallView();
+            };
+            collectorInfo.appendChild(collectorLabel);
+            wall.appendChild(collectorInfo);
 
             // Get the cities
             const items = tokenIds
@@ -8880,13 +9100,6 @@
 
             // Find collector data
             const collector = COLLECTORS_DATA.find(c => c.name === name || c.address === name);
-
-            // Set collector name label with "Cities collected by" format
-            collectorLabel.innerHTML = `<span class="collector-label">CITIES COLLECTED BY</span> <span class="collector-name-value">${displayName}</span>`;
-            collectorLabel.onclick = () => {
-                closeWallView();
-                // Toggle back to grid view of this collector
-            };
 
             // Calculate optimal grid layout
             // For collectors with 1-3 cities, always use 2x2 grid to show the goal
@@ -8930,11 +9143,11 @@
                 };
                 fullImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png`;
 
-                // Click frame to open single piece framed view
+                // Click frame to open framed mockup view
                 frame.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const tokenId = parseInt(frame.dataset.tokenId);
-                    openSinglePieceFramedView(tokenId, name);
+                    openFrameMockup(tokenId, name);
                 });
 
                 inner.appendChild(frameImg);
@@ -9082,51 +9295,74 @@
         window.openWallView = openWallView;
         openWallViewFn = openWallView;
 
-        // Global handler for wall button click (called from inline onclick)
-        window.handleWallButtonClick = function() {
-            const name = document.getElementById('collectorBannerName')?.textContent;
-            let tokens = null;
-            let collectorName = null;
+        // Wall button handler - opens wall view for current collector
+        function handleWallButtonClick() {
+            try {
+                let tokens = null;
+                let collectorName = null;
 
-            if (currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
-                tokens = currentCollectorFilter.tokens;
-                collectorName = currentCollectorFilter.name;
-            } else if (name) {
-                const collector = COLLECTORS_DATA.find(c => c.name === name);
-                if (collector && collector.tokens && collector.tokens.length > 0) {
-                    tokens = collector.tokens;
-                    collectorName = collector.name;
+                // 1. Try wall button data attributes (most reliable, set by showCollectorInGrid)
+                const wallBtn = document.getElementById('collectorWallView');
+                if (wallBtn && wallBtn.dataset.tokens && wallBtn.dataset.collector) {
+                    const parsed = wallBtn.dataset.tokens.split(',').map(id => parseInt(id)).filter(id => !isNaN(id));
+                    if (parsed.length > 0) {
+                        tokens = parsed;
+                        collectorName = wallBtn.dataset.collector;
+                    }
                 }
-            }
 
-            if (tokens && tokens.length > 0 && collectorName) {
-                openWallView(collectorName, tokens);
-            }
-        };
-
-        // Global handler for collector name click (called from inline onclick)
-        window.handleCollectorNameClick = function() {
-            console.log('handleCollectorNameClick called');
-            const name = document.getElementById('collectorBannerName')?.textContent;
-            let tokens = null;
-            let collectorName = null;
-
-            if (currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
-                tokens = currentCollectorFilter.tokens;
-                collectorName = currentCollectorFilter.name;
-            } else if (name) {
-                const collector = COLLECTORS_DATA.find(c => c.name === name);
-                if (collector && collector.tokens && collector.tokens.length > 0) {
-                    tokens = collector.tokens;
-                    collectorName = collector.name;
+                // 2. Try currentCollectorFilter
+                if (!tokens && currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
+                    tokens = currentCollectorFilter.tokens;
+                    collectorName = currentCollectorFilter.name;
                 }
-            }
 
-            if (tokens && tokens.length > 0 && collectorName) {
-                console.log('Opening wall for:', collectorName, 'with', tokens.length, 'tokens');
-                openWallView(collectorName, tokens);
+                // 3. Try banner name → COLLECTORS_DATA lookup
+                if (!tokens) {
+                    const rawName = document.getElementById('collectorBannerName')?.textContent?.replace(/\.{3}$/, '');
+                    if (rawName) {
+                        const collector = COLLECTORS_DATA.find(c => c.name === rawName || c.name.toLowerCase() === rawName.toLowerCase());
+                        if (collector && collector.tokens && collector.tokens.length > 0) {
+                            tokens = collector.tokens;
+                            collectorName = collector.name;
+                        }
+                    }
+                }
+
+                // 4. Try sessionStorage
+                if (!tokens) {
+                    try {
+                        const saved = sessionStorage.getItem('cities-gallery-context');
+                        if (saved) {
+                            const ctx = JSON.parse(saved);
+                            if (ctx && ctx.tokens && ctx.tokens.length > 0) {
+                                tokens = ctx.tokens;
+                                collectorName = ctx.name;
+                            }
+                        }
+                    } catch (e) {}
+                }
+
+                if (tokens && tokens.length > 0 && collectorName) {
+                    currentCollectorFilter = { name: collectorName, tokens: tokens };
+                    openWallView(collectorName, tokens);
+                }
+            } catch (err) {
+                console.error('Wall button error:', err);
             }
-        };
+        }
+
+        // Attach to wall button, collector name, AND entire banner
+        // The banner acts as a large click target — any tap opens the wall
+        // Only close/nav buttons are excluded
+        document.getElementById('collectorWallView')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleWallButtonClick();
+        });
+        document.getElementById('collectorBannerName')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleWallButtonClick();
+        });
 
         // Suggestion engine - suggests cities based on what collector has
         const ALL_ENERGIES = ['Rising', 'Living', 'Fading', 'Resting'];
@@ -9384,76 +9620,6 @@
             document.getElementById('wallViewSuggestion').classList.remove('visible');
         });
 
-        // Single piece framed view (zoomed in on one piece)
-        // Single piece framed view state
-        let singlePieceTokens = [];
-        let singlePieceCurrentIndex = 0;
-        let singlePieceCollectorName = '';
-
-        function openSinglePieceFramedView(tokenId, collectorName) {
-            const overlay = document.getElementById('singlePieceOverlay');
-            const wallModal = document.getElementById('wallViewModal');
-
-            // Use all minted tokens for sequential navigation
-            const allMintedTokens = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
-            singlePieceTokens = allMintedTokens.length > 0 ? allMintedTokens : [tokenId];
-            singlePieceCurrentIndex = singlePieceTokens.indexOf(tokenId);
-            if (singlePieceCurrentIndex === -1) singlePieceCurrentIndex = 0;
-            singlePieceCollectorName = collectorName;
-
-            // Match dark mode from wall view, or default to dark if opening from grid
-            if (wallModal?.classList.contains('open')) {
-                // Opening from wall view - match its mode
-                if (wallModal.classList.contains('wall-black') || wallModal.classList.contains('dark-mode')) {
-                    overlay.classList.add('dark-mode');
-                } else {
-                    overlay.classList.remove('dark-mode');
-                }
-            } else {
-                // Opening from grid - default to dark mode
-                overlay.classList.add('dark-mode');
-            }
-
-            updateSinglePieceView();
-            overlay.classList.add('open');
-        }
-
-        function updateSinglePieceView() {
-            const tokenId = singlePieceTokens[singlePieceCurrentIndex];
-            const img = document.getElementById('singlePieceImage');
-            const label = document.getElementById('singlePieceLabel');
-            const collectorEl = document.getElementById('singlePieceCollector');
-
-            img.src = `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png`;
-            label.textContent = `#${tokenId}`;
-
-            // Get current owner for this specific token
-            const collector = COLLECTORS_DATA?.find(c => c.tokens && c.tokens.includes(tokenId));
-            const ownerName = collector ? collector.name : null;
-
-            // Show collector name - creates subtle FOMO since each city can only be owned by one person
-            if (ownerName && collectorEl) {
-                collectorEl.textContent = `owned by ${ownerName}`;
-                collectorEl.style.display = 'block';
-            } else if (collectorEl) {
-                collectorEl.style.display = 'none';
-            }
-        }
-
-        function closeSinglePieceView() {
-            document.getElementById('singlePieceOverlay').classList.remove('open');
-        }
-
-        function singlePiecePrev() {
-            singlePieceCurrentIndex = (singlePieceCurrentIndex - 1 + singlePieceTokens.length) % singlePieceTokens.length;
-            updateSinglePieceView();
-        }
-
-        function singlePieceNext() {
-            singlePieceCurrentIndex = (singlePieceCurrentIndex + 1) % singlePieceTokens.length;
-            updateSinglePieceView();
-        }
-
         function generateCollectorTagline(tokenIds) {
             if (!tokenIds || tokenIds.length === 0) return '';
 
@@ -9615,6 +9781,26 @@
                 tipsToggle.dataset.ready = 'false';
             }
             document.getElementById('wallViewSuggestion')?.classList.remove('visible');
+
+            // Reset try mode
+            wallViewTryMode = false;
+            document.getElementById('wallViewTryMode')?.classList.remove('active');
+
+            // Reset line view
+            modal.classList.remove('line-view');
+            const lineBtn = document.getElementById('wallViewHideEmpty');
+            if (lineBtn) {
+                lineBtn.classList.remove('active');
+                lineBtn.innerHTML = '<span class="line-icon">⊞</span> GRID';
+            }
+
+            // Reset nudge bar
+            const nudge = document.getElementById('wallViewGridNudge');
+            if (nudge) nudge.classList.remove('ready', 'show');
+
+            // Clean up any lingering overlays
+            document.querySelector('.try-city-picker')?.remove();
+            document.querySelector('.empty-slot-dropdown')?.remove();
         }
 
         function getTraitRarity(traitKey, traitValue) {
@@ -10207,10 +10393,45 @@
             }).catch(() => prompt('Copy this caption:', caption));
         }
 
-        function openFrameMockup() {
+        // Frame mockup token list for navigation (all minted or collector-specific)
+        let frameMockupTokens = [];
+        let frameMockupCurrentIndex = 0;
+        let frameMockupCollectorName = '';
+
+        function openFrameMockup(tokenId, collectorName) {
             const frameMockup = document.getElementById('frameMockup');
             const frameImage = document.getElementById('frameMockupImage');
-            frameImage.src = getPreviewUrl(currentTokenId);
+            const wallModal = document.getElementById('wallViewModal');
+
+            // Determine which token to show
+            const showToken = tokenId || currentTokenId;
+
+            // Build token list for navigation
+            const allMintedTokens = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
+            frameMockupTokens = allMintedTokens.length > 0 ? allMintedTokens : [showToken];
+            frameMockupCurrentIndex = frameMockupTokens.indexOf(showToken);
+            if (frameMockupCurrentIndex === -1) frameMockupCurrentIndex = 0;
+            frameMockupCollectorName = collectorName || '';
+
+            // Always start in light mode with light-wood frame
+            frameMockup.classList.remove('dark-mode');
+            const modeBtn = document.getElementById('frameMockupMode');
+            if (modeBtn) modeBtn.textContent = '\u263E';
+
+            // Reset frame color to light-wood
+            currentFrameColor = 'light-wood';
+            document.querySelectorAll('.frame-color-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.frame-color-btn[data-color="light-wood"]')?.classList.add('active');
+            const wrapper = document.getElementById('frameWrapper');
+            if (wrapper) {
+                wrapper.classList.remove('frame-white', 'frame-black', 'frame-dark-wood');
+                wrapper.style.background = '';
+                const inner = wrapper.querySelector('.frame-inner');
+                if (inner) inner.style.background = '';
+            }
+
+            frameImage.src = `${MEDIA_BASE}/${CONTRACT}/${showToken}.png`;
+            updateFrameMockupInfo(showToken);
             frameMockup.classList.add('open');
             updateFrameMockupNav();
         }
@@ -10219,40 +10440,47 @@
             document.getElementById('frameMockup').classList.remove('open');
         }
 
+        function updateFrameMockupInfo(tokenId) {
+            const label = document.getElementById('frameMockupLabel');
+            const collectorEl = document.getElementById('frameMockupCollector');
+            if (label) label.textContent = `#${tokenId}`;
+
+            // Look up current owner
+            const collector = COLLECTORS_DATA?.find(c => c.tokens && c.tokens.includes(tokenId));
+            const ownerName = collector ? collector.name : null;
+            if (ownerName && collectorEl) {
+                collectorEl.textContent = `owned by ${ownerName}`;
+                collectorEl.style.display = 'block';
+            } else if (collectorEl) {
+                collectorEl.style.display = 'none';
+            }
+        }
+
         function updateFrameMockupNav() {
-            const matches = getFilteredTokens();
-            const currentIndex = matches.indexOf(currentTokenId);
             const prevBtn = document.getElementById('frameMockupPrev');
             const nextBtn = document.getElementById('frameMockupNext');
-            // Navigation now wraps around, so buttons are always enabled if there are matches
-            if (prevBtn) {
-                prevBtn.disabled = matches.length <= 1;
-            }
-            if (nextBtn) {
-                nextBtn.disabled = currentIndex >= matches.length - 1 || currentIndex === -1;
-            }
+            if (prevBtn) prevBtn.disabled = frameMockupTokens.length <= 1;
+            if (nextBtn) nextBtn.disabled = frameMockupTokens.length <= 1;
         }
 
         function frameMockupPrev() {
-            const matches = getFilteredTokens();
-            if (matches.length === 0) return;
-            const currentIndex = matches.indexOf(currentTokenId);
-            // Wrap around to end if at start
-            const newToken = currentIndex <= 0 ? matches[matches.length - 1] : matches[currentIndex - 1];
+            if (frameMockupTokens.length === 0) return;
+            frameMockupCurrentIndex = (frameMockupCurrentIndex - 1 + frameMockupTokens.length) % frameMockupTokens.length;
+            const newToken = frameMockupTokens[frameMockupCurrentIndex];
+            document.getElementById('frameMockupImage').src = `${MEDIA_BASE}/${CONTRACT}/${newToken}.png`;
+            updateFrameMockupInfo(newToken);
+            // Also update the main view behind
             loadOutput(newToken, true, false);
-            document.getElementById('frameMockupImage').src = getPreviewUrl(newToken);
-            updateFrameMockupNav();
         }
 
         function frameMockupNext() {
-            const matches = getFilteredTokens();
-            if (matches.length === 0) return;
-            const currentIndex = matches.indexOf(currentTokenId);
-            // Wrap around to start if at end
-            const newToken = (currentIndex === -1 || currentIndex >= matches.length - 1) ? matches[0] : matches[currentIndex + 1];
+            if (frameMockupTokens.length === 0) return;
+            frameMockupCurrentIndex = (frameMockupCurrentIndex + 1) % frameMockupTokens.length;
+            const newToken = frameMockupTokens[frameMockupCurrentIndex];
+            document.getElementById('frameMockupImage').src = `${MEDIA_BASE}/${CONTRACT}/${newToken}.png`;
+            updateFrameMockupInfo(newToken);
+            // Also update the main view behind
             loadOutput(newToken, true, false);
-            document.getElementById('frameMockupImage').src = getPreviewUrl(newToken);
-            updateFrameMockupNav();
         }
 
         function toggleFrameMockupDarkMode() {
@@ -10430,8 +10658,9 @@
         // Order print from frame mockup
         document.getElementById('orderPrint')?.addEventListener('click', (e) => {
             e.stopPropagation();
+            const tokenId = frameMockupTokens[frameMockupCurrentIndex] || currentTokenId;
             closeFrameMockup();
-            openPrintInquiryModal([currentTokenId]);
+            openPrintInquiryModal([tokenId]);
         });
 
         // Order print from sidebar
@@ -10449,10 +10678,11 @@
         // Click on frame/image to open OpenSea offer page
         document.getElementById('frameWrapper')?.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (currentTokenId !== undefined) {
-                const confirmed = confirm('You are about to leave this page and go to OpenSea to make an offer on City #' + currentTokenId + '. Continue?');
+            const tokenId = frameMockupTokens[frameMockupCurrentIndex] || currentTokenId;
+            if (tokenId !== undefined) {
+                const confirmed = confirm('You are about to leave this page and go to OpenSea to make an offer on City #' + tokenId + '. Continue?');
                 if (confirmed) {
-                    window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${currentTokenId}`, '_blank');
+                    window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`, '_blank');
                 }
             }
         });
@@ -11419,6 +11649,22 @@
                     return `<div class="gallery-item"><div class="item-info"><img src="${thumbUrl}" alt="City #${fav.tokenId}" loading="eager" onerror="this.src='${fullUrl}'" style="width:100%;height:100%;object-fit:cover;"><span class="gallery-item-id">#${fav.tokenId}</span></div><div class="item-actions"><button class="load-btn" onclick="loadFavorite(${i})">LOAD</button><button class="delete-btn" onclick="deleteFavorite(${i})">REMOVE</button></div></div>`;
                 }).join('');
             }
+
+            // Sync grid-group-fav buttons across grid view
+            document.querySelectorAll('.grid-group-fav').forEach(btn => {
+                const palette = btn.dataset.palette;
+                const isFav = isPaletteFavorited(palette);
+                btn.classList.toggle('favorited', isFav);
+                btn.textContent = isFav ? '♥' : '♡';
+            });
+
+            // Sync palette inspector fav button if open
+            const inspectorFavBtn = document.getElementById('pantoneFavBtn');
+            if (inspectorFavBtn && inspectorFavBtn.dataset.palette) {
+                const isFav = isPaletteFavorited(inspectorFavBtn.dataset.palette);
+                inspectorFavBtn.classList.toggle('favorited', isFav);
+                inspectorFavBtn.textContent = isFav ? '♥' : '♡';
+            }
         }
         // Expose to window for inline onclick
         window.updateGallery = updateGallery;
@@ -12012,8 +12258,8 @@
 
             function renderPantoneChip(color) {
                 const chipTextColor = getContrastColor(color);
-                return `<div class="pantone-color-chip" style="background: ${color};">
-                    <span class="chip-hex" style="background: ${color}; color: ${chipTextColor};">${color.toUpperCase()}</span>
+                return `<div class="pantone-color-chip" style="background: ${color};" onclick="navigator.clipboard.writeText('${color.toUpperCase()}')">
+                    <span class="chip-hex" style="color: ${chipTextColor};">${color.toUpperCase()}</span>
                 </div>`;
             }
 
@@ -12195,6 +12441,7 @@
                 hexToggle.textContent = 'Show Hex';
             }
             hexSection.classList.remove('visible');
+            colorsEl.classList.remove('hex-visible');
 
             inspector.classList.add('open');
         }
@@ -12224,13 +12471,13 @@
             }
         });
 
-        // Hex codes toggle
+        // Hex codes toggle - transforms circle swatches into pills with hex codes
         document.getElementById('pantoneHexToggle')?.addEventListener('click', (e) => {
             e.stopPropagation();
             const btn = e.currentTarget;
-            const hexSection = document.getElementById('pantoneHexSection');
+            const colorsContainer = document.getElementById('pantoneColors');
             btn.classList.toggle('active');
-            hexSection.classList.toggle('visible');
+            colorsContainer.classList.toggle('hex-visible');
             btn.textContent = btn.classList.contains('active') ? 'Hide Hex' : 'Show Hex';
         });
         document.getElementById('paletteInspector').addEventListener('click', (e) => {
@@ -12262,37 +12509,29 @@
                 case 'd': downloadPng(); break;
                 case 'arrowleft':
                     e.preventDefault();
-                    if (document.getElementById('singlePieceOverlay')?.classList.contains('open')) {
-                        singlePiecePrev();
+                    if (document.getElementById('frameMockup')?.classList.contains('open')) {
+                        frameMockupPrev();
                     } else if (document.getElementById('wallViewModal')?.classList.contains('open')) {
                         navigateToPrevCollector();
                     } else if (document.getElementById('paletteInspector')?.classList.contains('open') && paletteHistory.length > 1) {
                         fanNavigatePrev();
-                    } else if (document.getElementById('frameMockup')?.classList.contains('open')) {
-                        frameMockupPrev();
                     } else if (currentCollectorFilter && document.getElementById('gridPanel')?.classList.contains('open')) {
-                        // Navigate collectors in grid view
                         navigateToPrevCollector();
                     } else if (!document.getElementById('gridPanel')?.classList.contains('open')) {
-                        // Navigate in single view (only if grid panel not open)
                         document.getElementById('prevToken')?.click();
                     }
                     break;
                 case 'arrowright':
                     e.preventDefault();
-                    if (document.getElementById('singlePieceOverlay')?.classList.contains('open')) {
-                        singlePieceNext();
+                    if (document.getElementById('frameMockup')?.classList.contains('open')) {
+                        frameMockupNext();
                     } else if (document.getElementById('wallViewModal')?.classList.contains('open')) {
                         navigateToNextCollector();
                     } else if (document.getElementById('paletteInspector')?.classList.contains('open') && paletteHistory.length > 1) {
                         fanNavigateNext();
-                    } else if (document.getElementById('frameMockup')?.classList.contains('open')) {
-                        frameMockupNext();
                     } else if (currentCollectorFilter && document.getElementById('gridPanel')?.classList.contains('open')) {
-                        // Navigate collectors in grid view
                         navigateToNextCollector();
                     } else if (!document.getElementById('gridPanel')?.classList.contains('open')) {
-                        // Navigate in single view (only if grid panel not open)
                         document.getElementById('nextToken')?.click();
                     }
                     break;
@@ -12309,9 +12548,9 @@
                     if (document.getElementById('aboutModal')?.classList.contains('open')) {
                         document.getElementById('aboutModal').classList.remove('open');
                     }
-                    // Priority 1: Close single piece framed view (within collector wall)
-                    else if (document.getElementById('singlePieceOverlay')?.classList.contains('open')) {
-                        closeSinglePieceView();
+                    // Priority 1: Close frame mockup (single piece view)
+                    else if (document.getElementById('frameMockup').classList.contains('open')) {
+                        closeFrameMockup();
                     }
                     // Priority 2: Close wall view modal
                     else if (document.getElementById('wallViewModal').classList.contains('open')) {
@@ -12320,10 +12559,6 @@
                         if (currentCollectorFilter) {
                             openGridView();
                         }
-                    }
-                    // Priority 2: Close frame mockup
-                    else if (document.getElementById('frameMockup').classList.contains('open')) {
-                        closeFrameMockup();
                     }
                     // Priority 3: Close palette inspector
                     else if (document.getElementById('paletteInspector').classList.contains('open')) {
@@ -12551,6 +12786,10 @@
             gridPanel.classList.remove('open');
             viewToggleBtn.classList.remove('grid-open');
             document.body.classList.remove('grid-open');
+            // Save collector context so we can restore it when re-opening
+            if (currentCollectorFilter) {
+                sessionStorage.setItem('cities-gallery-context', JSON.stringify(currentCollectorFilter));
+            }
             // If no city loaded yet (first time clicking X), load the current or rarest city
             if (!previewImage.src || previewImage.src === window.location.href) {
                 if (currentTokenId > 0) {
@@ -15131,13 +15370,13 @@
             if (contextStr) {
                 try {
                     const context = JSON.parse(contextStr);
-                    if (context && context.name) {
+                    if (context && context.name && context.tokens) {
                         currentCollectorFilter = context;
                         document.getElementById('collectorBannerName').textContent = context.name;
+                        document.getElementById('collectorBannerCount').textContent = context.tokens.length;
                         document.getElementById('collectorBanner').classList.add('visible');
                         gridMode = 'grid';
                         openGridView();
-                        renderGrid();
                         sessionStorage.removeItem('cities-gallery-context');
                         return true;
                     }
@@ -16428,13 +16667,8 @@
 
         // Keyboard navigation for zoom (arrows only)
         document.addEventListener('keydown', (e) => {
-            // Single piece framed view navigation
-            const singlePieceOverlay = document.getElementById('singlePieceOverlay');
-            if (singlePieceOverlay?.classList.contains('open')) {
-                if (e.key === 'ArrowLeft') singlePiecePrev();
-                if (e.key === 'ArrowRight') singlePieceNext();
-                return;
-            }
+            // Frame mockup navigation handled by main keydown handler
+            if (document.getElementById('frameMockup')?.classList.contains('open')) return;
             if (!timelineZoom.classList.contains('open')) return;
             if (e.key === 'ArrowLeft') timelineZoomPrev?.click();
             if (e.key === 'ArrowRight') timelineZoomNext?.click();
@@ -16513,7 +16747,7 @@
             if (e.key === 'Escape') {
                 const lightbox = document.getElementById('originsLightbox');
                 const playgroundOverlay = document.getElementById('playgroundOverlay');
-                const singlePieceOverlay = document.getElementById('singlePieceOverlay');
+                const frameMockupEl = document.getElementById('frameMockup');
                 const italyGalleryEl = document.getElementById('italyGallery');
                 const timelineFrameEl = document.getElementById('timelineFrame');
 
@@ -16537,9 +16771,9 @@
                     return;
                 }
 
-                // Priority 2: Close single piece framed view if open
-                if (singlePieceOverlay?.classList.contains('open')) {
-                    closeSinglePieceView();
+                // Priority 2: Close frame mockup if open
+                if (frameMockupEl?.classList.contains('open')) {
+                    closeFrameMockup();
                     return;
                 }
 
