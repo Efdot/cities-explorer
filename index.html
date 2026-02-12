@@ -6416,7 +6416,12 @@
 
             // Close collectors panel and open grid
             collectorsPanel.classList.remove('open');
-            document.getElementById('gridPanel').classList.add('open');
+            document.body.classList.remove('collectors-open');
+            const gp = document.getElementById('gridPanel');
+            const vtb = document.getElementById('viewToggleBtn');
+            if (gp) gp.classList.add('open');
+            if (vtb) vtb.classList.add('grid-open');
+            document.body.classList.add('grid-open');
 
             // First check if we already have this data from the collectors fetch
             const cachedCollector = COLLECTORS_DATA.find(c => c.name === collectorName);
@@ -9765,6 +9770,22 @@
                 tipsToggle.dataset.ready = 'false';
             }
             document.getElementById('wallViewSuggestion')?.classList.remove('visible');
+
+            // Reset try mode
+            wallViewTryMode = false;
+            document.getElementById('wallViewTryMode')?.classList.remove('active');
+
+            // Reset line view
+            modal.classList.remove('line-view');
+            const lineBtn = document.getElementById('wallViewHideEmpty');
+            if (lineBtn) {
+                lineBtn.classList.remove('active');
+                lineBtn.innerHTML = '<span class="line-icon">⊞</span> GRID';
+            }
+
+            // Clean up any lingering overlays
+            document.querySelector('.try-city-picker')?.remove();
+            document.querySelector('.empty-slot-dropdown')?.remove();
         }
 
         function getTraitRarity(traitKey, traitValue) {
@@ -12718,6 +12739,10 @@
             gridPanel.classList.remove('open');
             viewToggleBtn.classList.remove('grid-open');
             document.body.classList.remove('grid-open');
+            // Save collector context so we can restore it when re-opening
+            if (currentCollectorFilter) {
+                sessionStorage.setItem('cities-gallery-context', JSON.stringify(currentCollectorFilter));
+            }
             // If no city loaded yet (first time clicking X), load the current or rarest city
             if (!previewImage.src || previewImage.src === window.location.href) {
                 if (currentTokenId > 0) {
@@ -15298,13 +15323,13 @@
             if (contextStr) {
                 try {
                     const context = JSON.parse(contextStr);
-                    if (context && context.name) {
+                    if (context && context.name && context.tokens) {
                         currentCollectorFilter = context;
                         document.getElementById('collectorBannerName').textContent = context.name;
+                        document.getElementById('collectorBannerCount').textContent = context.tokens.length;
                         document.getElementById('collectorBanner').classList.add('visible');
                         gridMode = 'grid';
                         openGridView();
-                        renderGrid();
                         sessionStorage.removeItem('cities-gallery-context');
                         return true;
                     }
