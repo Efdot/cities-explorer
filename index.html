@@ -92,7 +92,7 @@
         input, select, textarea { font-size: 16px !important; }
 
         .bg-bubbles { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; overflow: hidden; z-index: 0; }
-        .bubble { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; animation: float 20s ease-in-out infinite; transition: background 1s ease-out; }
+        .bubble { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; transition: background 1s ease-out; }
         .bubble-1 { width: 400px; height: 400px; background: var(--warm); top: -100px; right: -100px; }
         .bubble-2 { width: 300px; height: 300px; background: var(--orange); bottom: -50px; left: 20%; animation-delay: -5s; }
         .bubble-3 { width: 250px; height: 250px; background: var(--yellow); top: 40%; right: 10%; animation-delay: -10s; }
@@ -442,7 +442,7 @@
         .omage-inquiry-submit { background: var(--warm); border: none; border-radius: 8px; padding: 14px; color: #000; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s ease; }
         .omage-inquiry-submit:hover { background: #f0c87d; transform: translateY(-1px); }
         .omage-inquiry-success { text-align: center; padding: 20px; color: var(--teal); font-size: 14px; }
-        .origin-item.available::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid var(--teal); border-radius: 8px; pointer-events: none; animation: availablePulse 2s ease-in-out infinite; }
+        .origin-item.available::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid var(--teal); border-radius: 8px; pointer-events: none; }
         @keyframes availablePulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
         .origin-item.available .origin-item-label::before { content: '🟢 '; }
 
@@ -898,7 +898,7 @@
         .timeline-culmination-subtitle { font-size: 12px; color: var(--warm); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
         .timeline-culmination-desc { font-size: 14px; color: var(--text-dim); margin-bottom: 24px; }
         .timeline-preview-grid { display: flex; flex-direction: column; gap: 4px; margin-bottom: 32px; overflow: hidden; margin-left: -40px; margin-right: -40px; }
-        .preview-row { display: flex; gap: 4px; animation: scrollBricks 40s linear infinite; }
+        .preview-row { display: flex; gap: 4px; }
         .preview-row-1 { animation-direction: normal; }
         .preview-row-2 { animation-direction: reverse; animation-duration: 50s; }
         .preview-row-3 { animation-direction: normal; animation-duration: 45s; }
@@ -921,7 +921,7 @@
         .whats-next-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(232, 184, 109, 0.08); }
 
         .timeline-mint-btn { position: relative; overflow: hidden; }
-        .timeline-mint-btn .mint-animation { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(232, 184, 109, 0.3), transparent); animation: mintShimmer 2s ease-in-out infinite; }
+        .timeline-mint-btn .mint-animation { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(232, 184, 109, 0.3), transparent); }
         @keyframes mintShimmer { 0% { left: -100%; } 50%, 100% { left: 100%; } }
 
         /* Timeline entrance animations */
@@ -984,6 +984,7 @@
             .timeline-group { width: 100%; max-width: 100%; margin: 40px auto; }
             .timeline-group::before { display: none; }
             .timeline-group-grid.cols-3, .timeline-group-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+            .timeline-group-grid.murals-grid .timeline-group-item:last-child { grid-column: 1 / -1; justify-self: center; max-width: calc(50% - 6px); }
             .timeline-group-title { font-size: 16px; }
             .timeline-group-subtitle { font-size: 10px; }
             .bloom-hover-hint { display: none; }
@@ -1391,6 +1392,7 @@
         .grid-stats-bar strong { color: var(--teal); }
 
         .top-nav-fixed { position: fixed; top: 24px; right: 24px; z-index: 700; display: flex; gap: 0; align-items: center; }
+        .top-nav-fixed button:focus-visible, .top-nav-fixed button:focus { outline: none; box-shadow: none; }
         .view-toggle-btn { width: 40px; height: 40px; min-width: 40px; border: none; border-radius: 0; background: transparent; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-left: -4px; padding: 0; overflow: hidden; }
         .view-toggle-btn:first-child { margin-left: 0; }
         .view-toggle-btn:hover { transform: scale(1.1); }
@@ -1413,7 +1415,7 @@
         .mint-toggle {
             --ch: 22px;
             --cw: calc(var(--ch) * 3.985);
-            display: flex; align-items: center; height: var(--ch); padding: 4px 3px; flex-shrink: 0; gap: 0;
+            display: flex; align-items: center; height: var(--ch); padding: 0 3px; flex-shrink: 0; gap: 0;
             opacity: 0.6; transition: opacity 0.3s ease; margin-right: 16px;
             background: none; border: none; cursor: pointer;
         }
@@ -1581,7 +1583,7 @@
         .listing-info .listing-price { font-size: 16px; font-weight: 800; color: var(--teal); }
         .listing-info .listing-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 4px; }
         .listing-info .listing-source { font-size: 9px; color: var(--text-dim); margin-top: 4px; }
-        .mint-link { background: linear-gradient(90deg, #F4A261, #E07B5A, #C77B8B, #9B6B9E, #E07B5A, #F4A261); background-size: 500% 100%; color: #1a1a2e; margin-bottom: 10px; animation: colorShift 15s ease-in-out infinite; }
+        .mint-link { background: linear-gradient(90deg, #F4A261, #E07B5A, #C77B8B, #9B6B9E, #E07B5A, #F4A261); background-size: 500% 100%; color: #1a1a2e; margin-bottom: 10px; }
         .mint-link:hover { box-shadow: 0 4px 16px rgba(224, 123, 90, 0.3); color: #1a1a2e; animation: colorShift 8s ease-in-out infinite; }
         @keyframes colorShiftFast { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         /* Mint countdown */
@@ -1593,12 +1595,12 @@
 
         .supply-tracker { display: block; text-decoration: none; transition: all 0.4s ease; cursor: pointer; position: relative; margin-bottom: 12px; }
         .supply-bar { position: relative; height: 18px; background: var(--bg-input); border-radius: 9px; overflow: hidden; }
-        .supply-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, rgba(180, 140, 80, 0.8), rgba(200, 160, 100, 0.8), rgba(180, 140, 80, 0.8)); background-size: 200% 100%; border-radius: 9px; transition: all 0.4s ease; animation: supplyShimmer 15s ease-in-out infinite; }
+        .supply-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, rgba(180, 140, 80, 0.8), rgba(200, 160, 100, 0.8), rgba(180, 140, 80, 0.8)); background-size: 200% 100%; border-radius: 9px; transition: all 0.4s ease; }
         .supply-tracker:hover .supply-fill { background: linear-gradient(90deg, #D4A574, #E8B86D, #D4A574); background-size: 200% 100%; }
         @keyframes supplyShimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
         .supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 10px; font-size: 7px; font-weight: 800; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.5); z-index: 2; transition: color 0.3s ease; }
         .supply-tracker:hover .supply-label { color: #000; }
-        .supply-tracker .mint-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; opacity: 0; color: #000; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; transition: opacity 0.3s ease; z-index: 3; border-radius: 9px; background: linear-gradient(90deg, var(--orange), var(--yellow), var(--pink), var(--orange)); background-size: 300% 100%; animation: colorShift 12s ease-in-out infinite; text-shadow: none; }
+        .supply-tracker .mint-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; opacity: 0; color: #000; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; transition: opacity 0.3s ease; z-index: 3; border-radius: 9px; background: linear-gradient(90deg, var(--orange), var(--yellow), var(--pink), var(--orange)); background-size: 300% 100%; text-shadow: none; }
         .supply-tracker:hover .supply-bar { box-shadow: 0 2px 8px rgba(212, 165, 116, 0.25); }
         .supply-tracker:hover .mint-text { opacity: 1; }
         .supply-tracker.sold-out .supply-fill { background: linear-gradient(90deg, var(--orange), var(--warm)); }
@@ -1667,11 +1669,11 @@
         .collector-pill:nth-child(10) { animation-delay: 0.27s; }
         .collector-pill:nth-child(n+11) { animation-delay: calc((var(--pill-index, 0) % 10) * 0.03s); }
         /* The Lost Cities - Haunted/Ghostly pill */
-        .collector-pill.haunted-pill { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%) !important; color: rgba(200, 200, 220, 0.7) !important; border: 1px solid rgba(100, 100, 150, 0.3); animation: hauntedPulse 4s ease-in-out infinite !important; text-shadow: 0 0 8px rgba(150, 150, 200, 0.3); }
+        .collector-pill.haunted-pill { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%) !important; color: rgba(200, 200, 220, 0.7) !important; border: 1px solid rgba(100, 100, 150, 0.3); text-shadow: 0 0 8px rgba(150, 150, 200, 0.3); }
         .collector-pill.haunted-pill::before { background: linear-gradient(90deg, transparent, rgba(150, 150, 200, 0.1), transparent); }
         .collector-pill.haunted-pill:hover { box-shadow: 0 4px 20px rgba(100, 100, 180, 0.3), 0 0 30px rgba(100, 100, 150, 0.15); }
         @keyframes hauntedPulse { 0%, 100% { filter: brightness(0.9); opacity: 0.85; } 50% { filter: brightness(1.1); opacity: 1; } }
-        .leaderboard-btn { width: auto; padding: 8px 14px; background: linear-gradient(90deg, var(--warm), var(--orange), var(--yellow), var(--warm)); background-size: 400% 100%; border: none; border-radius: 12px; color: #000; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.3s ease; animation: colorShift 20s ease-in-out infinite; opacity: 0.85; }
+        .leaderboard-btn { width: auto; padding: 8px 14px; background: linear-gradient(90deg, var(--warm), var(--orange), var(--yellow), var(--warm)); background-size: 400% 100%; border: none; border-radius: 12px; color: #000; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.3s ease; opacity: 0.85; }
         .leaderboard-btn:hover { opacity: 1; }
         .leaderboard-btn:hover { box-shadow: 0 8px 24px rgba(185, 103, 255, 0.25); }
         @keyframes colorShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -1843,7 +1845,7 @@
         .grid-supply-tracker { width: 120px; height: 28px; position: relative; flex-shrink: 0; cursor: pointer; display: block; text-decoration: none; }
         .grid-supply-bar { position: relative; height: 100%; background: var(--bg-input); border-radius: 14px; overflow: hidden; transition: box-shadow 0.3s ease; }
         .grid-supply-tracker:hover .grid-supply-bar { box-shadow: 0 2px 8px rgba(212, 165, 116, 0.25); }
-        .grid-supply-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, rgba(160, 130, 90, 0.5), rgba(180, 150, 100, 0.5), rgba(160, 130, 90, 0.5)); background-size: 200% 100%; border-radius: 14px; transition: all 0.4s ease; animation: supplyShimmer 8s ease-in-out infinite; }
+        .grid-supply-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, rgba(160, 130, 90, 0.5), rgba(180, 150, 100, 0.5), rgba(160, 130, 90, 0.5)); background-size: 200% 100%; border-radius: 14px; transition: all 0.4s ease; }
         .grid-supply-tracker:hover .grid-supply-fill { background: linear-gradient(90deg, #D4A574, #E8B86D, #D4A574); background-size: 200% 100%; }
         .grid-supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 12px; font-size: 8px; font-weight: 800; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.45); z-index: 2; transition: color 0.3s ease; }
         .grid-supply-tracker:hover .grid-supply-label { color: #000; }
@@ -2039,7 +2041,7 @@
         .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-nudge-btn:hover .nudge-btn-grid span { background: rgba(0,0,0,0.6); }
         /* Collector suggestion section */
         .wall-view-tips-toggle { position: fixed; bottom: 130px; right: 24px; width: 44px; height: 44px; border-radius: 8px; background: rgba(30,30,35,0.9); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 23; transition: all 0.2s ease; }
-        .wall-view-tips-toggle.has-tips { display: flex; animation: tipsGlow 10s ease-in-out infinite; }
+        .wall-view-tips-toggle.has-tips { display: flex; }
         .wall-view-tips-toggle:hover { background: rgba(50,50,55,0.95); border-color: rgba(255,255,255,0.2); transform: scale(1.05); animation: none; }
         /* Light mode tips toggle */
         .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-tips-toggle { background: rgba(250,250,252,0.95); border-color: rgba(0,0,0,0.15); }
@@ -2319,12 +2321,12 @@
         /* Haunted wall view effect for The Lost Cities */
         .wall-view-haunted-effect { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 2s ease; z-index: 15; }
         .wall-view-modal.wall-black.haunted-active .wall-view-haunted-effect { opacity: 1; }
-        .haunted-ghost { position: absolute; font-size: 40px; opacity: 0; animation: ghostFloat 8s ease-in-out infinite; filter: blur(1px); }
+        .haunted-ghost { position: absolute; font-size: 40px; opacity: 0; filter: blur(1px); }
         .haunted-ghost:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
         .haunted-ghost:nth-child(2) { top: 60%; right: 15%; animation-delay: 2s; }
         .haunted-ghost:nth-child(3) { top: 40%; left: 50%; animation-delay: 4s; }
         @keyframes ghostFloat { 0%, 100% { opacity: 0; transform: translateY(0) scale(1); } 20% { opacity: 0.15; } 50% { opacity: 0.25; transform: translateY(-20px) scale(1.1); } 80% { opacity: 0.1; } }
-        .haunted-mist { position: absolute; bottom: 0; left: 0; right: 0; height: 150px; background: linear-gradient(to top, rgba(100, 100, 150, 0.08), transparent); animation: mistPulse 6s ease-in-out infinite; }
+        .haunted-mist { position: absolute; bottom: 0; left: 0; right: 0; height: 150px; background: linear-gradient(to top, rgba(100, 100, 150, 0.08), transparent); }
         @keyframes mistPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
         .wall-view-tagline { position: absolute; bottom: 70px; left: 0; right: 0; text-align: center; font-size: 11px; font-style: italic; color: #999; letter-spacing: 0.02em; padding: 0 40px; transition: color 0.5s ease; }
         .wall-view-modal.dark-mode .wall-view-tagline { color: #555; }
@@ -2705,7 +2707,7 @@
         .token-input-wrapper input.digit-change { animation: slotBounce 0.15s ease-out; }
 
         /* Similar outputs breathing */
-        .similar-output { animation: breathe 3s ease-in-out infinite; }
+        .similar-output { }
         .similar-output:nth-child(2) { animation-delay: 0.5s; }
         .similar-output:nth-child(3) { animation-delay: 1s; }
         .similar-output:nth-child(4) { animation-delay: 1.5s; }
@@ -2784,7 +2786,7 @@
         .welcome-screen.show-city .welcome-blob { opacity: 0; }
         .welcome-screen.show-city .welcome-city { opacity: 1; }
         .welcome-progress-container { width: 118px; height: 2px; background: rgba(255,255,255,0.08); border-radius: 1px; overflow: visible; margin-top: 56px; opacity: 0.5; }
-        .welcome-progress-bar { height: 100%; width: 0%; background: rgba(255,255,255,0.4); border-radius: 1px; transition: width 0.3s ease-out; animation: wiggle 1s ease-in-out infinite; transform-origin: left center; }
+        .welcome-progress-bar { height: 100%; width: 0%; background: rgba(255,255,255,0.4); border-radius: 1px; transition: width 0.3s ease-out; transform-origin: left center; }
         @keyframes wiggle {
             0% { transform: translateY(0); }
             12.5% { transform: translateY(-1px); }
@@ -14693,7 +14695,7 @@
         // Refresh every 30 seconds to catch new mints
         setInterval(updateMintedCount, 30000);
 
-        // Mint button wave animation - each segment waves independently
+        // Mint button wave animation - each segment waves independently (hover only)
         function triggerMintWave() {
             const segs = document.querySelectorAll('#mintToggle .collect-seg');
             segs.forEach((seg, i) => {
@@ -14703,9 +14705,6 @@
                 }, i * 100);
             });
         }
-        // Initial wave after 2 seconds, then every 5 seconds
-        setTimeout(triggerMintWave, 2000);
-        setInterval(triggerMintWave, 5000);
 
         // Countdown to May 31st
         function updateCountdown() {
