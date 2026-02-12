@@ -2258,10 +2258,16 @@
         .print-inquiry-size-option.active { border-color: #c9a227; background: rgba(201, 162, 39, 0.1); }
         .print-inquiry-size-option .size-dims { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 1px; }
         .print-inquiry-size-option .size-cm { font-size: 8px; color: #666; margin-bottom: 3px; }
-        .print-inquiry-size-option .size-price { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 2px; }
+        .print-inquiry-size-option .size-price { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 0; }
         .print-inquiry-size-option.active .size-price { color: #c9a227; }
+        .print-inquiry-size-option .size-price-converted { font-size: 8px; color: #666; margin-bottom: 2px; min-height: 0; }
+        .print-inquiry-size-option .size-price-converted:empty { display: none; }
+        .print-inquiry-size-option.active .size-price-converted { color: #a88620; }
         .print-inquiry-size-option .size-label { font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: #666; }
         .print-inquiry-size-option.active .size-label { color: #a88620; }
+        .print-inquiry-size-option { position: relative; }
+        .print-inquiry-size-option .size-signature { position: absolute; bottom: 3px; right: 4px; width: 28px; height: auto; opacity: 0.25; pointer-events: none; }
+        .print-inquiry-size-option.active .size-signature { opacity: 0.5; }
         .print-inquiry-shipping-note { font-size: 8px; color: #555; margin-top: 8px; text-align: center; }
         /* Collapsible details section */
         .print-inquiry-details-toggle { display: flex; align-items: center; gap: 6px; background: none; border: none; color: #555; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; padding: 8px 0; margin-top: 4px; transition: color 0.2s; }
@@ -3975,18 +3981,23 @@
                             <div class="size-dims">9 × 16"</div>
                             <div class="size-cm">23 × 41 cm</div>
                             <div class="size-price">$50</div>
+                            <div class="size-price-converted"></div>
                         </div>
-                        <div class="print-inquiry-size-option" data-size="18x32" data-price="240" data-signed="true" data-framed="false">
+                        <div class="print-inquiry-size-option" data-size="18x32" data-price="250" data-signed="true" data-framed="false">
                             <div class="size-dims">18 × 32"</div>
                             <div class="size-cm">46 × 81 cm</div>
-                            <div class="size-price">$240</div>
+                            <div class="size-price">$250</div>
+                            <div class="size-price-converted"></div>
                             <div class="size-label">hand-signed</div>
+                            <img class="size-signature" src="efdot-signature.png" alt="">
                         </div>
-                        <div class="print-inquiry-size-option" data-size="18x32-framed" data-price="400" data-signed="true" data-framed="true">
+                        <div class="print-inquiry-size-option" data-size="18x32-framed" data-price="500" data-signed="true" data-framed="true">
                             <div class="size-dims">18 × 32"</div>
                             <div class="size-cm">46 × 81 cm</div>
-                            <div class="size-price">$400</div>
+                            <div class="size-price">$500</div>
+                            <div class="size-price-converted"></div>
                             <div class="size-label">signed + framed</div>
+                            <img class="size-signature" src="efdot-signature.png" alt="">
                         </div>
                     </div>
                     <div class="print-inquiry-shipping-note">+ shipping</div>
@@ -7964,6 +7975,37 @@
                     if (wallToggle) wallToggle.style.display = isFramed ? '' : 'none';
                 });
             });
+
+            // Currency conversion for international visitors (IP-based geolocation)
+            (function initCurrencyConversion() {
+                fetch('https://ipapi.co/json/')
+                    .then(r => r.json())
+                    .then(geo => {
+                        const country = geo.country_code;
+                        const userCurrency = geo.currency;
+                        // Skip if user is in the US or currency couldn't be determined
+                        if (!userCurrency || userCurrency === 'USD' || country === 'US') return;
+                        // Fetch exchange rate
+                        return fetch('https://open.er-api.com/v6/latest/USD')
+                            .then(r => r.json())
+                            .then(data => {
+                                if (!data.rates || !data.rates[userCurrency]) return;
+                                const rate = data.rates[userCurrency];
+                                document.querySelectorAll('.print-inquiry-size-option').forEach(opt => {
+                                    const usdPrice = parseInt(opt.dataset.price);
+                                    const converted = Math.round(usdPrice * rate);
+                                    const formatted = new Intl.NumberFormat(navigator.language, {
+                                        style: 'currency',
+                                        currency: userCurrency,
+                                        maximumFractionDigits: 0,
+                                    }).format(converted);
+                                    const el = opt.querySelector('.size-price-converted');
+                                    if (el) el.textContent = '≈ ' + formatted;
+                                });
+                            });
+                    })
+                    .catch(() => { /* silently fail - conversion is supplementary */ });
+            })();
 
             // Frame color picker in print form
             document.querySelectorAll('.print-inquiry-frame-color').forEach(btn => {
