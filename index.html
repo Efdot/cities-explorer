@@ -7532,7 +7532,14 @@
             // Fetch live data
             fetchCollectorsData();
 
-            document.getElementById('showLeaderboard')?.addEventListener('click', showLeaderboardView);
+            document.getElementById('showLeaderboard')?.addEventListener('click', () => {
+                const leaderboardView = document.getElementById('leaderboardView');
+                if (leaderboardView.classList.contains('active')) {
+                    showPillsView();
+                } else {
+                    showLeaderboardView();
+                }
+            });
             document.getElementById('backToPills')?.addEventListener('click', showPillsView);
             document.getElementById('collectorBannerClose')?.addEventListener('click', (e) => {
                 e.stopPropagation();
