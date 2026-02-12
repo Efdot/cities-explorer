@@ -2174,43 +2174,54 @@
         .print-inquiry-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         .print-inquiry-modal.open { display: flex; }
         .print-inquiry-content { background: #1a1a1a; border-radius: 16px; padding: 24px; max-width: 380px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
-        .print-inquiry-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer; line-height: 1; padding: 4px; }
+        .print-inquiry-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer; line-height: 1; padding: 4px; z-index: 2; }
         .print-inquiry-close:hover { color: #fff; }
         .print-inquiry-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .print-inquiry-options { display: flex; gap: 8px; margin-bottom: 14px; }
-        .print-option { flex: 1; background: #222; border-radius: 8px; padding: 10px 12px; }
-        .print-option-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
-        .print-option-badge { font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 5px; border-radius: 3px; background: rgba(201, 162, 39, 0.2); color: #c9a227; }
-        .print-option-badge.open { background: rgba(100, 200, 150, 0.15); color: #6c9; }
-        .print-option-title { font-size: 12px; font-weight: 700; color: #fff; }
-        .print-option-desc { font-size: 10px; color: #777; line-height: 1.4; }
-        .print-inquiry-divider { height: 1px; background: #2a2a2a; margin: 14px 0; }
+        /* Frame preview in print form */
+        .print-inquiry-frame-preview { display: flex; flex-direction: column; align-items: center; margin-bottom: 16px; padding: 20px 16px 12px; background: #f5f3f0; border-radius: 10px; position: relative; }
+        .print-inquiry-frame-preview::before { content: ''; position: absolute; inset: 0; border-radius: 10px; background: radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,0.5) 0%, transparent 50%); pointer-events: none; }
+        .print-inquiry-mini-frame { background: #c4a47a; padding: 6px; box-shadow: 4px 6px 16px rgba(0,0,0,0.15), 2px 3px 6px rgba(0,0,0,0.1); position: relative; z-index: 1; }
+        .print-inquiry-mini-inner { background: #a88b62; padding: 2px; box-shadow: inset 0 0 2px rgba(0,0,0,0.2); }
+        .print-inquiry-mini-inner img { display: block; width: 100%; height: auto; max-height: 180px; object-fit: contain; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .print-inquiry-frame-label { font-size: 10px; font-weight: 600; color: #888; letter-spacing: 0.1em; margin-top: 10px; position: relative; z-index: 1; }
+        .print-inquiry-frame-colors { display: flex; gap: 8px; margin-top: 8px; position: relative; z-index: 1; }
+        .print-inquiry-frame-color { width: 20px; height: 20px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+        .print-inquiry-frame-color:hover { transform: scale(1.15); }
+        .print-inquiry-frame-color.active { border-color: var(--warm); box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.3); }
+        .print-inquiry-frame-color[data-color="light-wood"] { background: #c4a47a; }
+        .print-inquiry-frame-color[data-color="white"] { background: #f5f3f0; border: 2px solid #ddd; }
+        .print-inquiry-frame-color.active[data-color="white"] { border-color: var(--warm); }
+        .print-inquiry-frame-color[data-color="black"] { background: #1a1a1a; }
+        .print-inquiry-frame-color[data-color="dark-wood"] { background: #5a3d2b; }
+        /* Frame color variants in print form */
+        .print-inquiry-mini-frame.frame-white { background: #faf9f7; }
+        .print-inquiry-mini-frame.frame-white .print-inquiry-mini-inner { background: #4a4846; }
+        .print-inquiry-mini-frame.frame-black { background: #1a1a1a; }
+        .print-inquiry-mini-frame.frame-black .print-inquiry-mini-inner { background: #0a0a0a; }
+        .print-inquiry-mini-frame.frame-dark-wood { background: #5a3d2b; }
+        .print-inquiry-mini-frame.frame-dark-wood .print-inquiry-mini-inner { background: #3d2a1c; }
+        /* Dark wall for frame preview */
+        .print-inquiry-frame-preview.dark-wall { background: #0a0a0a; }
+        .print-inquiry-frame-preview.dark-wall::before { background: radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,0.03) 0%, transparent 50%); }
+        .print-inquiry-frame-preview.dark-wall .print-inquiry-frame-label { color: #555; }
+        .print-inquiry-frame-preview.dark-wall .print-inquiry-mini-frame { box-shadow: 4px 6px 16px rgba(0,0,0,0.4), 2px 3px 6px rgba(0,0,0,0.3); }
+        .print-inquiry-wall-toggle { position: absolute; top: 8px; left: 8px; width: 28px; height: 28px; border: none; background: rgba(0,0,0,0.06); color: #999; font-size: 12px; cursor: pointer; border-radius: 50%; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; z-index: 2; }
+        .print-inquiry-wall-toggle:hover { background: rgba(0,0,0,0.12); color: #666; }
+        .print-inquiry-frame-preview.dark-wall .print-inquiry-wall-toggle { background: rgba(255,255,255,0.08); color: #666; }
+        .print-inquiry-frame-preview.dark-wall .print-inquiry-wall-toggle:hover { background: rgba(255,255,255,0.15); color: #999; }
+        /* Multi-city strip in preview */
+        .print-inquiry-city-strip { display: flex; gap: 4px; margin-top: 8px; position: relative; z-index: 1; }
+        .print-inquiry-city-strip-thumb { width: 28px; height: 28px; border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; opacity: 0.5; transition: all 0.2s ease; }
+        .print-inquiry-city-strip-thumb.active { opacity: 1; border-color: var(--warm); }
+        .print-inquiry-city-strip-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .print-inquiry-city-strip-more { width: 28px; height: 28px; border-radius: 4px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 8px; color: #666; font-weight: 600; }
+        /* Simplified form fields */
         .print-inquiry-field { margin-bottom: 12px; }
         .print-inquiry-field label { display: block; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 5px; }
         .print-inquiry-field input, .print-inquiry-field textarea, .print-inquiry-field select { width: 100%; padding: 10px 12px; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 12px; font-family: inherit; }
         .print-inquiry-field input:focus, .print-inquiry-field textarea:focus, .print-inquiry-field select:focus { outline: none; border-color: #c9a227; }
         .print-inquiry-field textarea { resize: vertical; min-height: 60px; }
         .print-inquiry-field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23888'%3E%3Cpath d='M1 3l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
-        .print-inquiry-preview { background: #222; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-size: 11px; color: #aaa; }
-        .print-inquiry-preview-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px; }
-        .print-inquiry-preview-cities { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-        .print-inquiry-city-thumb { position: relative; width: 50px; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; }
-        .print-inquiry-city-thumb img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; }
-        .print-inquiry-city-thumb .city-id { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #c9a227; font-size: 8px; font-weight: 700; text-align: center; padding: 2px 0; }
-        .print-inquiry-city-thumb .city-remove-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: rgba(255,255,255,0.6); border: none; width: 16px; height: 16px; border-radius: 50%; font-size: 10px; cursor: pointer; opacity: 0; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
-        .print-inquiry-city-thumb:hover .city-remove-btn { opacity: 1; }
-        .print-inquiry-city-thumb .city-remove-btn:hover { background: #ff6b6b; color: #fff; }
-        .print-inquiry-city-chip { background: #333; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; color: #c9a227; display: inline-flex; align-items: center; gap: 6px; }
-        .print-inquiry-city-chip .city-remove { color: rgba(255,255,255,0.4); cursor: pointer; font-size: 12px; line-height: 1; transition: color 0.2s; }
-        .print-inquiry-city-chip .city-remove:hover { color: #ff6b6b; }
-        .print-inquiry-preview-cities .more-chip { background: #222; color: #888; cursor: default; }
-        .print-inquiry-framing { display: flex; gap: 12px; margin-top: 12px; }
-        .print-inquiry-framing-option { flex: 1; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
-        .print-inquiry-framing-option:hover { border-color: #555; }
-        .print-inquiry-framing-option.active { border-color: #c9a227; background: rgba(201, 162, 39, 0.1); }
-        .print-inquiry-framing-option .framing-icon { font-size: 18px; margin-bottom: 4px; }
-        .print-inquiry-framing-option .framing-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; }
-        .print-inquiry-framing-option.active .framing-label { color: #c9a227; }
         .print-inquiry-sizes { display: flex; gap: 6px; margin-bottom: 6px; }
         .print-inquiry-size-option { flex: 1; background: #2a2a2a; border: 1px solid #333; border-radius: 8px; padding: 8px 4px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
         .print-inquiry-size-option:hover { border-color: #555; }
@@ -2221,12 +2232,17 @@
         .print-inquiry-size-option.active .size-price { color: #c9a227; }
         .print-inquiry-size-option .size-label { font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: #666; }
         .print-inquiry-size-option.active .size-label { color: #a88620; }
-        .print-inquiry-size-note { font-size: 9px; color: #666; font-style: italic; line-height: 1.5; }
-        .print-inquiry-size-note .size-note-signed { color: #c9a227; }
-        .print-inquiry-size-note .size-note-standard { color: #888; }
         .print-inquiry-shipping-note { font-size: 8px; color: #555; margin-top: 8px; text-align: center; }
-        .print-inquiry-field-row { display: flex; gap: 12px; }
-        .print-inquiry-field-row .print-inquiry-field { flex: 1; }
+        /* Collapsible details section */
+        .print-inquiry-details-toggle { display: flex; align-items: center; gap: 6px; background: none; border: none; color: #555; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; padding: 8px 0; margin-top: 4px; transition: color 0.2s; }
+        .print-inquiry-details-toggle:hover { color: #888; }
+        .print-inquiry-details-toggle .toggle-arrow { font-size: 8px; transition: transform 0.2s; }
+        .print-inquiry-details-toggle.open .toggle-arrow { transform: rotate(90deg); }
+        .print-inquiry-details-extra { display: none; }
+        .print-inquiry-details-extra.open { display: block; }
+        .print-inquiry-type-note { font-size: 9px; color: #555; line-height: 1.5; margin-bottom: 12px; }
+        .print-inquiry-type-note a { color: var(--warm); text-decoration: none; }
+        .print-inquiry-type-note a:hover { text-decoration: underline; }
         .print-inquiry-actions { display: flex; gap: 10px; margin-top: 18px; }
         .print-inquiry-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
         .print-inquiry-btn.primary { background: #c9a227; color: #000; }
@@ -2239,18 +2255,22 @@
         .print-inquiry-success-sub { font-size: 11px; color: #888; }
         .print-inquiry-shop-link { display: block; margin-top: 20px; text-align: center; font-size: 10px; color: #666; text-decoration: none; transition: color 0.2s; }
         .print-inquiry-shop-link:hover { color: #c9a227; }
-        /* Print inquiry dark mode (inherits from wall view dark mode) */
+        /* Print inquiry dark mode (inherits from wall view or frame mockup) */
         .print-inquiry-modal.dark { background: rgba(0,0,0,0.95); }
         .print-inquiry-modal.dark .print-inquiry-content { background: #0f0f0f; }
-        .print-inquiry-modal.dark .print-option { background: #1a1a1a; }
-        .print-inquiry-modal.dark .print-inquiry-divider { background: #1a1a1a; }
-        .print-inquiry-modal.dark .print-inquiry-preview { background: #1a1a1a; }
+        .print-inquiry-modal.dark .print-inquiry-frame-preview { background: #0a0a0a; }
+        .print-inquiry-modal.dark .print-inquiry-frame-preview::before { background: radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,0.03) 0%, transparent 50%); }
+        .print-inquiry-modal.dark .print-inquiry-frame-label { color: #555; }
+        .print-inquiry-modal.dark .print-inquiry-mini-frame { box-shadow: 4px 6px 16px rgba(0,0,0,0.4), 2px 3px 6px rgba(0,0,0,0.3); }
+        .print-inquiry-modal.dark .print-inquiry-wall-toggle { background: rgba(255,255,255,0.08); color: #666; }
         .print-inquiry-modal.dark .print-inquiry-field input,
         .print-inquiry-modal.dark .print-inquiry-field textarea,
         .print-inquiry-modal.dark .print-inquiry-field select { background: #1a1a1a; border-color: #222; }
         .print-inquiry-modal.dark .print-inquiry-size-option { background: #1a1a1a; border-color: #222; }
         .print-inquiry-modal.dark .print-inquiry-size-option:hover { border-color: #444; }
         .print-inquiry-modal.dark .print-inquiry-btn.secondary { background: #1a1a1a; }
+        .print-inquiry-modal.dark .print-inquiry-details-toggle { color: #444; }
+        .print-inquiry-modal.dark .print-inquiry-details-toggle:hover { color: #666; }
         .wall-view-download { background: none; border: 1px solid #ddd; color: #888; padding: 5px 10px; font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
         .wall-view-download:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-download, .wall-view-modal.wall-black .wall-view-download { border-color: #333; color: #666; }
@@ -3120,8 +3140,7 @@
             .sidebar { padding: 16px 16px 28px; }
         }
 
-        /* Print inquiry mobile: full-screen, scrollable, one option at a time */
-        .print-options-dots { display: none; }
+        /* Print inquiry mobile: full-screen, scrollable */
         @media (max-width: 768px) {
             .print-inquiry-modal {
                 align-items: stretch;
@@ -3136,52 +3155,8 @@
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
             }
-            /* One print option at a time - horizontal scroll snap */
-            .print-inquiry-options {
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-                gap: 0;
-                scrollbar-width: none;
-            }
-            .print-inquiry-options::-webkit-scrollbar { display: none; }
-            .print-inquiry-options .print-option {
-                min-width: 100%;
-                scroll-snap-align: start;
-                flex-shrink: 0;
-                box-sizing: border-box;
-            }
-            /* Dot indicators for print options carousel */
-            .print-options-dots {
-                display: flex;
-                justify-content: center;
-                gap: 8px;
-                margin-top: 10px;
-            }
-            .print-options-dot {
-                width: 7px;
-                height: 7px;
-                border-radius: 50%;
-                background: #333;
-                border: none;
-                padding: 0;
-                cursor: pointer;
-                transition: background 0.2s;
-            }
-            .print-options-dot.active { background: #c9a227; }
-            /* Swipe hint text */
-            .print-options-hint {
-                display: block;
-                text-align: center;
-                font-size: 8px;
-                color: #555;
-                margin-top: 4px;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-            }
+            .print-inquiry-mini-inner img { max-height: 140px; }
         }
-        /* Hide hint on desktop */
-        .print-options-hint { display: none; }
 
     </style>
 </head>
@@ -3786,37 +3761,28 @@
             <div id="printInquiryForm">
                 <div class="print-inquiry-title">Get a Print</div>
 
-                <div class="print-inquiry-options" id="printInquiryOptions">
-                    <div class="print-option">
-                        <div class="print-option-header">
-                            <span class="print-option-badge">Owner Only</span>
-                            <span class="print-option-title">Signed Print</span>
+                <!-- Frame preview with artwork -->
+                <div class="print-inquiry-frame-preview" id="printInquiryFramePreview">
+                    <button class="print-inquiry-wall-toggle" id="printInquiryWallToggle" title="Toggle wall color">☾</button>
+                    <div class="print-inquiry-mini-frame" id="printInquiryMiniFrame">
+                        <div class="print-inquiry-mini-inner">
+                            <img id="printInquiryPreviewImg" src="" alt="Print preview">
                         </div>
-                        <div class="print-option-desc">Hand-signed by Efdot. You must <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" style="color: var(--warm);">own this City</a> to order a signed print.</div>
                     </div>
-                    <div class="print-option">
-                        <div class="print-option-header">
-                            <span class="print-option-badge open">Open</span>
-                            <span class="print-option-title">Poster</span>
-                        </div>
-                        <div class="print-option-desc">Open to anyone. <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" style="color: var(--warm);">Efdot Studio Shop →</a></div>
+                    <div class="print-inquiry-frame-label" id="printInquiryFrameLabel"></div>
+                    <!-- City strip for multiple cities -->
+                    <div class="print-inquiry-city-strip" id="printInquiryCityStrip"></div>
+                    <!-- Frame color picker -->
+                    <div class="print-inquiry-frame-colors">
+                        <button class="print-inquiry-frame-color active" data-color="light-wood" title="Light Wood"></button>
+                        <button class="print-inquiry-frame-color" data-color="white" title="White"></button>
+                        <button class="print-inquiry-frame-color" data-color="black" title="Black"></button>
+                        <button class="print-inquiry-frame-color" data-color="dark-wood" title="Dark Wood"></button>
                     </div>
-                </div>
-                <div class="print-options-dots" id="printOptionsDots">
-                    <button class="print-options-dot active" data-index="0"></button>
-                    <button class="print-options-dot" data-index="1"></button>
-                </div>
-                <div class="print-options-hint">swipe for more</div>
-
-                <div class="print-inquiry-divider"></div>
-
-                <div class="print-inquiry-preview">
-                    <div class="print-inquiry-preview-label">Your Cities</div>
-                    <div class="print-inquiry-preview-cities" id="printInquiryCities"></div>
                 </div>
 
                 <div class="print-inquiry-field">
-                    <label>Print Size</label>
+                    <label>Size</label>
                     <div class="print-inquiry-sizes">
                         <div class="print-inquiry-size-option active" data-size="9x16" data-price="50" data-signed="false" data-framed="false">
                             <div class="size-dims">9 × 16"</div>
@@ -3844,19 +3810,25 @@
                     <input type="email" id="printInquiryEmail" placeholder="your@email.com">
                 </div>
 
-                <div class="print-inquiry-field">
-                    <label>Country (for shipping estimate)</label>
-                    <input type="text" id="printInquiryCountry" placeholder="Country" value="United States">
+                <button class="print-inquiry-details-toggle" id="printInquiryDetailsToggle">
+                    <span class="toggle-arrow">›</span> Add details
+                </button>
+                <div class="print-inquiry-details-extra" id="printInquiryDetailsExtra">
+                    <div class="print-inquiry-field">
+                        <label>Country (for shipping estimate)</label>
+                        <input type="text" id="printInquiryCountry" placeholder="Country" value="United States">
+                    </div>
+                    <div class="print-inquiry-field">
+                        <label>Notes (optional)</label>
+                        <textarea id="printInquiryNotes" placeholder="Questions, special requests..."></textarea>
+                    </div>
                 </div>
 
-                <div class="print-inquiry-field">
-                    <label>Notes (optional)</label>
-                    <textarea id="printInquiryNotes" placeholder="Questions, special requests..."></textarea>
-                </div>
+                <div class="print-inquiry-type-note">Signed prints for <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank">City owners</a> · Posters at <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank">Efdot Studio Shop</a></div>
 
                 <div class="print-inquiry-actions">
+                    <button class="print-inquiry-btn primary" id="printInquirySend" style="flex: 2;">Send Request</button>
                     <button class="print-inquiry-btn secondary" id="printInquiryCancel">Cancel</button>
-                    <button class="print-inquiry-btn primary" id="printInquirySend">Send Request</button>
                 </div>
             </div>
             <div id="printInquirySuccess" style="display: none;">
@@ -7283,6 +7255,16 @@
 
         // Print inquiry modal - defined at top level so all handlers can access directly
         let printInquirySelectedCities = [];
+        let printInquiryPreviewIndex = 0;
+        let printInquiryFrameColor = 'light-wood';
+        let printInquiryDarkWall = false;
+
+        const printFrameColorMap = {
+            'light-wood': { frame: '#c4a47a', inner: '#a88b62' },
+            'white': { frame: '#faf9f7', inner: '#4a4846' },
+            'black': { frame: '#1a1a1a', inner: '#0a0a0a' },
+            'dark-wood': { frame: '#5a3d2b', inner: '#3d2a1c' }
+        };
 
         function openPrintInquiryModal(cities) {
             const modal = document.getElementById('printInquiryModal');
@@ -7293,12 +7275,24 @@
             if (form) form.style.display = 'block';
             if (success) success.style.display = 'none';
 
-            // Inherit dark mode from wall view if active
+            // Inherit dark mode from wall view or frame mockup
             const wallModal = document.getElementById('wallViewModal');
-            if (wallModal && wallModal.classList.contains('open') && wallModal.classList.contains('wall-black')) {
+            const frameMockup = document.getElementById('frameMockup');
+            const wallDark = wallModal && wallModal.classList.contains('open') && wallModal.classList.contains('wall-black');
+            const frameDark = frameMockup && frameMockup.classList.contains('dark-mode');
+            if (wallDark || frameDark) {
                 modal?.classList.add('dark');
+                printInquiryDarkWall = true;
             } else {
                 modal?.classList.remove('dark');
+                printInquiryDarkWall = false;
+            }
+
+            // Inherit frame color from frame mockup if available
+            if (typeof currentFrameColor !== 'undefined' && currentFrameColor) {
+                printInquiryFrameColor = currentFrameColor;
+            } else {
+                printInquiryFrameColor = 'light-wood';
             }
 
             // Initialize selected cities - use passed cities, wall view, or current token
@@ -7311,38 +7305,78 @@
             } else {
                 printInquirySelectedCities = [];
             }
-            renderPrintInquiryCities();
+            printInquiryPreviewIndex = 0;
+            renderPrintInquiryPreview();
+
+            // Reset details toggle
+            document.getElementById('printInquiryDetailsToggle')?.classList.remove('open');
+            document.getElementById('printInquiryDetailsExtra')?.classList.remove('open');
 
             if (modal) modal.classList.add('open');
         }
         window.openPrintInquiryModal = openPrintInquiryModal;
 
-        function renderPrintInquiryCities() {
-            const citiesContainer = document.getElementById('printInquiryCities');
-            if (!citiesContainer) return;
+        function renderPrintInquiryPreview() {
+            const previewImg = document.getElementById('printInquiryPreviewImg');
+            const frameLabel = document.getElementById('printInquiryFrameLabel');
+            const cityStrip = document.getElementById('printInquiryCityStrip');
+            const miniFrame = document.getElementById('printInquiryMiniFrame');
+            const framePreview = document.getElementById('printInquiryFramePreview');
 
-            const displayCount = 8;
-            const visibleCities = printInquirySelectedCities.slice(0, displayCount);
-            const extraCount = printInquirySelectedCities.length - displayCount;
+            if (!previewImg || !miniFrame) return;
 
-            citiesContainer.innerHTML = visibleCities.map(id =>
-                `<div class="print-inquiry-city-thumb" data-id="${id}">
-                    <img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=120" alt="#${id}">
-                    <span class="city-id">#${id}</span>
-                    <button class="city-remove-btn" title="Remove">×</button>
-                </div>`
-            ).join('') + (extraCount > 0 ? `<span class="print-inquiry-city-chip more-chip">+${extraCount} more</span>` : '');
+            // Show first (or selected) city in the frame preview
+            const previewCity = printInquirySelectedCities[printInquiryPreviewIndex] || printInquirySelectedCities[0];
+            if (previewCity !== undefined) {
+                previewImg.src = `${MEDIA_BASE}/${CONTRACT}/${previewCity}.png?width=400`;
+                if (frameLabel) frameLabel.textContent = `#${previewCity}`;
+            }
 
-            // Add click handlers for remove buttons
-            citiesContainer.querySelectorAll('.city-remove-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const thumb = btn.closest('.print-inquiry-city-thumb');
-                    const id = parseInt(thumb.dataset.id);
-                    printInquirySelectedCities = printInquirySelectedCities.filter(cid => cid !== id);
-                    renderPrintInquiryCities();
-                });
+            // Apply frame color
+            miniFrame.classList.remove('frame-white', 'frame-black', 'frame-dark-wood');
+            if (printInquiryFrameColor !== 'light-wood') {
+                miniFrame.classList.add('frame-' + printInquiryFrameColor);
+            }
+            const colors = printFrameColorMap[printInquiryFrameColor];
+            miniFrame.style.background = colors.frame;
+            miniFrame.querySelector('.print-inquiry-mini-inner').style.background = colors.inner;
+
+            // Sync frame color picker
+            document.querySelectorAll('.print-inquiry-frame-color').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.color === printInquiryFrameColor);
             });
+
+            // Apply dark wall
+            if (framePreview) {
+                framePreview.classList.toggle('dark-wall', printInquiryDarkWall);
+            }
+            const wallToggle = document.getElementById('printInquiryWallToggle');
+            if (wallToggle) wallToggle.textContent = printInquiryDarkWall ? '\u2600' : '\u263E';
+
+            // Render city strip for multiple cities
+            if (cityStrip) {
+                if (printInquirySelectedCities.length > 1) {
+                    const maxShow = 6;
+                    const visible = printInquirySelectedCities.slice(0, maxShow);
+                    const extra = printInquirySelectedCities.length - maxShow;
+                    cityStrip.innerHTML = visible.map((id, i) =>
+                        `<div class="print-inquiry-city-strip-thumb ${i === printInquiryPreviewIndex ? 'active' : ''}" data-index="${i}">
+                            <img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=60" alt="#${id}">
+                        </div>`
+                    ).join('') + (extra > 0 ? `<div class="print-inquiry-city-strip-more">+${extra}</div>` : '');
+
+                    // Click to switch preview
+                    cityStrip.querySelectorAll('.print-inquiry-city-strip-thumb').forEach(thumb => {
+                        thumb.addEventListener('click', () => {
+                            printInquiryPreviewIndex = parseInt(thumb.dataset.index);
+                            renderPrintInquiryPreview();
+                        });
+                    });
+                    cityStrip.style.display = 'flex';
+                } else {
+                    cityStrip.style.display = 'none';
+                }
+            }
         }
 
         function initCollectorsPanel() {
@@ -7705,19 +7739,9 @@
             // Print inquiry state and rendering now at top-level scope (before initCollectorsPanel)
             // so handlers outside initCollectorsPanel can access them directly
 
-            // Framing toggle
-            let printInquiryFraming = 'unframed';
-            document.querySelectorAll('.print-inquiry-framing-option').forEach(opt => {
-                opt.addEventListener('click', () => {
-                    document.querySelectorAll('.print-inquiry-framing-option').forEach(o => o.classList.remove('active'));
-                    opt.classList.add('active');
-                    printInquiryFraming = opt.dataset.framing;
-                });
-            });
-
             // Size toggle
-            let printInquirySize = '16x9';
-            let printInquiryPrice = 120;
+            let printInquirySize = '9x16';
+            let printInquiryPrice = 50;
             document.querySelectorAll('.print-inquiry-size-option').forEach(opt => {
                 opt.addEventListener('click', () => {
                     document.querySelectorAll('.print-inquiry-size-option').forEach(o => o.classList.remove('active'));
@@ -7725,6 +7749,36 @@
                     printInquirySize = opt.dataset.size;
                     printInquiryPrice = parseInt(opt.dataset.price);
                 });
+            });
+
+            // Frame color picker in print form
+            document.querySelectorAll('.print-inquiry-frame-color').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    printInquiryFrameColor = btn.dataset.color;
+                    renderPrintInquiryPreview();
+                });
+            });
+
+            // Wall color toggle in print form
+            document.getElementById('printInquiryWallToggle')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                printInquiryDarkWall = !printInquiryDarkWall;
+                const modal = document.getElementById('printInquiryModal');
+                if (printInquiryDarkWall) {
+                    modal?.classList.add('dark');
+                } else {
+                    modal?.classList.remove('dark');
+                }
+                renderPrintInquiryPreview();
+            });
+
+            // Details toggle
+            document.getElementById('printInquiryDetailsToggle')?.addEventListener('click', () => {
+                const toggle = document.getElementById('printInquiryDetailsToggle');
+                const extra = document.getElementById('printInquiryDetailsExtra');
+                toggle?.classList.toggle('open');
+                extra?.classList.toggle('open');
             });
 
             document.getElementById('printInquiryClose')?.addEventListener('click', () => {
@@ -7766,6 +7820,7 @@
                 const sizePrice = activeSize?.querySelector('.size-price')?.textContent || '';
                 const sizeLabel = activeSize?.querySelector('.size-label')?.textContent || '';
                 const sizeDesc = `${sizeDims} ${sizePrice}${sizeLabel ? ' (' + sizeLabel + ')' : ''}`;
+                const frameColor = printInquiryFrameColor || 'light-wood';
 
                 const subject = encodeURIComponent(`Cities Print Inquiry`);
                 const body = encodeURIComponent(
@@ -7774,6 +7829,7 @@
                     `== ORDER DETAILS ==\n` +
                     `Cities: ${tokenIds.map(id => '#' + id).join(', ')}\n` +
                     `Size: ${sizeDesc}\n` +
+                    `Frame: ${frameColor.replace('-', ' ')}\n` +
                     `Country: ${country}\n` +
                     `Email: ${email}\n` +
                     (notes ? `\nNotes: ${notes}\n` : '') +
@@ -7794,24 +7850,6 @@
                     document.getElementById('printInquiryModal').classList.remove('open');
                 }
             });
-
-            // Print options carousel dots (mobile)
-            const printOptionsEl = document.getElementById('printInquiryOptions');
-            const printDotsEl = document.getElementById('printOptionsDots');
-            if (printOptionsEl && printDotsEl) {
-                printOptionsEl.addEventListener('scroll', () => {
-                    const idx = Math.round(printOptionsEl.scrollLeft / printOptionsEl.offsetWidth);
-                    printDotsEl.querySelectorAll('.print-options-dot').forEach((d, i) => {
-                        d.classList.toggle('active', i === idx);
-                    });
-                });
-                printDotsEl.querySelectorAll('.print-options-dot').forEach(dot => {
-                    dot.addEventListener('click', () => {
-                        const idx = parseInt(dot.dataset.index);
-                        printOptionsEl.scrollTo({ left: idx * printOptionsEl.offsetWidth, behavior: 'smooth' });
-                    });
-                });
-            }
 
             // Shuffle button - randomize city positions
             document.getElementById('wallViewShuffle')?.addEventListener('click', () => {
