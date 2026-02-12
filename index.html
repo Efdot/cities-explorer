@@ -2225,6 +2225,11 @@
         .print-inquiry-mini-frame.frame-black .print-inquiry-mini-inner { background: #0a0a0a; }
         .print-inquiry-mini-frame.frame-dark-wood { background: #5a3d2b; }
         .print-inquiry-mini-frame.frame-dark-wood .print-inquiry-mini-inner { background: #3d2a1c; }
+        /* Frameless preview (poster/mini print, unframed) */
+        .print-inquiry-mini-frame.frameless { background: transparent; padding: 0; box-shadow: none; }
+        .print-inquiry-mini-frame.frameless .print-inquiry-mini-inner { background: transparent; padding: 0; box-shadow: none; }
+        .print-inquiry-mini-frame.frameless .print-inquiry-mini-inner img { box-shadow: 4px 6px 16px rgba(0,0,0,0.15), 2px 3px 6px rgba(0,0,0,0.1); }
+        .print-inquiry-frame-preview.dark-wall .print-inquiry-mini-frame.frameless .print-inquiry-mini-inner img { box-shadow: 4px 6px 16px rgba(0,0,0,0.4), 2px 3px 6px rgba(0,0,0,0.3); }
         /* Dark wall for frame preview */
         .print-inquiry-frame-preview.dark-wall { background: #0a0a0a; }
         .print-inquiry-frame-preview.dark-wall::before { background: radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,0.03) 0%, transparent 50%); }
@@ -3466,7 +3471,7 @@
             <a href="#" id="iconOpenSea" target="_blank" class="icon-btn opensea-icon" title="View on OpenSea">⛵</a>
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
-            <button class="icon-btn text-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print">Order a Print</button>
+            <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
         </div>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
@@ -7494,10 +7499,17 @@
             document.getElementById('printInquiryDetailsToggle')?.classList.remove('open');
             document.getElementById('printInquiryDetailsExtra')?.classList.remove('open');
 
-            // Hide frame preview for default non-framed size
+            // Always show preview; toggle frameless mode and frame colors based on framed option
             const activeSize = document.querySelector('.print-inquiry-size-option.active');
             const framePreviewEl = document.getElementById('printInquiryFramePreview');
-            if (framePreviewEl) framePreviewEl.style.display = (activeSize && activeSize.dataset.framed === 'true') ? '' : 'none';
+            const miniFrameEl = document.getElementById('printInquiryMiniFrame');
+            const frameColorsEl = document.querySelector('.print-inquiry-frame-colors');
+            const wallToggleEl = document.getElementById('printInquiryWallToggle');
+            const isFramed = activeSize && activeSize.dataset.framed === 'true';
+            if (framePreviewEl) framePreviewEl.style.display = '';
+            if (miniFrameEl) miniFrameEl.classList.toggle('frameless', !isFramed);
+            if (frameColorsEl) frameColorsEl.style.display = isFramed ? '' : 'none';
+            if (wallToggleEl) wallToggleEl.style.display = isFramed ? '' : 'none';
 
             if (modal) modal.classList.add('open');
         }
@@ -7942,10 +7954,14 @@
                     opt.classList.add('active');
                     printInquirySize = opt.dataset.size;
                     printInquiryPrice = parseInt(opt.dataset.price);
-                    // Show frame preview/colors only for framed option
+                    // Toggle frameless mode and frame controls based on framed option
                     const isFramed = opt.dataset.framed === 'true';
-                    const framePreview = document.getElementById('printInquiryFramePreview');
-                    if (framePreview) framePreview.style.display = isFramed ? '' : 'none';
+                    const miniFrame = document.getElementById('printInquiryMiniFrame');
+                    const frameColors = document.querySelector('.print-inquiry-frame-colors');
+                    const wallToggle = document.getElementById('printInquiryWallToggle');
+                    if (miniFrame) miniFrame.classList.toggle('frameless', !isFramed);
+                    if (frameColors) frameColors.style.display = isFramed ? '' : 'none';
+                    if (wallToggle) wallToggle.style.display = isFramed ? '' : 'none';
                 });
             });
 
