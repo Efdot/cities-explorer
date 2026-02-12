@@ -223,6 +223,7 @@
         .icon-buttons-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; margin-top: 8px; }
         .icon-buttons-row .icon-btn { flex: 0 0 auto; text-decoration: none; background: transparent; border-radius: 8px; width: 44px; height: 36px; font-size: 16px; display: flex; align-items: center; justify-content: center; }
         .icon-buttons-row .icon-btn:hover { transform: translateY(-1px); background: var(--bg-input); }
+        .icon-buttons-row .icon-btn.text-btn { width: auto; padding: 0 12px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 18px; border: 1px solid var(--border); color: var(--text-muted); }
         .icon-buttons-row .opensea-icon { filter: grayscale(100%); }
         .icon-buttons-row .opensea-icon:hover { filter: grayscale(0%); }
 
@@ -1159,7 +1160,7 @@
         .frame-mockup-close:hover { background: #333; color: #fff; transform: scale(1.05); }
         .frame-mockup-download { position: absolute; top: 24px; right: 80px; width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 20px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: bold; }
         .frame-mockup-download:hover { background: var(--teal); color: #000; transform: scale(1.05); }
-        .frame-mockup-order { position: absolute; top: 24px; right: 136px; width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 18px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; text-decoration: none; }
+        .frame-mockup-order { position: absolute; top: 24px; right: 136px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border-radius: 22px; padding: 0 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; text-decoration: none; white-space: nowrap; }
         .frame-mockup-order:hover { background: var(--warm); color: #000; transform: scale(1.05); }
         /* Frame mockup navigation */
         .frame-mockup-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.9); color: #555; font-size: 18px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; }
@@ -2159,7 +2160,7 @@
         /* Print Inquiry Modal */
         .print-inquiry-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         .print-inquiry-modal.open { display: flex; }
-        .print-inquiry-content { background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
+        .print-inquiry-content { background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
         .print-inquiry-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer; line-height: 1; padding: 4px; }
         .print-inquiry-close:hover { color: #fff; }
         .print-inquiry-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -3259,7 +3260,7 @@
             <a href="#" id="iconOpenSea" target="_blank" class="icon-btn opensea-icon" title="View on OpenSea">⛵</a>
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
-            <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print">🖨</button>
+            <button class="icon-btn text-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print">Order a Print</button>
         </div>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
@@ -3798,7 +3799,7 @@
         <button class="frame-mockup-nav prev" id="frameMockupPrev" title="Previous city">‹</button>
         <button class="frame-mockup-nav next" id="frameMockupNext" title="Next city">›</button>
         <button class="frame-mockup-download" id="downloadFramed" title="Download framed image">↓</button>
-        <button class="frame-mockup-order" id="orderPrint" title="Order a print">🖨</button>
+        <button class="frame-mockup-order" id="orderPrint" title="Order a print">Order a Print</button>
         <button class="frame-mockup-close" id="closeFrameMockup">×</button>
         <div class="frame-mockup-colors">
             <button class="frame-color-btn active" data-color="light-wood" title="Light Wood"></button>
@@ -4103,7 +4104,7 @@
 
                 <div class="timeline-group">
                     <div class="timeline-group-title">Open Minds</div>
-                    <div class="timeline-group-subtitle">What does the mind see, as it expands and connects the dots? Hand-drawn lines, frame by frame, finding beauty in the spaces between.</div>
+                    <div class="timeline-group-subtitle">What does the mind see,<br>as it expands and connects the dots?<br><br>Hand-drawn lines, frame by frame,<br>finding beauty in the spaces between.</div>
                     <div class="timeline-group-grid cols-2 openminds-grid">
                         <div class="timeline-group-item" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" data-link="https://opensea.io/collection/efdot-openminds" data-title="You Are Here" data-year="2020">
                             <div class="timeline-group-item-img">
@@ -7536,33 +7537,18 @@
                 document.getElementById('printInquiryForm').style.display = 'block';
                 document.getElementById('printInquirySuccess').style.display = 'none';
                 document.getElementById('printInquiryEmail').value = '';
-                document.getElementById('printInquiryName').value = '';
-                document.getElementById('printInquiryAddress').value = '';
-                document.getElementById('printInquiryCity').value = '';
-                document.getElementById('printInquiryState').value = '';
-                document.getElementById('printInquiryZip').value = '';
                 document.getElementById('printInquiryCountry').value = 'United States';
                 document.getElementById('printInquiryNotes').value = '';
-                document.getElementById('printInquiryType').selectedIndex = 0;
-                // Reset size and framing toggles
+                // Reset size toggle
                 document.querySelectorAll('.print-inquiry-size-option').forEach((o, i) => o.classList.toggle('active', i === 0));
-                document.querySelectorAll('.print-inquiry-framing-option').forEach((o, i) => o.classList.toggle('active', i === 0));
-                printInquirySize = '16x9';
-                printInquiryPrice = 120;
-                printInquiryFraming = 'unframed';
+                printInquirySize = '9x16';
+                printInquiryPrice = 50;
             });
 
             document.getElementById('printInquirySend')?.addEventListener('click', () => {
-                const email = document.getElementById('printInquiryEmail').value;
-                const name = document.getElementById('printInquiryName').value;
-                const address = document.getElementById('printInquiryAddress').value;
-                const city = document.getElementById('printInquiryCity').value;
-                const state = document.getElementById('printInquiryState').value;
-                const zip = document.getElementById('printInquiryZip').value;
-                const country = document.getElementById('printInquiryCountry').value;
-                const type = document.getElementById('printInquiryType').value;
-                const notes = document.getElementById('printInquiryNotes').value;
-                const collectorName = document.getElementById('wallViewCollectorLabel')?.dataset.rawName || 'Collector';
+                const email = document.getElementById('printInquiryEmail')?.value || '';
+                const country = document.getElementById('printInquiryCountry')?.value || '';
+                const notes = document.getElementById('printInquiryNotes')?.value || '';
                 const tokenIds = printInquirySelectedCities || [];
 
                 if (!email || !email.includes('@')) {
@@ -7570,49 +7556,24 @@
                     return;
                 }
 
-                if (!name) {
-                    alert('Please enter your name');
-                    return;
-                }
+                // Get selected size info
+                const activeSize = document.querySelector('.print-inquiry-size-option.active');
+                const sizeDims = activeSize?.querySelector('.size-dims')?.textContent || printInquirySize;
+                const sizePrice = activeSize?.querySelector('.size-price')?.textContent || '';
+                const sizeLabel = activeSize?.querySelector('.size-label')?.textContent || '';
+                const sizeDesc = `${sizeDims} ${sizePrice}${sizeLabel ? ' (' + sizeLabel + ')' : ''}`;
 
-                if (!address || !city || !zip || !country) {
-                    alert('Please enter your shipping address');
-                    return;
-                }
-
-                // Build mailto link with pre-filled content
-                const typeLabels = {
-                    'single': 'Signed print of specific Output(s)',
-                    'grid': 'Grid arrangement of my collection',
-                    'large': 'Large format print',
-                    'mural': 'Mural / wall installation',
-                    'collab': 'Collaboration / commission',
-                    'custom': 'Something else'
-                };
-
-                const sizeLabels = {
-                    '16x9': '16 × 9" ($120)',
-                    '18x32': '18 × 32" ($350)'
-                };
-
-                const subject = encodeURIComponent(`Cities Print Order - ${collectorName}`);
+                const subject = encodeURIComponent(`Cities Print Inquiry`);
                 const body = encodeURIComponent(
                     `Hi Eric,\n\n` +
-                    `I'd like to order a signed print!\n\n` +
+                    `I'd like to order a print!\n\n` +
                     `== ORDER DETAILS ==\n` +
-                    `Collector: ${collectorName}\n` +
                     `Cities: ${tokenIds.map(id => '#' + id).join(', ')}\n` +
-                    `Size: ${sizeLabels[printInquirySize]}\n` +
-                    `Framing: ${printInquiryFraming === 'framed' ? 'Framed' : 'Unframed'}\n` +
-                    `Type: ${typeLabels[type]}\n` +
-                    `\n== SHIPPING ADDRESS ==\n` +
-                    `${name}\n` +
-                    `${address}\n` +
-                    `${city}, ${state} ${zip}\n` +
-                    `${country}\n` +
-                    `\nEmail: ${email}\n` +
+                    `Size: ${sizeDesc}\n` +
+                    `Country: ${country}\n` +
+                    `Email: ${email}\n` +
                     (notes ? `\nNotes: ${notes}\n` : '') +
-                    `\nLooking forward to the quote!`
+                    `\nLooking forward to hearing from you!`
                 );
 
                 // Open email client
