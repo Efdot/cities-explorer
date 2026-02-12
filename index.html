@@ -226,8 +226,8 @@
         .icon-buttons-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; margin-top: 8px; }
         .icon-buttons-row .icon-btn { flex: 0 0 auto; text-decoration: none; background: transparent; border-radius: 8px; width: 44px; height: 36px; font-size: 16px; display: flex; align-items: center; justify-content: center; }
         .icon-buttons-row .icon-btn:hover { transform: translateY(-1px); background: var(--bg-input); }
-        .icon-buttons-row .icon-btn.text-btn { width: auto; padding: 0 8px; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; border-radius: 8px; border: none; color: var(--text-muted); opacity: 0.5; transition: all 0.2s ease; }
-        .icon-buttons-row .icon-btn.text-btn:hover { opacity: 1; color: var(--warm); background: transparent; }
+        .icon-buttons-row .icon-btn.text-btn { width: auto; padding: 0 6px; font-size: 7px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; border-radius: 8px; border: none; color: var(--text-muted); opacity: 0.3; transition: all 0.2s ease; }
+        .icon-buttons-row .icon-btn.text-btn:hover { opacity: 0.7; color: var(--warm); background: transparent; }
         .icon-buttons-row .opensea-icon { filter: grayscale(100%); }
         .icon-buttons-row .opensea-icon:hover { filter: grayscale(0%); }
 
@@ -2207,7 +2207,7 @@
         .print-inquiry-frame-preview::before { content: ''; position: absolute; inset: 0; border-radius: 10px; background: radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,0.5) 0%, transparent 50%); pointer-events: none; }
         .print-inquiry-mini-frame { background: #c4a47a; padding: 6px; box-shadow: 4px 6px 16px rgba(0,0,0,0.15), 2px 3px 6px rgba(0,0,0,0.1); position: relative; z-index: 1; }
         .print-inquiry-mini-inner { background: #a88b62; padding: 2px; box-shadow: inset 0 0 2px rgba(0,0,0,0.2); }
-        .print-inquiry-mini-inner img { display: block; width: 100%; height: auto; max-height: 180px; object-fit: contain; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .print-inquiry-mini-inner img { display: block; width: 100%; height: auto; max-height: 180px; object-fit: contain; box-shadow: 0 1px 2px rgba(0,0,0,0.2); border: 3px solid #fff; box-sizing: border-box; }
         .print-inquiry-frame-label { font-size: 10px; font-weight: 600; color: #888; letter-spacing: 0.1em; margin-top: 10px; position: relative; z-index: 1; }
         .print-inquiry-frame-colors { display: flex; gap: 8px; margin-top: 8px; position: relative; z-index: 1; }
         .print-inquiry-frame-color { width: 20px; height: 20px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
@@ -2225,6 +2225,11 @@
         .print-inquiry-mini-frame.frame-black .print-inquiry-mini-inner { background: #0a0a0a; }
         .print-inquiry-mini-frame.frame-dark-wood { background: #5a3d2b; }
         .print-inquiry-mini-frame.frame-dark-wood .print-inquiry-mini-inner { background: #3d2a1c; }
+        /* Frameless preview (poster/mini print, unframed) */
+        .print-inquiry-mini-frame.frameless { background: transparent; padding: 0; box-shadow: none; }
+        .print-inquiry-mini-frame.frameless .print-inquiry-mini-inner { background: transparent; padding: 0; box-shadow: none; }
+        .print-inquiry-mini-frame.frameless .print-inquiry-mini-inner img { box-shadow: 4px 6px 16px rgba(0,0,0,0.15), 2px 3px 6px rgba(0,0,0,0.1); }
+        .print-inquiry-frame-preview.dark-wall .print-inquiry-mini-frame.frameless .print-inquiry-mini-inner img { box-shadow: 4px 6px 16px rgba(0,0,0,0.4), 2px 3px 6px rgba(0,0,0,0.3); }
         /* Dark wall for frame preview */
         .print-inquiry-frame-preview.dark-wall { background: #0a0a0a; }
         .print-inquiry-frame-preview.dark-wall::before { background: radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,0.03) 0%, transparent 50%); }
@@ -2253,10 +2258,16 @@
         .print-inquiry-size-option.active { border-color: #c9a227; background: rgba(201, 162, 39, 0.1); }
         .print-inquiry-size-option .size-dims { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 1px; }
         .print-inquiry-size-option .size-cm { font-size: 8px; color: #666; margin-bottom: 3px; }
-        .print-inquiry-size-option .size-price { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 2px; }
+        .print-inquiry-size-option .size-price { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 0; }
         .print-inquiry-size-option.active .size-price { color: #c9a227; }
+        .print-inquiry-size-option .size-price-converted { font-size: 8px; color: #666; margin-bottom: 2px; min-height: 0; }
+        .print-inquiry-size-option .size-price-converted:empty { display: none; }
+        .print-inquiry-size-option.active .size-price-converted { color: #a88620; }
         .print-inquiry-size-option .size-label { font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: #666; }
         .print-inquiry-size-option.active .size-label { color: #a88620; }
+        .print-inquiry-size-option { position: relative; }
+        .print-inquiry-size-option .size-signature { position: absolute; bottom: 3px; right: 4px; width: 28px; height: auto; opacity: 0.25; pointer-events: none; }
+        .print-inquiry-size-option.active .size-signature { opacity: 0.5; }
         .print-inquiry-shipping-note { font-size: 8px; color: #555; margin-top: 8px; text-align: center; }
         /* Collapsible details section */
         .print-inquiry-details-toggle { display: flex; align-items: center; gap: 6px; background: none; border: none; color: #555; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; padding: 8px 0; margin-top: 4px; transition: color 0.2s; }
@@ -2402,7 +2413,7 @@
         .favorites-grid .grid-item:hover .grid-item-fav { opacity: 1; }
         /* Mobile: hearts always visible but translucent */
         @media (pointer: coarse) {
-            .grid-item-fav { opacity: 0.4; width: 36px; height: 36px; font-size: 16px; background: rgba(10, 9, 16, 0.6); color: rgba(255,255,255,0.5); }
+            .grid-item-fav { opacity: 0.4; width: 40px; height: 40px; font-size: 18px; background: rgba(10, 9, 16, 0.6); color: rgba(255,255,255,0.5); }
             .grid-item-fav.favorited { opacity: 1; }
         }
         .grid-item-rank { position: absolute; top: 6px; left: 6px; background: var(--spot-color, var(--yellow)); color: var(--spot-text, #000); font-size: 8px; font-weight: 700; padding: 3px 6px; border-radius: 4px; z-index: 2; letter-spacing: 0.03em; border: none; pointer-events: none; box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
@@ -2476,13 +2487,13 @@
             .grid-filter-bar select { min-width: 100px; font-size: 10px; padding: 8px 10px; }
             .grid-checkbox { padding: 6px 10px; font-size: 9px; }
             .grid-content { padding: 8px; }
-            .grid-items, .grid-group-items { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+            .grid-items, .grid-group-items { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
             /* Grid size overrides for mobile */
             .grid-items.grid-2-col, .grid-group-items.grid-2-col { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
             .grid-items.grid-3-col, .grid-group-items.grid-3-col { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
-            .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(4, 1fr) !important; gap: 6px !important; }
-            .grid-items.grid-6-col, .grid-group-items.grid-6-col { grid-template-columns: repeat(6, 1fr) !important; gap: 4px !important; }
-            .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(8, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+            .grid-items.grid-6-col, .grid-group-items.grid-6-col { grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; }
+            .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
             .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
             .grid-mode-btn { padding: 6px 10px; font-size: 8px; border-width: 1.5px; min-height: 32px; white-space: nowrap; flex-shrink: 0; }
             .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; flex-shrink: 0; }
@@ -3221,6 +3232,45 @@
             .mob-menu-icon { font-size: 16px; }
         }
 
+        /* Second mobile bottom bar (art view nav) - yellow/black theme */
+        @media (max-width: 768px) {
+            .mobile-bottom-bar#mobileBottomBar2 {
+                display: flex !important;
+                padding: 0 20px;
+                height: 56px;
+                background: #111;
+                border-top: 1px solid rgba(201, 162, 39, 0.2);
+                justify-content: space-between;
+                align-items: center;
+            }
+            .mobile-bottom-bar#mobileBottomBar2 button {
+                background: none;
+                border: none;
+                color: #c9a227;
+                font-size: 20px;
+                width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border-radius: 50%;
+                transition: all 0.15s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .mobile-bottom-bar#mobileBottomBar2 button:active {
+                background: rgba(201, 162, 39, 0.15);
+                transform: scale(0.92);
+            }
+            .mobile-bottom-bar#mobileBottomBar2 .mobile-heart-btn {
+                font-size: 24px;
+                color: #c9a227;
+            }
+            .mobile-bottom-bar#mobileBottomBar2 .mobile-heart-btn.favorited {
+                color: #ff6b6b;
+            }
+        }
+
         /* Print form responsive */
         @media (max-width: 900px) {
             .print-inquiry-content { max-width: 360px; }
@@ -3427,7 +3477,7 @@
             <a href="#" id="iconOpenSea" target="_blank" class="icon-btn opensea-icon" title="View on OpenSea">⛵</a>
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
-            <button class="icon-btn text-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print">Order a Print</button>
+            <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
         </div>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
@@ -3727,7 +3777,7 @@
     <button class="btn btn-secondary grid-toggle" id="toggleGrid" aria-label="Open grid view of all cities">GRID VIEW</button>
 
     <!-- Mobile elements - must be before script -->
-    <div class="mobile-bottom-bar" id="mobileBottomBar">
+    <div class="mobile-bottom-bar" id="mobileBottomBar2">
         <button id="mobileMenuBtn" title="Menu">☰</button>
         <button id="mobilePrevBtn" title="Previous">◀</button>
         <button id="mobileHeartBtn" class="mobile-heart-btn" title="Favorite">♥</button>
@@ -3902,7 +3952,7 @@
         <div class="print-inquiry-content">
             <button class="print-inquiry-close" id="printInquiryClose">&times;</button>
             <div id="printInquiryForm">
-                <div class="print-inquiry-title">Get a Print</div>
+                <div class="print-inquiry-title" id="printInquiryTitle">Get a Print</div>
 
                 <!-- Frame preview with artwork -->
                 <div class="print-inquiry-frame-preview" id="printInquiryFramePreview">
@@ -3927,22 +3977,27 @@
                 <div class="print-inquiry-field">
                     <label>Size</label>
                     <div class="print-inquiry-sizes">
-                        <div class="print-inquiry-size-option active" data-size="9x16" data-price="50" data-signed="false" data-framed="false">
+                        <div class="print-inquiry-size-option" data-size="9x16" data-price="50" data-signed="false" data-framed="false">
                             <div class="size-dims">9 × 16"</div>
                             <div class="size-cm">23 × 41 cm</div>
                             <div class="size-price">$50</div>
+                            <div class="size-price-converted"></div>
                         </div>
-                        <div class="print-inquiry-size-option" data-size="18x32" data-price="240" data-signed="true" data-framed="false">
+                        <div class="print-inquiry-size-option active" data-size="18x32" data-price="250" data-signed="true" data-framed="false">
                             <div class="size-dims">18 × 32"</div>
                             <div class="size-cm">46 × 81 cm</div>
-                            <div class="size-price">$240</div>
+                            <div class="size-price">$250</div>
+                            <div class="size-price-converted"></div>
                             <div class="size-label">hand-signed</div>
+                            <img class="size-signature" src="efdot-signature.png" alt="">
                         </div>
-                        <div class="print-inquiry-size-option" data-size="18x32-framed" data-price="400" data-signed="true" data-framed="true">
+                        <div class="print-inquiry-size-option" data-size="18x32-framed" data-price="500" data-signed="true" data-framed="true">
                             <div class="size-dims">18 × 32"</div>
                             <div class="size-cm">46 × 81 cm</div>
-                            <div class="size-price">$400</div>
+                            <div class="size-price">$500</div>
+                            <div class="size-price-converted"></div>
                             <div class="size-label">signed + framed</div>
+                            <img class="size-signature" src="efdot-signature.png" alt="">
                         </div>
                     </div>
                     <div class="print-inquiry-shipping-note">+ shipping</div>
@@ -7455,6 +7510,26 @@
             document.getElementById('printInquiryDetailsToggle')?.classList.remove('open');
             document.getElementById('printInquiryDetailsExtra')?.classList.remove('open');
 
+            // Always show preview; toggle frameless mode and frame colors based on framed option
+            const activeSize = document.querySelector('.print-inquiry-size-option.active');
+            const framePreviewEl = document.getElementById('printInquiryFramePreview');
+            const miniFrameEl = document.getElementById('printInquiryMiniFrame');
+            const frameColorsEl = document.querySelector('.print-inquiry-frame-colors');
+            const wallToggleEl = document.getElementById('printInquiryWallToggle');
+            const isFramed = activeSize && activeSize.dataset.framed === 'true';
+            if (framePreviewEl) framePreviewEl.style.display = '';
+            if (miniFrameEl) miniFrameEl.classList.toggle('frameless', !isFramed);
+            if (frameColorsEl) frameColorsEl.style.display = isFramed ? '' : 'none';
+            if (wallToggleEl) wallToggleEl.style.display = isFramed ? '' : 'none';
+
+            // Set title based on active selection
+            const titleEl = document.getElementById('printInquiryTitle');
+            if (titleEl && activeSize) {
+                if (activeSize.dataset.size === '9x16') titleEl.textContent = 'Get a Poster';
+                else if (activeSize.dataset.framed === 'true') titleEl.textContent = 'Get a Framed Print';
+                else titleEl.textContent = 'Get a Print';
+            }
+
             if (modal) modal.classList.add('open');
         }
         window.openPrintInquiryModal = openPrintInquiryModal;
@@ -7890,16 +7965,62 @@
             // so handlers outside initCollectorsPanel can access them directly
 
             // Size toggle
-            let printInquirySize = '9x16';
-            let printInquiryPrice = 50;
+            let printInquirySize = '18x32';
+            let printInquiryPrice = 250;
             document.querySelectorAll('.print-inquiry-size-option').forEach(opt => {
                 opt.addEventListener('click', () => {
                     document.querySelectorAll('.print-inquiry-size-option').forEach(o => o.classList.remove('active'));
                     opt.classList.add('active');
                     printInquirySize = opt.dataset.size;
                     printInquiryPrice = parseInt(opt.dataset.price);
+                    // Toggle frameless mode and frame controls based on framed option
+                    const isFramed = opt.dataset.framed === 'true';
+                    const miniFrame = document.getElementById('printInquiryMiniFrame');
+                    const frameColors = document.querySelector('.print-inquiry-frame-colors');
+                    const wallToggle = document.getElementById('printInquiryWallToggle');
+                    if (miniFrame) miniFrame.classList.toggle('frameless', !isFramed);
+                    if (frameColors) frameColors.style.display = isFramed ? '' : 'none';
+                    if (wallToggle) wallToggle.style.display = isFramed ? '' : 'none';
+                    // Update title based on selected product
+                    const titleEl = document.getElementById('printInquiryTitle');
+                    if (titleEl) {
+                        if (opt.dataset.size === '9x16') titleEl.textContent = 'Get a Poster';
+                        else if (opt.dataset.framed === 'true') titleEl.textContent = 'Get a Framed Print';
+                        else titleEl.textContent = 'Get a Print';
+                    }
                 });
             });
+
+            // Currency conversion for international visitors (IP-based geolocation)
+            (function initCurrencyConversion() {
+                fetch('https://ipapi.co/json/')
+                    .then(r => r.json())
+                    .then(geo => {
+                        const country = geo.country_code;
+                        const userCurrency = geo.currency;
+                        // Skip if user is in the US or currency couldn't be determined
+                        if (!userCurrency || userCurrency === 'USD' || country === 'US') return;
+                        // Fetch exchange rate
+                        return fetch('https://open.er-api.com/v6/latest/USD')
+                            .then(r => r.json())
+                            .then(data => {
+                                if (!data.rates || !data.rates[userCurrency]) return;
+                                const rate = data.rates[userCurrency];
+                                document.querySelectorAll('.print-inquiry-size-option').forEach(opt => {
+                                    const usdPrice = parseInt(opt.dataset.price);
+                                    const converted = Math.round(usdPrice * rate);
+                                    const formatted = new Intl.NumberFormat(navigator.language, {
+                                        style: 'currency',
+                                        currency: userCurrency,
+                                        maximumFractionDigits: 0,
+                                    }).format(converted);
+                                    const el = opt.querySelector('.size-price-converted');
+                                    if (el) el.textContent = '≈ ' + formatted;
+                                });
+                            });
+                    })
+                    .catch(() => { /* silently fail - conversion is supplementary */ });
+            })();
 
             // Frame color picker in print form
             document.querySelectorAll('.print-inquiry-frame-color').forEach(btn => {
@@ -7947,10 +8068,21 @@
                 document.getElementById('printInquiryEmail').value = '';
                 document.getElementById('printInquiryCountry').value = 'United States';
                 document.getElementById('printInquiryNotes').value = '';
-                // Reset size toggle
-                document.querySelectorAll('.print-inquiry-size-option').forEach((o, i) => o.classList.toggle('active', i === 0));
-                printInquirySize = '9x16';
-                printInquiryPrice = 50;
+                // Reset size toggle to default (signed print, index 1)
+                document.querySelectorAll('.print-inquiry-size-option').forEach((o, i) => o.classList.toggle('active', i === 1));
+                printInquirySize = '18x32';
+                printInquiryPrice = 250;
+                // Reset title
+                const titleEl = document.getElementById('printInquiryTitle');
+                if (titleEl) titleEl.textContent = 'Get a Print';
+                // Reset frame preview for non-framed default
+                const fp = document.getElementById('printInquiryFramePreview');
+                const mf = document.getElementById('printInquiryMiniFrame');
+                const fc = document.querySelector('.print-inquiry-frame-colors');
+                const wt = document.getElementById('printInquiryWallToggle');
+                if (mf) mf.classList.add('frameless');
+                if (fc) fc.style.display = 'none';
+                if (wt) wt.style.display = 'none';
             });
 
             document.getElementById('printInquirySend')?.addEventListener('click', () => {
@@ -15744,7 +15876,8 @@
         }
 
         // Mobile bottom bar controls
-        const mobileBottomBar = document.getElementById('mobileBottomBar');
+        const mobileBottomBar = document.getElementById('mobileBottomBar') || document.getElementById('mobileBottomBar2');
+        const mobileBottomBar2 = document.getElementById('mobileBottomBar2');
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobilePrevBtn = document.getElementById('mobilePrevBtn');
         const mobileHeartBtn = document.getElementById('mobileHeartBtn');
@@ -15761,7 +15894,15 @@
         if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', () => {
                 haptic('light');
-                document.querySelector('.mobile-menu-toggle')?.click();
+                const mobSheet = document.getElementById('mobileSheet');
+                const mobOverlay = document.getElementById('mobileSheetOverlay');
+                if (mobSheet?.classList.contains('open')) {
+                    mobSheet.classList.remove('open');
+                    mobOverlay?.classList.remove('open');
+                } else {
+                    mobSheet?.classList.add('open');
+                    mobOverlay?.classList.add('open');
+                }
             });
         }
 
@@ -15815,6 +15956,9 @@
                         if (mobileGridBtn) mobileGridBtn.classList.toggle('active', isOpen);
                         if (mobileBottomBar) {
                             mobileBottomBar.style.display = (isOpen || window.innerWidth > 768) ? 'none' : 'flex';
+                        }
+                        if (mobileBottomBar2) {
+                            mobileBottomBar2.style.display = (isOpen || window.innerWidth > 768) ? 'none' : 'flex';
                         }
                     }
                 });
@@ -15994,10 +16138,10 @@
 
         // Resize handler
         window.addEventListener('resize', () => {
-            if (mobileBottomBar) {
-                const isGridOpen = gridPanel && gridPanel.classList.contains('open');
-                mobileBottomBar.style.display = (window.innerWidth <= 768 && !isGridOpen) ? 'flex' : 'none';
-            }
+            const isGridOpen = gridPanel && gridPanel.classList.contains('open');
+            const showBar = (window.innerWidth <= 768 && !isGridOpen) ? 'flex' : 'none';
+            if (mobileBottomBar) mobileBottomBar.style.display = showBar;
+            if (mobileBottomBar2) mobileBottomBar2.style.display = showBar;
         });
 
         // About modal
