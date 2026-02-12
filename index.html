@@ -1900,7 +1900,7 @@
         .wall-view-room:active { cursor: grabbing; }
         .wall-view-room.zoomed { overflow: auto; }
         .wall-view-wall-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100%; padding: 100px 60px 60px; transition: transform 0.3s ease; transform-origin: center center; }
-        .wall-view-wall { display: grid; gap: 30px; justify-content: center; justify-items: center; align-items: start; width: 100%; max-width: 1600px; margin: 0 auto; grid-template-columns: repeat(auto-fit, minmax(100px, 150px)); }
+        .wall-view-wall { display: grid; gap: 30px; justify-content: center; justify-items: center; align-items: start; width: 100%; max-width: 1600px; margin: 0 auto; grid-template-columns: repeat(auto-fit, minmax(100px, 150px)); position: relative; }
         /* Override columns based on item count for better layouts */
         .wall-view-wall.cols-1 { grid-template-columns: 1fr; max-width: 220px; }
         .wall-view-wall.cols-2 { grid-template-columns: repeat(2, 1fr); max-width: 480px; }
@@ -1915,7 +1915,7 @@
         .wall-view-artwork { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; }
         .wall-view-artwork-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #666; font-family: 'Nunito', sans-serif; }
         /* Collector info above wall */
-        .wall-view-collector-info { text-align: center; margin-bottom: 30px; cursor: pointer; padding: 0 20px; width: 100%; }
+        .wall-view-collector-info { text-align: center; margin-bottom: 30px; cursor: pointer; padding: 0 20px; grid-column: 1 / -1; width: 100%; }
         .wall-view-collector-name { font-size: 10px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(200,180,120,0.6); font-family: 'Nunito', sans-serif; transition: color 0.2s ease; max-width: 100%; }
         .wall-view-collector-name:hover { color: #c8b478; }
         .wall-view-modal.wall-black .wall-view-collector-name { color: rgba(200,180,120,0.5); }
@@ -3505,10 +3505,10 @@
             </div>
             <div class="wall-view-room" id="wallViewRoom">
                 <div class="wall-view-wall-wrapper" id="wallViewWrapper">
-                    <div class="wall-view-collector-info" id="wallViewCollectorInfo">
-                        <div class="wall-view-collector-name" id="wallViewCollectorLabel"></div>
-                    </div>
                     <div class="wall-view-wall" id="wallViewWall">
+                        <div class="wall-view-collector-info" id="wallViewCollectorInfo">
+                            <div class="wall-view-collector-name" id="wallViewCollectorLabel"></div>
+                        </div>
                         <!-- Artworks will be inserted here dynamically -->
                     </div>
                 </div>
