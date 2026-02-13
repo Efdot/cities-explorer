@@ -1209,9 +1209,9 @@
         .frame-color-btn[data-color="black"] { background: #1a1a1a; }
         .frame-color-btn[data-color="dark-wood"] { background: #5a3d2b; }
         .frame-mockup-artwork { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-        .frame-mockup-label { font-size: 12px; font-weight: 600; color: #666; letter-spacing: 0.1em; }
+        .frame-mockup-label { font-size: 12px; font-weight: 600; color: #666; letter-spacing: 0.1em; margin-bottom: -10px; }
         .frame-mockup.dark-mode .frame-mockup-label { color: #888; }
-        .frame-mockup-collector { font-size: 10px; font-weight: 500; color: #999; letter-spacing: 0.08em; text-transform: uppercase; }
+        .frame-mockup-collector { font-size: 10px; font-weight: 500; color: #999; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: -8px; }
         .frame-mockup.dark-mode .frame-mockup-collector { color: #555; }
         /* Frame color overrides */
         .frame-mockup .frame-wrapper.frame-white { background: #faf9f7; }
@@ -4139,13 +4139,13 @@
     <div class="frame-mockup" id="frameMockup">
         <div class="frame-mockup-content">
             <div class="frame-mockup-artwork">
+                <div class="frame-mockup-label" id="frameMockupLabel">#0</div>
+                <div class="frame-mockup-collector" id="frameMockupCollector"></div>
                 <div class="frame-wrapper" id="frameWrapper">
                     <div class="frame-inner">
                         <img id="frameMockupImage" src="" alt="Framed city artwork">
                     </div>
                 </div>
-                <div class="frame-mockup-label" id="frameMockupLabel">#0</div>
-                <div class="frame-mockup-collector" id="frameMockupCollector"></div>
             </div>
         </div>
         <button class="frame-mockup-mode" id="frameMockupMode" title="Toggle dark mode">☾</button>
