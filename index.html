@@ -492,7 +492,7 @@
         /* Floating swatch - no card */
         .pantone-swatch { background: transparent; overflow: visible; position: relative; z-index: 2; }
         .pantone-bg-strip { display: none; }
-        .pantone-name-floating { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-bottom: 20px; transition: color 0.3s ease; }
+        .pantone-name-floating { font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-bottom: 14px; transition: color 0.3s ease; }
         /* Dark text for light backgrounds */
         .palette-inspector.light-bg .pantone-name-floating { color: rgba(0,0,0,0.85); text-shadow: none; }
         .palette-inspector.light-bg .pantone-meta-item { color: rgba(0,0,0,0.5); }
@@ -511,22 +511,22 @@
         .palette-inspector.light-bg .palette-inspector-close:hover { background: rgba(0,0,0,0.15); color: rgba(0,0,0,0.9); }
         .palette-inspector.light-bg .pantone-hex-section { border-top-color: rgba(0,0,0,0.1); }
         .palette-inspector.light-bg .palette-suggestions-label { color: rgba(0,0,0,0.5); }
-        .pantone-header-row { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 0; margin-bottom: 20px; }
-        .pantone-fav-btn { width: 36px; height: 36px; border: none; background: rgba(255,255,255,0.15); border-radius: 50%; font-size: 18px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .pantone-header-row { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0; margin-bottom: 14px; }
+        .pantone-fav-btn { width: 32px; height: 32px; border: none; background: rgba(255,255,255,0.15); border-radius: 50%; font-size: 16px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
         .pantone-fav-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
         .pantone-fav-btn.favorited { background: rgba(255,107,138,0.3); color: #ff6b8a; }
-        .pantone-hex-toggle { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); padding: 8px 14px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(10px); }
+        .pantone-hex-toggle { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); padding: 6px 12px; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(10px); }
         .pantone-hex-toggle:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); color: #fff; }
         .pantone-hex-toggle.active { background: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.9); color: #333; }
         .pantone-info { background: transparent; padding: 0; text-align: center; }
-        .pantone-meta { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; }
+        .pantone-meta { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; justify-content: center; }
         .pantone-meta-item { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); }
         .pantone-meta-item span { color: rgba(255,255,255,0.9); font-weight: 700; margin-left: 4px; }
         /* Color category sections */
-        .pantone-category { margin-bottom: 20px; }
-        .pantone-category-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
-        .pantone-color-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .pantone-color-chip { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.25s ease; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); }
+        .pantone-category { margin-bottom: 14px; }
+        .pantone-category-label { font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+        .pantone-color-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .pantone-color-chip { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.25s ease; position: relative; box-shadow: 0 3px 10px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); }
         .pantone-color-chip:hover { transform: scale(1.2); z-index: 2; box-shadow: 0 6px 20px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.3); }
         .pantone-color-chip .chip-hex { position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 700; font-family: monospace; white-space: nowrap; opacity: 0; transition: all 0.25s ease; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.7); color: #fff; }
         .pantone-color-chip:hover .chip-hex { opacity: 1; }
@@ -536,32 +536,32 @@
         .hex-visible .pantone-color-chip .chip-hex { position: static; transform: none; opacity: 1; background: transparent; padding: 0; border-radius: 0; font-size: 10px; line-height: 34px; }
         .hex-visible .pantone-color-row { gap: 8px; }
         /* Hex codes display - hidden by default */
-        .pantone-hex-section { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; margin-top: 16px; display: none; }
+        .pantone-hex-section { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 12px; display: none; }
         .pantone-hex-section.visible { display: block; }
         .pantone-hex-section .pantone-category-label { color: rgba(255,255,255,0.4); }
         .pantone-hex-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
         .pantone-hex-chip { padding: 6px 10px; border-radius: 6px; font-size: 9px; font-weight: 700; font-family: monospace; cursor: pointer; transition: all 0.15s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .pantone-hex-chip:hover { transform: scale(1.08); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
         /* Palette fan navigation */
-        .palette-fan-container { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 24px; }
-        .palette-fan { display: flex; justify-content: center; gap: 8px; perspective: 800px; }
-        .palette-fan-chip { width: 48px; height: 64px; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transform-origin: bottom center; position: relative; }
+        .palette-fan-container { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; }
+        .palette-fan { display: flex; justify-content: center; gap: 6px; perspective: 800px; }
+        .palette-fan-chip { width: 40px; height: 54px; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transform-origin: bottom center; position: relative; }
         .palette-fan-chip:not(.active) { opacity: 0.7; transform: scale(0.85); }
         .palette-fan-chip.active { transform: scale(1); opacity: 1; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
         .palette-fan-chip:hover:not(.active) { opacity: 0.9; transform: scale(0.92); }
         .palette-fan-chip .fan-label { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); white-space: nowrap; max-width: 60px; overflow: hidden; text-overflow: ellipsis; opacity: 0; transition: opacity 0.2s; }
         .palette-fan-chip:hover .fan-label, .palette-fan-chip.active .fan-label { opacity: 1; }
-        .palette-fan-arrow { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; font-size: 14px; }
+        .palette-fan-arrow { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; font-size: 13px; }
         .palette-fan-arrow:hover { background: rgba(255,255,255,0.2); color: #fff; }
         .palette-fan-arrow:disabled, .palette-fan-arrow.disabled { opacity: 0.3; cursor: default; pointer-events: none; }
         /* Palette suggestions */
-        .palette-inspector-similar { margin-top: 24px; }
-        .palette-suggestions-section { margin-bottom: 16px; }
-        .palette-suggestions-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
-        .similar-palettes-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-        .similar-palette-chip { padding: 8px 12px; border-radius: 20px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .palette-inspector-similar { margin-top: 16px; }
+        .palette-suggestions-section { margin-bottom: 10px; }
+        .palette-suggestions-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+        .similar-palettes-row { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+        .similar-palette-chip { padding: 5px 10px; border-radius: 14px; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .similar-palette-chip:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
-        .palette-inspector-close { background: var(--bg-input); border: none; color: var(--text-dim); padding: 16px 36px; border-radius: 50px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; margin-top: 28px; }
+        .palette-inspector-close { background: var(--bg-input); border: none; color: var(--text-dim); padding: 12px 28px; border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; margin-top: 18px; }
         /* Sidebar inspect palette button */
         .sidebar-inspect-btn { display: block; width: 100%; padding: 6px 14px; margin-bottom: 6px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
         .sidebar-inspect-btn:hover { border-color: var(--teal); color: var(--teal); }
@@ -3326,9 +3326,12 @@
             .mobile-bottom-bar#mobileBottomBar2 .mobile-heart-btn {
                 font-size: 24px;
                 color: #c9a227;
+                opacity: 0.45;
+                transition: opacity 0.2s ease, color 0.2s ease;
             }
             .mobile-bottom-bar#mobileBottomBar2 .mobile-heart-btn.favorited {
                 color: #ff6b6b;
+                opacity: 1;
             }
         }
 
@@ -13137,8 +13140,9 @@
                 // Sync favorite state
                 const mobFavBtn = document.getElementById('mobFav');
                 if (mobFavBtn && typeof favorites !== 'undefined') {
-                    mobFavBtn.classList.toggle('active', favorites.includes(currentTokenId));
-                    mobFavBtn.textContent = favorites.includes(currentTokenId) ? '❤' : '♡';
+                    const isFav = favorites.some(f => f.tokenId === currentTokenId);
+                    mobFavBtn.classList.toggle('active', isFav);
+                    mobFavBtn.textContent = isFav ? '❤' : '♡';
                 }
                 // Sync owner into sheet
                 const mobOwner = document.getElementById('mobOwnerDisplay');
@@ -16093,7 +16097,7 @@
         if (mobileHeartBtn) {
             mobileHeartBtn.addEventListener('click', () => {
                 haptic('medium');
-                document.getElementById('favBtn')?.click();
+                document.getElementById('saveFavorite')?.click();
                 setTimeout(updateMobileHeartState, 50);
             });
         }
@@ -16167,7 +16171,7 @@
                     }
 
                     if (typeof currentTokenId !== 'undefined' && !isCityFavorited(currentTokenId)) {
-                        document.getElementById('favBtn')?.click();
+                        document.getElementById('saveFavorite')?.click();
                         updateMobileHeartState();
                     }
                     lastTapTime = 0;
