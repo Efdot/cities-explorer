@@ -906,9 +906,12 @@
         .timeline-group-grid.openminds-grid { max-width: 500px; margin: 0 auto; }
         .timeline-group-grid.openminds-grid .timeline-group-item img { aspect-ratio: 1/1; object-fit: cover; }
 
-        /* Italy 3x3 grid */
+        /* Italy 3x3 grid - no hover/scroll effects, plain static images */
+        .timeline-item.italy { transition: none; opacity: 1; transform: none; }
+        .timeline-item.italy:hover { transform: none; }
+        .timeline-item.italy:hover img { transform: none; box-shadow: none; border-radius: 0; }
         .timeline-italy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; overflow: hidden; }
-        .timeline-italy-grid img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; }
+        .timeline-italy-grid img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; transition: none; }
         .timeline-italy-collectors { font-size: 10px; color: var(--text-muted); margin-top: 12px; letter-spacing: 0.03em; }
         .timeline-italy-collectors .collector-link { cursor: pointer; transition: color 0.2s ease; }
         .timeline-italy-collectors .collector-link:hover { color: var(--yellow); }
@@ -1062,8 +1065,8 @@
         .italy-gallery-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
         .italy-gallery-subtitle { font-size: 12px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
         .italy-gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; max-width: 900px; margin: 0 auto; padding: 0 40px 80px; }
-        .italy-gallery-item { text-align: center; cursor: pointer; }
-        .italy-gallery-frame { background: #111; padding: 12px; border-radius: 2px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .italy-gallery-item { text-align: center; }
+        .italy-gallery-frame { border-radius: 2px; }
         .italy-gallery-frame img { width: 100%; display: block; }
         .italy-gallery-info { margin-top: 16px; }
         .italy-gallery-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
@@ -2551,7 +2554,7 @@
             .grid-mode-btn[data-emoji="🎨"] { font-size: 0; width: 34px; padding: 0; border-radius: 50%; }
             .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; font-size: 15px; line-height: 1; }
             .grid-mode-btn .palette-sort-arrow { display: none; }
-            .gallery-room-toggle, .grid-size-toggle { width: 34px; height: 34px; font-size: 12px; flex-shrink: 0; }
+            .gallery-room-toggle, .grid-size-toggle { width: 44px; height: 44px; font-size: 12px; flex-shrink: 0; }
             /* Palette headers on mobile */
             .grid-group-header { padding: 10px 12px; gap: 6px; flex-wrap: nowrap; }
             .grid-group-name { font-size: 10px; letter-spacing: 0.05em; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -13548,10 +13551,28 @@
             icon.innerHTML = '<b></b>'.repeat(count);
         }
 
+        // On mobile, only cycle through sizes that produce visually distinct layouts
+        const mobileSizeModes = ['12-col', '3-col', '2-col'];
+
+        function isMobileView() {
+            return window.innerWidth <= 768;
+        }
+
         document.getElementById('gridSizeToggle').addEventListener('click', () => {
-            gridSizeIndex = (gridSizeIndex + 1) % sizeModes.length;
             const oldSize = gridSize;
-            gridSize = sizeModes[gridSizeIndex];
+
+            if (isMobileView()) {
+                // On mobile, many sizes map to the same column count, so only cycle distinct ones
+                let mobileIndex = mobileSizeModes.indexOf(gridSize);
+                if (mobileIndex === -1) mobileIndex = 0;
+                mobileIndex = (mobileIndex + 1) % mobileSizeModes.length;
+                gridSize = mobileSizeModes[mobileIndex];
+                gridSizeIndex = sizeModes.indexOf(gridSize);
+            } else {
+                gridSizeIndex = (gridSizeIndex + 1) % sizeModes.length;
+                gridSize = sizeModes[gridSizeIndex];
+            }
+
             updateSizeIcon();
 
             // Just update CSS classes instead of full re-render for performance
