@@ -442,6 +442,21 @@
         .omage-inquiry-submit { background: var(--warm); border: none; border-radius: 8px; padding: 14px; color: #000; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s ease; }
         .omage-inquiry-submit:hover { background: #f0c87d; transform: translateY(-1px); }
         .omage-inquiry-success { text-align: center; padding: 20px; color: var(--teal); font-size: 14px; }
+
+        /* OpenSea Warning Modal */
+        .opensea-warning-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.95); z-index: 3100; display: none; align-items: center; justify-content: center; backdrop-filter: blur(20px); padding: 20px; }
+        .opensea-warning-modal.open { display: flex; }
+        .opensea-warning-content { background: var(--bg-panel); border-radius: 16px; max-width: 360px; width: 100%; padding: 28px 24px; text-align: center; position: relative; }
+        .opensea-warning-icon { font-size: 32px; margin-bottom: 12px; }
+        .opensea-warning-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+        .opensea-warning-text { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 20px; }
+        .opensea-warning-text a { color: var(--warm); text-decoration: none; }
+        .opensea-warning-actions { display: flex; gap: 10px; }
+        .opensea-warning-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
+        .opensea-warning-btn.primary { background: var(--warm); color: #000; }
+        .opensea-warning-btn.primary:hover { background: var(--orange); }
+        .opensea-warning-btn.secondary { background: #333; color: #888; }
+        .opensea-warning-btn.secondary:hover { background: #444; color: #fff; }
         .origin-item.available::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid var(--teal); border-radius: 8px; pointer-events: none; }
         @keyframes availablePulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
         .origin-item.available .origin-item-label::before { content: '🟢 '; }
@@ -4030,15 +4045,15 @@
                     <div class="print-inquiry-shipping-note">+ shipping</div>
                 </div>
 
-                <div class="print-inquiry-field">
+                <div class="print-inquiry-field" id="printInquiryEmailField" style="display: none;">
                     <label>Email Address</label>
                     <input type="email" id="printInquiryEmail" placeholder="your@email.com">
                 </div>
 
-                <button class="print-inquiry-details-toggle" id="printInquiryDetailsToggle">
+                <button class="print-inquiry-details-toggle" id="printInquiryDetailsToggle" style="display: none;">
                     <span class="toggle-arrow">›</span> Add details
                 </button>
-                <div class="print-inquiry-details-extra" id="printInquiryDetailsExtra">
+                <div class="print-inquiry-details-extra" id="printInquiryDetailsExtra" style="display: none;">
                     <div class="print-inquiry-field">
                         <label>Country (for shipping estimate)</label>
                         <input type="text" id="printInquiryCountry" placeholder="Country" value="United States">
@@ -4052,7 +4067,7 @@
                 <div class="print-inquiry-type-note">Signed prints for <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank">City owners</a> · Posters at <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank">Efdot Studio Shop</a></div>
 
                 <div class="print-inquiry-actions">
-                    <button class="print-inquiry-btn primary" id="printInquirySend" style="flex: 2;">Send Request</button>
+                    <button class="print-inquiry-btn primary" id="printInquirySend" style="flex: 2;">Check out in Efdot Shop</button>
                     <button class="print-inquiry-btn secondary" id="printInquiryCancel">Cancel</button>
                 </div>
             </div>
@@ -4063,6 +4078,19 @@
                     <div class="print-inquiry-success-sub">Eric will get back to you soon.</div>
                 </div>
                 <button class="print-inquiry-btn primary" id="printInquiryDone" style="margin-top: 20px; width: 100%;">Back to Explorer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OpenSea Warning Modal -->
+    <div class="opensea-warning-modal" id="openseaWarningModal">
+        <div class="opensea-warning-content">
+            <div class="opensea-warning-icon">⚠</div>
+            <div class="opensea-warning-title">Leaving Cities Explorer</div>
+            <div class="opensea-warning-text">You're about to visit <a href="https://opensea.io" target="_blank">OpenSea</a> to make an offer on this City. Continue?</div>
+            <div class="opensea-warning-actions">
+                <button class="opensea-warning-btn primary" id="openseaWarningContinue">Continue to OpenSea</button>
+                <button class="opensea-warning-btn secondary" id="openseaWarningCancel">Cancel</button>
             </div>
         </div>
     </div>
@@ -8264,50 +8292,41 @@
             });
 
             document.getElementById('printInquirySend')?.addEventListener('click', () => {
-                const email = document.getElementById('printInquiryEmail')?.value || '';
-                const country = document.getElementById('printInquiryCountry')?.value || '';
-                const notes = document.getElementById('printInquiryNotes')?.value || '';
-                const tokenIds = printInquirySelectedCities || [];
+                // Open Efdot Shop in a new tab
+                window.open('https://shop.efdotstudio.com/collections/cities-collection', '_blank');
 
-                if (!email || !email.includes('@')) {
-                    alert('Please enter a valid email address');
-                    return;
-                }
-
-                // Get selected size info
-                const activeSize = document.querySelector('.print-inquiry-size-option.active');
-                const sizeDims = activeSize?.querySelector('.size-dims')?.textContent || printInquirySize;
-                const sizePrice = activeSize?.querySelector('.size-price')?.textContent || '';
-                const sizeLabel = activeSize?.querySelector('.size-label')?.textContent || '';
-                const sizeDesc = `${sizeDims} ${sizePrice}${sizeLabel ? ' (' + sizeLabel + ')' : ''}`;
-                const frameColor = printInquiryFrameColor || 'light-wood';
-
-                const subject = encodeURIComponent(`Cities Print Inquiry`);
-                const body = encodeURIComponent(
-                    `Hi Eric,\n\n` +
-                    `I'd like to order a print!\n\n` +
-                    `== ORDER DETAILS ==\n` +
-                    `Cities: ${tokenIds.map(id => '#' + id).join(', ')}\n` +
-                    `Size: ${sizeDesc}\n` +
-                    `Frame: ${frameColor.replace('-', ' ')}\n` +
-                    `Country: ${country}\n` +
-                    `Email: ${email}\n` +
-                    (notes ? `\nNotes: ${notes}\n` : '') +
-                    `\nLooking forward to hearing from you!`
-                );
-
-                // Open email client
-                window.location.href = `mailto:eric@efdotstudio.com?subject=${subject}&body=${body}`;
-
-                // Show success state
-                document.getElementById('printInquiryForm').style.display = 'none';
-                document.getElementById('printInquirySuccess').style.display = 'block';
+                // Close the print inquiry modal
+                document.getElementById('printInquiryModal').classList.remove('open');
             });
 
             // Close modal on backdrop click
             document.getElementById('printInquiryModal')?.addEventListener('click', (e) => {
                 if (e.target.id === 'printInquiryModal') {
                     document.getElementById('printInquiryModal').classList.remove('open');
+                }
+            });
+
+            // OpenSea warning modal for Make Offer button
+            document.getElementById('makeOfferBtn')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = e.currentTarget.dataset.openseaUrl;
+                if (!url) return;
+                const modal = document.getElementById('openseaWarningModal');
+                modal.dataset.targetUrl = url;
+                modal.classList.add('open');
+            });
+            document.getElementById('openseaWarningContinue')?.addEventListener('click', () => {
+                const modal = document.getElementById('openseaWarningModal');
+                const url = modal.dataset.targetUrl;
+                modal.classList.remove('open');
+                if (url) window.open(url, '_blank');
+            });
+            document.getElementById('openseaWarningCancel')?.addEventListener('click', () => {
+                document.getElementById('openseaWarningModal').classList.remove('open');
+            });
+            document.getElementById('openseaWarningModal')?.addEventListener('click', (e) => {
+                if (e.target.id === 'openseaWarningModal') {
+                    document.getElementById('openseaWarningModal').classList.remove('open');
                 }
             });
 
@@ -10658,7 +10677,10 @@
             if (linkRaster) linkRaster.href = `https://rfrsh.io/${CONTRACT}/${tokenId}`;
             if (iconOpenSea) iconOpenSea.href = getOpenSeaUrl(tokenId);
             if (iconArtBlocks) iconArtBlocks.href = getTokenPageUrl(tokenId);
-            if (makeOfferBtn) makeOfferBtn.href = `https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`;
+            if (makeOfferBtn) {
+                makeOfferBtn.href = '#';
+                makeOfferBtn.dataset.openseaUrl = `https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`;
+            }
 
             // Fetch listing info from Reservoir
             fetchListingInfo(tokenId);
