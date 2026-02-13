@@ -1914,22 +1914,20 @@
         .grid-color-gradient-toggle:hover { background: var(--bg-card); }
         .grid-color-gradient-toggle .color-dot { width: 10px; height: 10px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; }
         .grid-color-gradient-toggle.active { background: rgba(0,229,204,0.15); color: var(--teal); }
-        .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; background: var(--bg-panel); pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center; border-radius: 0; }
+        .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; background: var(--bg-panel); pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: stretch; justify-content: center; border-radius: 0; }
         .grid-color-gradient-bar.open { opacity: 1; pointer-events: auto; }
-        .grid-color-gradient-inner { padding: 8px 28px; width: 100%; display: flex; flex-direction: column; gap: 4px; }
-        .grid-color-gradient-strip { height: 28px; border-radius: 14px; cursor: pointer; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.15); touch-action: none; }
-        .grid-color-gradient-strip::after { content: ''; position: absolute; inset: 0; border-radius: 14px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), inset 0 -1px 2px rgba(0,0,0,0.1); pointer-events: none; }
-        .grid-color-gradient-marker { position: absolute; width: 6px; height: 36px; background: #fff; border-radius: 3px; top: -4px; transform: translateX(-50%); box-shadow: 0 2px 8px rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+        .grid-color-gradient-inner { padding: 0; width: 100%; display: flex; flex-direction: column; }
+        .grid-color-gradient-strip { flex: 1; cursor: pointer; position: relative; touch-action: none; min-height: 28px; }
+        .grid-color-gradient-strip::after { display: none; }
+        .grid-color-gradient-marker { position: absolute; width: 2px; top: 0; bottom: 0; background: rgba(255,255,255,0.9); transform: translateX(-50%); box-shadow: 0 0 6px rgba(255,255,255,0.4); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
         .grid-color-gradient-strip:hover .grid-color-gradient-marker, .grid-color-gradient-strip.active .grid-color-gradient-marker { opacity: 1; }
-        .grid-color-gradient-meta { display: flex; justify-content: space-between; align-items: center; }
-        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
-        .grid-color-gradient-close { background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.6; transition: opacity 0.2s; }
-        .grid-color-gradient-close:hover { opacity: 1; color: var(--text); }
-        .grid-color-gradient-hint { font-size: 8px; color: var(--orange); opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; }
-        .grid-color-gradient-hint.visible { opacity: 0.7; }
-        @media (max-width: 768px) {
-            .grid-color-gradient-inner { padding: 8px 16px; }
-        }
+        .grid-color-gradient-close { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); z-index: 2; background: rgba(0,0,0,0.4); border: none; color: rgba(255,255,255,0.7); font-size: 12px; cursor: pointer; padding: 2px 6px; line-height: 1; border-radius: 3px; opacity: 0; transition: opacity 0.2s; }
+        .grid-color-gradient-strip:hover .grid-color-gradient-close { opacity: 1; }
+        .grid-color-gradient-close:hover { background: rgba(0,0,0,0.6); color: #fff; }
+        .grid-color-gradient-hint { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; font-size: 8px; color: var(--orange); opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .grid-color-gradient-hint.visible { opacity: 0.85; }
+        .grid-color-gradient-times { display: flex; justify-content: space-between; padding: 2px 6px 0; background: var(--bg-panel); }
+        .grid-color-gradient-times span { font-size: 7px; font-weight: 500; color: var(--text-dim); letter-spacing: 0.02em; opacity: 0.4; font-family: inherit; }
         .grid-filter-spacer { flex: 1; }
         .grid-supply-tracker { width: 120px; height: 28px; position: relative; flex-shrink: 0; cursor: pointer; display: block; text-decoration: none; }
         .grid-supply-bar { position: relative; height: 100%; background: var(--bg-input); border-radius: 14px; overflow: hidden; transition: box-shadow 0.3s ease; }
@@ -2136,7 +2134,7 @@
         .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-tips-toggle { background: rgba(250,250,252,0.95); border-color: rgba(0,0,0,0.15); }
         .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-tips-toggle:hover { background: rgba(240,240,245,1); border-color: rgba(0,0,0,0.25); }
         .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-tips-toggle .tips-icon { filter: invert(1); }
-        .wall-view-tips-toggle .tips-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 10px; line-height: 1; }
+        .wall-view-tips-toggle .tips-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 10px; line-height: 1; }
         @keyframes tipsGlow {
             0%, 85% { box-shadow: none; transform: scale(1); }
             90% { box-shadow: 0 0 12px rgba(201, 162, 39, 0.5); transform: scale(1.08); border-color: rgba(201, 162, 39, 0.5); }
@@ -3830,7 +3828,7 @@
             <div class="collectors-stats"><span id="collectorCountStats">164</span> collectors · <span id="citiesCountStats">321</span> cities</div>
             <div class="top-collectors-highlight" id="topCollectorsHighlight"></div>
             <div class="collectors-pills" id="collectorsPills"></div>
-            <button class="become-collector-btn" id="becomeCollectorBtn">✦ Join the Movement</button>
+            <button class="become-collector-btn" id="becomeCollectorBtn">✦ Get Started</button>
         </div>
         <!-- Citizen Guide View - Step-by-step onboarding -->
         <div class="collector-guide-view" id="collectorGuideView">
@@ -3964,13 +3962,17 @@
             <button class="grid-color-gradient-toggle" id="gridColorGradientToggle" title="Filter by color"><span class="color-dot"></span> COLOR</button>
             <div class="grid-color-gradient-bar" id="gridColorGradientBar">
                 <div class="grid-color-gradient-inner">
-                    <div class="grid-color-gradient-meta">
-                        <span class="grid-color-gradient-label">SLIDE TO FILTER BY COLOR</span>
-                        <span class="grid-color-gradient-hint" id="gridColorGradientHint">Few results — try clearing other filters</span>
-                        <button class="grid-color-gradient-close" id="gridColorGradientClose" title="Close color filter">&times;</button>
-                    </div>
                     <div class="grid-color-gradient-strip" id="gridColorGradientStrip">
                         <div class="grid-color-gradient-marker" id="gridColorGradientMarker"></div>
+                        <span class="grid-color-gradient-hint" id="gridColorGradientHint">Few results — try clearing other filters</span>
+                        <button class="grid-color-gradient-close" id="gridColorGradientClose" title="Close">&times;</button>
+                    </div>
+                    <div class="grid-color-gradient-times">
+                        <span>00:00</span>
+                        <span>06:00</span>
+                        <span>12:00</span>
+                        <span>18:00</span>
+                        <span>24:00</span>
                     </div>
                 </div>
             </div>
@@ -5170,7 +5172,10 @@
             'soren.eth': 'Soren Wrenn',
             // shillrmedia -> SHILLR
             'shillrmedia': 'SHILLR',
-            'shillrmedia.eth': 'SHILLR'
+            'shillrmedia.eth': 'SHILLR',
+            // LUCI -> Sam Spratt
+            'luci': 'Sam Spratt',
+            'luci.eth': 'Sam Spratt'
         };
 
         // Function to apply name aliases and clean up ENS names
@@ -6846,7 +6851,6 @@
         function renderCollectorsPills() {
             const pillsContainer = document.getElementById('collectorsPills');
 
-            // Exclude "The Lost Cities" distribution wallet (by name or address prefix 0xcf22)
             const LOST_CITIES_PREFIX = '0xcf22';
             // Get top 3 collector names to exclude from pills (shown in top collectors highlight)
             const top3Names = new Set(
@@ -6859,11 +6863,18 @@
                     .slice(0, 3)
                     .map(c => c.name)
             );
+            // Separate The Lost Cities to place at the bottom
+            const lostCities = COLLECTORS_DATA.find(c =>
+                c.name === 'The Lost Cities' ||
+                (c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX))
+            );
             const filteredCollectors = COLLECTORS_DATA.filter(c =>
                 c.name !== 'The Lost Cities' &&
                 !(c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX)) &&
                 !top3Names.has(c.name)
             );
+            // Add The Lost Cities at the end
+            if (lostCities) filteredCollectors.push(lostCities);
 
             // Helper to get full palette info from collector's tokens
             function getCollectorPaletteInfo(collector) {
@@ -7365,13 +7376,18 @@
             }
 
             const leaderboardList = document.getElementById('leaderboardList');
-            // Filter to 2+ cities, exclude distribution wallet (by name or address prefix), sort by count
+            // Filter to 2+ cities, sort by count, with The Lost Cities appended at the bottom
             const LOST_CITIES_PREFIX = '0xcf22';
+            const lostCitiesCollector = COLLECTORS_DATA.find(c =>
+                c.name === 'The Lost Cities' ||
+                (c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX))
+            );
             const multiCollectors = COLLECTORS_DATA
                 .filter(c => c.count >= 2 &&
                     c.name !== 'The Lost Cities' &&
                     !(c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX)))
                 .sort((a, b) => b.count - a.count);
+            if (lostCitiesCollector && lostCitiesCollector.count >= 2) multiCollectors.push(lostCitiesCollector);
             const maxCount = multiCollectors[0]?.count || 1;
             leaderboardList.innerHTML = multiCollectors.map((collector, i) => {
                 const color = LEADERBOARD_COLORS[i % LEADERBOARD_COLORS.length];
@@ -9842,6 +9858,10 @@
 
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
+
+            // Always show the tips emoji button for all collectors
+            const tipsBtn = document.getElementById('wallViewTipsToggle');
+            if (tipsBtn) tipsBtn.classList.add('has-tips');
 
             // Update grid nudge after modal opens
             setTimeout(updateGridNudge, 100);
@@ -13595,6 +13615,8 @@
             e.stopPropagation();
             filterToggleBar.classList.toggle('open');
             gridFilterBar.classList.toggle('open');
+            // Close the color gradient when opening filters
+            if (colorGradientActive) toggleColorGradient();
         });
 
         // Title hover animation - text breaks apart on long hover
@@ -13987,9 +14009,22 @@
         let colorGradientDragging = false;
         let savedFilterState = null; // Store original filter state to restore
 
-        // Build the gradient from actual palette bg colors sorted by hue
+        // Build the gradient from palette bg colors sorted by time of day (00:00 → 24:00)
         function buildColorGradient() {
-            const palettesByHue = Object.entries(PALETTE_DATA).map(([name, info]) => {
+            // Default hour by time-of-day category for non-numeric hours
+            const timeDefaults = { 'Night': 1, 'Dawn': 6, 'Morning': 9, 'Daylight': 12, 'Afternoon': 15, 'Dusk': 18.5, 'Evening': 21 };
+
+            const palettesByTime = Object.entries(PALETTE_DATA).map(([name, info]) => {
+                const meta = PALETTE_META[name] || {};
+                let hour = 12;
+                // Parse numeric hours (e.g. "22:38", "5:35")
+                if (meta.hour && /^\d/.test(meta.hour)) {
+                    const parts = meta.hour.split(':');
+                    hour = parseInt(parts[0]) + (parseInt(parts[1] || 0) / 60);
+                } else if (meta.time && timeDefaults[meta.time] !== undefined) {
+                    hour = timeDefaults[meta.time];
+                }
+                // Also compute HSL for potential color matching
                 const hex = info.bg.replace('#', '');
                 const r = parseInt(hex.substr(0, 2), 16) / 255;
                 const g = parseInt(hex.substr(2, 2), 16) / 255;
@@ -14003,20 +14038,19 @@
                     else if (max === g) h = ((b - r) / d + 2) / 6;
                     else h = ((r - g) / d + 4) / 6;
                 }
-                return { name, bg: info.bg, h: h * 360, s: s * 100, l: l * 100 };
+                return { name, bg: info.bg, hour, h: h * 360, s: s * 100, l: l * 100 };
             });
 
-            // Sort by hue for a smooth rainbow gradient
-            palettesByHue.sort((a, b) => a.h - b.h);
+            // Sort by hour for a time-of-day gradient (midnight → dawn → day → dusk → night)
+            palettesByTime.sort((a, b) => a.hour - b.hour);
 
-            // Build CSS gradient stops from sorted palette colors
-            const stops = palettesByHue.map((p, i) => {
-                const pct = (i / (palettesByHue.length - 1)) * 100;
+            const stops = palettesByTime.map((p, i) => {
+                const pct = (i / (palettesByTime.length - 1)) * 100;
                 return `${p.bg} ${pct.toFixed(1)}%`;
             });
             colorGradientStrip.style.background = `linear-gradient(to right, ${stops.join(', ')})`;
 
-            return palettesByHue;
+            return palettesByTime;
         }
 
         let gradientPalettes = []; // Will be populated when gradient is shown
@@ -14048,21 +14082,13 @@
             const clampedPct = Math.max(0, Math.min(100, percent));
             const idx = (clampedPct / 100) * (gradientPalettes.length - 1);
 
-            // Find the target hue at this position
             const targetIdx = Math.round(idx);
             const targetPalette = gradientPalettes[targetIdx];
 
-            // Find palettes with similar hue (within a range) or similar luminance for grays
-            const hueTolerance = 25;
+            // Match palettes within ±1.5 hours of the target time
+            const timeTolerance = 1.5;
             const matchingPalettes = gradientPalettes.filter(p => {
-                // For low-saturation colors (grays), match by luminance
-                if (targetPalette.s < 15 && p.s < 15) {
-                    return Math.abs(p.l - targetPalette.l) < 20;
-                }
-                // For saturated colors, match by hue
-                const hueDiff = Math.abs(p.h - targetPalette.h);
-                const circularDiff = Math.min(hueDiff, 360 - hueDiff);
-                return circularDiff < hueTolerance && p.s > 10;
+                return Math.abs(p.hour - targetPalette.hour) <= timeTolerance;
             });
 
             return matchingPalettes.map(p => p.name);
@@ -14550,12 +14576,9 @@
             }
 
             // Build collector groups from COLLECTORS_DATA, filtering to only include tokens in our set
-            // Exclude Lost Cities distribution wallet (by name or address prefix)
             const LOST_CITIES_PREFIX = '0xcf22';
             const collectorGroups = COLLECTORS_DATA
-                .filter(c => c.name !== 'The Lost Cities' &&
-                    !c.name.startsWith('0x') &&
-                    !(c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX)) &&
+                .filter(c => !c.name.startsWith('0x') &&
                     c.tokens && c.tokens.length > 0)
                 .map(c => ({
                     name: c.name,
