@@ -651,7 +651,7 @@
         .about-btn-essay, .about-btn-explore, .about-btn-origins { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; text-decoration: none; text-transform: uppercase; background: none; border: 0.5px dashed var(--text-muted); padding: 10px 24px; color: var(--text-muted); border-radius: 50px; height: 38px; display: flex; align-items: center; }
         .about-btn-essay:hover, .about-btn-explore:hover, .about-btn-origins:hover { color: var(--text); border-color: var(--text); }
         .about-mint-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
-        .about-mint-btn { --ch: 26px; --cw: calc(var(--ch) * 3.985); display: flex; align-items: center; height: var(--ch); padding: 0 12px; gap: 0; opacity: 0.8; transition: opacity 0.3s ease; background: transparent; border: none; cursor: pointer; }
+        .about-mint-btn { --ch: 26px; --cw: calc(var(--ch) * 3.985); display: flex; align-items: center; height: var(--ch); padding: 0 12px; gap: 0; opacity: 0.8; transition: opacity 0.3s ease; background: transparent; border: none; cursor: pointer; overflow: visible; }
         .about-mint-btn:hover { opacity: 1; }
         .about-mint-btn .collect-seg { background-size: var(--cw) var(--ch); }
         .about-mint-btn:hover .collect-seg { animation: segVibrate 0.35s ease-in-out infinite; }
@@ -664,12 +664,12 @@
         .about-mint-wrapper:hover .about-mint-tooltip { opacity: 0.7; }
 
         /* Collect popover menu */
-        .collect-popover { position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%) scale(0.95); background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 6px 0; min-width: 160px; opacity: 0; visibility: hidden; transition: all 0.15s ease; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-        .collect-popover.open { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
+        .collect-popover { position: absolute; top: calc(100% + 8px); right: 0; transform: scale(0.95); background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 6px 0; min-width: 160px; opacity: 0; visibility: hidden; transition: all 0.15s ease; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .collect-popover.open { opacity: 1; visibility: visible; transform: scale(1); }
         .collect-popover-option { display: block; width: 100%; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-decoration: none; text-align: left; background: none; border: none; cursor: pointer; transition: all 0.15s ease; font-family: inherit; white-space: nowrap; }
         .collect-popover-option:hover { background: rgba(255,255,255,0.05); color: var(--text); }
         .collect-popover-option span { opacity: 0.5; font-weight: 400; margin-left: 4px; }
-        .collect-btn-wrapper { position: relative; display: inline-block; }
+        .collect-btn-wrapper { position: relative; display: inline-block; overflow: visible; }
         /* Light mode popover (for wall view gray mode) */
         .wall-view-modal.wall-gray .collect-popover { background: #fff; border-color: #ddd; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
         .wall-view-modal.wall-gray .collect-popover-option { color: #666; }
@@ -1433,11 +1433,11 @@
         /* COLLECT image button — uses COLLECT.PNG split into 5 segments via CSS sprites */
         /* Segments: C | OLL | E | C | T — based on natural gaps in the hand-drawn lettering */
         .mint-toggle {
-            --ch: 22px;
+            --ch: 24px;
             --cw: calc(var(--ch) * 3.985);
-            display: flex; align-items: center; height: var(--ch); padding: 0 3px; flex-shrink: 0; gap: 0;
+            display: flex; align-items: center; height: var(--ch); padding: 2px 3px; flex-shrink: 0; gap: 0;
             opacity: 0.6; transition: opacity 0.3s ease; margin-right: 16px;
-            background: none; border: none; cursor: pointer;
+            background: none; border: none; cursor: pointer; overflow: visible;
         }
         .mint-toggle:hover { opacity: 1; }
         .collect-seg {
@@ -1970,7 +1970,7 @@
         .wall-view-back-btn:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-back-btn, .wall-view-modal.wall-black .wall-view-back-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
         .wall-view-modal.dark-mode .wall-view-back-btn:hover, .wall-view-modal.wall-black .wall-view-back-btn:hover { background: #fff; border-color: #fff; color: #000; }
-        .wall-view-mint-btn { --ch: 20px; --cw: calc(var(--ch) * 3.985); padding: 4px 8px; }
+        .wall-view-mint-btn { --ch: 24px; --cw: calc(var(--ch) * 3.985); padding: 4px 8px; overflow: visible; }
         .wall-view-close { background: none; border: 1px solid #ddd; color: #999; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .wall-view-close:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-close { border-color: #333; color: #666; }
@@ -2536,6 +2536,8 @@
             .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: visible; overflow: visible; }
             .grid-mode-btn { padding: 0; font-size: 0; border-width: 1.5px; width: 34px; height: 34px; min-height: 34px; white-space: nowrap; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
             .grid-mode-btn::after { content: attr(data-emoji); font-size: 15px; line-height: 1; }
+            .grid-mode-btn.origins-btn, .grid-mode-btn.collectors-btn { width: auto; border-radius: 50px; padding: 0 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.05em; }
+            .grid-mode-btn.origins-btn::after, .grid-mode-btn.collectors-btn::after { content: none; }
             .grid-mode-btn .palette-sort-arrow { display: none; }
             .gallery-room-toggle, .grid-size-toggle { width: 34px; height: 34px; font-size: 12px; flex-shrink: 0; }
             /* Palette headers on mobile */
@@ -2696,6 +2698,8 @@
             .grid-controls { gap: 4px; }
             .grid-mode-btn { padding: 0; font-size: 0; width: 32px; height: 32px; min-height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
             .grid-mode-btn::after { content: attr(data-emoji); font-size: 14px; line-height: 1; }
+            .grid-mode-btn.origins-btn, .grid-mode-btn.collectors-btn { width: auto; border-radius: 50px; padding: 0 8px; font-size: 7px; }
+            .grid-mode-btn.origins-btn::after, .grid-mode-btn.collectors-btn::after { content: none; }
             .grid-mode-btn .palette-sort-arrow { display: none; }
             .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; }
             .filter-toggle-bar { padding: 8px 12px; }
