@@ -10910,8 +10910,8 @@
             const frameImage = document.getElementById('frameMockupImage');
             const wallModal = document.getElementById('wallViewModal');
 
-            // Determine which token to show
-            const showToken = tokenId || currentTokenId;
+            // Determine which token to show (guard against event objects being passed as tokenId)
+            const showToken = (typeof tokenId === 'number' ? tokenId : null) || currentTokenId;
 
             // Build token list for navigation
             const allMintedTokens = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
@@ -12176,7 +12176,7 @@
         });
         document.getElementById('saveFavorite').addEventListener('click', saveFavorite);
         document.getElementById('downloadPng').addEventListener('click', downloadPng);
-        document.getElementById('frameViewBtn').addEventListener('click', openFrameMockup);
+        document.getElementById('frameViewBtn').addEventListener('click', () => openFrameMockup());
         document.getElementById('closeFrameMockup').addEventListener('click', closeFrameMockup);
         document.getElementById('clearFilters')?.addEventListener('click', clearFilters);
 
