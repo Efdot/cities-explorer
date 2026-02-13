@@ -578,9 +578,13 @@
         .about-sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
         @media (max-width: 768px) { .about-sections-grid { grid-template-columns: 1fr; } }
         .about-title { font-size: 36px; font-weight: 700; text-transform: none; letter-spacing: 0.02em; margin-bottom: 8px; color: #fff; font-family: Helvetica, Arial, sans-serif; }
-        .about-collab { font-size: 11px; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.05em; text-transform: uppercase; }
+        .about-collab { font-size: 11px; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.05em; text-transform: uppercase; position: relative; cursor: default; }
         .about-collab a { color: var(--warm); text-decoration: none; transition: color 0.2s ease; }
         .about-collab a:hover { color: var(--orange); }
+        .about-collab-short { transition: opacity 0.25s ease; }
+        .about-collab-full { position: absolute; left: 0; right: 0; top: 0; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+        .about-collab:hover .about-collab-short { opacity: 0; }
+        .about-collab:hover .about-collab-full { opacity: 1; pointer-events: auto; }
         .about-intro { font-size: 15px; line-height: 1.8; color: var(--text-dim); margin-bottom: 12px; max-width: 100%; }
         .about-journey-link { margin-bottom: 28px; }
         .about-journey-link a { font-size: 12px; color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; letter-spacing: 0.02em; }
@@ -991,6 +995,8 @@
         @media (max-width: 768px) {
             .about-modal { padding: 24px 16px; }
             .about-title { font-size: 28px; }
+            .about-collab-short { display: none; }
+            .about-collab-full { position: static; opacity: 1; pointer-events: auto; }
             .about-intro, .about-section-content, .about-footer-text { font-size: 13px; }
             .timeline-header { padding: 40px 20px 30px; }
             .timeline-headline { font-size: 28px; }
@@ -4241,7 +4247,7 @@
         <button class="about-close" id="aboutCloseBtn" onclick="var m = document.getElementById('aboutModal'); if(m) m.classList.remove('open'); event.stopPropagation();">&times;</button>
         <div class="about-content">
             <h1 class="about-title">Cities</h1>
-            <p class="about-collab">A code-based art collaboration between <a href="https://efdotstudio.com" target="_blank">Efdot</a> and <a href="https://diid.art" target="_blank">Diid</a>, minting on <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank">Art Blocks</a>.</p>
+            <p class="about-collab"><span class="about-collab-short"><a href="https://efdotstudio.com" target="_blank">Efdot</a> × <a href="https://diid.art" target="_blank">Diid</a></span><span class="about-collab-full">A code-based art collaboration between <a href="https://efdotstudio.com" target="_blank">Efdot</a> and <a href="https://diid.art" target="_blank">Diid</a>, on <a href="https://www.artblocks.io/collection/cities-by-efdot-x-diid" target="_blank">Art&nbsp;Blocks</a>.</span></p>
             <p class="about-intro">An imagined city never ends. It keeps growing past the edge of what you can see. Cities captures that from above: <span class="about-highlight teal">500 aerial grids</span> of one infinite concept.</p>
             <p class="about-journey-link"><a href="#" onclick="if(window.openTimeline) { window.openTimeline(); } event.preventDefault(); event.stopPropagation();">See the journey from hand to code →</a></p>
 
