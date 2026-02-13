@@ -2433,10 +2433,10 @@
         /* On favorites page, hide hearts until hover (they're all favorited anyway) */
         .favorites-grid .grid-item-fav { opacity: 0; }
         .favorites-grid .grid-item:hover .grid-item-fav { opacity: 1; }
-        /* Mobile: hearts always visible but translucent */
+        /* Mobile: hearts hidden by default, only show favorited */
         @media (pointer: coarse) {
-            .grid-item-fav { opacity: 0.4; width: 40px; height: 40px; font-size: 18px; background: rgba(10, 9, 16, 0.6); color: rgba(255,255,255,0.5); }
-            .grid-item-fav.favorited { opacity: 1; }
+            .grid-item-fav { opacity: 0; width: 32px; height: 32px; font-size: 14px; background: rgba(10, 9, 16, 0.6); color: rgba(255,255,255,0.5); pointer-events: none; }
+            .grid-item-fav.favorited { opacity: 1; pointer-events: auto; }
         }
         .grid-item-rank { position: absolute; top: 6px; left: 6px; background: var(--spot-color, var(--yellow)); color: var(--spot-text, #000); font-size: 8px; font-weight: 700; padding: 3px 6px; border-radius: 4px; z-index: 2; letter-spacing: 0.03em; border: none; pointer-events: none; box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
         .grid-item-tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--bg-card); border-radius: 10px; padding: 10px 12px; font-size: 9px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: 8px; }
@@ -2516,6 +2516,10 @@
             .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
             .grid-items.grid-6-col, .grid-group-items.grid-6-col { grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; }
             .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-11-col, .grid-group-items.grid-11-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-12-col, .grid-group-items.grid-12-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
+            .grid-item { border-radius: 6px; }
             .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
             .grid-mode-btn { padding: 6px 10px; font-size: 8px; border-width: 1.5px; min-height: 32px; white-space: nowrap; flex-shrink: 0; }
             .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; flex-shrink: 0; }
@@ -3811,7 +3815,7 @@
     </div>
     <div class="double-tap-heart" id="doubleTapHeart">♥</div>
 
-    <div class="grid-panel open" id="gridPanel" role="dialog" aria-label="Cities grid view" aria-hidden="true">
+    <div class="grid-panel open hide-numbers" id="gridPanel" role="dialog" aria-label="Cities grid view" aria-hidden="true">
         <div class="grid-header">
             <div class="grid-brand">
                 <h1 id="gridTitle">Cities</h1>
@@ -3860,7 +3864,7 @@
             </div>
             <label class="grid-checkbox"><input type="checkbox" id="gridWaterFilter"> WATER</label>
             <button class="grid-sort-toggle sort-desc" id="gridSortToggle" title="Sort order">NEW <span class="sort-arrow">↑</span></button>
-            <button class="grid-numbers-toggle active" id="gridNumbersToggle" title="Toggle output numbers">#</button>
+            <button class="grid-numbers-toggle" id="gridNumbersToggle" title="Toggle output numbers">#</button>
             <div class="grid-filter-spacer"></div>
             <span class="grid-showing-count" id="gridShowingCount">318 showing</span>
             <a href="https://www.artblocks.io/collection/0x7c78f67700e700b4005c8a3d920a1a99e6004800-0" target="_blank" class="grid-supply-tracker" id="gridSupplyTracker" onclick="return confirm('You are about to leave Cities Explorer and visit Art Blocks. Continue?');">
