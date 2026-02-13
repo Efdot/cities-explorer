@@ -1997,7 +1997,7 @@
         .wall-view-room { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow: auto; cursor: grab; }
         .wall-view-room:active { cursor: grabbing; }
         .wall-view-room.zoomed { overflow: auto; }
-        .wall-view-wall-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100%; padding: 100px 60px 60px; transition: transform 0.3s ease; transform-origin: center center; }
+        .wall-view-wall-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100%; padding: 120px 80px 80px; transition: transform 0.3s ease; transform-origin: center center; }
         .wall-view-wall { display: grid; gap: 30px; justify-content: center; justify-items: center; align-items: start; width: 100%; max-width: 1600px; margin: 0 auto; grid-template-columns: repeat(auto-fit, minmax(100px, 150px)); position: relative; }
         /* Override columns based on item count for better layouts */
         .wall-view-wall.cols-1 { grid-template-columns: 1fr; max-width: 220px; }
@@ -2013,7 +2013,7 @@
         .wall-view-artwork { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; }
         .wall-view-artwork-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #666; font-family: 'Nunito', sans-serif; }
         /* Collector info above wall */
-        .wall-view-collector-info { text-align: center; margin-bottom: 30px; cursor: pointer; padding: 0 20px; grid-column: 1 / -1; width: 100%; }
+        .wall-view-collector-info { text-align: center; margin-bottom: 40px; cursor: pointer; padding: 0 20px; grid-column: 1 / -1; width: 100%; }
         .wall-view-collector-name { font-size: 10px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(200,180,120,0.6); font-family: 'Nunito', sans-serif; transition: color 0.2s ease; max-width: 100%; }
         .wall-view-collector-name:hover { color: #c8b478; }
         .wall-view-modal.wall-black .wall-view-collector-name { color: rgba(200,180,120,0.5); }
@@ -9743,10 +9743,12 @@
                 // 2-row grids (4-8 cities) - zoom out for readable text and negative space
                 wallViewZoom = 0.9;
             } else if (count < 4) {
-                // Small collections with 2x2 grid - zoom out to show collector name
-                wallViewZoom = 0.85;
+                // Small collections with 2x2 grid - zoom out for breathing room and to show collector name
+                wallViewZoom = 0.7;
+                // Shift up so the actual cities (not empty slots) are the visual focus
+                wallPanY = -40;
             }
-            if (wrapper) wrapper.style.transform = `scale(${wallViewZoom})`;
+            if (wrapper) wrapper.style.transform = `translate(${wallPanX}px, ${wallPanY}px) scale(${wallViewZoom})`;
 
             // Reset try mode
             wallViewTryMode = false;
