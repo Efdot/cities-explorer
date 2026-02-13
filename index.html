@@ -736,16 +736,16 @@
         .timeline-close:hover { color: var(--text); }
         .timeline-grid-btn { position: fixed; top: 24px; right: 80px; width: 40px; height: 40px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: all 0.2s ease; z-index: 2600; display: flex; align-items: center; justify-content: center; }
         .timeline-grid-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); border-color: rgba(255,255,255,0.2); }
-        .timeline-container { position: relative; max-width: 900px; margin: 0 auto; padding: 80px 40px 120px; }
+        .timeline-container { position: relative; max-width: 900px; margin: 0 auto; padding: 60px 40px 120px; }
         .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--border); transform: translateX(-50%); z-index: 0; pointer-events: none; opacity: 0.3; mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%); }
         .timeline-content { position: relative; z-index: 2; }
         .timeline-item img, .timeline-item video { position: relative; z-index: 3; }
 
         /* Year markers - pill shaped, in front - more prominent */
-        .timeline-year { text-align: center; font-size: 13px; font-weight: 800; letter-spacing: 0.18em; color: var(--text); padding: 10px 24px; margin: 80px auto 24px; position: relative; z-index: 10; background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; display: inline-block; left: 50%; transform: translateX(-50%); box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+        .timeline-year { text-align: center; font-size: 13px; font-weight: 800; letter-spacing: 0.18em; color: var(--text); padding: 10px 24px; margin: 60px auto 20px; position: relative; z-index: 10; background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; display: inline-block; left: 50%; transform: translateX(-50%); box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
 
         /* Timeline story one-liners - more legible */
-        .timeline-story { text-align: center; font-size: 15px; font-style: italic; color: var(--text-dim); max-width: 440px; margin: 0 auto 50px; padding: 0 24px; line-height: 1.6; opacity: 0.9; }
+        .timeline-story { text-align: center; font-size: 14px; font-style: italic; color: var(--text-dim); max-width: 440px; margin: 0 auto 36px; padding: 0 24px; line-height: 1.7; opacity: 0.9; }
 
         /* Timeline items - condensed vertical spacing */
         .timeline-item { position: relative; margin: 40px 0; cursor: pointer; transition: transform 0.4s ease; }
@@ -759,7 +759,7 @@
         .timeline-item:hover img, .timeline-item:hover video { transform: scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.5); border-radius: 12px; }
         .timeline-item:hover { transform: translateY(-4px); }
 
-        .timeline-item-info { margin-top: 16px; }
+        .timeline-item-info { margin-top: 12px; }
         .timeline-item-title { display: block; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; color: var(--text); }
         .timeline-item-year { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.05em; }
         .timeline-item-subtitle { display: block; font-size: 10px; color: var(--text-muted); margin-top: 6px; opacity: 0.8; }
@@ -783,7 +783,7 @@
         .timeline-item.physical img { filter: saturate(0.95); }
 
         /* Provenance inline */
-        .timeline-provenance { margin-top: 10px; font-size: 10px; font-weight: 400; letter-spacing: 0.08em; color: var(--text-muted); }
+        .timeline-provenance { margin-top: 8px; font-size: 10px; font-weight: 400; letter-spacing: 0.08em; color: var(--text-muted); }
         .timeline-provenance::before { content: 'collected by '; opacity: 0.5; }
         .timeline-provenance .provenance-link { margin-right: 6px; font-size: 11px; opacity: 0.5; text-decoration: none; color: var(--text-muted); cursor: pointer; transition: opacity 0.6s ease, color 0.6s ease; }
         .timeline-provenance .provenance-link:hover { opacity: 1; color: var(--warm); }
@@ -829,7 +829,7 @@
         .timeline-year-nav-item.active { opacity: 1; color: var(--warm); }
 
         /* Featured/bookend pieces - centered and larger */
-        .timeline-item.featured { width: 70%; margin: 120px auto; text-align: center; }
+        .timeline-item.featured { width: 70%; margin: 80px auto; text-align: center; }
         .timeline-item.featured img { max-width: 100%; }
 
         /* Hero centered item - larger with line fadeout */
@@ -877,10 +877,10 @@
         .timeline-item.available .timeline-item-info { opacity: 1; transform: translateY(0); }
 
         /* Grouped timeline items - murals, open minds, city pairs */
-        .timeline-group { width: 90%; max-width: 700px; margin: 100px auto; text-align: center; position: relative; z-index: 5; }
+        .timeline-group { width: 90%; max-width: 700px; margin: 60px auto; text-align: center; position: relative; z-index: 5; }
         .timeline-group::before { content: ''; position: absolute; left: 50%; top: -40px; bottom: -40px; width: 100px; transform: translateX(-50%); background: var(--bg-deep); z-index: -1; }
         .timeline-group-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-        .timeline-group-subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 20px; letter-spacing: 0.05em; }
+        .timeline-group-subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 20px; letter-spacing: 0.05em; line-height: 1.7; }
         .timeline-group-grid { display: grid; gap: 12px; }
         .timeline-group-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
         .timeline-group-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
@@ -917,7 +917,7 @@
         .timeline-italy-collectors .collector-link:hover { color: var(--yellow); }
 
         /* Culmination - generative collection */
-        .timeline-item.culmination { margin: 100px auto; }
+        .timeline-item.culmination { margin: 80px auto; }
         .timeline-culmination { padding: 60px 40px; border: 1px solid var(--border); border-radius: 16px; background: rgba(232, 184, 109, 0.03); }
         .timeline-culmination-title { font-size: 28px; font-weight: 700; font-family: Helvetica, Arial, sans-serif; margin-bottom: 8px; }
         .timeline-culmination-subtitle { font-size: 12px; color: var(--warm); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
@@ -1933,7 +1933,7 @@
         .wall-view-modal.wall-black .wall-view-floor { background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%); }
         .wall-view-modal.wall-black .wall-view-baseboard { background: #0a0a0a; }
         .wall-view-modal.wall-black .wall-view-artwork-label { color: rgba(255,255,255,0.5); }
-        .wall-view-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background: rgba(255,255,255,0.95); border-bottom: 1px solid rgba(0,0,0,0.06); position: absolute; top: 0; left: 0; right: 0; z-index: 10; transition: all 0.5s ease; }
+        .wall-view-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background: rgba(255,255,255,0.95); border-bottom: 1px solid rgba(0,0,0,0.06); position: absolute; top: 0; left: 0; right: 0; z-index: 10; transition: all 0.5s ease; overflow: visible; }
         .wall-view-modal.dark-mode .wall-view-header { background: rgba(10,10,10,0.95); border-bottom-color: rgba(255,255,255,0.06); }
         .wall-view-header-left { display: flex; align-items: center; gap: 16px; }
         .wall-view-logo { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 0.02em; color: #333; }
@@ -1985,7 +1985,7 @@
         .wall-view-back-btn:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-back-btn, .wall-view-modal.wall-black .wall-view-back-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
         .wall-view-modal.dark-mode .wall-view-back-btn:hover, .wall-view-modal.wall-black .wall-view-back-btn:hover { background: #fff; border-color: #fff; color: #000; }
-        .wall-view-mint-btn { --ch: 24px; --cw: calc(var(--ch) * 3.985); padding: 4px 8px; overflow: visible; }
+        .wall-view-mint-btn { --ch: 24px; --cw: calc(var(--ch) * 3.985); padding: 0 8px; overflow: visible; flex-shrink: 0; min-width: calc(var(--cw) + 16px); }
         .wall-view-close { background: none; border: 1px solid #ddd; color: #999; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .wall-view-close:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-close { border-color: #333; color: #666; }
@@ -4474,7 +4474,7 @@
 
                 <div class="timeline-group">
                     <div class="timeline-group-title">Open Minds</div>
-                    <div class="timeline-group-subtitle">What does the mind see,<br>as it expands and connects the dots?<br><br>Hand-drawn lines, frame by frame,<br>finding beauty in the spaces between.</div>
+                    <div class="timeline-group-subtitle">What does the mind see,<br>as it expands and connects the dots?<br>Hand-drawn lines, frame by frame,<br>finding beauty in the spaces between.</div>
                     <div class="timeline-group-grid cols-2 openminds-grid">
                         <div class="timeline-group-item" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" data-link="https://opensea.io/collection/efdot-openminds" data-title="You Are Here" data-year="2020">
                             <div class="timeline-group-item-img">
