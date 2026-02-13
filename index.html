@@ -1245,6 +1245,7 @@
             .frame-mockup-colors { bottom: 12px; padding: 5px 10px; gap: 8px; }
             .frame-color-btn { width: 20px; height: 20px; }
             .frame-mockup-label { font-size: 10px; }
+            .frame-mockup .view-back-btn { top: 56px; left: 12px; font-size: 9px; padding: 5px 12px; }
         }
         @media (max-width: 480px) {
             .frame-mockup-order { display: none; }
@@ -2934,11 +2935,19 @@
         .gallery-room-frame:hover { transform: scale(1.02); }
         .gallery-room-frame:hover img { transform: scale(1.08); }
         .gallery-room-frame-label { display: none; }
-        .gallery-room-counter { position: fixed; top: 30px; left: 30px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.15em; opacity: 0; transition: opacity 0.3s ease; }
+        .gallery-room-counter { position: fixed; top: 30px; left: 130px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.15em; opacity: 0; transition: opacity 0.3s ease; }
         .gallery-room:hover .gallery-room-counter { opacity: 1; }
         .gallery-room-close { position: fixed; top: 30px; right: 30px; width: 44px; height: 44px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 50%; color: rgba(255,255,255,0.4); font-size: 20px; cursor: pointer; opacity: 0; transition: all 0.3s ease; z-index: 10001; }
         .gallery-room:hover .gallery-room-close { opacity: 1; cursor: pointer; }
         .gallery-room-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        /* Standardized back button for full-screen overlay views */
+        .view-back-btn { position: absolute; top: 24px; left: 24px; z-index: 10001; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); padding: 6px 14px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+        .view-back-btn:hover { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.95); }
+        .frame-mockup .view-back-btn { top: 78px; }
+        .frame-mockup:not(.dark-mode) .view-back-btn { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.12); color: rgba(0,0,0,0.5); }
+        .frame-mockup:not(.dark-mode) .view-back-btn:hover { background: rgba(0,0,0,0.1); color: rgba(0,0,0,0.8); }
+        .gallery-room .view-back-btn { position: fixed; opacity: 0; top: 30px; left: 30px; }
+        .gallery-room:hover .view-back-btn { opacity: 1; }
         .gallery-room-info { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.2); font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0; transition: opacity 0.3s ease; }
         .gallery-room:hover .gallery-room-info { opacity: 1; }
         .gallery-room-controls { display: none; }
@@ -3933,7 +3942,7 @@
             </div>
             <div class="collector-banner-right">
                 <span class="collector-banner-phrase" id="collectorBannerPhrase"></span>
-                <button class="collector-banner-wall" id="collectorWallView">WALL →</button>
+                <button class="collector-banner-wall" id="collectorWallView">WALL</button>
                 <span class="collector-banner-count" id="collectorBannerCount"></span>
             </div>
             <button class="collector-banner-nav collector-banner-next" id="collectorBannerNext" onclick="event.stopPropagation(); navigateToNextCollector();" title="Next collector (→)">›</button>
@@ -3953,6 +3962,7 @@
     <div class="wall-view-modal" id="wallViewModal">
         <div class="wall-view-header">
             <div class="wall-view-header-left">
+                <button class="wall-view-back-btn" id="wallViewBackBtn">← BACK</button>
                 <span class="wall-view-logo">Cities</span>
             </div>
             <div class="wall-view-controls">
@@ -3963,7 +3973,6 @@
                 <button class="wall-view-layout-toggle" id="wallViewLayoutToggle" title="Toggle wide/tall layout">⊞</button>
                 <button class="wall-view-hide-empty" id="wallViewHideEmpty" title="Toggle grid/line view"><span class="line-icon">⊞</span> GRID</button>
                 <button class="wall-view-try-mode" id="wallViewTryMode" title="Try adding cities to your grid">✦ TRY</button>
-                <button class="wall-view-back-btn" id="wallViewBackBtn">← COLLECTORS</button>
                 <div class="collect-btn-wrapper">
                     <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-seg cs-1"></span><span class="collect-seg cs-2"></span><span class="collect-seg cs-3"></span><span class="collect-seg cs-4"></span><span class="collect-seg cs-5"></span></button>
                     <div class="collect-popover" id="collectPopoverWall">
@@ -4155,6 +4164,7 @@
 
     <!-- Framed Mockup View -->
     <div class="frame-mockup" id="frameMockup">
+        <button class="view-back-btn" id="frameMockupBack">← BACK</button>
         <div class="frame-mockup-content">
             <div class="frame-mockup-artwork">
                 <div class="frame-mockup-label" id="frameMockupLabel">#0</div>
@@ -4184,6 +4194,7 @@
     <div class="gallery-room" id="galleryRoom">
         <div class="gallery-room-ambient"></div>
         <div class="gallery-room-wall" id="galleryRoomWall"></div>
+        <button class="view-back-btn" id="galleryRoomBack">← BACK</button>
         <div class="gallery-room-counter" id="galleryRoomCounter">12 Cities</div>
         <button class="gallery-room-close" id="galleryRoomClose">×</button>
         <div class="gallery-room-controls">
@@ -12163,6 +12174,7 @@
         document.getElementById('downloadPng').addEventListener('click', downloadPng);
         document.getElementById('frameViewBtn').addEventListener('click', () => openFrameMockup());
         document.getElementById('closeFrameMockup').addEventListener('click', closeFrameMockup);
+        document.getElementById('frameMockupBack')?.addEventListener('click', closeFrameMockup);
         document.getElementById('clearFilters')?.addEventListener('click', clearFilters);
 
         // Time of Day Color Picker
@@ -14274,7 +14286,7 @@
                     <div class="grid-group-header collector-header">
                         ${rankBadge}
                         <span class="grid-group-name collector-name" data-collector="${collector.name}">${collector.name.toUpperCase()}</span>
-                        <button class="collector-group-wall-btn" data-collector="${collector.name}" data-tokens="${tokenIds}">WALL →</button>
+                        <button class="collector-group-wall-btn" data-collector="${collector.name}" data-tokens="${tokenIds}">WALL</button>
                         <span class="grid-group-count">${collector.tokens.length}</span>
                         <span class="grid-group-toggle">▼</span>
                     </div>
@@ -15312,6 +15324,7 @@
 
         if (galleryRoomToggle) galleryRoomToggle.addEventListener('click', openGalleryRoom);
         if (galleryRoomClose) galleryRoomClose.addEventListener('click', closeGalleryRoom);
+        document.getElementById('galleryRoomBack')?.addEventListener('click', closeGalleryRoom);
 
         // Gallery room controls
         let galleryPaused = false;
