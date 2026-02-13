@@ -1202,11 +1202,11 @@
         .frame-mockup.dark-mode .frame-mockup-close:hover, .frame-mockup.dark-mode .frame-mockup-download:hover, .frame-mockup.dark-mode .frame-mockup-nav:hover, .frame-mockup.dark-mode .frame-mockup-mode:hover, .frame-mockup.dark-mode .frame-mockup-order:hover { background: #fff; color: #000; }
         .frame-mockup.dark-mode .frame-mockup-mode { background: rgba(255,255,255,0.1); color: #c9a227; }
         /* Frame color picker */
-        .frame-mockup-colors { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; background: rgba(255,255,255,0.9); padding: 6px 14px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
-        .frame-mockup.dark-mode .frame-mockup-colors { background: rgba(30,30,30,0.9); }
-        .frame-color-btn { width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+        .frame-mockup-colors { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; background: rgba(255,255,255,0.6); padding: 4px 10px; border-radius: 10px 10px 0 0; box-shadow: none; }
+        .frame-mockup.dark-mode .frame-mockup-colors { background: rgba(30,30,30,0.5); }
+        .frame-color-btn { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
         .frame-color-btn:hover { transform: scale(1.15); }
-        .frame-color-btn.active { border-color: var(--warm); box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.3); }
+        .frame-color-btn.active { border-color: var(--warm); box-shadow: 0 0 0 1.5px rgba(201, 162, 39, 0.3); }
         .frame-color-btn[data-color="light-wood"] { background: #c4a47a; }
         .frame-color-btn[data-color="white"] { background: #f5f3f0; }
         .frame-color-btn[data-color="black"] { background: #1a1a1a; }
@@ -10879,18 +10879,10 @@
             if (frameMockupCurrentIndex === -1) frameMockupCurrentIndex = 0;
             frameMockupCollectorName = collectorName || '';
 
-            // Inherit dark mode from wall view if it's open and in dark/black mode
-            const wallIsOpen = wallModal && wallModal.classList.contains('open');
-            const wallIsDark = wallIsOpen && (wallModal.classList.contains('wall-black') || wallModal.classList.contains('dark-mode'));
-            if (wallIsDark) {
-                frameMockup.classList.add('dark-mode');
-                const modeBtn = document.getElementById('frameMockupMode');
-                if (modeBtn) modeBtn.textContent = '\u2600';
-            } else {
-                frameMockup.classList.remove('dark-mode');
-                const modeBtn = document.getElementById('frameMockupMode');
-                if (modeBtn) modeBtn.textContent = '\u263E';
-            }
+            // Default to dark/night mode
+            frameMockup.classList.add('dark-mode');
+            const modeBtn = document.getElementById('frameMockupMode');
+            if (modeBtn) modeBtn.textContent = '\u2600';
 
             // Reset frame color to light-wood
             currentFrameColor = 'light-wood';
