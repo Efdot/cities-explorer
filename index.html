@@ -1353,8 +1353,8 @@
         .spinner { width: 32px; height: 32px; border: 3px solid var(--bg-input); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-text { color: var(--text-muted); font-size: 12px; font-weight: 400; letter-spacing: 0.02em; font-family: Helvetica, Arial, sans-serif; text-transform: none; }
-        .click-to-view { position: absolute; bottom: 0; left: 0; right: 0; padding: 50px 12px 14px; background: linear-gradient(transparent 0%, rgba(10, 9, 16, 0.85) 60%); text-align: center; color: var(--teal); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0; transition: opacity 0.3s; }
-        .frame-container:hover .click-to-view { opacity: 1; }
+        .click-to-view { position: absolute; bottom: 0; left: 0; right: 0; padding: 40px 12px 12px; background: linear-gradient(transparent 0%, rgba(10, 9, 16, 0.5) 70%); text-align: center; color: var(--teal); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0; transition: opacity 0.35s ease; pointer-events: none; border-radius: 0 0 8px 8px; }
+        .click-to-view.visible { opacity: 1; pointer-events: auto; cursor: pointer; }
 
         .info-display { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); text-align: center; padding: 8px 16px; background: var(--bg-panel); border-radius: 12px; }
         .info-display .token-id { color: var(--teal); }
@@ -2014,19 +2014,19 @@
         .wall-view-wall { display: grid; gap: 30px; justify-content: center; justify-items: center; align-items: start; width: 100%; max-width: 1600px; margin: 0 auto; grid-template-columns: repeat(auto-fit, minmax(100px, 150px)); position: relative; }
         /* Override columns based on item count for better layouts */
         .wall-view-wall.cols-1 { grid-template-columns: 1fr; max-width: 220px; }
-        .wall-view-wall.cols-2 { grid-template-columns: repeat(2, 1fr); max-width: 480px; }
+        .wall-view-wall.cols-2 { grid-template-columns: repeat(2, 1fr); max-width: 420px; gap: 40px; }
         .wall-view-wall.cols-3 { grid-template-columns: repeat(3, 1fr); max-width: 700px; }
-        .wall-view-wall.cols-4 { grid-template-columns: repeat(4, 1fr); max-width: 920px; }
+        .wall-view-wall.cols-4 { grid-template-columns: repeat(4, 1fr); max-width: 800px; gap: 36px; }
         .wall-view-wall.cols-5 { grid-template-columns: repeat(5, 1fr); max-width: 1140px; }
         .wall-view-wall.cols-6 { grid-template-columns: repeat(6, 1fr); max-width: 1360px; }
         .wall-view-wall.cols-7 { grid-template-columns: repeat(7, 1fr); max-width: 1580px; }
         .wall-view-wall.cols-8 { grid-template-columns: repeat(8, 1fr); max-width: 1800px; }
         .wall-view-wall.cols-9 { grid-template-columns: repeat(9, 1fr); max-width: 2000px; }
         .wall-view-wall.cols-10 { grid-template-columns: repeat(10, 1fr); max-width: 2200px; }
-        .wall-view-artwork { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; }
+        .wall-view-artwork { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
         .wall-view-artwork-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #666; font-family: 'Nunito', sans-serif; }
         /* Collector info above wall */
-        .wall-view-collector-info { text-align: center; margin-bottom: 40px; cursor: pointer; padding: 0 20px; grid-column: 1 / -1; width: 100%; }
+        .wall-view-collector-info { text-align: center; margin-bottom: 48px; cursor: pointer; padding: 0 20px; grid-column: 1 / -1; width: 100%; }
         .wall-view-collector-name { font-size: 10px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(200,180,120,0.6); font-family: 'Nunito', sans-serif; transition: color 0.2s ease; max-width: 100%; }
         .wall-view-collector-name:hover { color: #c8b478; }
         .wall-view-modal.wall-black .wall-view-collector-name { color: rgba(200,180,120,0.5); }
@@ -3100,7 +3100,7 @@
                 display: none !important;
             }
 
-            /* Art fills the screen above the bottom bar */
+            /* Art fills the screen above the bottom bar with generous negative space */
             .main-content {
                 position: fixed !important;
                 top: 0 !important;
@@ -3108,7 +3108,7 @@
                 right: 0 !important;
                 bottom: 52px !important;
                 width: 100% !important;
-                padding: 8px 12px !important;
+                padding: 20px 24px !important;
                 display: flex !important;
                 flex-direction: column;
                 align-items: center;
@@ -3119,20 +3119,22 @@
 
             .frame-container {
                 width: auto !important;
-                max-width: 100% !important;
-                flex: 1 !important;
+                max-width: 85% !important;
+                flex: 0 1 auto !important;
                 min-height: 0;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                border-radius: 12px;
             }
 
             .preview-image {
-                max-height: calc(100vh - 100px) !important;
+                max-height: calc(100vh - 180px) !important;
                 max-width: 100% !important;
                 width: auto;
                 height: auto;
                 object-fit: contain;
+                border-radius: 8px;
             }
 
             /* Hide bottom info - token shown in bottom bar */
@@ -3309,7 +3311,8 @@
         }
 
         @media (max-width: 480px) {
-            .preview-image { max-height: calc(100vh - 90px) !important; }
+            .preview-image { max-height: calc(100vh - 160px) !important; }
+            .frame-container { max-width: 82% !important; }
             .mob-menu-btn { padding: 10px 2px; }
             .mob-menu-icon { font-size: 16px; }
         }
@@ -8095,10 +8098,14 @@
                     // Default layout
                     const layout = getOptimalGridLayout(cityCount);
                     wall.classList.add(`cols-${layout.cols}`);
-                    // Reset zoom based on rows
+                    // Reset zoom based on rows - match openWallView logic
                     if (layout.rows >= 5) wallViewZoom = 0.65;
                     else if (layout.rows >= 4) wallViewZoom = 0.75;
                     else if (layout.rows >= 3) wallViewZoom = 0.85;
+                    else if (cityCount === 4) wallViewZoom = 0.78;
+                    else if (layout.rows >= 2) wallViewZoom = 0.85;
+                    else if (cityCount === 2) wallViewZoom = 0.8;
+                    else if (cityCount <= 3) wallViewZoom = 0.85;
                     else wallViewZoom = 1;
                 }
                 applyWallZoom();
@@ -9747,12 +9754,18 @@
                 wallViewZoom = 0.85;
             } else if (count > 9) {
                 wallViewZoom = 0.9;
+            } else if (count === 4) {
+                // 2x2 grid - zoom out to show full grid with generous negative space
+                wallViewZoom = 0.78;
             } else if (layout.rows >= 2) {
-                // 2-row grids (4-8 cities)
-                wallViewZoom = 0.9;
+                // Other 2-row grids (5-8 cities)
+                wallViewZoom = 0.85;
+            } else if (count === 2) {
+                // 2 cities side by side - zoom out for breathing room
+                wallViewZoom = 0.8;
             } else if (count <= 3) {
                 // 1-3 cities in a single row - show them proudly with breathing room
-                wallViewZoom = 0.9;
+                wallViewZoom = 0.85;
             }
             if (wrapper) wrapper.style.transform = `translate(${wallPanX}px, ${wallPanY}px) scale(${wallViewZoom})`;
 
@@ -10580,6 +10593,10 @@
             if (updateUrl) updateUrlWithToken(currentTokenId);
             saveLastViewed();
 
+            // Hide OpenSea overlay on navigation
+            const ctv = document.getElementById('clickToView');
+            if (ctv) ctv.classList.remove('visible');
+
             // Fade out current image
             previewImage.classList.add('fade-out');
             previewImage.classList.remove('loaded'); // Remove loaded state for fullscreen transition
@@ -10631,7 +10648,29 @@
                 window.open(url, '_blank');
             }
         }
-        frameContainer.addEventListener('click', openFullView);
+        // Click/tap on frame toggles the OpenSea overlay; clicking the overlay itself navigates
+        const clickToViewEl = document.getElementById('clickToView');
+        let clickToViewTimer = null;
+        frameContainer.addEventListener('click', (e) => {
+            if (document.body.classList.contains('fullscreen-mode')) return;
+            // If clicking the overlay text itself, navigate to OpenSea
+            if (e.target === clickToViewEl || e.target.closest('.click-to-view')) {
+                openFullView();
+                return;
+            }
+            // Otherwise toggle the overlay visibility
+            if (clickToViewEl.classList.contains('visible')) {
+                clickToViewEl.classList.remove('visible');
+                clearTimeout(clickToViewTimer);
+            } else {
+                clickToViewEl.classList.add('visible');
+                // Auto-hide after 3 seconds
+                clearTimeout(clickToViewTimer);
+                clickToViewTimer = setTimeout(() => {
+                    clickToViewEl.classList.remove('visible');
+                }, 3000);
+            }
+        });
 
         function updateMarketplaceLinks(tokenId) {
             const linkOpenSea = document.getElementById('linkOpenSea');
