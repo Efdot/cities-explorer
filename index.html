@@ -1128,7 +1128,7 @@
         .frame-wrapper {
             position: relative;
             background: #c4a47a; /* Light wood frame */
-            padding: 12px; /* Thin frame face */
+            padding: 6px; /* Thin frame face */
             max-width: 80vw;
             max-height: 80vh;
             /* Frame shadow on wall - blurry gray rectangles */
@@ -1139,16 +1139,14 @@
                 /* Tighter shadow for depth */
                 3px 4px 10px rgba(0,0,0,0.1);
         }
-        /* Deep shadow recess between frame and art */
+        /* White mat between frame and art */
         .frame-inner {
             position: relative;
-            /* Subtle dark gap between frame and art */
-            background: #a88b62;
-            padding: 4px; /* Float gap */
-            /* Lighter inner shadow for subtle depth */
+            background: #ffffff;
+            padding: 8px; /* Mat width */
             box-shadow:
-                inset 0 0 3px rgba(0,0,0,0.25),
-                inset 0 1px 2px rgba(0,0,0,0.15);
+                inset 0 0 2px rgba(0,0,0,0.08),
+                inset 0 1px 1px rgba(0,0,0,0.05);
         }
         /* The art floats above the shadow */
         .frame-inner img {
@@ -1181,7 +1179,7 @@
         .frame-mockup.dark-mode { background: #0a0a0a; }
         .frame-mockup.dark-mode::before { background: radial-gradient(ellipse 80% 60% at 25% 25%, rgba(255,255,255,0.03) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 80% 85%, rgba(0,0,0,0.2) 0%, transparent 40%); }
         .frame-mockup.dark-mode .frame-wrapper { background: #1a1a1a; box-shadow: 8px 12px 30px rgba(0,0,0,0.5), 15px 20px 50px rgba(0,0,0,0.4), 3px 4px 10px rgba(0,0,0,0.3); }
-        .frame-mockup.dark-mode .frame-inner { background: #0a0a0a; }
+        .frame-mockup.dark-mode .frame-inner { background: #e8e6e2; }
         .frame-mockup.dark-mode .frame-mockup-close, .frame-mockup.dark-mode .frame-mockup-download, .frame-mockup.dark-mode .frame-mockup-nav, .frame-mockup.dark-mode .frame-mockup-mode, .frame-mockup.dark-mode .frame-mockup-order { background: rgba(30,30,30,0.9); color: #888; }
         .frame-mockup.dark-mode .frame-mockup-close:hover, .frame-mockup.dark-mode .frame-mockup-download:hover, .frame-mockup.dark-mode .frame-mockup-nav:hover, .frame-mockup.dark-mode .frame-mockup-mode:hover, .frame-mockup.dark-mode .frame-mockup-order:hover { background: #fff; color: #000; }
         .frame-mockup.dark-mode .frame-mockup-mode { background: rgba(255,255,255,0.1); color: #c9a227; }
@@ -1202,16 +1200,16 @@
         .frame-mockup.dark-mode .frame-mockup-collector { color: #555; }
         /* Frame color overrides */
         .frame-mockup .frame-wrapper.frame-white { background: #faf9f7; }
-        .frame-mockup .frame-wrapper.frame-white .frame-inner { background: #4a4846; }
+        .frame-mockup .frame-wrapper.frame-white .frame-inner { background: #ffffff; }
         .frame-mockup .frame-wrapper.frame-black { background: #1a1a1a; }
-        .frame-mockup .frame-wrapper.frame-black .frame-inner { background: #0a0a0a; }
+        .frame-mockup .frame-wrapper.frame-black .frame-inner { background: #f5f3f0; }
         .frame-mockup .frame-wrapper.frame-dark-wood { background: #5a3d2b; }
-        .frame-mockup .frame-wrapper.frame-dark-wood .frame-inner { background: #3d2a1c; }
+        .frame-mockup .frame-wrapper.frame-dark-wood .frame-inner { background: #faf9f7; }
         /* Frame mockup responsive */
         @media (max-width: 768px) {
             .frame-mockup-content { padding: 20px; }
-            .frame-wrapper { padding: 8px; max-width: 85vw; max-height: 70vh; }
-            .frame-inner { padding: 3px; }
+            .frame-wrapper { padding: 5px; max-width: 85vw; max-height: 70vh; }
+            .frame-inner { padding: 2px; }
             .frame-inner img { max-height: calc(70vh - 24px); }
             .frame-mockup-close { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 18px; }
             .frame-mockup-download { top: 12px; right: 56px; width: 36px; height: 36px; font-size: 16px; }
@@ -2169,7 +2167,7 @@
         .try-city-picker-smart-label { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
         .try-city-picker-smart-label .label-icon { color: #c9a227; }
         .try-city-picker-smart-cities { display: flex; gap: 6px; flex-wrap: wrap; }
-        .wall-view-frame { width: 100%; background: #e8e4dc; padding: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 8px 40px rgba(0,0,0,0.06); position: relative; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; box-sizing: border-box; }
+        .wall-view-frame { width: 100%; background: #e8e4dc; padding: 3px; box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 8px 40px rgba(0,0,0,0.06); position: relative; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; box-sizing: border-box; }
         .wall-view-frame:hover { transform: scale(1.02); box-shadow: 0 8px 30px rgba(0,0,0,0.15), 0 12px 50px rgba(0,0,0,0.1); z-index: 5; }
         .wall-view-modal.dark-mode .wall-view-frame { background: #1a1a1a; box-shadow: 0 4px 30px rgba(0,0,0,0.4), 0 8px 50px rgba(0,0,0,0.3); }
         .wall-view-frame-mat { background: #ffffff; padding: 8px; position: relative; }
@@ -2185,17 +2183,17 @@
         }
         @media (max-width: 1100px) {
             .wall-view-wall { gap: 24px; grid-template-columns: repeat(auto-fit, minmax(90px, 140px)); }
-            .wall-view-frame { padding: 5px; }
+            .wall-view-frame { padding: 3px; }
             .wall-view-frame-mat { padding: 5px; }
         }
         @media (max-width: 900px) {
             .wall-view-wall { gap: 20px; grid-template-columns: repeat(auto-fit, minmax(80px, 120px)); }
-            .wall-view-frame { padding: 4px; }
+            .wall-view-frame { padding: 2px; }
             .wall-view-frame-mat { padding: 4px; }
         }
         @media (max-width: 700px) {
             .wall-view-wall { gap: 16px; grid-template-columns: repeat(auto-fit, minmax(70px, 100px)); }
-            .wall-view-frame { padding: 3px; }
+            .wall-view-frame { padding: 2px; }
             .wall-view-frame-mat { padding: 3px; }
         }
         .wall-view-placard { text-align: center; }
@@ -2227,9 +2225,9 @@
         /* Frame preview in print form */
         .print-inquiry-frame-preview { display: flex; flex-direction: column; align-items: center; margin-bottom: 16px; padding: 20px 16px 12px; background: #f5f3f0; border-radius: 10px; position: relative; }
         .print-inquiry-frame-preview::before { content: ''; position: absolute; inset: 0; border-radius: 10px; background: radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,0.5) 0%, transparent 50%); pointer-events: none; }
-        .print-inquiry-mini-frame { background: #c4a47a; padding: 6px; box-shadow: 4px 6px 16px rgba(0,0,0,0.15), 2px 3px 6px rgba(0,0,0,0.1); position: relative; z-index: 1; }
-        .print-inquiry-mini-inner { background: #a88b62; padding: 2px; box-shadow: inset 0 0 2px rgba(0,0,0,0.2); }
-        .print-inquiry-mini-inner img { display: block; width: 100%; height: auto; max-height: 180px; object-fit: contain; box-shadow: 0 1px 2px rgba(0,0,0,0.2); border: 3px solid #fff; box-sizing: border-box; }
+        .print-inquiry-mini-frame { background: #c4a47a; padding: 3px; box-shadow: 4px 6px 16px rgba(0,0,0,0.15), 2px 3px 6px rgba(0,0,0,0.1); position: relative; z-index: 1; }
+        .print-inquiry-mini-inner { background: #ffffff; padding: 5px; box-shadow: inset 0 0 1px rgba(0,0,0,0.08); }
+        .print-inquiry-mini-inner img { display: block; width: 100%; height: auto; max-height: 180px; object-fit: contain; box-shadow: 0 1px 2px rgba(0,0,0,0.08); border: none; box-sizing: border-box; }
         .print-inquiry-frame-label { font-size: 10px; font-weight: 600; color: #888; letter-spacing: 0.1em; margin-top: 10px; position: relative; z-index: 1; }
         .print-inquiry-frame-colors { display: flex; gap: 8px; margin-top: 8px; position: relative; z-index: 1; }
         .print-inquiry-frame-color { width: 20px; height: 20px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
@@ -2242,11 +2240,11 @@
         .print-inquiry-frame-color[data-color="dark-wood"] { background: #5a3d2b; }
         /* Frame color variants in print form */
         .print-inquiry-mini-frame.frame-white { background: #faf9f7; }
-        .print-inquiry-mini-frame.frame-white .print-inquiry-mini-inner { background: #4a4846; }
+        .print-inquiry-mini-frame.frame-white .print-inquiry-mini-inner { background: #ffffff; }
         .print-inquiry-mini-frame.frame-black { background: #1a1a1a; }
-        .print-inquiry-mini-frame.frame-black .print-inquiry-mini-inner { background: #0a0a0a; }
+        .print-inquiry-mini-frame.frame-black .print-inquiry-mini-inner { background: #f5f3f0; }
         .print-inquiry-mini-frame.frame-dark-wood { background: #5a3d2b; }
-        .print-inquiry-mini-frame.frame-dark-wood .print-inquiry-mini-inner { background: #3d2a1c; }
+        .print-inquiry-mini-frame.frame-dark-wood .print-inquiry-mini-inner { background: #faf9f7; }
         /* Frameless preview (poster/mini print, unframed) */
         .print-inquiry-mini-frame.frameless { background: transparent; padding: 0; box-shadow: none; }
         .print-inquiry-mini-frame.frameless .print-inquiry-mini-inner { background: transparent; padding: 0; box-shadow: none; }
@@ -2288,8 +2286,8 @@
         .print-inquiry-size-option .size-label { font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: #666; }
         .print-inquiry-size-option.active .size-label { color: #a88620; }
         .print-inquiry-size-option { position: relative; }
-        .print-inquiry-size-option .size-signature { position: absolute; bottom: 3px; right: 4px; width: 28px; height: auto; opacity: 0.25; pointer-events: none; }
-        .print-inquiry-size-option.active .size-signature { opacity: 0.5; }
+        .print-inquiry-size-option .size-signature { position: absolute; top: 4px; right: 4px; width: 22px; height: auto; opacity: 0.18; pointer-events: none; }
+        .print-inquiry-size-option.active .size-signature { opacity: 0.35; }
         .print-inquiry-shipping-note { font-size: 8px; color: #555; margin-top: 8px; text-align: center; }
         /* Collapsible details section */
         .print-inquiry-details-toggle { display: flex; align-items: center; gap: 6px; background: none; border: none; color: #555; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; padding: 8px 0; margin-top: 4px; transition: color 0.2s; }
@@ -2520,9 +2518,11 @@
             .grid-items.grid-12-col, .grid-group-items.grid-12-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
             .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
             .grid-item { border-radius: 6px; }
-            .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            .grid-mode-btn { padding: 6px 10px; font-size: 8px; border-width: 1.5px; min-height: 32px; white-space: nowrap; flex-shrink: 0; }
-            .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; flex-shrink: 0; }
+            .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: visible; overflow: visible; }
+            .grid-mode-btn { padding: 0; font-size: 0; border-width: 1.5px; width: 34px; height: 34px; min-height: 34px; white-space: nowrap; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+            .grid-mode-btn::after { content: attr(data-emoji); font-size: 15px; line-height: 1; }
+            .grid-mode-btn .palette-sort-arrow { display: none; }
+            .gallery-room-toggle, .grid-size-toggle { width: 34px; height: 34px; font-size: 12px; flex-shrink: 0; }
             /* Palette headers on mobile */
             .grid-group-header { padding: 10px 12px; gap: 6px; flex-wrap: nowrap; }
             .grid-group-name { font-size: 10px; letter-spacing: 0.05em; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -2679,7 +2679,9 @@
             .grid-artist-logo { height: 10px; }
             .grid-artist-logo.diid-logo { height: 12px; }
             .grid-controls { gap: 4px; }
-            .grid-mode-btn { padding: 6px 12px; font-size: 8px; min-height: 32px; }
+            .grid-mode-btn { padding: 0; font-size: 0; width: 32px; height: 32px; min-height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+            .grid-mode-btn::after { content: attr(data-emoji); font-size: 14px; line-height: 1; }
+            .grid-mode-btn .palette-sort-arrow { display: none; }
             .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; }
             .filter-toggle-bar { padding: 8px 12px; }
             .grid-filter-bar.open { padding: 8px 12px; }
@@ -3830,10 +3832,10 @@
                 <button class="grid-size-toggle" id="gridSizeToggle" title="Change grid size">
                     <span class="size-icon" id="sizeIcon"></span>
                 </button>
-                <button class="grid-mode-btn" data-mode="grid" id="gridAllFavBtn" title="All Cities">ALL</button>
-                <button class="grid-mode-btn active" data-mode="palette" id="paletteColorToggle" title="Sort by Palette">BY PALETTE <span class="palette-sort-arrow">↓</span></button>
-                <button class="grid-mode-btn origins-btn" data-mode="origins" id="gridOriginsBtn" title="Origins">ORIGINS</button>
-                <button class="grid-mode-btn collectors-btn" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
+                <button class="grid-mode-btn" data-mode="grid" data-emoji="🌍" id="gridAllFavBtn" title="All Cities">ALL</button>
+                <button class="grid-mode-btn active" data-mode="palette" data-emoji="🎨" id="paletteColorToggle" title="Sort by Palette">BY PALETTE <span class="palette-sort-arrow">↓</span></button>
+                <button class="grid-mode-btn origins-btn" data-mode="origins" data-emoji="📍" id="gridOriginsBtn" title="Origins">ORIGINS</button>
+                <button class="grid-mode-btn collectors-btn" data-emoji="👤" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
             </div>
         </div>
         <div class="filter-toggle-bar" id="filterToggleBar"><span>FILTERS</span><span class="arrow">▼</span></div>
@@ -7634,10 +7636,10 @@
         let printInquiryDarkWall = false;
 
         const printFrameColorMap = {
-            'light-wood': { frame: '#c4a47a', inner: '#a88b62' },
-            'white': { frame: '#faf9f7', inner: '#4a4846' },
-            'black': { frame: '#1a1a1a', inner: '#0a0a0a' },
-            'dark-wood': { frame: '#5a3d2b', inner: '#3d2a1c' }
+            'light-wood': { frame: '#c4a47a', inner: '#ffffff' },
+            'white': { frame: '#faf9f7', inner: '#ffffff' },
+            'black': { frame: '#1a1a1a', inner: '#f5f3f0' },
+            'dark-wood': { frame: '#5a3d2b', inner: '#faf9f7' }
         };
 
         function openPrintInquiryModal(cities) {
