@@ -669,7 +669,7 @@
         .collect-popover-option { display: block; width: 100%; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); text-decoration: none; text-align: left; background: none; border: none; cursor: pointer; transition: all 0.15s ease; font-family: inherit; white-space: nowrap; }
         .collect-popover-option:hover { background: rgba(255,255,255,0.05); color: var(--text); }
         .collect-popover-option span { opacity: 0.5; font-weight: 400; margin-left: 4px; }
-        .collect-btn-wrapper { position: relative; display: inline-block; overflow: visible; }
+        .collect-btn-wrapper { position: relative; display: inline-flex; overflow: visible; flex-shrink: 0; }
         /* Light mode popover (for wall view gray mode) */
         .wall-view-modal.wall-gray .collect-popover { background: #fff; border-color: #ddd; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
         .wall-view-modal.wall-gray .collect-popover-option { color: #666; }
@@ -8090,112 +8090,33 @@
                 wallViewTryMode = btn?.classList.contains('active') || false;
 
                 if (wallViewTryMode && wall) {
-                    // Add empty slots for TRY mode - only count TRY mode slots, not static grid slots
+                    // Add empty slots for TRY mode - preserve current grid layout
                     const existingTrySlots = wall.querySelectorAll('.wall-view-artwork.try-mode-slot').length;
-                    const realCities = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
-                    const isMobile = window.innerWidth <= 768;
 
-                    // Always use grid layout for TRY mode to encourage grid building
-                    if (false && isLineView) {
-                        // Line view disabled for TRY - we always want grid
-                        if (existingTrySlots === 0) {
+                    if (existingTrySlots === 0) {
+                        // Get the current column count from the wall's class
+                        const colsMatch = wall.className.match(/cols-(\d+)/);
+                        const currentCols = colsMatch ? parseInt(colsMatch[1]) : 2;
+
+                        // Count current items (excluding empty grid slots and collector info)
+                        const filledItems = wall.querySelectorAll('.wall-view-frame:not(.empty-slot)').length;
+                        const existingEmptySlots = wall.querySelectorAll('.wall-view-frame.empty-slot').length;
+                        const totalItems = filledItems + existingEmptySlots;
+
+                        // Add enough slots to fill out the next row using current column count
+                        const remainder = totalItems % currentCols;
+                        const slotsNeeded = remainder === 0 ? currentCols : (currentCols - remainder);
+
+                        for (let i = 0; i < slotsNeeded; i++) {
                             addTryModeSlot(wall);
                         }
-                    } else {
-                        // In grid view, add empty slots based on grid layout
-                        // Count ALL empty slots (both static GRID slots and TRY slots)
-                        const allEmptySlots = wall.querySelectorAll('.wall-view-frame.empty-slot').length;
-                        const tempCities = wall.querySelectorAll('.wall-view-frame.temp-city').length;
-                        const totalItems = realCities + tempCities + allEmptySlots;
-
-                        // Only add more TRY slots if we haven't reached the next grid target
-                        // For small collections (< 4), focus on achieving first 2x2 grid
-                        const nextGridTarget = realCities < 4 ? 4 : (realCities < 6 ? 6 : (realCities < 9 ? 9 : 12));
-                        const slotsToReachTarget = nextGridTarget - realCities - tempCities;
-
-                        if (existingTrySlots === 0 && slotsToReachTarget > 0) {
-                            const layout = getOptimalGridLayout(realCities);
-                            let slotsNeeded = 1;
-
-                            // Add slots to reach next perfect grid
-                            if (realCities === 1) {
-                                // 1 city -> add 3 to make 2x2
-                                slotsNeeded = 3;
-                            } else if (realCities === 2) {
-                                // 2 cities in a row -> add 2 underneath to make 2x2
-                                slotsNeeded = 2;
-                            } else if (realCities === 3) {
-                                // 3 cities in a row -> add 3 underneath to make 3x2
-                                slotsNeeded = 3;
-                            } else if (realCities === 4) {
-                                // 2x2 -> add 2 underneath to make 2x3
-                                slotsNeeded = 2;
-                            } else if (realCities === 5) {
-                                // 5 in 3x2 layout -> add 1 to complete 3x2
-                                slotsNeeded = 1;
-                            } else if (realCities === 6) {
-                                // 3x2 -> add 3 underneath to make 3x3
-                                slotsNeeded = 3;
-                            } else if (realCities === 7) {
-                                // 7 in 4x2 layout -> add 1 to complete 4x2
-                                slotsNeeded = 1;
-                            } else if (realCities === 8) {
-                                // 4x2 -> add 4 underneath to make 4x3
-                                slotsNeeded = 4;
-                            } else if (realCities === 9) {
-                                // 3x3 -> add 3 underneath to make 3x4
-                                slotsNeeded = 3;
-                            } else if (layout.cols >= 1) {
-                                // For larger grids, add enough for a new row
-                                slotsNeeded = layout.cols;
-                            }
-
-                            // Cap at slots needed to reach target (don't overshoot)
-                            slotsNeeded = Math.min(slotsNeeded, slotsToReachTarget);
-
-                            for (let i = 0; i < slotsNeeded; i++) {
-                                addTryModeSlot(wall);
-                            }
-
-                            // Recalculate grid layout with new total count
-                            const totalSlots = realCities + slotsNeeded;
-                            const newLayout = getOptimalGridLayout(totalSlots);
-
-                            // Update cols class
-                            wall.className = wall.className.replace(/cols-\d+/g, '').trim();
-                            wall.classList.add('wall-view-wall');
-                            wall.classList.add(`cols-${newLayout.cols}`);
-
-                            // Zoom out to show full grid and collector name
-                            if (newLayout.rows >= 3) {
-                                wallViewZoom = 0.8;
-                            } else if (newLayout.rows >= 2) {
-                                wallViewZoom = 0.85;
-                            } else {
-                                wallViewZoom = 0.9;
-                            }
-                            applyWallZoom();
-                        }
+                        // Don't change column count or zoom - keep grid stable
                     }
                 } else if (!wallViewTryMode && wall) {
                     // Remove try-mode empty slots (keep temp cities)
                     const tryModeSlots = wall.querySelectorAll('.wall-view-artwork.try-mode-slot');
                     tryModeSlots.forEach(slot => slot.remove());
-
-                    // Recalculate grid layout with remaining items
-                    const remainingCities = wall.querySelectorAll('.wall-view-artwork').length;
-                    const restoredLayout = getOptimalGridLayout(remainingCities);
-
-                    // Update cols class
-                    wall.className = wall.className.replace(/cols-\d+/g, '').trim();
-                    wall.classList.add('wall-view-wall');
-                    wall.classList.add(`cols-${restoredLayout.cols}`);
-
-                    // Reset zoom based on rows
-                    if (restoredLayout.rows >= 4) wallViewZoom = 0.75;
-                    else if (restoredLayout.rows >= 3) wallViewZoom = 0.85;
-                    else wallViewZoom = 1;
-                    applyWallZoom();
+                    // Don't recalculate columns or zoom - keep grid stable
                 }
 
                 updateGridNudge();
@@ -9585,13 +9506,7 @@
             if (wallViewTryMode) {
                 addTryModeSlot(wall);
             }
-
-            // Recalculate grid layout to maintain proper columns
-            const totalItems = wall.querySelectorAll('.wall-view-artwork').length;
-            const newLayout = getOptimalGridLayout(totalItems);
-            wall.className = wall.className.replace(/cols-\d+/g, '').trim();
-            wall.classList.add('wall-view-wall');
-            wall.classList.add(`cols-${newLayout.cols}`);
+            // Don't recalculate grid columns - keep layout stable
 
             // Update grid nudge
             updateGridNudge();
@@ -9820,6 +9735,9 @@
             } else if (layout.rows >= 3) {
                 wallViewZoom = 0.85;
             } else if (count > 9) {
+                wallViewZoom = 0.9;
+            } else if (layout.rows >= 2) {
+                // 2-row grids (4-8 cities) - zoom out for readable text and negative space
                 wallViewZoom = 0.9;
             } else if (count < 4) {
                 // Small collections with 2x2 grid - zoom out to show collector name
