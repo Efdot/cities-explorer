@@ -1661,7 +1661,18 @@
         .top-collector-row:hover { background: rgba(255,255,255,0.04); }
         .top-collector-rank { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
         .top-collector-info { flex: 1; min-width: 0; }
-        .top-collector-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .top-collector-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
+        .top-collector-status { display: inline-flex; align-items: center; gap: 3px; flex-shrink: 0; position: relative; }
+        .top-collector-status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; opacity: 0.7; transition: opacity 0.2s ease; }
+        .top-collector-status-dot.energy-rising { background: #FFB347; }
+        .top-collector-status-dot.energy-living { background: #87ceeb; }
+        .top-collector-status-dot.energy-fading { background: #DDA0DD; }
+        .top-collector-status-dot.energy-resting { background: #B19CD9; }
+        .top-collector-status-dot.energy-spectrum { background: linear-gradient(135deg, #FFB347, #77DD77, #AEC6CF, #B19CD9); }
+        .top-collector-status-dot.energy-grid { background: var(--warm); }
+        .top-collector-status-label { font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap; transition: all 0.25s ease; color: var(--text-muted); }
+        .top-collector-row:hover .top-collector-status-label { opacity: 0.7; max-width: 120px; }
+        .top-collector-row:hover .top-collector-status-dot { opacity: 1; }
         .top-collector-meta { font-size: 9px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
         .top-collector-count { font-size: 13px; font-weight: 800; color: var(--teal); flex-shrink: 0; }
         .top-collector-chips { display: flex; gap: 2px; flex-shrink: 0; }
@@ -7331,27 +7342,50 @@
                     return `<div class="top-collector-chip" style="background: ${bgColor};"></div>`;
                 }).join('');
 
-                // Generate grid-set badges for their collection
+                // Generate energy-based status for their collection
                 const gridCount = Math.floor(tokens.length / 4);
-                const gridIcon = '<span class="grid-icon-mini"><b></b><b></b><b></b><b></b></span>';
                 const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
                 tokens.forEach(id => {
                     const traits = tokenTraits[id];
                     if (traits?.Energy) energyCounts[traits.Energy]++;
                 });
                 const hasSpectrum = energyCounts.Rising >= 1 && energyCounts.Living >= 1 && energyCounts.Fading >= 1 && energyCounts.Resting >= 1;
-                let meta = '';
-                if (gridCount >= 1) {
-                    meta = gridIcon + (gridCount > 1 ? ' ×' + gridCount : '');
-                    if (hasSpectrum) meta += ' 🌈';
+
+                // Determine primary status and dot color
+                let statusLabel = '';
+                let dotClass = '';
+                if (hasSpectrum) {
+                    statusLabel = 'Spectrum';
+                    dotClass = 'energy-spectrum';
                 } else {
-                    meta = `${collector.count} cities`;
+                    // Find dominant energy set (4+ of same type)
+                    const setEntries = [
+                        { name: 'Rising', count: energyCounts.Rising },
+                        { name: 'Living', count: energyCounts.Living },
+                        { name: 'Fading', count: energyCounts.Fading },
+                        { name: 'Resting', count: energyCounts.Resting }
+                    ].filter(e => e.count >= 4).sort((a, b) => b.count - a.count);
+                    if (setEntries.length > 0) {
+                        statusLabel = setEntries[0].name + ' Set';
+                        dotClass = 'energy-' + setEntries[0].name.toLowerCase();
+                    }
                 }
+                // Grid status as fallback
+                if (!statusLabel && gridCount >= 1) {
+                    statusLabel = gridCount > 1 ? gridCount + '× Grid' : 'Grid';
+                    dotClass = 'energy-grid';
+                }
+
+                const statusBadge = statusLabel
+                    ? `<span class="top-collector-status"><span class="top-collector-status-dot ${dotClass}"></span><span class="top-collector-status-label">${statusLabel}</span></span>`
+                    : '';
+
+                const meta = `${collector.count} cities`;
 
                 return `<div class="top-collector-row" data-collector="${collector.name}">
                     <span class="top-collector-rank">${medals[i]}</span>
                     <div class="top-collector-info">
-                        <div class="top-collector-name">${collector.name}</div>
+                        <div class="top-collector-name"><span>${collector.name}</span>${statusBadge}</div>
                         <div class="top-collector-meta">${meta}</div>
                     </div>
                     <div class="top-collector-chips">${chipsHtml}</div>
