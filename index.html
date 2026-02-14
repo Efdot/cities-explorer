@@ -1336,6 +1336,7 @@
         .frame-container:hover { transform: scale(1.02); border-radius: 24px; }
         .preview-image { max-height: calc(100vh - 280px); max-width: 100%; width: auto; height: auto; display: block; transition: opacity 0.3s ease-out; object-fit: contain; }
         .bottom-info { margin-top: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+        .mobile-art-info { display: none; }
         .preview-image.fade-out { opacity: 0; }
 
         /* Explore fullscreen button - hidden, exit via ESC/space */
@@ -1344,7 +1345,7 @@
 
         /* Fullscreen mode */
         body.fullscreen-mode .sidebar, body.fullscreen-mode .gallery-toggle, body.fullscreen-mode .collectors-toggle, body.fullscreen-mode .mint-toggle,
-        body.fullscreen-mode .mobile-menu-toggle, body.fullscreen-mode .bottom-info, body.fullscreen-mode .top-nav-fixed, body.fullscreen-mode .mobile-bottom-bar,
+        body.fullscreen-mode .mobile-menu-toggle, body.fullscreen-mode .bottom-info, body.fullscreen-mode .mobile-art-info, body.fullscreen-mode .top-nav-fixed, body.fullscreen-mode .mobile-bottom-bar,
         body.fullscreen-mode .pull-refresh-indicator { display: none !important; }
         body.fullscreen-mode .main-content { padding: 0; left: 0; }
         body.fullscreen-mode .frame-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; border-radius: 0; background: var(--bg-deep); }
@@ -3344,8 +3345,46 @@
                 border-radius: 8px;
             }
 
-            /* Hide bottom info - token shown in bottom bar */
+            /* Hide desktop bottom info on mobile - replaced by mobile-art-info */
             .bottom-info { display: none !important; }
+
+            /* Mobile art info: output number + collector under the art */
+            .mobile-art-info {
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+                margin-top: 6px;
+                pointer-events: auto;
+            }
+            .mobile-art-info .mob-output-number {
+                font-size: 9px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--text-muted);
+                opacity: 0.7;
+            }
+            .mobile-art-info .mob-output-number .mob-token-id {
+                color: var(--teal);
+            }
+            .mobile-art-info .mob-collector-name {
+                font-size: 8px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: var(--text-muted);
+                opacity: 0.5;
+                max-width: 80vw;
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .mobile-art-info .mob-collector-name a {
+                color: var(--text-muted);
+                text-decoration: none;
+            }
 
             /* Hide side nav arrows - use bottom bar instead */
             .side-nav-arrow { display: none !important; }
@@ -3930,6 +3969,11 @@
             <div class="similar-outputs" id="similarOutputs">
                 <div class="similar-outputs-grid" id="similarOutputsGrid"></div>
             </div>
+        </div>
+        <!-- Mobile: compact output number + collector under art -->
+        <div class="mobile-art-info" id="mobileArtInfo" style="display:none;">
+            <div class="mob-output-number">CITIES #<span class="mob-token-id" id="mobArtToken">0</span></div>
+            <div class="mob-collector-name" id="mobArtCollector"></div>
         </div>
     </div>
 
@@ -11156,12 +11200,15 @@
         window.filterByTrait = filterByTrait;
 
         function displayOwnerInfo(owner, loading = false) {
+            const mobArtCollector = document.getElementById('mobArtCollector');
             if (loading) {
                 ownerDisplay.innerHTML = '<span style="opacity:0.5">LOADING...</span>';
+                if (mobArtCollector) mobArtCollector.innerHTML = '';
                 return;
             }
             if (!owner || !owner.address) {
                 ownerDisplay.innerHTML = '<span style="opacity:0.5">COLLECTOR UNKNOWN</span>';
+                if (mobArtCollector) mobArtCollector.innerHTML = '';
                 return;
             }
             // Priority: Art Blocks username > ENS > shortened address
@@ -11170,6 +11217,18 @@
             const displayName = applyNameAlias(rawName);
             // Make collector name clickable to open their gallery
             ownerDisplay.innerHTML = `IN THE COLLECTION OF <a href="#" class="collector-link-inline" data-address="${owner.address}" data-name="${displayName}">${displayName.toUpperCase()}</a>`;
+
+            // Sync mobile art info collector name
+            if (mobArtCollector) {
+                mobArtCollector.innerHTML = `<a href="#" class="mob-collector-link" data-address="${owner.address}" data-name="${displayName}">${displayName.toUpperCase()}</a>`;
+                const mobLink = mobArtCollector.querySelector('.mob-collector-link');
+                if (mobLink) {
+                    mobLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        openCollectorGallery(mobLink.dataset.address, mobLink.dataset.name);
+                    });
+                }
+            }
 
             // Add click handler to open collector's gallery
             const link = ownerDisplay.querySelector('.collector-link-inline');
@@ -11272,6 +11331,9 @@
             // Sync mobile bottom bar token
             const mobTok = document.getElementById('mobToken');
             if (mobTok) mobTok.textContent = '#' + currentTokenId;
+            // Sync mobile art info (output number under the art)
+            const mobArtTok = document.getElementById('mobArtToken');
+            if (mobArtTok) mobArtTok.textContent = currentTokenId;
             if (updateUrl) updateUrlWithToken(currentTokenId);
             saveLastViewed();
 
@@ -15770,7 +15832,9 @@
         const validInitialToken = !isNaN(initialToken) && initialToken >= 0 && initialToken <= MAX_TOKEN ? initialToken : randomStart;
 
         // Preload single output in background, grid will always show first
-        loadOutput(validInitialToken, true);
+        // Only update URL if the user explicitly navigated with a token param (keep URL clean otherwise)
+        const shouldUpdateUrl = urlParams.token !== null;
+        loadOutput(validInitialToken, shouldUpdateUrl);
         loadAllTokenData();
 
         // Helper to update minted count UI
