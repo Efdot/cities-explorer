@@ -543,17 +543,19 @@
         .pantone-hex-chip { padding: 6px 10px; border-radius: 6px; font-size: 9px; font-weight: 800; font-family: monospace; cursor: pointer; transition: all 0.15s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); letter-spacing: 0.03em; }
         .pantone-hex-chip:hover { transform: scale(1.08); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
         /* Palette fan navigation */
-        .palette-fan-container { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; }
-        .palette-fan { display: flex; justify-content: center; gap: 6px; perspective: 800px; }
-        .palette-fan-chip { width: 40px; height: 54px; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transform-origin: bottom center; position: relative; }
-        .palette-fan-chip:not(.active) { opacity: 0.7; transform: scale(0.85); }
-        .palette-fan-chip.active { transform: scale(1); opacity: 1; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
-        .palette-fan-chip:hover:not(.active) { opacity: 0.9; transform: scale(0.92); }
-        .palette-fan-chip .fan-label { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); white-space: nowrap; max-width: 60px; overflow: hidden; text-overflow: ellipsis; opacity: 0; transition: opacity 0.2s; }
-        .palette-fan-chip:hover .fan-label, .palette-fan-chip.active .fan-label { opacity: 1; }
-        .palette-fan-arrow { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; font-size: 13px; }
-        .palette-fan-arrow:hover { background: rgba(255,255,255,0.2); color: #fff; }
-        .palette-fan-arrow:disabled, .palette-fan-arrow.disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+        .palette-fan-container { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; }
+        .palette-fan { position: relative; width: 160px; height: 60px; perspective: 600px; }
+        .palette-fan-chip { width: 36px; height: 50px; border-radius: 5px; cursor: pointer; transition: all 0.35s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.3); position: absolute; top: 50%; left: 50%; transform-origin: center center; }
+        .palette-fan-chip.fan-pos-0 { transform: translate(-50%, -50%) scale(1); z-index: 10; opacity: 1; box-shadow: 0 6px 24px rgba(0,0,0,0.4); }
+        .palette-fan-chip.fan-pos--1 { transform: translate(calc(-50% - 38px), -50%) scale(0.82) rotateY(8deg); z-index: 8; opacity: 0.55; }
+        .palette-fan-chip.fan-pos-1 { transform: translate(calc(-50% + 38px), -50%) scale(0.82) rotateY(-8deg); z-index: 8; opacity: 0.55; }
+        .palette-fan-chip.fan-pos--2 { transform: translate(calc(-50% - 64px), -50%) scale(0.65) rotateY(14deg); z-index: 6; opacity: 0.25; }
+        .palette-fan-chip.fan-pos-2 { transform: translate(calc(-50% + 64px), -50%) scale(0.65) rotateY(-14deg); z-index: 6; opacity: 0.25; }
+        .palette-fan-chip.fan-hidden { transform: translate(-50%, -50%) scale(0.4); z-index: 1; opacity: 0; pointer-events: none; }
+        .palette-fan-chip .fan-label { display: none; }
+        .palette-fan-arrow { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; font-size: 12px; flex-shrink: 0; }
+        .palette-fan-arrow:hover { background: rgba(255,255,255,0.15); color: #fff; }
+        .palette-fan-arrow:disabled, .palette-fan-arrow.disabled { opacity: 0.2; cursor: default; pointer-events: none; }
         /* Palette suggestions */
         .palette-inspector-similar { margin-top: 16px; }
         .palette-suggestions-section { margin-bottom: 10px; }
@@ -563,16 +565,11 @@
         .similar-palette-chip:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
         .palette-inspector-close { background: var(--bg-input); border: none; color: var(--text-dim); padding: 12px 28px; border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; margin-top: 18px; }
         /* Sidebar inspect palette button */
-        .sidebar-inspect-btn { display: block; width: 100%; padding: 6px 14px; margin-bottom: 6px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
-        .sidebar-inspect-btn:hover { border-color: var(--teal); color: var(--teal); }
+        .sidebar-inspect-btn { display: block; width: 100%; padding: 8px 14px; margin-bottom: 6px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; background-size: 100% 100%; }
+        .sidebar-inspect-btn:hover { filter: brightness(1.15); transform: scale(1.02); }
         .palette-inspector-close:hover { background: var(--bg-card); color: var(--text); }
         /* Palette inspector prev/next arrows - subtle edge nav like wall view */
-        .palette-nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: rgba(255,255,255,0.25); width: 44px; height: 44px; font-size: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.25s ease; z-index: 20; opacity: 0.6; }
-        .palette-nav-arrow:hover { color: rgba(255,255,255,0.7); opacity: 1; }
-        .palette-nav-prev { left: 16px; }
-        .palette-nav-next { right: 16px; }
-        .palette-inspector.light-bg .palette-nav-arrow { color: rgba(0,0,0,0.2); }
-        .palette-inspector.light-bg .palette-nav-arrow:hover { color: rgba(0,0,0,0.6); }
+        .palette-nav-arrow { display: none; }
         /* Palette inspector gradient navigation strip */
         .palette-gradient-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 36px; z-index: 5; }
         .palette-gradient-strip { width: 100%; height: 100%; cursor: pointer; position: relative; touch-action: none; }
@@ -580,11 +577,6 @@
         .palette-gradient-marker { position: absolute; width: 2px; height: 100%; background: rgba(255,255,255,0.9); top: 0; transform: translateX(-50%); box-shadow: 0 0 6px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
         .palette-gradient-strip:hover .palette-gradient-marker, .palette-gradient-strip.active .palette-gradient-marker { opacity: 1; }
         .palette-inspector.light-bg .palette-gradient-marker { background: rgba(0,0,0,0.7); }
-        @media (max-width: 768px) {
-            .palette-nav-arrow { width: 36px; height: 36px; font-size: 24px; }
-            .palette-nav-prev { left: 8px; }
-            .palette-nav-next { right: 8px; }
-        }
         .btn-inspect { background: transparent; border: 1px solid var(--border); color: var(--text-dim); }
         .btn-inspect:hover { border-color: var(--teal); color: var(--teal); }
 
@@ -10555,6 +10547,26 @@
 
             traitsDisplay.innerHTML = html;
 
+            // Style the inspect palette button with actual palette colors
+            const inspectBtn = document.getElementById('inspectPalette');
+            if (inspectBtn && palette && PALETTE_DATA[palette]) {
+                const pInfo = PALETTE_DATA[palette];
+                const pColors = pInfo.colors || [];
+                // Build a gradient from palette colors for the button background
+                const gradColors = [pInfo.bg, ...pColors.slice(0, 5)];
+                inspectBtn.style.background = `linear-gradient(135deg, ${gradColors.join(', ')})`;
+                inspectBtn.style.border = 'none';
+                // Choose white or black text based on bg luminance, with contrasting glow
+                const bgLum = getLuminance(pInfo.bg);
+                if (bgLum > 0.4) {
+                    inspectBtn.style.color = '#000';
+                    inspectBtn.style.textShadow = '0 0 8px rgba(255,255,255,0.6)';
+                } else {
+                    inspectBtn.style.color = '#fff';
+                    inspectBtn.style.textShadow = '0 0 8px rgba(0,0,0,0.7)';
+                }
+            }
+
             // Add click handlers for filterable trait rows
             traitsDisplay.querySelectorAll('.trait-row.clickable').forEach(row => {
                 row.addEventListener('click', () => {
@@ -12869,17 +12881,16 @@
             }
 
             if (paletteHistory.length > 1) {
+                // Render only a window of chips around the active one (max 5 visible)
                 fanEl.innerHTML = paletteHistory.map((p, idx) => {
                     const pData = PALETTE_DATA[p];
                     const chipBg = pData ? pData.bg : '#333';
-                    const activeClass = idx === currentPaletteIndex ? 'active' : '';
-                    const labelColor = getContrastColor(chipBg);
-                    return `<div class="palette-fan-chip ${activeClass}" data-palette="${p}" data-index="${idx}" style="background: ${chipBg};">
-                        <span class="fan-label" style="color: ${labelColor === '#ffffff' ? 'var(--text-dim)' : 'var(--text-muted)'};">${p}</span>
-                    </div>`;
+                    const offset = idx - currentPaletteIndex;
+                    const posClass = (offset >= -2 && offset <= 2) ? `fan-pos-${offset}` : 'fan-hidden';
+                    return `<div class="palette-fan-chip ${posClass}" data-palette="${p}" data-index="${idx}" style="background: ${chipBg};"></div>`;
                 }).join('');
 
-                fanEl.querySelectorAll('.palette-fan-chip').forEach(chip => {
+                fanEl.querySelectorAll('.palette-fan-chip:not(.fan-hidden)').forEach(chip => {
                     chip.addEventListener('click', () => {
                         const palette = chip.dataset.palette;
                         const idx = parseInt(chip.dataset.index);
@@ -12888,14 +12899,23 @@
                     });
                 });
 
-                // Update arrow states
-                leftArrow.classList.toggle('disabled', currentPaletteIndex === 0);
-                rightArrow.classList.toggle('disabled', currentPaletteIndex === paletteHistory.length - 1);
+                // Update arrow states based on position in full alphabetical list
+                const allNames = Object.keys(PALETTE_DATA).sort((a, b) => a.localeCompare(b));
+                const alphaIdx = allNames.findIndex(p => p === paletteName);
+                leftArrow.classList.toggle('disabled', alphaIdx <= 0);
+                rightArrow.classList.toggle('disabled', alphaIdx >= allNames.length - 1);
 
                 fanContainer.style.display = 'flex';
             } else {
-                fanEl.innerHTML = '';
-                fanContainer.style.display = 'none';
+                // Single palette - still show the active chip with navigation arrows
+                const pData = PALETTE_DATA[paletteName];
+                const chipBg = pData ? pData.bg : '#333';
+                fanEl.innerHTML = `<div class="palette-fan-chip fan-pos-0" data-palette="${paletteName}" style="background: ${chipBg};"></div>`;
+                const allNames = Object.keys(PALETTE_DATA).sort((a, b) => a.localeCompare(b));
+                const alphaIdx = allNames.findIndex(p => p === paletteName);
+                leftArrow.classList.toggle('disabled', alphaIdx <= 0);
+                rightArrow.classList.toggle('disabled', alphaIdx >= allNames.length - 1);
+                fanContainer.style.display = 'flex';
             }
 
             // Set up floating swatch
@@ -13190,21 +13210,9 @@
             }
         });
 
-        // Palette fan arrow navigation
-        function fanNavigatePrev() {
-            if (currentPaletteIndex > 0) {
-                currentPaletteIndex--;
-                openPaletteInspector(paletteHistory[currentPaletteIndex]);
-            }
-        }
-        function fanNavigateNext() {
-            if (currentPaletteIndex < paletteHistory.length - 1) {
-                currentPaletteIndex++;
-                openPaletteInspector(paletteHistory[currentPaletteIndex]);
-            }
-        }
-        document.getElementById('fanArrowLeft').addEventListener('click', fanNavigatePrev);
-        document.getElementById('fanArrowRight').addEventListener('click', fanNavigateNext);
+        // Palette fan arrow navigation - navigate through all palettes alphabetically
+        document.getElementById('fanArrowLeft').addEventListener('click', () => navigatePaletteInList(-1));
+        document.getElementById('fanArrowRight').addEventListener('click', () => navigatePaletteInList(1));
 
         // Palette inspector gradient strip - scrub to navigate by color
         let inspectorGradientRAFPending = false;
