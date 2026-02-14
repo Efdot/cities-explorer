@@ -2520,8 +2520,9 @@
         }
 
         .grid-content { flex: 1; overflow-y: auto; padding: 20px; -webkit-overflow-scrolling: touch; }
-        .grid-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
-        .grid-item { aspect-ratio: 9/16; background: var(--bg-card); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative; contain: layout style paint; content-visibility: auto; contain-intrinsic-size: 0 200px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+        .grid-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; transition: gap 0.3s ease; }
+        .grid-group-items { transition: gap 0.3s ease; }
+        .grid-item { aspect-ratio: 9/16; background: var(--bg-card); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, aspect-ratio 0.3s ease; position: relative; contain: layout style paint; content-visibility: auto; contain-intrinsic-size: 0 200px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
         .grid-item:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); z-index: 10; }
         .grid-item.selected { outline: 3px solid var(--teal); }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
@@ -2621,17 +2622,26 @@
             .grid-filter-bar.open { padding: 10px 12px; }
             .grid-filter-bar select { min-width: 100px; font-size: 10px; padding: 8px 10px; }
             .grid-checkbox { padding: 6px 10px; font-size: 9px; }
-            .grid-content { padding: 8px; }
-            .grid-items, .grid-group-items { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
-            /* Grid size overrides for mobile */
-            .grid-items.grid-2-col, .grid-group-items.grid-2-col { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
-            .grid-items.grid-3-col, .grid-group-items.grid-3-col { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
-            .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+            .grid-content { padding: 10px; }
+            .grid-items, .grid-group-items { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+            /* Grid size overrides for mobile - gallery-quality spacing per zoom level */
+            .grid-items.grid-2-col, .grid-group-items.grid-2-col { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+            .grid-items.grid-3-col, .grid-group-items.grid-3-col { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+            .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; }
             .grid-items.grid-6-col, .grid-group-items.grid-6-col { grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; }
-            .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; }
-            .grid-items.grid-11-col, .grid-group-items.grid-11-col { grid-template-columns: repeat(3, 1fr) !important; gap: 3px !important; }
-            .grid-items.grid-12-col, .grid-group-items.grid-12-col { grid-template-columns: repeat(3, 1fr) !important; gap: 3px !important; }
-            .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(3, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-11-col, .grid-group-items.grid-11-col { grid-template-columns: repeat(5, 1fr) !important; gap: 2px !important; }
+            .grid-items.grid-12-col, .grid-group-items.grid-12-col { grid-template-columns: repeat(5, 1fr) !important; gap: 2px !important; }
+            .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(5, 1fr) !important; gap: 2px !important; }
+            /* Aspect ratio adapts per zoom: more zoomed out = squarer (see more), zoomed in = taller (appreciate art) */
+            .grid-items.grid-12-col .grid-item, .grid-group-items.grid-12-col .grid-item,
+            .grid-items.grid-11-col .grid-item, .grid-group-items.grid-11-col .grid-item,
+            .grid-items.grid-auto .grid-item, .grid-group-items.grid-auto .grid-item { aspect-ratio: 3/4 !important; }
+            .grid-items.grid-8-col .grid-item, .grid-group-items.grid-8-col .grid-item,
+            .grid-items.grid-6-col .grid-item, .grid-group-items.grid-6-col .grid-item,
+            .grid-items.grid-4-col .grid-item, .grid-group-items.grid-4-col .grid-item { aspect-ratio: 3/4 !important; }
+            .grid-items.grid-3-col .grid-item, .grid-group-items.grid-3-col .grid-item { aspect-ratio: 3/5 !important; }
+            .grid-items.grid-2-col .grid-item, .grid-group-items.grid-2-col .grid-item { aspect-ratio: 9/16 !important; }
             .grid-item { border-radius: 6px; }
             .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: visible; overflow: visible; }
             .grid-mode-btn { padding: 0 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.05em; border-width: 1.5px; height: 34px; min-height: 34px; white-space: nowrap; flex-shrink: 0; border-radius: 50px; display: flex; align-items: center; justify-content: center; width: auto; }
@@ -2645,7 +2655,8 @@
             .grid-mode-btn .palette-sort-arrow { display: none; }
             .gallery-room-toggle, .grid-size-toggle { width: 44px; height: 44px; font-size: 12px; flex-shrink: 0; }
             /* Palette headers on mobile */
-            .grid-group-header { padding: 10px 12px; gap: 6px; flex-wrap: nowrap; }
+            .grid-group { margin-bottom: 16px; }
+            .grid-group-header { padding: 10px 12px; gap: 6px; flex-wrap: nowrap; margin-bottom: 8px; }
             .grid-group-name { font-size: 10px; letter-spacing: 0.05em; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
             .grid-group-count { font-size: 9px; padding: 2px 6px; flex-shrink: 0; }
             .grid-group-fav, .grid-group-shuffle { width: 32px; height: 32px; font-size: 14px; flex-shrink: 0; }
@@ -2693,14 +2704,20 @@
             .grid-filter-bar .multi-select { position: relative; z-index: 200; }
         }
 
-        /* Small mobile: collector grids as 2 columns for larger artworks */
+        /* Small mobile: tighter spacing, respect zoom levels */
         @media (max-width: 480px) {
-            .grid-items, .grid-group-items { grid-template-columns: repeat(2, 1fr) !important; gap: 6px !important; }
-            .grid-items.grid-2-col, .grid-group-items.grid-2-col { gap: 8px !important; }
-            .grid-items.grid-3-col, .grid-group-items.grid-3-col { grid-template-columns: repeat(2, 1fr) !important; gap: 6px !important; }
             .grid-content { padding: 6px; }
-            .grid-item { border-radius: 8px; }
-            .grid-item-label { font-size: 8px; padding: 6px; }
+            .grid-items, .grid-group-items { grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; }
+            .grid-items.grid-2-col, .grid-group-items.grid-2-col { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+            .grid-items.grid-3-col, .grid-group-items.grid-3-col { grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; }
+            .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(3, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-6-col, .grid-group-items.grid-6-col,
+            .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(4, 1fr) !important; gap: 2px !important; }
+            .grid-items.grid-11-col, .grid-group-items.grid-11-col,
+            .grid-items.grid-12-col, .grid-group-items.grid-12-col,
+            .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(4, 1fr) !important; gap: 2px !important; }
+            .grid-item { border-radius: 6px; }
+            .grid-item-label { font-size: 7px; padding: 4px; }
             .collector-banner { padding: 8px 44px; }
             .collector-banner-name { font-size: 12px; }
         }
@@ -14162,14 +14179,16 @@
         const sizeModes = ['auto', '12-col', '11-col', '8-col', '6-col', '4-col', '3-col', '2-col'];
         const sizeIcons = ['size-auto', 'size-12', 'size-10', 'size-8', 'size-6', 'size-4', 'size-3', 'size-2'];
 
-        // Always start with 12-col (zoomed out, many thumbnails)
+        // Pick initial grid size based on screen: gallery-appropriate default
         function getResponsiveGridSize() {
+            if (window.innerWidth <= 480) return '3-col';  // Small mobile: 3 cols with nice spacing
+            if (window.innerWidth <= 768) return '3-col';  // Mobile: 3 cols gallery view
             return '12-col';
         }
 
-        // Initialize with 12-col (zoomed out)
-        let gridSize = '12-col';
-        let gridSizeIndex = 1; // 12-col is second in sizeModes
+        // Initialize with gallery-appropriate size
+        let gridSize = getResponsiveGridSize();
+        let gridSizeIndex = sizeModes.indexOf(gridSize);
 
         function updateSizeIcon() {
             const icon = document.getElementById('sizeIcon');
@@ -14185,8 +14204,9 @@
             icon.innerHTML = '<b></b>'.repeat(count);
         }
 
-        // On mobile, only cycle through sizes that produce visually distinct layouts
-        const mobileSizeModes = ['12-col', '3-col', '2-col'];
+        // On mobile, cycle through visually distinct gallery layouts
+        // 12-col = overview (5 or 4 cols), 4-col = browsing (4 or 3 cols), 3-col = viewing (3 cols), 2-col = detail (2 cols)
+        const mobileSizeModes = ['12-col', '4-col', '3-col', '2-col'];
 
         function isMobileView() {
             return window.innerWidth <= 768;
@@ -14196,7 +14216,7 @@
             const oldSize = gridSize;
 
             if (isMobileView()) {
-                // On mobile, many sizes map to the same column count, so only cycle distinct ones
+                // On mobile, cycle through gallery-distinct zoom levels
                 let mobileIndex = mobileSizeModes.indexOf(gridSize);
                 if (mobileIndex === -1) mobileIndex = 0;
                 mobileIndex = (mobileIndex + 1) % mobileSizeModes.length;
@@ -14218,6 +14238,16 @@
                 });
             } else {
                 renderGrid();
+            }
+
+            // Subtle zoom feedback animation
+            const gc = document.getElementById('gridContent');
+            if (gc) {
+                gc.style.transition = 'opacity 0.15s ease';
+                gc.style.opacity = '0.7';
+                requestAnimationFrame(() => {
+                    setTimeout(() => { gc.style.opacity = '1'; }, 80);
+                });
             }
         });
 
