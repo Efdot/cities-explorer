@@ -2589,12 +2589,6 @@
             .grid-item-fav { opacity: 0; width: 32px; height: 32px; font-size: 14px; background: rgba(10, 9, 16, 0.6); color: rgba(255,255,255,0.5); pointer-events: none; }
             .grid-item-fav.favorited { opacity: 1; pointer-events: auto; }
         }
-        /* Mobile tap-to-reveal collector info overlay */
-        .grid-item-info-overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,9,16,0.92) 0%, rgba(10,9,16,0.6) 40%, transparent 70%); z-index: 3; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px; gap: 4px; }
-        .grid-item-info-overlay.visible { opacity: 1; pointer-events: auto; }
-        .grid-item-info-collector { font-size: 8px; font-weight: 500; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3; }
-        .grid-item-info-collector strong { color: rgba(232,184,109,0.9); font-weight: 700; }
-        .grid-item-info-tap-hint { font-size: 7px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
         .grid-item-rank { position: absolute; top: 6px; left: 6px; background: var(--spot-color, var(--yellow)); color: var(--spot-text, #000); font-size: 8px; font-weight: 700; padding: 3px 6px; border-radius: 4px; z-index: 2; letter-spacing: 0.03em; border: none; pointer-events: none; box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
         .grid-item-tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--bg-card); border-radius: 10px; padding: 10px 12px; font-size: 9px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: 8px; }
         .grid-item:hover .grid-item-tooltip { opacity: 1; transform: translateX(-50%) translateY(-4px); }
@@ -4484,7 +4478,7 @@
                     </div>
                 </div>
 
-                <div class="print-inquiry-type-note">Signed prints for <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank">City owners</a> · Posters at <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank">Efdot Studio Shop</a></div>
+                <div class="print-inquiry-type-note">Signed prints are exclusive to collectors who <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank">own a City on the blockchain</a> · Posters available to all at <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank">Efdot Studio Shop</a></div>
 
                 <div class="print-inquiry-actions">
                     <button class="print-inquiry-btn primary" id="printInquirySend" style="flex: 2;">Check out in Efdot Shop</button>
@@ -6164,9 +6158,6 @@
         }
 
         // Global handler for grid item clicks (inline onclick)
-        // Track which grid item is currently showing info overlay (mobile two-tap flow)
-        window._gridInfoRevealedToken = null;
-        window._gridInfoRevealedTimer = null;
 
         window.handleGridItemClick = function(e, tokenId) {
             try {
@@ -6176,41 +6167,11 @@
 
                 var isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
 
-                // Mobile two-tap flow: first tap shows collector info, second tap opens output
-                if (isMobile) {
-                    // If in collector mode, use artwork preview
-                    if (typeof currentCollectorFilter !== 'undefined' && currentCollectorFilter && currentCollectorFilter.tokens) {
-                        if (typeof openArtworkPreview === 'function') {
-                            openArtworkPreview(tokenId, currentCollectorFilter.tokens, currentCollectorFilter.name);
-                            return;
-                        }
-                    }
-
-                    var gridItem = e.target.closest('.grid-item');
-                    var overlay = gridItem ? gridItem.querySelector('.grid-item-info-overlay') : null;
-
-                    if (window._gridInfoRevealedToken === tokenId && overlay && overlay.classList.contains('visible')) {
-                        // Second tap: proceed to open the output
-                        clearTimeout(window._gridInfoRevealedTimer);
-                        window._gridInfoRevealedToken = null;
-                        if (overlay) overlay.classList.remove('visible');
-                    } else {
-                        // First tap: show collector info overlay
-                        // Clear any previously revealed overlay
-                        var prevOverlay = document.querySelector('.grid-item-info-overlay.visible');
-                        if (prevOverlay) prevOverlay.classList.remove('visible');
-                        clearTimeout(window._gridInfoRevealedTimer);
-
-                        if (overlay) {
-                            overlay.classList.add('visible');
-                            window._gridInfoRevealedToken = tokenId;
-                            // Auto-hide after 4 seconds
-                            window._gridInfoRevealedTimer = setTimeout(function() {
-                                overlay.classList.remove('visible');
-                                window._gridInfoRevealedToken = null;
-                            }, 4000);
-                        }
-                        return; // Don't navigate yet
+                // If in collector mode on mobile, use artwork preview
+                if (isMobile && typeof currentCollectorFilter !== 'undefined' && currentCollectorFilter && currentCollectorFilter.tokens) {
+                    if (typeof openArtworkPreview === 'function') {
+                        openArtworkPreview(tokenId, currentCollectorFilter.tokens, currentCollectorFilter.name);
+                        return;
                     }
                 }
 
@@ -6340,10 +6301,6 @@
                     <div class="compare-check">✓</div>
                     <img class="img-placeholder" src="${getSmallThumbnailUrl(id)}" alt="" loading="${loadingAttr}" decoding="async">
                     <img class="img-full" src="${getThumbnailUrl(id)}" alt="City ${id}" loading="${loadingAttr}" decoding="async" onload="this.classList.add('loaded');this.previousElementSibling.classList.add('fade-out');">
-                    <div class="grid-item-info-overlay">
-                        <div class="grid-item-info-collector">${collectorName ? `in the collection of <strong>${collectorName}</strong>` : ''}</div>
-                        <div class="grid-item-info-tap-hint">tap again to view</div>
-                    </div>
                     <div class="grid-item-label">#${id}</div>
                     ${showRank && rank ? `<div class="grid-item-rank">#${rank}</div>` : ''}
                     ${generateGridTooltip(id)}
