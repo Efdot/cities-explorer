@@ -1910,27 +1910,27 @@
         .top-50-dot { background: #C0C0C0; }
         .top-100-dot { background: #CD7F32; }
         /* Color gradient slider for grid view */
-        .grid-color-gradient-toggle { padding: 10px 16px; background: var(--bg-input); border: none; border-radius: 50px; font-size: 11px; font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .grid-color-gradient-toggle { padding: 10px 12px; background: var(--bg-input); border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
         .grid-color-gradient-toggle:hover { background: var(--bg-card); }
-        .grid-color-gradient-toggle .color-dot { width: 10px; height: 10px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; }
+        .grid-color-gradient-toggle .color-dot { width: 12px; height: 12px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; }
         .grid-color-gradient-toggle.active { background: rgba(0,229,204,0.15); color: var(--teal); }
-        .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; background: var(--bg-panel); pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center; border-radius: 0; }
+        .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: stretch; justify-content: center; border-radius: 0; background: transparent; }
         .grid-color-gradient-bar.open { opacity: 1; pointer-events: auto; }
-        .grid-color-gradient-inner { padding: 8px 28px; width: 100%; display: flex; flex-direction: column; gap: 4px; }
-        .grid-color-gradient-strip { height: 28px; border-radius: 14px; cursor: pointer; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.15); touch-action: none; }
-        .grid-color-gradient-strip::after { content: ''; position: absolute; inset: 0; border-radius: 14px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), inset 0 -1px 2px rgba(0,0,0,0.1); pointer-events: none; }
-        .grid-color-gradient-marker { position: absolute; width: 6px; height: 36px; background: #fff; border-radius: 3px; top: -4px; transform: translateX(-50%); box-shadow: 0 2px 8px rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+        .grid-color-gradient-inner { padding: 0; width: 100%; display: flex; flex-direction: column; position: relative; }
+        .grid-color-gradient-strip { flex: 1; cursor: pointer; position: relative; touch-action: none; border-radius: 0; }
+        .grid-color-gradient-strip::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 1px 3px rgba(0,0,0,0.15); pointer-events: none; }
+        .grid-color-gradient-marker { position: absolute; width: 2px; height: 100%; background: rgba(255,255,255,0.9); top: 0; transform: translateX(-50%); box-shadow: 0 0 6px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
         .grid-color-gradient-strip:hover .grid-color-gradient-marker, .grid-color-gradient-strip.active .grid-color-gradient-marker { opacity: 1; }
-        .grid-color-gradient-meta { display: flex; justify-content: space-between; align-items: center; }
-        .grid-color-gradient-clock { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: var(--text-muted); opacity: 0; transition: opacity 0.25s ease; min-width: 40px; white-space: nowrap; }
-        .grid-color-gradient-clock.visible { opacity: 0.85; }
-        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
-        .grid-color-gradient-close { background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.6; transition: opacity 0.2s; }
-        .grid-color-gradient-close:hover { opacity: 1; color: var(--text); }
-        .grid-color-gradient-hint { font-size: 8px; color: var(--orange); opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; }
-        .grid-color-gradient-hint.visible { opacity: 0.7; }
+        .grid-color-gradient-meta { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 4px 12px; z-index: 2; pointer-events: none; }
+        .grid-color-gradient-clock { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: rgba(255,255,255,0.85); opacity: 0; transition: opacity 0.25s ease; min-width: 40px; white-space: nowrap; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .grid-color-gradient-clock.visible { opacity: 1; }
+        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .grid-color-gradient-close { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.6; transition: opacity 0.2s; pointer-events: auto; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .grid-color-gradient-close:hover { opacity: 1; color: #fff; }
+        .grid-color-gradient-hint { font-size: 8px; color: #ffa500; opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .grid-color-gradient-hint.visible { opacity: 0.8; }
         @media (max-width: 768px) {
-            .grid-color-gradient-inner { padding: 8px 16px; }
+            .grid-color-gradient-inner { padding: 0; }
         }
         .grid-filter-spacer { flex: 1; }
         .grid-supply-tracker { width: 120px; height: 28px; position: relative; flex-shrink: 0; cursor: pointer; display: block; text-decoration: none; }
@@ -3963,7 +3963,7 @@
             <label class="grid-checkbox"><input type="checkbox" id="gridWaterFilter"> WATER</label>
             <button class="grid-sort-toggle sort-desc" id="gridSortToggle" title="Sort order">NEW <span class="sort-arrow">↑</span></button>
             <button class="grid-numbers-toggle" id="gridNumbersToggle" title="Toggle output numbers">#</button>
-            <button class="grid-color-gradient-toggle" id="gridColorGradientToggle" title="Filter by color"><span class="color-dot"></span> COLOR</button>
+            <button class="grid-color-gradient-toggle" id="gridColorGradientToggle" title="Filter by color"><span class="color-dot"></span></button>
             <div class="grid-color-gradient-bar" id="gridColorGradientBar">
                 <div class="grid-color-gradient-inner">
                     <div class="grid-color-gradient-meta">
@@ -13596,6 +13596,10 @@
         const gridFilterBar = document.getElementById('gridFilterBar');
         filterToggleBar.addEventListener('click', (e) => {
             e.stopPropagation();
+            // Close gradient picker if open
+            if (colorGradientActive) {
+                toggleColorGradient();
+            }
             filterToggleBar.classList.toggle('open');
             gridFilterBar.classList.toggle('open');
         });
@@ -13992,9 +13996,22 @@
         let savedFilterState = null; // Store original filter state to restore
         let gradientTargetColor = null; // Store target color for sorting by proximity
 
-        // Build the gradient from actual palette bg colors sorted by hue
+        // Build the gradient as a day cycle: 00:00 → 24:00
+        // dark blues/purples → dawn gold → white daylight → orange afternoon → back to dark
         function buildColorGradient() {
-            const palettesByHue = Object.entries(PALETTE_DATA).map(([name, info]) => {
+            // Fixed day-cycle gradient: midnight → dawn → midday → dusk → midnight
+            colorGradientStrip.style.background = `linear-gradient(to right,
+                #0a0a1a 0%, #0d1030 4%, #1a1545 8%, #2a1f5c 12%,
+                #3d2a6e 16%, #5c3d7a 19%, #8b5e6b 22%, #c47a4a 25%,
+                #e8a635 28%, #f0c040 31%, #f5d870 35%, #fae8a0 39%,
+                #fff5d6 43%, #fffbe8 47%, #ffffff 50%,
+                #fff8e0 53%, #ffe8b0 57%, #ffd080 61%, #f0a848 65%,
+                #e88030 69%, #d05a28 72%, #a83a30 75%,
+                #7a2a50 78%, #5c2060 81%, #3d1a5c 84%,
+                #2a1550 88%, #1a1040 92%, #0d0d30 96%, #0a0a1a 100%)`;
+
+            // Map each palette to a position on the 24h timeline via its hour metadata
+            const palettesWithTime = Object.entries(PALETTE_DATA).map(([name, info]) => {
                 const hex = info.bg.replace('#', '');
                 const r = parseInt(hex.substr(0, 2), 16) / 255;
                 const g = parseInt(hex.substr(2, 2), 16) / 255;
@@ -14010,20 +14027,28 @@
                 }
                 const meta = PALETTE_META[name];
                 const hour = meta ? meta.hour : '';
-                return { name, bg: info.bg, h: h * 360, s: s * 100, l: l * 100, hour };
+
+                // Parse hour to a 0-24 float for timeline position
+                let timeVal = -1;
+                if (hour && hour !== 'Anytime' && hour !== 'Blue Hour') {
+                    const parts = hour.split(':');
+                    timeVal = parseInt(parts[0]) + (parseInt(parts[1] || 0) / 60);
+                } else if (hour === 'Blue Hour') {
+                    timeVal = 19.5; // Place blue hour around dusk
+                }
+
+                return { name, bg: info.bg, h: h * 360, s: s * 100, l: l * 100, hour, timeVal };
             });
 
-            // Sort by hue for a smooth rainbow gradient
-            palettesByHue.sort((a, b) => a.h - b.h);
-
-            // Build CSS gradient stops from sorted palette colors
-            const stops = palettesByHue.map((p, i) => {
-                const pct = (i / (palettesByHue.length - 1)) * 100;
-                return `${p.bg} ${pct.toFixed(1)}%`;
+            // Sort by time value so lookups work; palettes without time go at end
+            palettesWithTime.sort((a, b) => {
+                if (a.timeVal < 0 && b.timeVal < 0) return 0;
+                if (a.timeVal < 0) return 1;
+                if (b.timeVal < 0) return -1;
+                return a.timeVal - b.timeVal;
             });
-            colorGradientStrip.style.background = `linear-gradient(to right, ${stops.join(', ')})`;
 
-            return palettesByHue;
+            return palettesWithTime;
         }
 
         let gradientPalettes = []; // Will be populated when gradient is shown
@@ -14035,14 +14060,15 @@
 
             if (colorGradientActive) {
                 gradientPalettes = buildColorGradient();
-                // Save current palette filter state
+                // Save current palette filter state in case user never interacts
                 savedFilterState = new Set(gridFilterState.palettes);
             } else {
-                // Restore original filter state
-                if (savedFilterState) {
+                // Keep the current palette selection for the user to explore
+                // Only restore if user never interacted with the gradient
+                if (savedFilterState && !colorGradientStrip.classList.contains('active')) {
                     gridFilterState.palettes = savedFilterState;
-                    savedFilterState = null;
                 }
+                savedFilterState = null;
                 gradientTargetColor = null;
                 colorGradientStrip.classList.remove('active');
                 colorGradientHint.classList.remove('visible');
@@ -14055,26 +14081,32 @@
         function getColorFromGradientPosition(percent) {
             if (!gradientPalettes.length) return { names: [], target: null };
             const clampedPct = Math.max(0, Math.min(100, percent));
-            const idx = (clampedPct / 100) * (gradientPalettes.length - 1);
 
-            // Find the target hue at this position
-            const targetIdx = Math.round(idx);
-            const targetPalette = gradientPalettes[targetIdx];
+            // Map percent to 24h clock (0% = 0:00, 100% = 24:00)
+            const targetHour = (clampedPct / 100) * 24;
 
-            // Find palettes with similar hue (within a range) or similar luminance for grays
-            const hueTolerance = 25;
-            const matchingPalettes = gradientPalettes.filter(p => {
-                // For low-saturation colors (grays), match by luminance
-                if (targetPalette.s < 15 && p.s < 15) {
-                    return Math.abs(p.l - targetPalette.l) < 20;
-                }
-                // For saturated colors, match by hue
-                const hueDiff = Math.abs(p.h - targetPalette.h);
-                const circularDiff = Math.min(hueDiff, 360 - hueDiff);
-                return circularDiff < hueTolerance && p.s > 10;
+            // Find palettes with time values close to the target hour
+            const timeTolerance = 1.5; // hours
+            const timedPalettes = gradientPalettes.filter(p => p.timeVal >= 0);
+
+            // Sort by distance to target hour, pick closest ones
+            const withDist = timedPalettes.map(p => {
+                const diff = Math.abs(p.timeVal - targetHour);
+                const circDiff = Math.min(diff, 24 - diff);
+                return { ...p, dist: circDiff };
             });
+            withDist.sort((a, b) => a.dist - b.dist);
 
-            return { names: matchingPalettes.map(p => p.name), target: targetPalette };
+            // Take palettes within tolerance, minimum 1
+            const matchingPalettes = withDist.filter(p => p.dist <= timeTolerance);
+            if (matchingPalettes.length === 0 && withDist.length > 0) {
+                matchingPalettes.push(withDist[0]);
+            }
+
+            // Target is the closest palette
+            const target = matchingPalettes.length > 0 ? matchingPalettes[0] : null;
+
+            return { names: matchingPalettes.map(p => p.name), target };
         }
 
         function handleGradientInteraction(e) {
@@ -14092,15 +14124,12 @@
             // Store target color for proximity sorting
             gradientTargetColor = target;
 
-            // Show clock time from the palette at this position
-            if (target && target.hour && target.hour !== 'Anytime') {
-                const displayTime = target.hour === 'Blue Hour' ? 'Blue Hour' :
-                    (target.hour.length <= 4 ? '0' + target.hour : target.hour);
-                colorGradientClock.textContent = displayTime;
-                colorGradientClock.classList.add('visible');
-            } else {
-                colorGradientClock.classList.remove('visible');
-            }
+            // Show clock time from the gradient position (00:00 - 24:00)
+            const posHour = (percent / 100) * 24;
+            const hh = String(Math.floor(posHour)).padStart(2, '0');
+            const mm = String(Math.floor((posHour % 1) * 60)).padStart(2, '0');
+            colorGradientClock.textContent = `${hh}:${mm}`;
+            colorGradientClock.classList.add('visible');
 
             // Temporarily override palette filter
             gridFilterState.palettes = new Set(matchingNames.length > 0 ? matchingNames : ['__none__']);
@@ -14152,18 +14181,11 @@
                     const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
                     colorGradientMarker.style.left = `${percent}%`;
                     // Show clock on hover too
-                    if (gradientPalettes.length) {
-                        const idx = Math.round((percent / 100) * (gradientPalettes.length - 1));
-                        const p = gradientPalettes[idx];
-                        if (p && p.hour && p.hour !== 'Anytime') {
-                            const displayTime = p.hour === 'Blue Hour' ? 'Blue Hour' :
-                                (p.hour.length <= 4 ? '0' + p.hour : p.hour);
-                            colorGradientClock.textContent = displayTime;
-                            colorGradientClock.classList.add('visible');
-                        } else {
-                            colorGradientClock.classList.remove('visible');
-                        }
-                    }
+                    const posHour = (percent / 100) * 24;
+                    const hh = String(Math.floor(posHour)).padStart(2, '0');
+                    const mm = String(Math.floor((posHour % 1) * 60)).padStart(2, '0');
+                    colorGradientClock.textContent = `${hh}:${mm}`;
+                    colorGradientClock.classList.add('visible');
                 } else {
                     colorGradientClock.classList.remove('visible');
                 }
@@ -14181,14 +14203,15 @@
                 colorGradientActive = false;
                 colorGradientToggle.classList.remove('active');
                 colorGradientBar.classList.remove('open');
+                // Keep palette selection if user interacted, restore if not
+                if (savedFilterState && !colorGradientStrip.classList.contains('active')) {
+                    gridFilterState.palettes = savedFilterState;
+                }
+                savedFilterState = null;
                 colorGradientStrip.classList.remove('active');
                 colorGradientHint.classList.remove('visible');
                 colorGradientClock.classList.remove('visible');
                 gradientTargetColor = null;
-                if (savedFilterState) {
-                    gridFilterState.palettes = savedFilterState;
-                    savedFilterState = null;
-                }
             }
         }
 
