@@ -27,8 +27,8 @@
     <link rel="preconnect" href="https://images.ninfa.io" crossorigin>
     <link rel="preconnect" href="https://media-proxy.artblocks.io" crossorigin>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
+    <!-- Favicon - city sunrise emoji -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌇</text></svg>">
     <link rel="apple-touch-icon" href="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
 
     <!-- PWA Manifest -->
@@ -1434,6 +1434,7 @@
         .grid-stats-bar.visible { display: flex; }
         .grid-stats-bar strong { color: var(--teal); }
 
+        .mobile-logo { display: none; }
         .top-nav-fixed { position: fixed; top: 24px; right: 24px; z-index: 700; display: flex; gap: 0; align-items: center; }
         .top-nav-fixed button:focus-visible, .top-nav-fixed button:focus { outline: none; box-shadow: none; }
         .view-toggle-btn { width: 40px; height: 40px; min-width: 40px; border: none; border-radius: 0; background: transparent; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-left: -4px; padding: 0; overflow: hidden; }
@@ -1746,6 +1747,10 @@
         .leaderboard-view.active { display: block; opacity: 1; animation: fadeInFast 0.15s ease-out; }
         .pills-view { display: block; }
         .pills-view.hidden { display: none; }
+        .pills-row { display: flex; align-items: center; gap: 0; margin: 0 -16px 8px -16px; }
+        .pills-row .collector-feature { margin: 0; flex: none; }
+        .pills-row .recently-built-feature { margin: 0; flex: none; }
+        .pills-row .pills-divider { color: rgba(255,255,255,0.15); font-size: 12px; font-weight: 300; padding: 0 2px; user-select: none; }
         @keyframes fadeInFast { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         /* Grid badge for leaderboard - shows energy collection as 9:16 cells */
         .leaderboard-grid-wrap { display: inline-flex; gap: 1px; margin-left: 6px; flex-shrink: 0; align-items: center; }
@@ -1819,6 +1824,9 @@
         .collector-guide-arrow:disabled { opacity: 0.15; cursor: not-allowed; }
         .collector-guide-arrow:disabled:hover { color: var(--text-dim); opacity: 0.15; }
         .collector-guide-arrow .arrow-icon { font-size: 11px; }
+        .collector-guide-weth-steps { text-align: left; max-width: 280px; margin: 0 auto 20px; }
+        .collector-guide-weth-step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+        .weth-step-num { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: rgba(232, 184, 109, 0.15); color: var(--warm); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
         .leaderboard-item { margin-bottom: 12px; display: flex; gap: 10px; align-items: center; contain: layout style; will-change: transform; }
         .leaderboard-name-wrap { flex-shrink: 0; min-width: 140px; display: flex; align-items: center; gap: 4px; }
         .leaderboard-rank { font-size: 9px; font-weight: 600; color: var(--border); width: 18px; opacity: 0; transition: opacity 0.15s ease; flex-shrink: 0; }
@@ -2911,10 +2919,11 @@
             .grid-content { padding: 6px; }
             .grid-items, .grid-group-items { gap: 4px !important; }
             .main-content { padding-top: 50px !important; padding-bottom: 16px !important; }
-            .top-nav-fixed { top: 8px; right: 8px; gap: 4px; }
+            .top-nav-fixed { top: 8px; right: 8px; gap: 8px; }
             .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
-            .mint-toggle { --ch: 16px; --cw: calc(var(--ch) * 3.985); padding: 1px; }
+            .mint-toggle { --ch: 16px; --cw: calc(var(--ch) * 3.985); padding: 1px; margin-right: 0; }
             .mint-toggle .collect-seg { background-position-y: center; }
+            .mobile-logo { font-size: 16px; }
             .preview-image { max-height: calc(100vh - 140px); }
             .pull-refresh-indicator { padding: 8px 16px; font-size: 9px; }
         }
@@ -3395,10 +3404,30 @@
             /* Hide efdot fixed shop icon */
             .efdot-shop-fixed { display: none !important; }
 
+            /* Mobile logo - always visible top left */
+            .mobile-logo {
+                display: block;
+                position: fixed;
+                top: 8px;
+                left: 12px;
+                z-index: 700;
+                font-size: 18px;
+                font-weight: 700;
+                font-family: Helvetica, Arial, sans-serif;
+                color: #fff;
+                letter-spacing: 0.02em;
+                line-height: 28px;
+                cursor: pointer;
+                transition: opacity 0.2s ease;
+            }
+            .mobile-logo:active { opacity: 0.7; }
+            body.collectors-open .mobile-logo { display: none; }
+            body.grid-open .mobile-logo { display: none; }
+
             /* Top nav: keep collect button, shrink */
-            .top-nav-fixed { top: 8px; right: 8px; gap: 4px; }
+            .top-nav-fixed { top: 8px; right: 8px; left: auto; gap: 8px; }
             .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
-            .mint-toggle { --ch: 20px; --cw: calc(var(--ch) * 3.985); padding: 2px; margin-right: 8px; }
+            .mint-toggle { --ch: 20px; --cw: calc(var(--ch) * 3.985); padding: 2px; margin-right: 0; }
             .mint-toggle .collect-seg { background-position-y: center; }
 
             /* Collectors/Gallery panels still slide from right, full width */
@@ -3977,6 +4006,7 @@
         </div>
     </div>
 
+    <div class="mobile-logo" id="mobileLogo">Cities</div>
     <div class="top-nav-fixed">
         <div class="collect-btn-wrapper">
             <button class="mint-toggle" id="mintToggle" onclick="toggleCollectPopover(this)"><span class="collect-seg cs-1"></span><span class="collect-seg cs-2"></span><span class="collect-seg cs-3"></span><span class="collect-seg cs-4"></span><span class="collect-seg cs-5"></span></button>
@@ -4026,6 +4056,7 @@
         </div>
         <button class="not-collector-link" id="notCollectorTop">Not a collector yet? ✦</button>
         <div class="pills-view" id="pillsView">
+            <div class="pills-row">
             <!-- Daily Collector Feature - collapsed by default -->
             <div class="collector-feature collapsed" id="collectorFeature">
                 <div class="feature-collapsed-label" id="featureCollapsedLabel"
@@ -4046,6 +4077,7 @@
                     </div>
                 </div>
             </div>
+            <span class="pills-divider">|</span>
             <!-- Recently Built - most recently minted city -->
             <div class="recently-built-feature collapsed" id="recentlyBuiltFeature">
                 <div class="recently-built-label" id="recentlyBuiltLabel"
@@ -4057,6 +4089,7 @@
                     <span class="rb-arrow">▼</span>
                 </div>
                 <div class="rb-expanded" id="recentlyBuiltContent"></div>
+            </div>
             </div>
             <div class="collectors-stats"><span id="collectorCountStats">164</span> collectors · <span id="citiesCountStats">321</span> cities</div>
             <div class="top-collectors-highlight" id="topCollectorsHighlight"></div>
@@ -4072,6 +4105,8 @@
                     <div class="collector-guide-step-num active" data-step="1">1</div>
                     <div class="collector-guide-step-num" data-step="2">2</div>
                     <div class="collector-guide-step-num" data-step="3">3</div>
+                    <div class="collector-guide-step-num" data-step="4">4</div>
+                    <div class="collector-guide-step-num" data-step="5">5</div>
                 </div>
             </div>
 
@@ -4084,30 +4119,69 @@
                 <div class="collector-guide-highlight">500 unique Cities. Each one exists only&nbsp;once. Yours to keep&nbsp;forever.</div>
             </div>
 
-            <!-- Step 2: How to collect -->
+            <!-- Step 2: Build your grid -->
             <div class="collector-guide-step" data-step="2">
-                <div class="collector-guide-title">How to collect</div>
+                <div class="collector-guide-title">Build your grid</div>
                 <div class="collector-guide-desc">
-                    You can get one directly with ETH on Art&nbsp;Blocks, or buy with a credit card through the Efdot Studio&nbsp;Shop. No crypto wallet&nbsp;needed. Already&#8209;collected Cities can be found&nbsp;on&nbsp;OpenSea.
+                    Use the wall view's Try&nbsp;Mode to build your dream collection from&nbsp;scratch. Browse Cities by energy, palette, and rarity&mdash;drag them onto your grid to see how they look together on a&nbsp;wall. When you've found the ones you&nbsp;love, it's time to make them&nbsp;yours.
                 </div>
-                <div class="collector-guide-highlight">Four Cities make a&nbsp;set. Every set you complete earns one airdrop of&nbsp;future&nbsp;drops. Collect one of each energy&nbsp;type&mdash;Rising, Living, Fading, Resting&mdash;for a complete&nbsp;energy&nbsp;set.</div>
+                <div class="collector-guide-highlight">Tap ✦&nbsp;TRY on any collector's wall to start building. Mix energies and palettes for the perfect&nbsp;set.</div>
                 <button class="collector-guide-pill-btn secondary" id="guideExploreGrid">
                     Explore the grid
                 </button>
             </div>
 
-            <!-- Step 3: Digital + Physical -->
+            <!-- Step 3: Get WETH and make offers -->
             <div class="collector-guide-step" data-step="3">
-                <div class="collector-guide-title">Digital + Physical</div>
-                <div class="collector-guide-desc">Cities aren't just for&nbsp;screens. Owners can order hand&#8209;signed prints, and high&#8209;quality posters are available to anyone through the Efdot&nbsp;Studio&nbsp;Shop. Collect the art you love, then put&nbsp;it on&nbsp;your&nbsp;wall.</div>
+                <div class="collector-guide-title">Acquire with WETH</div>
+                <div class="collector-guide-desc">
+                    The best way to collect specific Cities is to leave offers on&nbsp;OpenSea using WETH (Wrapped&nbsp;ETH). Here's&nbsp;how:
+                </div>
+                <div class="collector-guide-weth-steps">
+                    <div class="collector-guide-weth-step">
+                        <span class="weth-step-num">1</span>
+                        <span>Set up a wallet (MetaMask, Coinbase&nbsp;Wallet, or&nbsp;Rainbow)</span>
+                    </div>
+                    <div class="collector-guide-weth-step">
+                        <span class="weth-step-num">2</span>
+                        <span>Buy ETH on the wallet or transfer from an&nbsp;exchange</span>
+                    </div>
+                    <div class="collector-guide-weth-step">
+                        <span class="weth-step-num">3</span>
+                        <span>Wrap your ETH to WETH on <a href="https://app.uniswap.org" target="_blank" style="color: var(--warm); text-decoration: underline dotted;">Uniswap</a> (swap&nbsp;ETH&nbsp;→&nbsp;WETH)</span>
+                    </div>
+                    <div class="collector-guide-weth-step">
+                        <span class="weth-step-num">4</span>
+                        <span>Find the City you want on OpenSea and click "Make&nbsp;Offer"</span>
+                    </div>
+                </div>
+                <div class="collector-guide-highlight">WETH lets you make offers on Cities that aren't listed for&nbsp;sale. Many collectors are open to&nbsp;offers&mdash;you'd be&nbsp;surprised.</div>
+                <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn">
+                    Browse on OpenSea
+                </a>
+            </div>
+
+            <!-- Step 4: How to collect (other methods) -->
+            <div class="collector-guide-step" data-step="4">
+                <div class="collector-guide-title">Other ways to collect</div>
+                <div class="collector-guide-desc">
+                    You can also get one directly with ETH on Art&nbsp;Blocks, or buy with a credit card through the Efdot Studio&nbsp;Shop. No crypto wallet&nbsp;needed for the&nbsp;shop.
+                </div>
+                <div class="collector-guide-highlight">Four Cities make a&nbsp;set. Every set you complete earns one airdrop of&nbsp;future&nbsp;drops. Collect one of each energy&nbsp;type&mdash;Rising, Living, Fading, Resting&mdash;for a complete&nbsp;energy&nbsp;set.</div>
                 <a href="https://www.artblocks.io/marketplace/collections/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn">
                     Get on Art Blocks
                 </a>
+                <a href="https://shop.efdotstudio.com/collections/cities-collection/products/cities-1-1-500" target="_blank" class="collector-guide-pill-btn secondary">
+                    Buy with Card
+                </a>
+            </div>
+
+            <!-- Step 5: Digital + Physical -->
+            <div class="collector-guide-step" data-step="5">
+                <div class="collector-guide-title">Digital + Physical</div>
+                <div class="collector-guide-desc">Cities aren't just for&nbsp;screens. Owners can order hand&#8209;signed prints, and high&#8209;quality posters are available to anyone through the Efdot&nbsp;Studio&nbsp;Shop. Collect the art you love, then put&nbsp;it on&nbsp;your&nbsp;wall.</div>
                 <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" class="collector-guide-pill-btn secondary">
                     Browse Prints
-                </a>
-                <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn secondary">
-                    Browse on OpenSea
                 </a>
             </div>
 
@@ -7835,7 +7909,7 @@
 
         // Citizen Guide functionality - step-by-step onboarding
         let currentGuideStep = 1;
-        const totalGuideSteps = 3;
+        const totalGuideSteps = 5;
 
         function showCollectorGuideView() {
             document.getElementById('pillsView').classList.add('hidden');
@@ -8827,13 +8901,13 @@
                 renderGrid();
             });
 
-            // Mouse wheel / trackpad zoom - very smooth and gradual
+            // Mouse wheel / trackpad zoom
             wallRoom?.addEventListener('wheel', (e) => {
                 e.preventDefault();
-                // Use smaller delta for smoother pinch/trackpad zoom
-                const sensitivity = e.ctrlKey ? 0.01 : 0.02; // ctrlKey indicates pinch gesture
-                const delta = e.deltaY > 0 ? -sensitivity : sensitivity;
-                wallViewZoom = Math.max(0.3, Math.min(4, wallViewZoom + delta));
+                // Scale-based zoom for natural feel at all zoom levels
+                const factor = e.ctrlKey ? 0.015 : 0.04; // ctrlKey indicates pinch gesture
+                const scaleDelta = e.deltaY > 0 ? (1 - factor) : (1 + factor);
+                wallViewZoom = Math.max(0.3, Math.min(4, wallViewZoom * scaleDelta));
                 applyWallZoom();
             }, { passive: false });
 
@@ -8853,8 +8927,9 @@
                     const dy = e.touches[0].clientY - e.touches[1].clientY;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (lastTouchDistance > 0) {
-                        const delta = (distance - lastTouchDistance) * 0.005; // Very smooth
-                        wallViewZoom = Math.max(0.3, Math.min(4, wallViewZoom + delta));
+                        // Ratio-based scaling for natural pinch feel
+                        const ratio = distance / lastTouchDistance;
+                        wallViewZoom = Math.max(0.3, Math.min(4, wallViewZoom * ratio));
                         applyWallZoom();
                     }
                     lastTouchDistance = distance;
@@ -12162,7 +12237,7 @@
             fullscreenSwiped = false;
         });
 
-        // Exit fullscreen or open grid when clicking the black area (main-content background)
+        // Exit fullscreen or navigate back when clicking the black area (main-content background)
         document.querySelector('.main-content')?.addEventListener('click', (e) => {
             // Only trigger if clicking the actual background, not child elements
             if (e.target === e.currentTarget || e.target.classList.contains('main-content')) {
@@ -12171,7 +12246,19 @@
                     isFullscreen = false;
                     document.body.classList.remove('fullscreen-mode');
                 } else {
-                    // In normal mode, clicking black area opens grid view
+                    // Navigate back to previous screen: collector gallery > output history > grid
+                    if (typeof returnToCollectorGallery === 'function' && returnToCollectorGallery()) {
+                        return; // Returned to collector gallery context
+                    }
+                    if (typeof outputHistory !== 'undefined' && outputHistory.length > 1) {
+                        outputHistory.pop(); // Remove current
+                        const previousToken = outputHistory.pop(); // Get previous
+                        if (previousToken !== undefined && typeof loadOutput === 'function') {
+                            loadOutput(previousToken, true, false);
+                            return;
+                        }
+                    }
+                    // Fallback: open grid view
                     document.getElementById('gridPanel')?.classList.add('open');
                     document.getElementById('viewToggleBtn')?.classList.add('grid-open');
                     document.body.classList.add('grid-open');
@@ -14209,6 +14296,11 @@
 
         // Click "Cities" title to return to grid
         document.getElementById('sidebarTitle')?.addEventListener('click', () => {
+            openGridView();
+        });
+
+        // Mobile logo click - same behavior as sidebar title
+        document.getElementById('mobileLogo')?.addEventListener('click', () => {
             openGridView();
         });
 
