@@ -1910,10 +1910,11 @@
         .top-50-dot { background: #C0C0C0; }
         .top-100-dot { background: #CD7F32; }
         /* Color gradient slider for grid view */
-        .grid-color-gradient-toggle { padding: 10px 16px; background: var(--bg-input); border: none; border-radius: 50px; font-size: 11px; font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-        .grid-color-gradient-toggle:hover { background: var(--bg-card); }
-        .grid-color-gradient-toggle .color-dot { width: 10px; height: 10px; border-radius: 50%; background: conic-gradient(#0f1a2e, #f7b733, #fdf4e3, #e67e22, #0f1a2e); flex-shrink: 0; }
-        .grid-color-gradient-toggle.active { background: rgba(0,229,204,0.15); color: var(--teal); }
+        .grid-color-gradient-toggle { padding: 8px; background: var(--bg-input); border: none; border-radius: 50%; font-size: 11px; font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; white-space: nowrap; width: 34px; height: 34px; }
+        .grid-color-gradient-toggle:hover { background: var(--bg-card); transform: scale(1.1); }
+        .grid-color-gradient-toggle .color-dot { width: 16px; height: 16px; border-radius: 50%; background: conic-gradient(#0f1a2e, #f7b733, #fdf4e3, #e67e22, #0f1a2e); flex-shrink: 0; transition: box-shadow 0.3s ease; }
+        .grid-color-gradient-toggle.active { background: rgba(0,229,204,0.15); }
+        .grid-color-gradient-toggle.active .color-dot { box-shadow: 0 0 8px rgba(0,229,204,0.4); }
         .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; background: var(--bg-panel); pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: stretch; justify-content: center; border-radius: 0; }
         .grid-color-gradient-bar.open { opacity: 1; pointer-events: auto; }
         .grid-color-gradient-inner { padding: 0; width: 100%; display: flex; flex-direction: column; }
@@ -1928,6 +1929,14 @@
         .grid-color-gradient-hint.visible { opacity: 0.85; }
         .grid-color-gradient-times { display: flex; justify-content: space-between; padding: 2px 6px 0; background: var(--bg-panel); }
         .grid-color-gradient-times span { font-size: 7px; font-weight: 500; color: var(--text-dim); letter-spacing: 0.02em; opacity: 0.4; font-family: inherit; }
+        /* Floating reset filters button */
+        .grid-reset-filters { position: fixed; bottom: 60px; right: 16px; z-index: 170; background: rgba(20,19,28,0.92); border: 1px solid rgba(232,184,109,0.3); color: rgba(232,184,109,0.8); padding: 8px 14px; font-size: 9px; font-weight: 700; font-family: inherit; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; opacity: 0; pointer-events: none; transition: all 0.25s ease; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+        .grid-reset-filters.visible { opacity: 1; pointer-events: auto; }
+        .grid-reset-filters:hover { background: rgba(232,184,109,0.15); border-color: rgba(232,184,109,0.6); color: rgba(232,184,109,1); }
+        .grid-reset-filters:active { transform: scale(0.95); }
+        @media (min-width: 769px) {
+            .grid-reset-filters { bottom: 20px; right: 20px; }
+        }
         .grid-filter-spacer { flex: 1; }
         .grid-supply-tracker { width: 120px; height: 28px; position: relative; flex-shrink: 0; cursor: pointer; display: block; text-decoration: none; }
         .grid-supply-bar { position: relative; height: 100%; background: var(--bg-input); border-radius: 14px; overflow: hidden; transition: box-shadow 0.3s ease; }
@@ -2536,6 +2545,12 @@
             .grid-item-fav { opacity: 0; width: 32px; height: 32px; font-size: 14px; background: rgba(10, 9, 16, 0.6); color: rgba(255,255,255,0.5); pointer-events: none; }
             .grid-item-fav.favorited { opacity: 1; pointer-events: auto; }
         }
+        /* Mobile tap-to-reveal collector info overlay */
+        .grid-item-info-overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,9,16,0.92) 0%, rgba(10,9,16,0.6) 40%, transparent 70%); z-index: 3; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px; gap: 4px; }
+        .grid-item-info-overlay.visible { opacity: 1; pointer-events: auto; }
+        .grid-item-info-collector { font-size: 8px; font-weight: 500; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3; }
+        .grid-item-info-collector strong { color: rgba(232,184,109,0.9); font-weight: 700; }
+        .grid-item-info-tap-hint { font-size: 7px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
         .grid-item-rank { position: absolute; top: 6px; left: 6px; background: var(--spot-color, var(--yellow)); color: var(--spot-text, #000); font-size: 8px; font-weight: 700; padding: 3px 6px; border-radius: 4px; z-index: 2; letter-spacing: 0.03em; border: none; pointer-events: none; box-shadow: 0 2px 12px color-mix(in srgb, var(--spot-color, var(--yellow)) 50%, transparent); }
         .grid-item-tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--bg-card); border-radius: 10px; padding: 10px 12px; font-size: 9px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: 8px; }
         .grid-item:hover .grid-item-tooltip { opacity: 1; transform: translateX(-50%) translateY(-4px); }
@@ -2656,6 +2671,9 @@
             .collector-banner-prev { left: 10px; }
             .collector-banner-next { right: 40px; }
             .collector-banner-close { right: 10px; }
+
+            /* Mobile: always show output numbers */
+            .grid-panel.hide-numbers .grid-item-label { opacity: 1 !important; }
 
             /* === Mobile filter UX fixes === */
 
@@ -4076,7 +4094,7 @@
             <label class="grid-checkbox"><input type="checkbox" id="gridWaterFilter"> WATER</label>
             <button class="grid-sort-toggle sort-desc" id="gridSortToggle" title="Sort order">NEW <span class="sort-arrow">↑</span></button>
             <button class="grid-numbers-toggle" id="gridNumbersToggle" title="Toggle output numbers">#</button>
-            <button class="grid-color-gradient-toggle" id="gridColorGradientToggle" title="Filter by color"><span class="color-dot"></span> COLOR</button>
+            <button class="grid-color-gradient-toggle" id="gridColorGradientToggle" title="Filter by time of day"><span class="color-dot"></span></button>
             <div class="grid-color-gradient-bar" id="gridColorGradientBar">
                 <div class="grid-color-gradient-inner">
                     <div class="grid-color-gradient-strip" id="gridColorGradientStrip">
@@ -4116,6 +4134,7 @@
             <button class="collector-banner-nav collector-banner-next" id="collectorBannerNext" onclick="event.stopPropagation(); navigateToNextCollector();" title="Next collector (→)">›</button>
             <button class="collector-banner-close" id="collectorBannerClose">&times;</button>
         </div>
+        <button class="grid-reset-filters" id="gridResetFilters" onclick="resetGridFilters()">RESET FILTERS</button>
         <div class="grid-content" id="gridContent"></div>
         <div class="grid-pagination" id="gridPagination">
             <button id="gridPrevPage">← PREV</button>
@@ -5955,18 +5974,53 @@
         }
 
         // Global handler for grid item clicks (inline onclick)
+        // Track which grid item is currently showing info overlay (mobile two-tap flow)
+        window._gridInfoRevealedToken = null;
+        window._gridInfoRevealedTimer = null;
+
         window.handleGridItemClick = function(e, tokenId) {
             try {
                 if (e.target.closest('.grid-item-fav')) return;
                 e.stopPropagation();
                 e.preventDefault();
 
-                // On mobile, if in collector mode, open tap-to-preview instead
                 var isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
-                if (isMobile && typeof currentCollectorFilter !== 'undefined' && currentCollectorFilter && currentCollectorFilter.tokens) {
-                    if (typeof openArtworkPreview === 'function') {
-                        openArtworkPreview(tokenId, currentCollectorFilter.tokens, currentCollectorFilter.name);
-                        return;
+
+                // Mobile two-tap flow: first tap shows collector info, second tap opens output
+                if (isMobile) {
+                    // If in collector mode, use artwork preview
+                    if (typeof currentCollectorFilter !== 'undefined' && currentCollectorFilter && currentCollectorFilter.tokens) {
+                        if (typeof openArtworkPreview === 'function') {
+                            openArtworkPreview(tokenId, currentCollectorFilter.tokens, currentCollectorFilter.name);
+                            return;
+                        }
+                    }
+
+                    var gridItem = e.target.closest('.grid-item');
+                    var overlay = gridItem ? gridItem.querySelector('.grid-item-info-overlay') : null;
+
+                    if (window._gridInfoRevealedToken === tokenId && overlay && overlay.classList.contains('visible')) {
+                        // Second tap: proceed to open the output
+                        clearTimeout(window._gridInfoRevealedTimer);
+                        window._gridInfoRevealedToken = null;
+                        if (overlay) overlay.classList.remove('visible');
+                    } else {
+                        // First tap: show collector info overlay
+                        // Clear any previously revealed overlay
+                        var prevOverlay = document.querySelector('.grid-item-info-overlay.visible');
+                        if (prevOverlay) prevOverlay.classList.remove('visible');
+                        clearTimeout(window._gridInfoRevealedTimer);
+
+                        if (overlay) {
+                            overlay.classList.add('visible');
+                            window._gridInfoRevealedToken = tokenId;
+                            // Auto-hide after 4 seconds
+                            window._gridInfoRevealedTimer = setTimeout(function() {
+                                overlay.classList.remove('visible');
+                                window._gridInfoRevealedToken = null;
+                            }, 4000);
+                        }
+                        return; // Don't navigate yet
                     }
                 }
 
@@ -6087,12 +6141,19 @@
                 }
             }
             const loadingAttr = eagerLoad ? 'eager' : 'lazy';
+            // Look up collector name for mobile overlay
+            const collector = typeof COLLECTORS_DATA !== 'undefined' ? COLLECTORS_DATA.find(c => c.tokens && c.tokens.includes(id)) : null;
+            const collectorName = collector ? collector.name : '';
             return `
-                <div class="grid-item progressive-img" data-token="${id}" onclick="handleGridItemClick(event, ${id})" style="background:${bgColor}; --spot-color:${spotColor}; --spot-text:${spotTextColor};">
+                <div class="grid-item progressive-img" data-token="${id}" onclick="handleGridItemClick(event, ${id})" style="background:${bgColor}; --spot-color:${spotColor}; --spot-text:${spotTextColor};" data-collector="${collectorName.replace(/"/g, '&quot;')}">
                     <button class="grid-item-fav ${isCityFavorited(id) ? 'favorited' : ''}" data-token="${id}">♥</button>
                     <div class="compare-check">✓</div>
                     <img class="img-placeholder" src="${getSmallThumbnailUrl(id)}" alt="" loading="${loadingAttr}" decoding="async">
                     <img class="img-full" src="${getThumbnailUrl(id)}" alt="City ${id}" loading="${loadingAttr}" decoding="async" onload="this.classList.add('loaded');this.previousElementSibling.classList.add('fade-out');">
+                    <div class="grid-item-info-overlay">
+                        <div class="grid-item-info-collector">${collectorName ? `in the collection of <strong>${collectorName}</strong>` : ''}</div>
+                        <div class="grid-item-info-tap-hint">tap again to view</div>
+                    </div>
                     <div class="grid-item-label">#${id}</div>
                     ${showRank && rank ? `<div class="grid-item-rank">#${rank}</div>` : ''}
                     ${generateGridTooltip(id)}
@@ -14026,8 +14087,15 @@
             e.stopPropagation();
             filterToggleBar.classList.toggle('open');
             gridFilterBar.classList.toggle('open');
-            // Close the color gradient when opening filters
-            if (colorGradientActive) toggleColorGradient();
+            // Close the gradient bar UI (but preserve selection)
+            if (colorGradientActive) {
+                colorGradientActive = false;
+                colorGradientBar.classList.remove('open');
+                colorGradientStrip.classList.remove('active');
+                colorGradientHint.classList.remove('visible');
+                // Keep the toggle button highlighted if there's a selection
+                colorGradientToggle.classList.toggle('active', colorGradientHasSelection);
+            }
         });
 
         // Title hover animation - text breaks apart on long hover
@@ -14390,6 +14458,22 @@
             deactivateColorGradient();
             gridPage = 1;
             renderGrid();
+            updateResetFiltersVisibility();
+        }
+
+        function updateResetFiltersVisibility() {
+            const resetBtn = document.getElementById('gridResetFilters');
+            if (!resetBtn) return;
+            const hasActiveFilters =
+                colorGradientHasSelection ||
+                gridFilterState.palettes.size < Object.keys(traitCounts.palettes || {}).length ||
+                gridFilterState.times.size < Object.keys(traitCounts.times || {}).length ||
+                gridFilterState.energy.size < Object.keys(traitCounts.energy || {}).length ||
+                gridFilterState.zooms.size < Object.keys(traitCounts.zooms || {}).length ||
+                gridFilterState.bounds.size < Object.keys(traitCounts.bounds || {}).length ||
+                gridFilterState.traffic.size < Object.keys(traitCounts.traffic || {}).length ||
+                document.getElementById('gridWaterFilter').checked;
+            resetBtn.classList.toggle('visible', hasActiveFilters);
         }
 
         // Close dropdowns when clicking outside
@@ -14419,6 +14503,7 @@
         let colorGradientActive = false;
         let colorGradientDragging = false;
         let savedFilterState = null; // Store original filter state to restore
+        let colorGradientHasSelection = false; // Whether user made a selection on the gradient
 
         // Build the gradient from palette bg colors sorted by time of day (00:00 → 24:00)
         function buildColorGradient() {
@@ -14470,18 +14555,22 @@
 
             if (colorGradientActive) {
                 gradientPalettes = buildColorGradient();
-                // Save current palette filter state
-                savedFilterState = new Set(gridFilterState.palettes);
+                // Save current palette filter state (only if no gradient selection is already active)
+                if (!colorGradientHasSelection) {
+                    savedFilterState = new Set(gridFilterState.palettes);
+                }
             } else {
-                // Restore original filter state
-                if (savedFilterState) {
+                // Keep the gradient selection when closing the bar
+                colorGradientStrip.classList.remove('active');
+                colorGradientHint.classList.remove('visible');
+                // If user made a selection, keep it (don't restore). If not, restore.
+                if (!colorGradientHasSelection && savedFilterState) {
                     gridFilterState.palettes = savedFilterState;
                     savedFilterState = null;
                 }
-                colorGradientStrip.classList.remove('active');
-                colorGradientHint.classList.remove('visible');
                 gridPage = 1;
                 renderGrid();
+                updateResetFiltersVisibility();
             }
         }
 
@@ -14510,11 +14599,12 @@
 
             colorGradientMarker.style.left = `${percent}%`;
             colorGradientStrip.classList.add('active');
+            colorGradientHasSelection = true;
 
             // Get matching palette names
             const matchingNames = getColorFromGradientPosition(percent);
 
-            // Temporarily override palette filter
+            // Override palette filter with gradient selection (persists until reset)
             gridFilterState.palettes = new Set(matchingNames.length > 0 ? matchingNames : ['__none__']);
 
             // Check if few results and show hint
@@ -14574,17 +14664,17 @@
 
         // Also close gradient when grid mode changes
         function deactivateColorGradient() {
-            if (colorGradientActive) {
-                colorGradientActive = false;
-                colorGradientToggle.classList.remove('active');
-                colorGradientBar.classList.remove('open');
-                colorGradientStrip.classList.remove('active');
-                colorGradientHint.classList.remove('visible');
-                if (savedFilterState) {
-                    gridFilterState.palettes = savedFilterState;
-                    savedFilterState = null;
-                }
+            colorGradientActive = false;
+            colorGradientToggle.classList.remove('active');
+            colorGradientBar.classList.remove('open');
+            colorGradientStrip.classList.remove('active');
+            colorGradientHint.classList.remove('visible');
+            colorGradientHasSelection = false;
+            if (savedFilterState) {
+                gridFilterState.palettes = savedFilterState;
+                savedFilterState = null;
             }
+            updateResetFiltersVisibility();
         }
 
         function populateGridFilters() {
@@ -14727,6 +14817,7 @@
             const hasActiveFilters = showingFavoritesOnly ||
                 currentCollectorFilter !== null ||
                 currentEnergyFilter !== null ||
+                colorGradientHasSelection ||
                 gridFilterState.palettes.size < Object.keys(traitCounts.palettes).length ||
                 gridFilterState.times.size < Object.keys(traitCounts.times).length ||
                 gridFilterState.energy.size < Object.keys(traitCounts.energy).length ||
@@ -14734,6 +14825,9 @@
                 gridFilterState.bounds.size < Object.keys(traitCounts.bounds).length ||
                 gridFilterState.traffic.size < Object.keys(traitCounts.traffic).length ||
                 document.getElementById('gridWaterFilter').checked;
+
+            // Update floating reset button visibility
+            if (typeof updateResetFiltersVisibility === 'function') updateResetFiltersVisibility();
 
             // Update showing count - only visible when filters are active
             const showingEl = document.getElementById('gridShowingCount');
