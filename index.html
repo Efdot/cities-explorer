@@ -2270,6 +2270,28 @@
             .wall-view-frame { padding: 2px; }
             .wall-view-frame-mat { padding: 3px; }
         }
+        /* Mobile wall view - 2 columns, larger artworks, tighter spacing */
+        @media (max-width: 600px) {
+            .wall-view-wall { gap: 12px !important; grid-template-columns: repeat(2, 1fr) !important; max-width: 100% !important; padding: 0 8px; }
+            .wall-view-wall.cols-1 { grid-template-columns: 1fr !important; max-width: 280px !important; }
+            .wall-view-wall.cols-3 { grid-template-columns: repeat(2, 1fr) !important; }
+            .wall-view-wall-wrapper { padding: 70px 12px 40px; }
+            .wall-view-frame { padding: 2px; }
+            .wall-view-frame-mat { padding: 4px; }
+            .wall-view-artwork-label { font-size: 8px; margin-top: 4px; }
+            .wall-view-header { padding: 8px 12px; }
+            .wall-view-header-left { gap: 8px; }
+            .wall-view-logo { font-size: 16px; }
+            .wall-view-controls { gap: 4px; }
+            .wall-view-close { width: 32px; height: 32px; }
+            .wall-view-zoom-controls { bottom: 16px; left: 12px; }
+            .wall-view-collector-info { margin-bottom: 16px; }
+            .wall-view-collector-name { font-size: 9px; }
+            .wall-view-nav { display: none; }
+            /* Line view on mobile */
+            .wall-view-modal.line-view .wall-view-wall { gap: 16px !important; padding: 16px 40px !important; }
+            .wall-view-modal.line-view .wall-view-artwork { width: 120px; }
+        }
         .wall-view-placard { text-align: center; }
         .wall-view-placard-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #333; margin-bottom: 3px; transition: color 0.5s ease; }
         .wall-view-modal.dark-mode .wall-view-placard-title { color: #ccc; }
@@ -2494,6 +2516,10 @@
         .grid-item:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); z-index: 10; }
         .grid-item.selected { outline: 3px solid var(--teal); }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .grid-item.progressive-img .img-placeholder { position: absolute; inset: 0; filter: blur(4px); transform: scale(1.05); z-index: 1; transition: opacity 0.3s ease; }
+        .grid-item.progressive-img .img-full { position: relative; z-index: 2; opacity: 0; transition: opacity 0.3s ease; }
+        .grid-item.progressive-img .img-full.loaded { opacity: 1; }
+        .grid-item.progressive-img .img-placeholder.fade-out { opacity: 0; }
         .grid-item-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(10, 9, 16, 0.9)); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); text-align: center; pointer-events: none; transition: opacity 0.2s ease; }
         .grid-panel.hide-numbers .grid-item-label { opacity: 0; }
         /* Desktop: hearts hidden until hover */
@@ -2587,10 +2613,10 @@
             .grid-items.grid-3-col, .grid-group-items.grid-3-col { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
             .grid-items.grid-4-col, .grid-group-items.grid-4-col { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
             .grid-items.grid-6-col, .grid-group-items.grid-6-col { grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; }
-            .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
-            .grid-items.grid-11-col, .grid-group-items.grid-11-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
-            .grid-items.grid-12-col, .grid-group-items.grid-12-col { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
-            .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(4, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-8-col, .grid-group-items.grid-8-col { grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; }
+            .grid-items.grid-11-col, .grid-group-items.grid-11-col { grid-template-columns: repeat(3, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-12-col, .grid-group-items.grid-12-col { grid-template-columns: repeat(3, 1fr) !important; gap: 3px !important; }
+            .grid-items.grid-auto, .grid-group-items.grid-auto { grid-template-columns: repeat(3, 1fr) !important; gap: 3px !important; }
             .grid-item { border-radius: 6px; }
             .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: visible; overflow: visible; }
             .grid-mode-btn { padding: 0 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.05em; border-width: 1.5px; height: 34px; min-height: 34px; white-space: nowrap; flex-shrink: 0; border-radius: 50px; display: flex; align-items: center; justify-content: center; width: auto; }
@@ -2649,6 +2675,18 @@
             .grid-filter-bar .multi-select { position: relative; z-index: 200; }
         }
 
+        /* Small mobile: collector grids as 2 columns for larger artworks */
+        @media (max-width: 480px) {
+            .grid-items, .grid-group-items { grid-template-columns: repeat(2, 1fr) !important; gap: 6px !important; }
+            .grid-items.grid-2-col, .grid-group-items.grid-2-col { gap: 8px !important; }
+            .grid-items.grid-3-col, .grid-group-items.grid-3-col { grid-template-columns: repeat(2, 1fr) !important; gap: 6px !important; }
+            .grid-content { padding: 6px; }
+            .grid-item { border-radius: 8px; }
+            .grid-item-label { font-size: 8px; padding: 6px; }
+            .collector-banner { padding: 8px 44px; }
+            .collector-banner-name { font-size: 12px; }
+        }
+
         /* Compact nav buttons when space is tight */
         @media (max-width: 900px) {
             .grid-mode-btn { padding: 10px 14px; font-size: 10px; }
@@ -2683,6 +2721,13 @@
         @media (max-width: 900px) {
             /* Show even fewer collectors on smaller screens */
             .grid-group-collector:nth-child(n+3) { display: none; }
+        }
+
+        /* Gallery panel mobile - full width, larger items */
+        @media (max-width: 768px) {
+            .gallery-panel { width: 100%; }
+            .gallery-grid { gap: 10px; }
+            .gallery-item { border-radius: 12px; }
         }
 
         .mobile-menu-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 50%; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 5px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
@@ -2815,6 +2860,40 @@
         body.orientation-changing * {
             transition: all 0.2s ease !important;
         }
+
+        /* Progressive image loading - blur up effect */
+        .progressive-img { position: relative; overflow: hidden; }
+        .progressive-img .img-placeholder { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(8px); transform: scale(1.1); transition: opacity 0.4s ease; z-index: 1; }
+        .progressive-img .img-full { position: relative; z-index: 2; opacity: 0; transition: opacity 0.4s ease; }
+        .progressive-img .img-full.loaded { opacity: 1; }
+        .progressive-img .img-placeholder.fade-out { opacity: 0; }
+        /* Wall view progressive loading */
+        .wall-view-frame-inner .img-placeholder { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: blur(6px); transform: scale(1.05); transition: opacity 0.5s ease; z-index: 1; }
+        .wall-view-frame-inner .img-placeholder.fade-out { opacity: 0; pointer-events: none; }
+        .wall-view-frame-inner { position: relative; overflow: hidden; }
+
+        /* Fullscreen artwork preview overlay */
+        .artwork-preview-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.96); z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; touch-action: none; -webkit-user-select: none; user-select: none; }
+        .artwork-preview-overlay.open { display: flex; }
+        .artwork-preview-overlay .preview-img-container { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .artwork-preview-overlay .preview-main-img { max-width: 92vw; max-height: 80vh; object-fit: contain; border-radius: 4px; transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease; will-change: transform; }
+        .artwork-preview-overlay .preview-main-img.swiping { transition: none; }
+        .artwork-preview-overlay .preview-info { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); pointer-events: none; }
+        .artwork-preview-overlay .preview-token-id { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.9); letter-spacing: 0.08em; text-transform: uppercase; }
+        .artwork-preview-overlay .preview-owner { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+        .artwork-preview-overlay .preview-close-btn { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.7); width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .artwork-preview-overlay .preview-close-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+        .artwork-preview-overlay .preview-counter { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; }
+        .artwork-preview-overlay .preview-nav-hint { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); font-size: 9px; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; text-transform: uppercase; opacity: 1; transition: opacity 1s ease; pointer-events: none; }
+        .artwork-preview-overlay .preview-nav-hint.hidden { opacity: 0; }
+        /* Swipe feedback arrows */
+        .artwork-preview-overlay .swipe-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 28px; color: rgba(255,255,255,0.15); pointer-events: none; transition: all 0.2s ease; }
+        .artwork-preview-overlay .swipe-arrow.left { left: 12px; }
+        .artwork-preview-overlay .swipe-arrow.right { right: 12px; }
+        .artwork-preview-overlay .swipe-arrow.active { color: rgba(255,255,255,0.5); }
+        /* Down-to-close indicator */
+        .artwork-preview-overlay .pull-close-indicator { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; transition: all 0.2s ease; }
+        .artwork-preview-overlay .pull-close-indicator.active { width: 48px; background: rgba(255,255,255,0.5); }
 
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -3929,6 +4008,23 @@
         <span class="refresh-text">Pull to shuffle</span>
     </div>
     <div class="double-tap-heart" id="doubleTapHeart">♥</div>
+
+    <!-- Fullscreen artwork preview overlay (tap to preview from wall/grid) -->
+    <div class="artwork-preview-overlay" id="artworkPreviewOverlay">
+        <div class="pull-close-indicator" id="previewPullIndicator"></div>
+        <button class="preview-close-btn" id="previewCloseBtn">&times;</button>
+        <div class="preview-counter" id="previewCounter"></div>
+        <div class="preview-img-container" id="previewImgContainer">
+            <img class="preview-main-img" id="previewMainImg" alt="City preview">
+            <div class="swipe-arrow left" id="swipeArrowLeft">&#8249;</div>
+            <div class="swipe-arrow right" id="swipeArrowRight">&#8250;</div>
+        </div>
+        <div class="preview-info">
+            <div class="preview-token-id" id="previewTokenId"></div>
+            <div class="preview-owner" id="previewOwner"></div>
+        </div>
+        <div class="preview-nav-hint" id="previewNavHint">swipe to browse &middot; pull down to close</div>
+    </div>
 
     <div class="grid-panel open hide-numbers" id="gridPanel" role="dialog" aria-label="Cities grid view" aria-hidden="true">
         <div class="grid-header">
@@ -5865,6 +5961,15 @@
                 e.stopPropagation();
                 e.preventDefault();
 
+                // On mobile, if in collector mode, open tap-to-preview instead
+                var isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+                if (isMobile && typeof currentCollectorFilter !== 'undefined' && currentCollectorFilter && currentCollectorFilter.tokens) {
+                    if (typeof openArtworkPreview === 'function') {
+                        openArtworkPreview(tokenId, currentCollectorFilter.tokens, currentCollectorFilter.name);
+                        return;
+                    }
+                }
+
                 // Immediately hide the old image to prevent ghost effect
                 var previewImg = document.getElementById('preview-image');
                 if (previewImg) {
@@ -5983,10 +6088,11 @@
             }
             const loadingAttr = eagerLoad ? 'eager' : 'lazy';
             return `
-                <div class="grid-item" data-token="${id}" onclick="handleGridItemClick(event, ${id})" style="background:${bgColor}; --spot-color:${spotColor}; --spot-text:${spotTextColor};">
+                <div class="grid-item progressive-img" data-token="${id}" onclick="handleGridItemClick(event, ${id})" style="background:${bgColor}; --spot-color:${spotColor}; --spot-text:${spotTextColor};">
                     <button class="grid-item-fav ${isCityFavorited(id) ? 'favorited' : ''}" data-token="${id}">♥</button>
                     <div class="compare-check">✓</div>
-                    <img src="${getSmallThumbnailUrl(id)}" alt="City ${id}" loading="${loadingAttr}" decoding="async">
+                    <img class="img-placeholder" src="${getSmallThumbnailUrl(id)}" alt="" loading="${loadingAttr}" decoding="async">
+                    <img class="img-full" src="${getThumbnailUrl(id)}" alt="City ${id}" loading="${loadingAttr}" decoding="async" onload="this.classList.add('loaded');this.previousElementSibling.classList.add('fade-out');">
                     <div class="grid-item-label">#${id}</div>
                     ${showRank && rank ? `<div class="grid-item-rank">#${rank}</div>` : ''}
                     ${generateGridTooltip(id)}
@@ -9760,26 +9866,41 @@
                 const inner = document.createElement('div');
                 inner.className = 'wall-view-frame-inner';
 
-                // Use thumbnail first, then load full size
+                // Progressive loading: tiny 50px placeholder (blurred) -> 200px thumb -> full res
+                // The bold line art looks great even at 50px, giving instant visual feedback
+                const placeholder = document.createElement('img');
+                placeholder.className = 'img-placeholder';
+                placeholder.src = getSmallThumbnailUrl(item.id);
+                placeholder.alt = '';
+                placeholder.loading = 'eager';
+                placeholder.decoding = 'async';
+
                 const frameImg = document.createElement('img');
-                frameImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png?width=200`;
+                frameImg.src = getThumbnailUrl(item.id);
                 frameImg.alt = `City #${item.id}`;
-                frameImg.style.transition = 'opacity 0.3s ease';
-
-                // Load full resolution after thumbnail
-                const fullImg = new Image();
-                fullImg.onload = () => {
-                    frameImg.src = fullImg.src;
+                frameImg.loading = index < 4 ? 'eager' : 'lazy';
+                frameImg.decoding = 'async';
+                frameImg.onload = () => {
+                    placeholder.classList.add('fade-out');
+                    // Now load full resolution in background
+                    const fullImg = new Image();
+                    fullImg.onload = () => { frameImg.src = fullImg.src; };
+                    fullImg.src = getPreviewUrl(item.id);
                 };
-                fullImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png`;
 
-                // Click frame to open framed mockup view
+                // Click/tap frame to open quick preview (mobile-friendly)
                 frame.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const tokenId = parseInt(frame.dataset.tokenId);
-                    openFrameMockup(tokenId, name);
+                    const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+                    if (isMobile) {
+                        openArtworkPreview(tokenId, items.map(i => parseInt(i.id)), name);
+                    } else {
+                        openFrameMockup(tokenId, name);
+                    }
                 });
 
+                inner.appendChild(placeholder);
                 inner.appendChild(frameImg);
                 mat.appendChild(inner);
                 frame.appendChild(mat);
@@ -9828,29 +9949,43 @@
             wallPanX = 0;
             wallPanY = 0;
             const wrapper = document.getElementById('wallViewWrapper');
+            const isMobileWall = window.innerWidth <= 600;
 
-            // Auto zoom out based on row count to ensure collections fit
-            // Small collections get comfortable zoom with generous negative space
-            if (layout.rows >= 5) {
-                wallViewZoom = 0.65;
-            } else if (layout.rows >= 4) {
-                wallViewZoom = 0.75;
-            } else if (layout.rows >= 3) {
-                wallViewZoom = 0.85;
-            } else if (count > 9) {
-                wallViewZoom = 0.9;
-            } else if (count === 4) {
-                // 2x2 grid - zoom out to show full grid with generous negative space
-                wallViewZoom = 0.78;
-            } else if (layout.rows >= 2) {
-                // Other 2-row grids (5-8 cities)
-                wallViewZoom = 0.85;
-            } else if (count === 2) {
-                // 2 cities side by side - zoom out for breathing room
-                wallViewZoom = 0.8;
-            } else if (count <= 3) {
-                // 1-3 cities in a single row - show them proudly with breathing room
-                wallViewZoom = 0.85;
+            if (isMobileWall) {
+                // Mobile: 2-col layout - zoom to fill screen nicely
+                // With 2 columns, rows = ceil(count/2)
+                const mobileRows = Math.ceil(count / 2);
+                if (mobileRows >= 6) {
+                    wallViewZoom = 0.55;
+                } else if (mobileRows >= 4) {
+                    wallViewZoom = 0.65;
+                } else if (mobileRows >= 3) {
+                    wallViewZoom = 0.75;
+                } else if (mobileRows === 2) {
+                    wallViewZoom = 0.85;
+                } else {
+                    wallViewZoom = 0.9;
+                }
+            } else {
+                // Desktop: Auto zoom out based on row count to ensure collections fit
+                // Small collections get comfortable zoom with generous negative space
+                if (layout.rows >= 5) {
+                    wallViewZoom = 0.65;
+                } else if (layout.rows >= 4) {
+                    wallViewZoom = 0.75;
+                } else if (layout.rows >= 3) {
+                    wallViewZoom = 0.85;
+                } else if (count > 9) {
+                    wallViewZoom = 0.9;
+                } else if (count === 4) {
+                    wallViewZoom = 0.78;
+                } else if (layout.rows >= 2) {
+                    wallViewZoom = 0.85;
+                } else if (count === 2) {
+                    wallViewZoom = 0.8;
+                } else if (count <= 3) {
+                    wallViewZoom = 0.85;
+                }
             }
             if (wrapper) wrapper.style.transform = `translate(${wallPanX}px, ${wallPanY}px) scale(${wallViewZoom})`;
 
@@ -9893,6 +10028,261 @@
         // Expose openWallView globally and set the forward reference
         window.openWallView = openWallView;
         openWallViewFn = openWallView;
+
+        // ============================================
+        // FULLSCREEN ARTWORK PREVIEW - tap to preview with gestures
+        // ============================================
+        let previewTokens = [];
+        let previewCurrentIndex = 0;
+        let previewCollectorName = '';
+        let previewTouchStartX = 0;
+        let previewTouchStartY = 0;
+        let previewTouchStartTime = 0;
+        let previewIsDragging = false;
+        let previewDragOffsetX = 0;
+        let previewDragOffsetY = 0;
+        let previewNavHintTimer = null;
+
+        function openArtworkPreview(tokenId, tokenIds, collectorName) {
+            previewTokens = tokenIds || [tokenId];
+            previewCurrentIndex = previewTokens.indexOf(tokenId);
+            if (previewCurrentIndex === -1) previewCurrentIndex = 0;
+            previewCollectorName = collectorName || '';
+
+            const overlay = document.getElementById('artworkPreviewOverlay');
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            updatePreviewImage();
+
+            // Show nav hint, fade after 3s
+            const hint = document.getElementById('previewNavHint');
+            hint.classList.remove('hidden');
+            clearTimeout(previewNavHintTimer);
+            previewNavHintTimer = setTimeout(() => hint.classList.add('hidden'), 3000);
+        }
+
+        function closeArtworkPreview() {
+            const overlay = document.getElementById('artworkPreviewOverlay');
+            overlay.classList.remove('open');
+            // Only restore scroll if wall view is not open
+            const wallModal = document.getElementById('wallViewModal');
+            if (!wallModal || !wallModal.classList.contains('open')) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function updatePreviewImage() {
+            const tokenId = previewTokens[previewCurrentIndex];
+            const img = document.getElementById('previewMainImg');
+            const counter = document.getElementById('previewCounter');
+            const tokenLabel = document.getElementById('previewTokenId');
+            const ownerLabel = document.getElementById('previewOwner');
+
+            // Load low-res instantly (50px), looks great with bold line art
+            img.style.opacity = '0.3';
+            img.src = getSmallThumbnailUrl(tokenId);
+            img.onload = function() {
+                img.style.opacity = '1';
+                // Load medium res (200px) quickly
+                const medImg = new Image();
+                medImg.onload = () => {
+                    img.src = medImg.src;
+                    // Then load full res in background
+                    const fullImg = new Image();
+                    fullImg.onload = () => { img.src = fullImg.src; };
+                    fullImg.src = getPreviewUrl(tokenId);
+                };
+                medImg.src = getThumbnailUrl(tokenId);
+            };
+
+            // Update info
+            counter.textContent = `${previewCurrentIndex + 1} / ${previewTokens.length}`;
+            tokenLabel.textContent = `#${tokenId}`;
+
+            // Look up owner
+            const collector = typeof COLLECTORS_DATA !== 'undefined' ? COLLECTORS_DATA.find(c => c.tokens && c.tokens.includes(tokenId)) : null;
+            if (previewCollectorName) {
+                ownerLabel.textContent = `collected by ${previewCollectorName}`;
+                ownerLabel.style.display = 'block';
+            } else if (collector) {
+                ownerLabel.textContent = `collected by ${collector.name}`;
+                ownerLabel.style.display = 'block';
+            } else {
+                ownerLabel.style.display = 'none';
+            }
+        }
+
+        function previewNext() {
+            if (previewTokens.length <= 1) return;
+            previewCurrentIndex = (previewCurrentIndex + 1) % previewTokens.length;
+            updatePreviewImage();
+        }
+
+        function previewPrev() {
+            if (previewTokens.length <= 1) return;
+            previewCurrentIndex = (previewCurrentIndex - 1 + previewTokens.length) % previewTokens.length;
+            updatePreviewImage();
+        }
+
+        // Set up preview gestures
+        (function setupPreviewGestures() {
+            const overlay = document.getElementById('artworkPreviewOverlay');
+            const imgContainer = document.getElementById('previewImgContainer');
+            const img = document.getElementById('previewMainImg');
+            const closeBtn = document.getElementById('previewCloseBtn');
+            const pullIndicator = document.getElementById('previewPullIndicator');
+            const leftArrow = document.getElementById('swipeArrowLeft');
+            const rightArrow = document.getElementById('swipeArrowRight');
+
+            if (!overlay || !imgContainer) return;
+
+            closeBtn.addEventListener('click', closeArtworkPreview);
+
+            // Tap on overlay background to close
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay || e.target === imgContainer) {
+                    closeArtworkPreview();
+                }
+            });
+
+            // Touch gestures
+            imgContainer.addEventListener('touchstart', (e) => {
+                if (e.touches.length !== 1) return;
+                previewTouchStartX = e.touches[0].clientX;
+                previewTouchStartY = e.touches[0].clientY;
+                previewTouchStartTime = Date.now();
+                previewIsDragging = true;
+                previewDragOffsetX = 0;
+                previewDragOffsetY = 0;
+                img.classList.add('swiping');
+            }, { passive: true });
+
+            imgContainer.addEventListener('touchmove', (e) => {
+                if (!previewIsDragging || e.touches.length !== 1) return;
+                const dx = e.touches[0].clientX - previewTouchStartX;
+                const dy = e.touches[0].clientY - previewTouchStartY;
+                previewDragOffsetX = dx;
+                previewDragOffsetY = dy;
+
+                // Determine dominant axis
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    // Horizontal swipe - translate image with resistance
+                    const resist = Math.min(1, Math.abs(dx) / 200);
+                    img.style.transform = `translateX(${dx * 0.7}px)`;
+                    // Show directional arrows
+                    leftArrow.classList.toggle('active', dx > 30);
+                    rightArrow.classList.toggle('active', dx < -30);
+                } else if (dy > 0) {
+                    // Pulling down - show close indicator
+                    const pullProgress = Math.min(1, dy / 150);
+                    img.style.transform = `translateY(${dy * 0.5}px) scale(${1 - pullProgress * 0.1})`;
+                    img.style.opacity = 1 - pullProgress * 0.3;
+                    pullIndicator.classList.toggle('active', dy > 60);
+                } else {
+                    // Pulling up - show details with resistance
+                    img.style.transform = `translateY(${dy * 0.3}px)`;
+                }
+            }, { passive: true });
+
+            imgContainer.addEventListener('touchend', (e) => {
+                if (!previewIsDragging) return;
+                previewIsDragging = false;
+                img.classList.remove('swiping');
+
+                const dx = previewDragOffsetX;
+                const dy = previewDragOffsetY;
+                const elapsed = Date.now() - previewTouchStartTime;
+                const velocity = Math.abs(dx) / elapsed;
+                const swipeThreshold = 50;
+                const flickVelocity = 0.3;
+
+                // Reset visual state
+                img.style.transform = '';
+                img.style.opacity = '';
+                leftArrow.classList.remove('active');
+                rightArrow.classList.remove('active');
+                pullIndicator.classList.remove('active');
+
+                // Determine gesture
+                if (Math.abs(dx) > Math.abs(dy) && (Math.abs(dx) > swipeThreshold || velocity > flickVelocity)) {
+                    // Horizontal swipe
+                    if (dx < 0) {
+                        previewNext();
+                    } else {
+                        previewPrev();
+                    }
+                } else if (dy > 100 || (dy > 60 && dy / elapsed > 0.3)) {
+                    // Swipe down - close
+                    closeArtworkPreview();
+                } else if (dy < -100) {
+                    // Swipe up - open full frame mockup view
+                    const tokenId = previewTokens[previewCurrentIndex];
+                    closeArtworkPreview();
+                    openFrameMockup(tokenId, previewCollectorName);
+                }
+            }, { passive: true });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!overlay.classList.contains('open')) return;
+                if (e.key === 'Escape') closeArtworkPreview();
+                if (e.key === 'ArrowLeft') previewPrev();
+                if (e.key === 'ArrowRight') previewNext();
+            });
+        })();
+
+        // Expose globally for wall view frame clicks
+        window.openArtworkPreview = openArtworkPreview;
+
+        // ============================================
+        // WALL VIEW MOBILE SWIPE GESTURES
+        // ============================================
+        (function setupWallViewSwipeGestures() {
+            const wallModal = document.getElementById('wallViewModal');
+            const wallContent = document.getElementById('wallViewContent');
+            if (!wallModal || !wallContent) return;
+
+            let wallSwipeStartX = 0;
+            let wallSwipeStartY = 0;
+            let wallSwipeStartTime = 0;
+
+            wallContent.addEventListener('touchstart', (e) => {
+                if (e.touches.length !== 1) return;
+                // Don't intercept if touching a frame
+                if (e.target.closest('.wall-view-frame') || e.target.closest('.wall-view-artwork')) return;
+                wallSwipeStartX = e.touches[0].clientX;
+                wallSwipeStartY = e.touches[0].clientY;
+                wallSwipeStartTime = Date.now();
+            }, { passive: true });
+
+            wallContent.addEventListener('touchend', (e) => {
+                if (!wallSwipeStartTime) return;
+                const dx = (e.changedTouches[0]?.clientX || 0) - wallSwipeStartX;
+                const dy = (e.changedTouches[0]?.clientY || 0) - wallSwipeStartY;
+                const elapsed = Date.now() - wallSwipeStartTime;
+                wallSwipeStartTime = 0;
+
+                const swipeThreshold = 80;
+                const isHorizontal = Math.abs(dx) > Math.abs(dy) * 1.5;
+
+                if (isHorizontal && Math.abs(dx) > swipeThreshold) {
+                    // Horizontal swipe - navigate between collectors
+                    if (dx > 0) {
+                        // Swipe right - previous collector
+                        const prevBtn = document.getElementById('wallViewPrev');
+                        if (prevBtn) prevBtn.click();
+                    } else {
+                        // Swipe left - next collector
+                        const nextBtn = document.getElementById('wallViewNext');
+                        if (nextBtn) nextBtn.click();
+                    }
+                } else if (dy > 120 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+                    // Swipe down - close wall view
+                    closeWallView();
+                }
+            }, { passive: true });
+        })();
 
         // Wall button handler - opens wall view for current collector
         function handleWallButtonClick() {
