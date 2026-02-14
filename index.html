@@ -565,8 +565,13 @@
         .similar-palette-chip:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
         .palette-inspector-close { background: var(--bg-input); border: none; color: var(--text-dim); padding: 12px 28px; border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; margin-top: 18px; }
         /* Sidebar inspect palette button */
-        .sidebar-inspect-btn { display: block; width: 100%; padding: 8px 14px; margin-bottom: 6px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; background-size: 100% 100%; }
-        .sidebar-inspect-btn:hover { filter: brightness(1.15); transform: scale(1.02); }
+        .sidebar-inspect-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 7px 14px; margin-bottom: 6px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
+        .sidebar-inspect-btn:hover { border-color: var(--text-muted); }
+        .sidebar-inspect-btn:hover .inspect-text { color: var(--text); }
+        .inspect-dots { display: flex; gap: 3px; align-items: center; }
+        .inspect-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; transition: transform 0.2s ease; }
+        .sidebar-inspect-btn:hover .inspect-dot { transform: scale(1.15); }
+        .inspect-text { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; color: var(--text-dim); transition: color 0.2s ease; }
         .palette-inspector-close:hover { background: var(--bg-card); color: var(--text); }
         /* Palette inspector prev/next arrows - subtle edge nav like wall view */
         .palette-nav-arrow { display: none; }
@@ -1923,12 +1928,12 @@
         .grid-color-gradient-marker { position: absolute; width: 2px; height: 100%; background: rgba(255,255,255,0.9); top: 0; transform: translateX(-50%); box-shadow: 0 0 6px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
         .grid-color-gradient-strip:hover .grid-color-gradient-marker, .grid-color-gradient-strip.active .grid-color-gradient-marker { opacity: 1; }
         .grid-color-gradient-meta { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 4px 12px; z-index: 2; pointer-events: none; }
-        .grid-color-gradient-clock { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: rgba(255,255,255,0.85); opacity: 0; transition: opacity 0.25s ease; min-width: 40px; white-space: nowrap; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .grid-color-gradient-clock { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: #fff; opacity: 0; transition: opacity 0.25s ease; min-width: 40px; white-space: nowrap; text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.9); }
         .grid-color-gradient-clock.visible { opacity: 1; }
-        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-shadow: 0 1px 3px rgba(0,0,0,0.5); position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
-        .grid-color-gradient-close { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.6; transition: opacity 0.2s; pointer-events: auto; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #fff; text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.9); position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+        .grid-color-gradient-close { background: none; border: none; color: #fff; font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.7; transition: opacity 0.2s; pointer-events: auto; text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.9); }
         .grid-color-gradient-close:hover { opacity: 1; color: #fff; }
-        .grid-color-gradient-hint { font-size: 8px; color: #ffa500; opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .grid-color-gradient-hint { font-size: 8px; color: #ffa500; opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.9); }
         .grid-color-gradient-hint.visible { opacity: 0.8; }
         @media (max-width: 768px) {
             .grid-color-gradient-inner { padding: 0; }
@@ -10547,24 +10552,18 @@
 
             traitsDisplay.innerHTML = html;
 
-            // Style the inspect palette button with actual palette colors
+            // Style the inspect palette button with colored dots from the palette
             const inspectBtn = document.getElementById('inspectPalette');
             if (inspectBtn && palette && PALETTE_DATA[palette]) {
                 const pInfo = PALETTE_DATA[palette];
                 const pColors = pInfo.colors || [];
-                // Build a gradient from palette colors for the button background
-                const gradColors = [pInfo.bg, ...pColors.slice(0, 5)];
-                inspectBtn.style.background = `linear-gradient(135deg, ${gradColors.join(', ')})`;
-                inspectBtn.style.border = 'none';
-                // Choose white or black text based on bg luminance, with contrasting glow
-                const bgLum = getLuminance(pInfo.bg);
-                if (bgLum > 0.4) {
-                    inspectBtn.style.color = '#000';
-                    inspectBtn.style.textShadow = '0 0 8px rgba(255,255,255,0.6)';
-                } else {
-                    inspectBtn.style.color = '#fff';
-                    inspectBtn.style.textShadow = '0 0 8px rgba(0,0,0,0.7)';
-                }
+                const dotColors = [pInfo.bg, ...pColors.slice(0, 7)];
+                const dots = dotColors.map(c => `<span class="inspect-dot" style="background:${c}"></span>`).join('');
+                inspectBtn.innerHTML = `<span class="inspect-dots">${dots}</span><span class="inspect-text">INSPECT PALETTE</span>`;
+                inspectBtn.style.background = '';
+                inspectBtn.style.border = '';
+                inspectBtn.style.color = '';
+                inspectBtn.style.textShadow = '';
             }
 
             // Add click handlers for filterable trait rows
