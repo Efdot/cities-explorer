@@ -573,6 +573,13 @@
         .palette-nav-next { right: 16px; }
         .palette-inspector.light-bg .palette-nav-arrow { color: rgba(0,0,0,0.2); }
         .palette-inspector.light-bg .palette-nav-arrow:hover { color: rgba(0,0,0,0.6); }
+        /* Palette inspector gradient navigation strip */
+        .palette-gradient-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 36px; z-index: 5; }
+        .palette-gradient-strip { width: 100%; height: 100%; cursor: pointer; position: relative; touch-action: none; }
+        .palette-gradient-strip::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 1px 3px rgba(0,0,0,0.15); pointer-events: none; }
+        .palette-gradient-marker { position: absolute; width: 2px; height: 100%; background: rgba(255,255,255,0.9); top: 0; transform: translateX(-50%); box-shadow: 0 0 6px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+        .palette-gradient-strip:hover .palette-gradient-marker, .palette-gradient-strip.active .palette-gradient-marker { opacity: 1; }
+        .palette-inspector.light-bg .palette-gradient-marker { background: rgba(0,0,0,0.7); }
         @media (max-width: 768px) {
             .palette-nav-arrow { width: 36px; height: 36px; font-size: 24px; }
             .palette-nav-prev { left: 8px; }
@@ -2621,6 +2628,7 @@
             .grid-filter-bar:has(.multi-select.open) { overflow: visible; }
             .grid-filter-bar.open { display: flex; padding: 16px; }
             .multi-select-dropdown { top: auto; bottom: 100%; margin-top: 0; margin-bottom: 4px; }
+            .grid-color-gradient-bar { top: auto; height: 44px; }
             .grid-content { order: 5; padding-bottom: 90px; }
             /* Collector banner: center name above artworks on mobile */
             .collector-banner { flex-direction: column; gap: 6px; padding: 10px 48px; align-items: center; text-align: center; }
@@ -4215,6 +4223,11 @@
             </div>
             <div class="palette-inspector-similar" id="paletteInspectorSimilar"></div>
             <button class="palette-inspector-close" id="closePaletteInspector">CLOSE</button>
+        </div>
+        <div class="palette-gradient-nav" id="paletteGradientNav">
+            <div class="palette-gradient-strip" id="paletteGradientStrip">
+                <div class="palette-gradient-marker" id="paletteGradientMarker"></div>
+            </div>
         </div>
     </div>
 
@@ -12733,6 +12746,8 @@
         // Track palette history for fan navigation
         let paletteHistory = [];
         let currentPaletteIndex = 0;
+        let lastInspectorGradientPalette = null;
+        let inspectorGradientDragging = false;
 
         function openPaletteInspector(targetPalette = null) {
             const traits = tokenTraits[currentTokenId];
@@ -13039,6 +13054,36 @@
             hexSection.classList.remove('visible');
             colorsEl.classList.remove('hex-visible');
 
+            // Build and position the gradient navigation strip
+            const inspStrip = document.getElementById('paletteGradientStrip');
+            const inspMarker = document.getElementById('paletteGradientMarker');
+            if (inspStrip) {
+                // Build gradient once (same day-cycle gradient as the grid)
+                if (!inspStrip.dataset.built) {
+                    const cssStops = DAY_GRADIENT_STOPS.map(s => {
+                        const hex = '#' + [s[1], s[2], s[3]].map(v => v.toString(16).padStart(2, '0')).join('');
+                        return `${hex} ${s[0]}%`;
+                    });
+                    inspStrip.style.background = `linear-gradient(to right, ${cssStops.join(', ')})`;
+                    inspStrip.dataset.built = '1';
+                }
+                // Position marker at current palette's closest gradient position (skip during scrub)
+                const bgHSL = getPaletteHSLCache()[paletteName];
+                if (bgHSL && inspMarker && !inspectorGradientDragging) {
+                    let bestPercent = 50, bestDist = Infinity;
+                    for (let p = 0; p <= 100; p += 2) {
+                        const tc = getGradientColorAtPercent(p);
+                        const hueDiff = Math.abs(bgHSL.h - tc.h);
+                        const hd = Math.min(hueDiff, 360 - hueDiff);
+                        const dist = hd * 2 + Math.abs(bgHSL.s - tc.s) + Math.abs(bgHSL.l - tc.l) * 0.5;
+                        if (dist < bestDist) { bestDist = dist; bestPercent = p; }
+                    }
+                    inspMarker.style.left = `${bestPercent}%`;
+                    inspStrip.classList.add('active');
+                }
+                lastInspectorGradientPalette = paletteName;
+            }
+
             inspector.classList.add('open');
         }
 
@@ -13097,6 +13142,54 @@
         }
         document.getElementById('fanArrowLeft').addEventListener('click', fanNavigatePrev);
         document.getElementById('fanArrowRight').addEventListener('click', fanNavigateNext);
+
+        // Palette inspector gradient strip - scrub to navigate by color
+        function handleInspectorGradientInteraction(e) {
+            const strip = document.getElementById('paletteGradientStrip');
+            const marker = document.getElementById('paletteGradientMarker');
+            if (!strip) return;
+            const rect = strip.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const x = clientX - rect.left;
+            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+            marker.style.left = `${percent}%`;
+            strip.classList.add('active');
+            // Find closest palette to the gradient color at this position
+            const target = getGradientColorAtPercent(percent);
+            const cache = getPaletteHSLCache();
+            let bestPalette = null, bestDist = Infinity;
+            for (const [name, hsl] of Object.entries(cache)) {
+                const hueDiff = Math.abs(hsl.h - target.h);
+                const hd = Math.min(hueDiff, 360 - hueDiff);
+                const dist = hd * 2 + Math.abs(hsl.s - target.s) + Math.abs(hsl.l - target.l) * 0.5;
+                if (dist < bestDist) { bestDist = dist; bestPalette = name; }
+            }
+            if (bestPalette && bestPalette !== lastInspectorGradientPalette) {
+                lastInspectorGradientPalette = bestPalette;
+                if (!paletteHistory.includes(bestPalette)) paletteHistory.push(bestPalette);
+                currentPaletteIndex = paletteHistory.indexOf(bestPalette);
+                openPaletteInspector(bestPalette);
+            }
+        }
+        const paletteGradientStrip = document.getElementById('paletteGradientStrip');
+        if (paletteGradientStrip) {
+            paletteGradientStrip.addEventListener('mousedown', (e) => {
+                inspectorGradientDragging = true;
+                handleInspectorGradientInteraction(e);
+            });
+            paletteGradientStrip.addEventListener('touchstart', (e) => {
+                inspectorGradientDragging = true;
+                handleInspectorGradientInteraction(e);
+            }, { passive: true });
+            document.addEventListener('mousemove', (e) => {
+                if (inspectorGradientDragging) handleInspectorGradientInteraction(e);
+            });
+            document.addEventListener('touchmove', (e) => {
+                if (inspectorGradientDragging) handleInspectorGradientInteraction(e);
+            }, { passive: true });
+            document.addEventListener('mouseup', () => { inspectorGradientDragging = false; });
+            document.addEventListener('touchend', () => { inspectorGradientDragging = false; });
+        }
 
         // Full palette list navigation (prev/next through all palettes alphabetically)
         const allPaletteNamesSorted = Object.keys(PALETTE_DATA).sort((a, b) => a.localeCompare(b));
@@ -14263,6 +14356,19 @@
             e.stopPropagation();
             toggleColorGradient();
         });
+
+        // Mobile: press-and-drag from color wheel to immediately start scrubbing
+        colorGradientToggle.addEventListener('touchstart', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault(); // prevent subsequent click from toggling back off
+                e.stopPropagation();
+                if (!colorGradientActive) {
+                    toggleColorGradient();
+                }
+                colorGradientDragging = true;
+                handleGradientInteraction(e);
+            }
+        }, { passive: false });
 
         colorGradientClose.addEventListener('click', (e) => {
             e.stopPropagation();
