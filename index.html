@@ -2507,7 +2507,8 @@
         .grid-item { aspect-ratio: 9/16; background: var(--bg-card); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative; contain: layout style paint; content-visibility: auto; contain-intrinsic-size: 0 200px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
         .grid-item:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); z-index: 10; }
         .grid-item.selected { outline: 3px solid var(--teal); }
-        .grid-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .grid-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; image-rendering: auto; }
+        .grid-item img[src*="width=20"] { image-rendering: pixelated; }
         .grid-item-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(10, 9, 16, 0.9)); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); text-align: center; pointer-events: none; transition: opacity 0.2s ease; }
         .grid-panel.hide-numbers .grid-item-label { opacity: 0; }
         /* Desktop: hearts hidden until hover */
@@ -5829,6 +5830,7 @@
         function getPreviewUrl(tokenId) { return `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png`; }
         function getThumbnailUrl(tokenId) { return `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png?width=200`; }
         function getSmallThumbnailUrl(tokenId) { return `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png?width=50`; }
+        function getMicroThumbnailUrl(tokenId) { return `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png?width=20`; }
 
         // Helper to parse hex color to RGB
         function hexToRgb(hex) {
@@ -14310,7 +14312,8 @@
                 allTokens.push(i);
             }
 
-            // Pre-render with 50px thumbnails (same as normal grid, ~2-3KB each)
+            // Pre-render with 20px micro thumbnails (~300-500 bytes each)
+            // 500 images × ~400 bytes ≈ 200KB total — loads nearly instantly
             gradientGridItems = new Map();
             const fragment = document.createDocumentFragment();
             const container = document.createElement('div');
@@ -14347,7 +14350,7 @@
                 check.textContent = '\u2713';
 
                 const img = document.createElement('img');
-                img.dataset.src = getSmallThumbnailUrl(id);
+                img.src = getMicroThumbnailUrl(id);
                 img.alt = '';
                 img.decoding = 'async';
 
@@ -14365,26 +14368,6 @@
             gridContent.innerHTML = '';
             gridContent.appendChild(fragment);
             document.getElementById('gridPagination').style.display = 'none';
-
-            // Use IntersectionObserver on scroll container for true lazy loading
-            // (browser native lazy loading doesn't work in overflow:auto containers)
-            if (gradientImageObserver) gradientImageObserver.disconnect();
-            gradientImageObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        if (img.dataset.src) {
-                            img.src = img.dataset.src;
-                            delete img.dataset.src;
-                        }
-                        gradientImageObserver.unobserve(img);
-                    }
-                });
-            }, { root: gridContent, rootMargin: '200px 0px' });
-
-            container.querySelectorAll('img[data-src]').forEach(img => {
-                gradientImageObserver.observe(img);
-            });
         }
 
         function reorderGradientGrid(tH, tS, tL) {
@@ -14405,14 +14388,6 @@
                 return dA - dB;
             });
             entries.forEach(([, { el }], idx) => { el.style.order = idx; });
-
-            // Re-observe unloaded images since visible set changed after reorder
-            if (gradientImageObserver && gradientGridContainer) {
-                gradientGridContainer.querySelectorAll('img[data-src]').forEach(img => {
-                    gradientImageObserver.unobserve(img);
-                    gradientImageObserver.observe(img);
-                });
-            }
         }
 
         function upgradeGradientToHiRes() {
