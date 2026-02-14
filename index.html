@@ -2001,6 +2001,15 @@
         .wall-view-wall-color.gray { background: #e8e4e0; border: 2px solid #ccc; }
         .wall-view-wall-color.black { background: #1a1a1a; border: 2px solid #333; }
         .wall-view-modal.wall-black .wall-view-wall-color.active { box-shadow: 0 0 0 2px rgba(255,255,255,0.3); }
+        /* Contrast toggle: split circle (B/W cookie) - shown on mobile only */
+        .wall-view-contrast-toggle { display: none; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #999; cursor: pointer; background: linear-gradient(135deg, #e8e4e0 50%, #1a1a1a 50%); transition: all 0.3s ease; padding: 0; overflow: hidden; position: relative; flex-shrink: 0; }
+        .wall-view-contrast-toggle:hover { transform: scale(1.15); border-color: #666; }
+        .wall-view-contrast-toggle:active { transform: scale(0.95); }
+        .wall-view-modal.wall-black .wall-view-contrast-toggle { border-color: #555; }
+        @media (max-width: 600px) {
+            .wall-view-wall-colors { display: none; }
+            .wall-view-contrast-toggle { display: block; }
+        }
         .wall-view-mode-toggle { background: none; border: 1px solid #ddd; color: #888; padding: 5px 10px; font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; display: none; }
         .wall-view-modal.wall-black .wall-view-mode-toggle { display: inline-flex; }
         .wall-view-mode-toggle:hover { background: #333; border-color: #333; color: #fff; }
@@ -2645,18 +2654,17 @@
             .grid-item { border-radius: 6px; }
             .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: visible; overflow: visible; }
             .grid-mode-btn { padding: 0 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.05em; border-width: 1.5px; height: 34px; min-height: 34px; white-space: nowrap; flex-shrink: 0; border-radius: 50px; display: flex; align-items: center; justify-content: center; width: auto; }
-            /* Mobile: all nav buttons become compact emoji circles */
             .grid-mode-btn::after { content: none; }
-            .grid-mode-btn[data-emoji] { font-size: 0; width: 34px; padding: 0; border-radius: 50%; transition: border-color 0.2s ease, filter 0.2s ease; }
-            .grid-mode-btn[data-emoji]::after { font-size: 15px; line-height: 1; transition: filter 0.2s ease; }
-            .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; }
-            .grid-mode-btn[data-emoji="🌍"]::after { content: "🌍"; }
-            .grid-mode-btn[data-emoji="📍"]::after { content: "📍"; }
-            .grid-mode-btn[data-emoji="👤"]::after { content: "👤"; }
+            /* Palette button: emoji circle on mobile */
+            .grid-mode-btn[data-emoji="🎨"] { font-size: 0; width: 34px; padding: 0; border-radius: 50%; transition: border-color 0.2s ease, filter 0.2s ease; }
+            .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; font-size: 15px; line-height: 1; transition: filter 0.2s ease; }
             .grid-mode-btn[data-mode="color"]::after { filter: hue-rotate(160deg) saturate(1.5); }
             .grid-mode-btn[data-mode="az"]::after { filter: grayscale(0.8) brightness(1.3); }
             .grid-mode-btn[data-mode="rarity"]::after { filter: hue-rotate(260deg) saturate(1.2); }
             .grid-mode-btn[data-mode="collector"]::after { filter: hue-rotate(100deg) saturate(1.3); }
+            /* Collectors button: emoji circle on mobile */
+            .grid-mode-btn[data-emoji="👥"] { font-size: 0; width: 34px; padding: 0; border-radius: 50%; transition: border-color 0.2s ease; }
+            .grid-mode-btn[data-emoji="👥"]::after { content: "👥"; font-size: 14px; line-height: 1; }
             .grid-mode-btn .palette-sort-arrow { display: none; }
             .gallery-room-toggle, .grid-size-toggle { width: 38px; height: 38px; font-size: 12px; flex-shrink: 0; }
             /* Palette headers on mobile */
@@ -2865,6 +2873,8 @@
             .grid-mode-btn::after { content: none; }
             .grid-mode-btn[data-emoji="🎨"] { font-size: 0; width: 32px; padding: 0; border-radius: 50%; transition: border-color 0.2s ease; }
             .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; font-size: 14px; line-height: 1; transition: filter 0.2s ease; }
+            .grid-mode-btn[data-emoji="👥"] { font-size: 0; width: 32px; padding: 0; border-radius: 50%; transition: border-color 0.2s ease; }
+            .grid-mode-btn[data-emoji="👥"]::after { content: "👥"; font-size: 13px; line-height: 1; }
             .grid-mode-btn .palette-sort-arrow { display: none; }
             .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; }
             .filter-toggle-bar { padding: 8px 12px; }
@@ -4081,10 +4091,10 @@
                 <button class="grid-size-toggle" id="gridSizeToggle" title="Change grid size">
                     <span class="size-icon" id="sizeIcon"></span>
                 </button>
-                <button class="grid-mode-btn" data-mode="grid" data-emoji="🌍" id="gridAllFavBtn" title="All Cities">ALL</button>
+                <button class="grid-mode-btn" data-mode="grid" id="gridAllFavBtn" title="All Cities">ALL</button>
                 <button class="grid-mode-btn active" data-mode="palette" data-emoji="🎨" id="paletteColorToggle" title="Sort by Palette">BY PALETTE <span class="palette-sort-arrow">↓</span></button>
-                <button class="grid-mode-btn origins-btn" data-mode="origins" data-emoji="📍" id="gridOriginsBtn" title="Origins">ORIGINS</button>
-                <button class="grid-mode-btn collectors-btn" data-emoji="👤" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
+                <button class="grid-mode-btn origins-btn" data-mode="origins" id="gridOriginsBtn" title="Origins">ORIGINS</button>
+                <button class="grid-mode-btn collectors-btn" data-emoji="👥" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
             </div>
         </div>
         <div class="filter-toggle-bar" id="filterToggleBar"><span>FILTERS</span><span class="arrow">▼</span></div>
@@ -4179,6 +4189,7 @@
                     <div class="wall-view-wall-color gray active" data-wall="gray" title="Light wall"></div>
                     <div class="wall-view-wall-color black" data-wall="black" title="Dark wall"></div>
                 </div>
+                <button class="wall-view-contrast-toggle" id="wallViewContrastToggle" title="Toggle light/dark wall"></button>
                 <button class="wall-view-layout-toggle" id="wallViewLayoutToggle" title="Toggle wide/tall layout">⊞</button>
                 <button class="wall-view-hide-empty" id="wallViewHideEmpty" title="Toggle grid/line view"><span class="line-icon">⊞</span> GRID</button>
                 <button class="wall-view-try-mode" id="wallViewTryMode" title="Try adding cities to your grid">✦ TRY</button>
@@ -8325,6 +8336,24 @@
                     else if (wallType === 'colorful') modal.classList.add('wall-colorful');
                     currentWallColor = wallType;
                 });
+            });
+
+            // Contrast toggle (mobile): single button toggles between light/dark wall
+            document.getElementById('wallViewContrastToggle')?.addEventListener('click', () => {
+                const modal = document.getElementById('wallViewModal');
+                const isBlack = modal.classList.contains('wall-black');
+                // Toggle wall color
+                modal.classList.remove('wall-gray', 'wall-black', 'wall-colorful', 'dark-mode');
+                if (isBlack) {
+                    modal.classList.add('wall-gray');
+                    currentWallColor = 'gray';
+                } else {
+                    modal.classList.add('wall-black');
+                    currentWallColor = 'black';
+                }
+                // Sync the desktop circle buttons
+                document.querySelectorAll('.wall-view-wall-color').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.wall-view-wall-color.${currentWallColor === 'black' ? 'black' : 'gray'}`)?.classList.add('active');
             });
 
             // Grid / Line view toggle - button shows CURRENT state
