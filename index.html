@@ -376,14 +376,14 @@
         .grid-items.favorites-grid .grid-item { border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
 
         /* Collectors button in grid - brighter when not clicked, muted when active */
-        .grid-mode-btn.collectors-btn { background: transparent; border-color: var(--border); color: var(--text-muted); opacity: 0.6; }
-        .grid-mode-btn.collectors-btn:hover { background: rgba(255,255,255,0.03); border-color: var(--text-muted); color: var(--text-dim); opacity: 0.8; }
+        .grid-mode-btn.collectors-btn { background: transparent; border-color: rgba(212, 165, 116, 0.25); color: var(--text-muted); opacity: 0.6; }
+        .grid-mode-btn.collectors-btn:hover { background: rgba(212, 165, 116, 0.06); border-color: var(--warm); color: var(--warm); opacity: 0.9; }
         .grid-mode-btn.collectors-btn.active { opacity: 0.25; border-color: transparent; color: var(--text-muted); background: transparent; }
-        .grid-mode-btn.favorites-active { background: #FF6B4A; border-color: #FF6B4A; color: #fff; }
-        .grid-mode-btn.favorites-active:hover { background: #ff8566; border-color: #ff8566; color: #fff; }
+        .grid-mode-btn.favorites-active { background: var(--warm); border-color: var(--warm); color: #000; }
+        .grid-mode-btn.favorites-active:hover { background: var(--warm); border-color: var(--warm); color: #000; }
         /* Origins button in grid */
-        .grid-mode-btn.origins-btn { background: transparent; border-color: var(--border); color: var(--text-muted); opacity: 0.6; }
-        .grid-mode-btn.origins-btn:hover { background: rgba(255,255,255,0.03); border-color: var(--warm); color: var(--warm); opacity: 0.9; }
+        .grid-mode-btn.origins-btn { background: transparent; border-color: rgba(212, 165, 116, 0.25); color: var(--text-muted); opacity: 0.6; }
+        .grid-mode-btn.origins-btn:hover { background: rgba(212, 165, 116, 0.06); border-color: var(--warm); color: var(--warm); opacity: 0.9; }
         .grid-mode-btn.origins-btn.active { background: rgba(232, 184, 109, 0.15); border-color: var(--warm); color: var(--warm); opacity: 1; }
 
         /* Origins grid items */
@@ -1871,8 +1871,9 @@
         .grid-about-link img { height: 18px; width: auto; filter: brightness(0) invert(1); transition: all 0.3s ease; }
         .grid-about-link:hover img { filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.3)); }
         .grid-controls { display: flex; gap: 10px; align-items: center; }
-        .grid-mode-btn { padding: 14px 24px; background: transparent; border: 2px solid var(--mint); border-radius: 50px; color: var(--mint); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.3s ease; }
+        .grid-mode-btn { padding: 14px 24px; background: transparent; border: 1.5px solid rgba(212, 165, 116, 0.35); border-radius: 50px; color: var(--mint); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.3s ease; outline: none; box-shadow: none; }
         .grid-mode-btn:hover { background: rgba(212, 165, 116, 0.1); border-color: var(--warm); color: var(--warm); }
+        .grid-mode-btn:focus-visible { border-color: var(--warm); }
         .grid-mode-btn.active { background: rgba(232, 184, 109, 0.15); border-color: var(--warm); color: var(--warm); }
         .grid-mode-btn .palette-sort-arrow { margin-left: 4px; transition: transform 0.2s ease; display: inline-block; }
         .grid-mode-btn.sort-asc .palette-sort-arrow { transform: rotate(180deg); }
@@ -1885,13 +1886,13 @@
         .grid-filter-bar { display: none; gap: 12px; padding: 16px 28px; background: var(--bg-panel); flex-shrink: 0; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--border); position: relative; }
         .grid-filter-bar.open { display: flex; }
         .grid-filter-bar select { padding: 10px 14px; background: var(--bg-input); border: none; color: var(--text); border-radius: 12px; font-size: 11px; font-family: inherit; font-weight: 600; cursor: pointer; min-width: 150px; color-scheme: dark; }
-        .grid-filter-bar select:focus { outline: none; box-shadow: 0 0 0 2px rgba(0, 229, 204, 0.3); }
+        .grid-filter-bar select:focus { outline: none; box-shadow: 0 0 0 2px rgba(232, 184, 109, 0.3); }
         .grid-filter-bar select option { background: #1e1d28; color: #fff; padding: 10px 14px; }
         .multi-select { position: relative; min-width: 120px; }
         .multi-select-btn { padding: 10px 16px; background: var(--bg-input); border: none; color: var(--text); border-radius: 50px; font-size: 11px; font-family: inherit; font-weight: 600; cursor: pointer; width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
         .multi-select-btn:hover { background: var(--bg-card); }
         .multi-select-btn .arrow { font-size: 8px; opacity: 0.6; }
-        .multi-select-btn.has-selection { color: var(--teal); }
+        .multi-select-btn.has-selection { color: var(--warm); }
         .multi-select-dropdown { position: absolute; top: 100%; left: 0; min-width: 100%; background: var(--bg-card); border-radius: 12px; margin-top: 4px; padding: 8px 0; max-height: 280px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 8px 32px rgba(0,0,0,0.4); white-space: nowrap; }
         #paletteMultiSelect .multi-select-dropdown { min-width: 200px; }
         #boundsMultiSelect .multi-select-dropdown { min-width: 180px; }
@@ -1919,7 +1920,7 @@
         .grid-color-gradient-toggle { padding: 6px; background: none; border: none; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
         .grid-color-gradient-toggle:hover .color-dot { transform: scale(1.2); box-shadow: 0 0 8px rgba(255,255,255,0.3); }
         .grid-color-gradient-toggle .color-dot { width: 16px; height: 16px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; transition: transform 0.2s, box-shadow 0.2s; }
-        .grid-color-gradient-toggle.active .color-dot { box-shadow: 0 0 10px rgba(0,229,204,0.5); }
+        .grid-color-gradient-toggle.active .color-dot { box-shadow: 0 0 10px rgba(232, 184, 109, 0.5); }
         .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: stretch; justify-content: center; border-radius: 0; background: transparent; }
         .grid-color-gradient-bar.open { opacity: 1; pointer-events: auto; }
         .grid-color-gradient-inner { padding: 0; width: 100%; display: flex; flex-direction: column; position: relative; }
@@ -2651,7 +2652,7 @@
         /* Compact nav buttons when space is tight */
         @media (max-width: 900px) {
             .grid-controls { gap: 6px; }
-            .grid-mode-btn { font-size: 0; width: 36px; height: 36px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; border-width: 1.5px; }
+            .grid-mode-btn { font-size: 0; width: 36px; height: 36px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
             .grid-mode-btn::after { content: none; }
             .grid-mode-btn[data-emoji="🌍"] { font-size: 0; }
             .grid-mode-btn[data-emoji="🌍"]::after { content: "🌍"; font-size: 16px; line-height: 1; }
