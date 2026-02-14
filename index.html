@@ -2630,6 +2630,23 @@
             .collector-banner-prev { left: 10px; }
             .collector-banner-next { right: 40px; }
             .collector-banner-close { right: 10px; }
+
+            /* === Mobile filter UX fixes === */
+
+            /* Color gradient bar: slim fixed strip above the filter toggle bar */
+            .grid-color-gradient-bar { position: fixed; left: 0; right: 0; top: auto; bottom: 50px; height: 42px; z-index: 161; border-radius: 0; }
+            .grid-color-gradient-inner { height: 100%; }
+            .grid-color-gradient-strip { min-height: 26px; }
+            .grid-color-gradient-times { padding: 1px 6px 0; }
+            .grid-color-gradient-times span { font-size: 6px; }
+            /* Always show close button on touch devices (no hover state) */
+            .grid-color-gradient-close { opacity: 1; font-size: 18px; padding: 8px 12px; right: 2px; background: rgba(0,0,0,0.6); border-radius: 4px; }
+
+            /* Filter dropdowns: open upward on mobile since filter bar is at bottom */
+            .grid-filter-bar .multi-select-dropdown { top: auto; bottom: 100%; margin-top: 0; margin-bottom: 4px; max-height: 40vh; }
+            /* Allow dropdowns to escape the filter bar - remove overflow clipping */
+            .grid-filter-bar, .grid-filter-bar.open { overflow: visible; max-height: none; }
+            .grid-filter-bar .multi-select { position: relative; z-index: 200; }
         }
 
         /* Compact nav buttons when space is tight */
@@ -16518,9 +16535,11 @@
         const pullRefreshIndicator = document.getElementById('pullRefreshIndicator');
         const pullRefreshText = pullRefreshIndicator?.querySelector('.refresh-text');
         let pullStartY = 0;
+        let pullStartX = 0;
         let pullCurrentY = 0;
         let isPulling = false;
-        const pullThreshold = 100;
+        let pullLocked = false; // true once we confirm it's a vertical pull
+        const pullThreshold = 150; // increased from 100 to reduce accidental triggers
 
         function isAtTop() {
             const gridContent = document.getElementById('gridContent');
@@ -16548,17 +16567,40 @@
 
         document.addEventListener('touchstart', (e) => {
             if (isAtTop() && (typeof isFullscreen === 'undefined' || !isFullscreen)) {
+                // Don't activate pull-to-shuffle when touching filter bars, dropdowns, or gradient
+                const target = e.target;
+                if (target.closest('.grid-filter-bar') || target.closest('.filter-toggle-bar') ||
+                    target.closest('.grid-color-gradient-bar') || target.closest('.multi-select-dropdown') ||
+                    target.closest('.mobile-sheet') || target.closest('.mobile-bottom-bar')) {
+                    isPulling = false;
+                    return;
+                }
                 pullStartY = e.touches[0]?.clientY || 0;
+                pullStartX = e.touches[0]?.clientX || 0;
                 isPulling = true;
+                pullLocked = false;
             }
         }, { passive: true });
 
         document.addEventListener('touchmove', (e) => {
             if (!isPulling || !pullRefreshIndicator) return;
             pullCurrentY = e.touches[0]?.clientY || 0;
+            const pullCurrentX = e.touches[0]?.clientX || 0;
             const pullDistance = pullCurrentY - pullStartY;
+            const horizontalDistance = Math.abs(pullCurrentX - pullStartX);
 
-            if (pullDistance > 20 && isAtTop()) {
+            // If horizontal movement exceeds vertical, cancel pull (it's a swipe/scroll)
+            if (!pullLocked && horizontalDistance > 15) {
+                isPulling = false;
+                return;
+            }
+
+            // Lock as a pull gesture once we confirm vertical intent (50px dead zone)
+            if (!pullLocked && pullDistance > 50 && pullDistance > horizontalDistance * 2) {
+                pullLocked = true;
+            }
+
+            if (pullLocked && pullDistance > 50 && isAtTop()) {
                 pullRefreshIndicator.classList.add('visible');
                 if (pullDistance > pullThreshold) {
                     pullRefreshIndicator.classList.add('pulling');
@@ -16567,7 +16609,7 @@
                     pullRefreshIndicator.classList.remove('pulling');
                     if (pullRefreshText) pullRefreshText.textContent = 'Pull to shuffle';
                 }
-                const translateY = Math.min(pullDistance * 0.4, 60);
+                const translateY = Math.min((pullDistance - 50) * 0.35, 50);
                 pullRefreshIndicator.style.transform = `translateX(-50%) translateY(${translateY}px)`;
             }
         }, { passive: true });
@@ -16576,7 +16618,7 @@
             if (!isPulling || !pullRefreshIndicator) return;
             const pullDistance = pullCurrentY - pullStartY;
 
-            if (pullDistance > pullThreshold && isAtTop()) {
+            if (pullLocked && pullDistance > pullThreshold && isAtTop()) {
                 haptic('heavy');
                 pullRefreshIndicator.classList.add('refreshing');
                 pullRefreshIndicator.classList.remove('pulling');
