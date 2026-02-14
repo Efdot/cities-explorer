@@ -1933,7 +1933,7 @@
         .grid-color-gradient-meta { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 4px 12px; z-index: 2; pointer-events: none; }
         .grid-color-gradient-clock { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: rgba(255,255,255,0.85); opacity: 0; transition: opacity 0.25s ease; min-width: 40px; white-space: nowrap; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
         .grid-color-gradient-clock.visible { opacity: 1; }
-        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-shadow: 0 1px 3px rgba(0,0,0,0.5); position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
         .grid-color-gradient-close { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.6; transition: opacity 0.2s; pointer-events: auto; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
         .grid-color-gradient-close:hover { opacity: 1; color: #fff; }
         .grid-color-gradient-hint { font-size: 8px; color: #ffa500; opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
@@ -3163,15 +3163,12 @@
         .mobile-sheet { display: none; }
 
         @media (max-width: 768px) {
-            /* Override Layout A: no drawer, no hamburger */
             body { overflow: hidden !important; }
+            /* Sidebar hidden on mobile */
             .mobile-menu-toggle { display: none !important; }
             .sidebar-overlay { display: none !important; }
-
-            /* Hide sidebar completely on mobile */
-            .sidebar {
-                display: none !important;
-            }
+            .sidebar { display: none !important; }
+            .sidebar-footer { display: none !important; }
 
             /* Art fills the screen above the bottom bar with generous negative space */
             .main-content {
@@ -13833,6 +13830,9 @@
                 } else {
                     // Leaving gradient or in non-gradient mode - deactivate
                     if (typeof deactivateColorGradient === 'function') deactivateColorGradient();
+                    // Close filter bar when switching away from gradient mode
+                    filterToggleBar.classList.remove('open');
+                    gridFilterBar.classList.remove('open');
                 }
 
                 // Clear collector filter when switching modes (hide the banner)
@@ -14267,6 +14267,7 @@
         let gradientGridItems = null; // Map<tokenId, { el, palette }>
         let gradientGridContainer = null; // The .grid-items wrapper
         let gradientHiResTimer = null; // Debounce timer for hi-res upgrade
+        let gradientImageObserver = null; // IntersectionObserver for lazy loading gradient images
 
         function preRenderGradientGrid() {
             // Build all tokens that pass current non-palette filters
@@ -14324,7 +14325,7 @@
                 check.textContent = '\u2713';
 
                 const img = document.createElement('img');
-                img.src = getSmallThumbnailUrl(id);
+                img.dataset.src = getSmallThumbnailUrl(id);
                 img.alt = '';
                 img.decoding = 'async';
 
@@ -14343,10 +14344,24 @@
             gridContent.appendChild(fragment);
             document.getElementById('gridPagination').style.display = 'none';
 
-            // Preload first visible batch for instant display (50px thumbnails are ~2-3KB each)
-            allTokens.slice(0, 30).forEach(id => {
-                const preload = new Image();
-                preload.src = getSmallThumbnailUrl(id);
+            // Use IntersectionObserver on scroll container for true lazy loading
+            // (browser native lazy loading doesn't work in overflow:auto containers)
+            if (gradientImageObserver) gradientImageObserver.disconnect();
+            gradientImageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            delete img.dataset.src;
+                        }
+                        gradientImageObserver.unobserve(img);
+                    }
+                });
+            }, { root: gridContent, rootMargin: '200px 0px' });
+
+            container.querySelectorAll('img[data-src]').forEach(img => {
+                gradientImageObserver.observe(img);
             });
         }
 
@@ -14368,6 +14383,14 @@
                 return dA - dB;
             });
             entries.forEach(([, { el }], idx) => { el.style.order = idx; });
+
+            // Re-observe unloaded images since visible set changed after reorder
+            if (gradientImageObserver && gradientGridContainer) {
+                gradientGridContainer.querySelectorAll('img[data-src]').forEach(img => {
+                    gradientImageObserver.unobserve(img);
+                    gradientImageObserver.observe(img);
+                });
+            }
         }
 
         function upgradeGradientToHiRes() {
@@ -14376,6 +14399,7 @@
 
         function teardownGradientGrid() {
             if (gradientHiResTimer) { clearTimeout(gradientHiResTimer); gradientHiResTimer = null; }
+            if (gradientImageObserver) { gradientImageObserver.disconnect(); gradientImageObserver = null; }
             gradientGridItems = null;
             gradientGridContainer = null;
         }
@@ -14753,7 +14777,7 @@
         function renderFavoritesGrid(tokens) {
             // Special clean grid for favorites - sized big for viewing
             if (tokens.length === 0) {
-                gridContent.innerHTML = `<div class="empty-gallery">Nothing here yet. Go explore.</div>`;
+                gridContent.innerHTML = `<div class="empty-gallery">Go explore and click 💙 to save your favorites.</div>`;
                 document.getElementById('gridPagination').style.display = 'none';
                 return;
             }
