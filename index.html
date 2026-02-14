@@ -1929,15 +1929,18 @@
         .grid-color-gradient-marker { position: absolute; width: 2px; height: 100%; background: rgba(255,255,255,0.9); top: 0; transform: translateX(-50%); box-shadow: 0 0 6px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
         .grid-color-gradient-strip:hover .grid-color-gradient-marker, .grid-color-gradient-strip.active .grid-color-gradient-marker { opacity: 1; }
         .grid-color-gradient-meta { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 4px 12px; z-index: 2; pointer-events: none; }
-        .grid-color-gradient-clock { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: #fff; opacity: 0; transition: opacity 0.25s ease; min-width: 40px; white-space: nowrap; text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.9); }
+        .grid-color-gradient-clock { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.25s ease; min-width: 40px; white-space: nowrap; }
         .grid-color-gradient-clock.visible { opacity: 1; }
-        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #fff; text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.9); position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
-        .grid-color-gradient-close { background: none; border: none; color: #fff; font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.7; transition: opacity 0.2s; pointer-events: auto; text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.9); }
-        .grid-color-gradient-close:hover { opacity: 1; color: #fff; }
-        .grid-color-gradient-hint { font-size: 8px; color: #ffa500; opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.9); }
+        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(0,0,0,0.45); position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; transition: opacity 0.5s ease; }
+        .grid-color-gradient-label.hidden { opacity: 0; pointer-events: none; }
+        .grid-color-gradient-close { background: none; border: none; color: rgba(0,0,0,0.4); font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.7; transition: opacity 0.2s; pointer-events: auto; }
+        .grid-color-gradient-close:hover { opacity: 1; color: rgba(0,0,0,0.7); }
+        .grid-color-gradient-hint { font-size: 8px; color: rgba(180, 80, 0, 0.7); opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; }
         .grid-color-gradient-hint.visible { opacity: 0.8; }
         @media (max-width: 768px) {
             .grid-color-gradient-inner { padding: 0; }
+            .grid-color-gradient-label { display: none; }
+            .grid-color-gradient-marker { width: 14px; height: 14px; border-radius: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; box-shadow: 0 0 6px rgba(0,0,0,0.4), 0 0 0 2px rgba(255,255,255,0.8); }
         }
         .grid-filter-spacer { flex: 1; }
         .grid-supply-tracker { width: 120px; height: 28px; position: relative; flex-shrink: 0; cursor: pointer; display: block; text-decoration: none; }
@@ -14435,6 +14438,13 @@
                 gridFilterState.palettes = new Set();
                 // Pre-render the entire grid with eager low-res thumbnails
                 preRenderGradientGrid();
+                // Show label then fade it out after 5 seconds
+                const gradLabel = document.querySelector('.grid-color-gradient-label');
+                if (gradLabel) {
+                    gradLabel.classList.remove('hidden');
+                    if (window._gradLabelTimer) clearTimeout(window._gradLabelTimer);
+                    window._gradLabelTimer = setTimeout(() => gradLabel.classList.add('hidden'), 5000);
+                }
             } else {
                 teardownGradientGrid();
                 // Keep palette selection if user interacted, restore if not
