@@ -5963,7 +5963,7 @@
                 <div class="grid-item" data-token="${id}" onclick="handleGridItemClick(event, ${id})" style="background:${bgColor}; --spot-color:${spotColor}; --spot-text:${spotTextColor};">
                     <button class="grid-item-fav ${isCityFavorited(id) ? 'favorited' : ''}" data-token="${id}">♥</button>
                     <div class="compare-check">✓</div>
-                    <img src="${getSmallThumbnailUrl(id)}" alt="City ${id}" loading="${loadingAttr}" decoding="async">
+                    <img src="${getSmallThumbnailUrl(id)}" alt="" loading="${loadingAttr}" decoding="async">
                     <div class="grid-item-label">#${id}</div>
                     ${showRank && rank ? `<div class="grid-item-rank">#${rank}</div>` : ''}
                     ${generateGridTooltip(id)}
