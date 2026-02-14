@@ -1910,10 +1910,10 @@
         .top-50-dot { background: #C0C0C0; }
         .top-100-dot { background: #CD7F32; }
         /* Color gradient slider for grid view */
-        .grid-color-gradient-toggle { padding: 10px 12px; background: var(--bg-input); border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        .grid-color-gradient-toggle:hover { background: var(--bg-card); }
-        .grid-color-gradient-toggle .color-dot { width: 12px; height: 12px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; }
-        .grid-color-gradient-toggle.active { background: rgba(0,229,204,0.15); color: var(--teal); }
+        .grid-color-gradient-toggle { padding: 6px; background: none; border: none; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .grid-color-gradient-toggle:hover .color-dot { transform: scale(1.2); box-shadow: 0 0 8px rgba(255,255,255,0.3); }
+        .grid-color-gradient-toggle .color-dot { width: 16px; height: 16px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; transition: transform 0.2s, box-shadow 0.2s; }
+        .grid-color-gradient-toggle.active .color-dot { box-shadow: 0 0 10px rgba(0,229,204,0.5); }
         .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: stretch; justify-content: center; border-radius: 0; background: transparent; }
         .grid-color-gradient-bar.open { opacity: 1; pointer-events: auto; }
         .grid-color-gradient-inner { padding: 0; width: 100%; display: flex; flex-direction: column; position: relative; }
@@ -14046,6 +14046,161 @@
             colorGradientStrip.style.background = `linear-gradient(to right, ${cssStops.join(', ')})`;
         }
 
+        // Pre-computed palette HSL values (populated once on first gradient use)
+        let paletteHSLCache = null;
+        function getPaletteHSLCache() {
+            if (paletteHSLCache) return paletteHSLCache;
+            paletteHSLCache = {};
+            for (const [name, info] of Object.entries(PALETTE_DATA)) {
+                if (!info || !info.bg) { paletteHSLCache[name] = { h: 0, s: 0, l: 0 }; continue; }
+                const hex = info.bg.replace('#', '');
+                const r = parseInt(hex.substr(0, 2), 16) / 255;
+                const g = parseInt(hex.substr(2, 2), 16) / 255;
+                const b = parseInt(hex.substr(4, 2), 16) / 255;
+                const max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h = 0, s = 0, l = (max + min) / 2;
+                if (max !== min) {
+                    const d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+                    else if (max === g) h = ((b - r) / d + 2) / 6;
+                    else h = ((r - g) / d + 4) / 6;
+                }
+                paletteHSLCache[name] = { h: h * 360, s: s * 100, l: l * 100 };
+            }
+            return paletteHSLCache;
+        }
+
+        function getPaletteColorDist(palette, tH, tS, tL) {
+            const c = getPaletteHSLCache()[palette];
+            if (!c) return 9999;
+            const hueDiff = Math.abs(c.h - tH);
+            const hd = Math.min(hueDiff, 360 - hueDiff);
+            return hd * 2 + Math.abs(c.s - tS) + Math.abs(c.l - tL) * 0.5;
+        }
+
+        // Gradient grid state: pre-rendered DOM nodes for instant reordering
+        let gradientGridItems = null; // Map<tokenId, { el, palette }>
+        let gradientGridContainer = null; // The .grid-items wrapper
+        let gradientHiResTimer = null; // Debounce timer for hi-res upgrade
+
+        function preRenderGradientGrid() {
+            // Build all tokens that pass current non-palette filters
+            const waterFilter = document.getElementById('gridWaterFilter').checked;
+            const allTokens = [];
+            for (let i = 0; i <= MAX_TOKEN; i++) {
+                const traits = tokenTraits[i];
+                if (!traits) continue;
+                if (showingFavoritesOnly && !isCityFavorited(i)) continue;
+                if (currentEnergyFilter && traits['Time of Day'] !== currentEnergyFilter) continue;
+                if (gridFilterState.times.size > 0 && !gridFilterState.times.has(traits['Time of Day'])) continue;
+                if (gridFilterState.energy.size > 0 && !gridFilterState.energy.has(traits['Energy'])) continue;
+                if (gridFilterState.zooms.size > 0 && !gridFilterState.zooms.has(traits['Zoom'])) continue;
+                if (gridFilterState.bounds.size > 0 && !gridFilterState.bounds.has(traits['Bounds'])) continue;
+                if (gridFilterState.traffic.size > 0 && !gridFilterState.traffic.has(traits['Traffic'])) continue;
+                const waterVal = (traits['Water Feature'] || '').toLowerCase();
+                if (waterFilter && (!waterVal || waterVal === 'none' || waterVal === 'no')) continue;
+                allTokens.push(i);
+            }
+
+            // Pre-render with eager loading at 100px for fast display
+            gradientGridItems = new Map();
+            const fragment = document.createDocumentFragment();
+            const container = document.createElement('div');
+            container.className = `grid-items grid-${gridSize}`;
+            container.style.display = 'grid';
+
+            allTokens.forEach((id, idx) => {
+                const traits = tokenTraits[id];
+                const palette = traits?.['Palette'] || 'Unknown';
+                const paletteData = PALETTE_DATA[palette];
+                const bgColor = paletteData?.bg || '#1a1a2e';
+                const rawSpotColor = paletteData?.colors?.[10] || '#FFE135';
+                const spotColor = getContrastingSpotColor(rawSpotColor, bgColor);
+                const colors = paletteData?.colors || [];
+                let spotTextColor = getLuminance(spotColor) > 0.5 ? '#000' : '#fff';
+                for (const c of [colors[0], colors[1], colors[2], colors[3], bgColor, colors[11]]) {
+                    if (c && getContrastRatio(c, spotColor) >= 3) { spotTextColor = c; break; }
+                }
+
+                const div = document.createElement('div');
+                div.className = 'grid-item';
+                div.dataset.token = id;
+                div.setAttribute('onclick', `handleGridItemClick(event, ${id})`);
+                div.style.cssText = `background:${bgColor}; --spot-color:${spotColor}; --spot-text:${spotTextColor}; order:${idx};`;
+
+                const favBtn = document.createElement('button');
+                favBtn.className = `grid-item-fav ${isCityFavorited(id) ? 'favorited' : ''}`;
+                favBtn.dataset.token = id;
+                favBtn.textContent = '\u2665';
+                favBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleCityFavorite(id, e); });
+
+                const check = document.createElement('div');
+                check.className = 'compare-check';
+                check.textContent = '\u2713';
+
+                const img = document.createElement('img');
+                img.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=100`;
+                img.alt = `City ${id}`;
+                img.loading = 'eager';
+                img.decoding = 'async';
+
+                const label = document.createElement('div');
+                label.className = 'grid-item-label';
+                label.textContent = `#${id}`;
+
+                div.append(favBtn, check, img, label);
+                container.appendChild(div);
+                gradientGridItems.set(id, { el: div, palette });
+            });
+
+            fragment.appendChild(container);
+            gradientGridContainer = container;
+            gridContent.innerHTML = '';
+            gridContent.appendChild(fragment);
+            document.getElementById('gridPagination').style.display = 'none';
+
+            // Also kick off background preload of all images
+            allTokens.forEach(id => {
+                const preload = new Image();
+                preload.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=100`;
+            });
+        }
+
+        function reorderGradientGrid(tH, tS, tL) {
+            if (!gradientGridItems) return;
+            // Compute distance per palette (only ~50 palettes, very fast)
+            const paletteDist = {};
+            gradientGridItems.forEach(({ palette }) => {
+                if (paletteDist[palette] === undefined) {
+                    paletteDist[palette] = getPaletteColorDist(palette, tH, tS, tL);
+                }
+            });
+
+            // Build sorted array and assign CSS order
+            const entries = [...gradientGridItems.entries()];
+            entries.sort((a, b) => {
+                const dA = paletteDist[a[1].palette] ?? 9999;
+                const dB = paletteDist[b[1].palette] ?? 9999;
+                return dA - dB;
+            });
+            entries.forEach(([, { el }], idx) => { el.style.order = idx; });
+        }
+
+        function upgradeGradientToHiRes() {
+            if (!gradientGridItems) return;
+            gradientGridItems.forEach(({ el }, id) => {
+                const img = el.querySelector('img');
+                if (img) img.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=200`;
+            });
+        }
+
+        function teardownGradientGrid() {
+            if (gradientHiResTimer) { clearTimeout(gradientHiResTimer); gradientHiResTimer = null; }
+            gradientGridItems = null;
+            gradientGridContainer = null;
+        }
+
         function toggleColorGradient() {
             colorGradientActive = !colorGradientActive;
             colorGradientToggle.classList.toggle('active', colorGradientActive);
@@ -14054,7 +14209,12 @@
             if (colorGradientActive) {
                 buildColorGradient();
                 savedFilterState = new Set(gridFilterState.palettes);
+                // Clear palette filter so all palettes are included
+                gridFilterState.palettes = new Set();
+                // Pre-render the entire grid with eager low-res thumbnails
+                preRenderGradientGrid();
             } else {
+                teardownGradientGrid();
                 // Keep palette selection if user interacted, restore if not
                 if (savedFilterState && !colorGradientStrip.classList.contains('active')) {
                     gridFilterState.palettes = savedFilterState;
@@ -14078,7 +14238,7 @@
             colorGradientMarker.style.left = `${percent}%`;
             colorGradientStrip.classList.add('active');
 
-            // Get the actual color at this gradient position for sorting
+            // Get the actual color at this gradient position
             gradientTargetColor = getGradientColorAtPercent(percent);
 
             // Show clock time from the gradient position (00:00 - 24:00)
@@ -14087,13 +14247,14 @@
             const mm = String(Math.floor((posHour % 1) * 60)).padStart(2, '0');
             colorGradientClock.textContent = `${hh}:${mm}`;
             colorGradientClock.classList.add('visible');
-
-            // Clear palette filter so ALL palettes show, sorted by color proximity
-            gridFilterState.palettes = new Set();
-
             colorGradientHint.classList.remove('visible');
-            gridPage = 1;
-            renderGrid();
+
+            // Reorder existing grid items via CSS order (no DOM rebuild)
+            reorderGradientGrid(gradientTargetColor.h, gradientTargetColor.s, gradientTargetColor.l);
+
+            // Debounce hi-res upgrade: after 400ms of no interaction, load larger thumbnails
+            if (gradientHiResTimer) clearTimeout(gradientHiResTimer);
+            gradientHiResTimer = setTimeout(upgradeGradientToHiRes, 400);
         }
 
         colorGradientToggle.addEventListener('click', (e) => {
@@ -14147,6 +14308,7 @@
                 colorGradientActive = false;
                 colorGradientToggle.classList.remove('active');
                 colorGradientBar.classList.remove('open');
+                teardownGradientGrid();
                 // Keep palette selection if user interacted, restore if not
                 if (savedFilterState && !colorGradientStrip.classList.contains('active')) {
                     gridFilterState.palettes = savedFilterState;
@@ -14358,10 +14520,10 @@
             if (supplyFill) supplyFill.style.width = `${(totalMinted / 500) * 100}%`;
             if (mintedCount) mintedCount.textContent = totalMinted;
 
-            // When gradient is actively being used, render flat grid to preserve color sort order
-            // (palette grouping would re-sort by popularity and lose the color proximity ordering)
-            if (colorGradientActive && gradientTargetColor && !showingFavoritesOnly) {
-                renderSimpleGrid(tokens);
+            // When gradient is actively being used, grid is pre-rendered with CSS order reordering
+            // (skip full re-render; reorderGradientGrid handles sorting via CSS order)
+            if (colorGradientActive && gradientGridItems && !showingFavoritesOnly) {
+                return;
             } else if (showingFavoritesOnly) {
                 renderFavoritesGrid(tokens);
             } else if (gridMode === 'origins') {
