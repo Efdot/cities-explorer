@@ -1468,11 +1468,11 @@
             background-size: var(--cw) var(--ch);
             transition: transform 0.15s ease;
         }
-        .cs-1 { width: calc(var(--cw) * 0.166); background-position: 0 0; }
-        .cs-2 { width: calc(var(--cw) * 0.291); background-position: calc(var(--cw) * -0.166) 0; }
-        .cs-3 { width: calc(var(--cw) * 0.119); background-position: calc(var(--cw) * -0.457) 0; }
-        .cs-4 { width: calc(var(--cw) * 0.118); background-position: calc(var(--cw) * -0.576) 0; }
-        .cs-5 { width: calc(var(--cw) * 0.305); background-position: calc(var(--cw) * -0.695) 0; }
+        .cs-1 { width: calc(var(--cw) * 0.166); background-position: 0 center; }
+        .cs-2 { width: calc(var(--cw) * 0.291); background-position: calc(var(--cw) * -0.166) center; }
+        .cs-3 { width: calc(var(--cw) * 0.119); background-position: calc(var(--cw) * -0.457) center; }
+        .cs-4 { width: calc(var(--cw) * 0.118); background-position: calc(var(--cw) * -0.576) center; }
+        .cs-5 { width: calc(var(--cw) * 0.305); background-position: calc(var(--cw) * -0.695) center; }
         /* Hover: staggered vibrate across segments */
         .mint-toggle:hover .collect-seg { animation: segVibrate 0.35s ease-in-out infinite; }
         .mint-toggle:hover .cs-1 { animation-delay: 0s; }
@@ -2494,6 +2494,31 @@
         /* Legacy palette row - hidden */
         .feature-palettes { display: none; }
 
+        /* Recently Built feature - next to Cities OTD */
+        .recently-built-feature { display: none; position: relative; margin: 0 -16px 8px -16px; overflow: hidden; background: transparent; }
+        .recently-built-feature.visible { display: block; }
+        .recently-built-label { display: flex; align-items: center; gap: 8px; padding: 10px 16px; cursor: pointer; }
+        .recently-built-label .rb-icon { font-size: 10px; color: #5dade2; text-shadow: 0 0 8px rgba(93, 173, 226, 0.6); transition: color 0.2s ease; }
+        .recently-built-label .rb-text { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); transition: all 0.2s ease; }
+        @media (min-width: 769px) {
+            .recently-built-label:hover .rb-text { color: #5dade2; }
+            .recently-built-label:hover .rb-icon { color: #5dade2; }
+        }
+        .recently-built-label .rb-arrow { font-size: 8px; color: rgba(255,255,255,0.3); margin-left: auto; transition: transform 0.2s ease; }
+        .recently-built-feature:not(.collapsed) .rb-arrow { transform: rotate(180deg); }
+        .recently-built-feature.collapsed .rb-expanded { display: none; }
+        .rb-expanded { padding: 0 16px 16px; background: rgba(10,10,10,0.5); border-radius: 0 0 12px 12px; cursor: pointer; }
+        .rb-city-row { display: flex; gap: 10px; align-items: center; }
+        .rb-city-thumb { width: 60px; height: 60px; border-radius: 6px; overflow: hidden; flex-shrink: 0; }
+        .rb-city-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .rb-city-info { flex: 1; min-width: 0; }
+        .rb-city-number { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.05em; }
+        .rb-city-palette-row { display: flex; align-items: center; gap: 4px; margin-top: 3px; }
+        .rb-city-palette-name { font-size: 8px; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.06em; }
+        .rb-city-swatches { display: flex; gap: 2px; }
+        .rb-city-swatch { width: 7px; height: 7px; border-radius: 2px; }
+        .rb-city-collector { font-size: 8px; color: rgba(255,255,255,0.35); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
         /* Thank You Builders Section */
         .patrons-section { margin: 8px 0 12px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, rgba(255, 215, 0, 0.04) 0%, rgba(255, 180, 50, 0.02) 100%); border: 1px solid rgba(255, 215, 0, 0.08); }
         .patrons-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; cursor: pointer; transition: background 0.2s ease; }
@@ -2887,7 +2912,8 @@
             .main-content { padding-top: 50px !important; padding-bottom: 16px !important; }
             .top-nav-fixed { top: 8px; right: 8px; gap: 4px; }
             .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
-            .mint-toggle { --ch: 14px; --cw: calc(var(--ch) * 3.985); padding: 1px; }
+            .mint-toggle { --ch: 16px; --cw: calc(var(--ch) * 3.985); padding: 1px; }
+            .mint-toggle .collect-seg { background-position-y: center; }
             .preview-image { max-height: calc(100vh - 140px); }
             .pull-refresh-indicator { padding: 8px 16px; font-size: 9px; }
         }
@@ -3333,7 +3359,8 @@
             /* Top nav: keep collect button, shrink */
             .top-nav-fixed { top: 8px; right: 8px; gap: 4px; }
             .view-toggle-btn { width: 28px; height: 28px; min-width: 28px; }
-            .mint-toggle { --ch: 16px; --cw: calc(var(--ch) * 3.985); padding: 2px; }
+            .mint-toggle { --ch: 20px; --cw: calc(var(--ch) * 3.985); padding: 2px; margin-right: 8px; }
+            .mint-toggle .collect-seg { background-position-y: center; }
 
             /* Collectors/Gallery panels still slide from right, full width */
             .gallery-panel, .collectors-panel { width: 100%; max-width: 100vw; right: 0; left: 0; transform: translateX(100%); padding: 20px 16px; box-sizing: border-box; }
@@ -3974,6 +4001,18 @@
                         <div class="feature-palettes" id="featurePalettes"></div>
                     </div>
                 </div>
+            </div>
+            <!-- Recently Built - most recently minted city -->
+            <div class="recently-built-feature collapsed" id="recentlyBuiltFeature">
+                <div class="recently-built-label" id="recentlyBuiltLabel"
+                    onclick="event.stopPropagation(); var el = document.getElementById('recentlyBuiltFeature'); el.classList.toggle('collapsed'); var txt = document.getElementById('recentlyBuiltText'); if(txt) txt.textContent = el.classList.contains('collapsed') ? 'Recently Built' : 'Newest City';"
+                    onmouseenter="if(window.innerWidth > 768) { var txt = document.getElementById('recentlyBuiltText'); if(txt && document.getElementById('recentlyBuiltFeature').classList.contains('collapsed')) txt.textContent = 'Newest City'; }"
+                    onmouseleave="if(window.innerWidth > 768) { var txt = document.getElementById('recentlyBuiltText'); if(txt && document.getElementById('recentlyBuiltFeature').classList.contains('collapsed')) txt.textContent = 'Recently Built'; }">
+                    <span class="rb-icon">▲</span>
+                    <span class="rb-text" id="recentlyBuiltText">Recently Built</span>
+                    <span class="rb-arrow">▼</span>
+                </div>
+                <div class="rb-expanded" id="recentlyBuiltContent"></div>
             </div>
             <div class="collectors-stats"><span id="collectorCountStats">164</span> collectors · <span id="citiesCountStats">321</span> cities</div>
             <div class="top-collectors-highlight" id="topCollectorsHighlight"></div>
@@ -8016,6 +8055,7 @@
 
                     // Initialize daily spotlight
                     initSpotlight();
+                    initRecentlyBuilt();
                 }
             } catch (e) {
                 console.log('Error fetching collectors:', e);
@@ -8298,9 +8338,18 @@
                 renderGrid();
             });
 
-            // Double-click on wall to exit
+            // Double-click on wall to exit (desktop)
             document.getElementById('wallViewContent')?.addEventListener('dblclick', (e) => {
                 if (e.target.closest('.wall-view-frame')) return;
+                closeWallView();
+            });
+
+            // Single-tap on wall background to exit (mobile only)
+            document.getElementById('wallViewContent')?.addEventListener('click', (e) => {
+                const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window && window.innerWidth <= 1024);
+                if (!isMobile) return;
+                // Ignore taps on frames, buttons, or interactive elements
+                if (e.target.closest('.wall-view-frame') || e.target.closest('button') || e.target.closest('.collect-btn-wrapper')) return;
                 closeWallView();
             });
 
@@ -9152,6 +9201,48 @@
             }
 
             featureEl.style.display = 'block';
+        }
+
+        // Recently Built - shows the most recently minted city
+        function initRecentlyBuilt() {
+            const recentId = MAX_TOKEN;
+            const traits = tokenTraits[recentId];
+            if (!traits) return;
+
+            const paletteName = traits['Palette'];
+            const paletteData = paletteName ? PALETTE_DATA[paletteName] : null;
+            const colors = paletteData ? paletteData.colors.slice(0, 4) : [];
+
+            // Find collector if any
+            const collector = COLLECTORS_DATA.find(c => c.tokens && c.tokens.includes(recentId));
+            const collectorName = collector ? collector.name : null;
+
+            const contentEl = document.getElementById('recentlyBuiltContent');
+            if (!contentEl) return;
+
+            contentEl.innerHTML = `
+                <div class="rb-city-row">
+                    <div class="rb-city-thumb">
+                        <img src="${MEDIA_BASE}/${CONTRACT}/${recentId}.png?width=200" alt="Cities #${recentId}">
+                    </div>
+                    <div class="rb-city-info">
+                        <div class="rb-city-number">Cities #${recentId}</div>
+                        ${paletteName ? `<div class="rb-city-palette-row">
+                            <div class="rb-city-swatches">${colors.map(c => `<div class="rb-city-swatch" style="background:${c}"></div>`).join('')}</div>
+                            <div class="rb-city-palette-name">${paletteName}</div>
+                        </div>` : ''}
+                        ${collectorName ? `<div class="rb-city-collector">collected by ${collectorName}</div>` : '<div class="rb-city-collector">just minted</div>'}
+                    </div>
+                </div>
+            `;
+
+            // Click expanded content to view the city
+            contentEl.addEventListener('click', () => {
+                closeCollectorsPanel();
+                loadOutput(recentId);
+            });
+
+            document.getElementById('recentlyBuiltFeature').classList.add('visible');
         }
 
         function createSubtleBlobs(colors1, colors2) {
