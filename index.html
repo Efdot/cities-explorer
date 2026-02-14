@@ -13823,6 +13823,11 @@
                 if (paletteColorState === 'gradient') {
                     // Entering gradient mode - activate color gradient
                     if (!colorGradientActive) {
+                        // Ensure filter bar is open so gradient bar is visible
+                        if (!gridFilterBar.classList.contains('open')) {
+                            filterToggleBar.classList.add('open');
+                            gridFilterBar.classList.add('open');
+                        }
                         toggleColorGradient();
                     }
                 } else {
@@ -14282,7 +14287,7 @@
                 allTokens.push(i);
             }
 
-            // Pre-render with eager loading at 100px for fast display
+            // Pre-render with 50px thumbnails (same as normal grid, ~2-3KB each)
             gradientGridItems = new Map();
             const fragment = document.createDocumentFragment();
             const container = document.createElement('div');
@@ -14319,9 +14324,8 @@
                 check.textContent = '\u2713';
 
                 const img = document.createElement('img');
-                img.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=200`;
-                img.alt = `City ${id}`;
-                img.loading = 'lazy';
+                img.src = getSmallThumbnailUrl(id);
+                img.alt = '';
                 img.decoding = 'async';
 
                 const label = document.createElement('div');
@@ -14339,10 +14343,10 @@
             gridContent.appendChild(fragment);
             document.getElementById('gridPagination').style.display = 'none';
 
-            // Preload only the first ~24 visible images for fast initial display
-            allTokens.slice(0, 24).forEach(id => {
+            // Preload first visible batch for instant display (50px thumbnails are ~2-3KB each)
+            allTokens.slice(0, 30).forEach(id => {
                 const preload = new Image();
-                preload.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=200`;
+                preload.src = getSmallThumbnailUrl(id);
             });
         }
 
