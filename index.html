@@ -13996,62 +13996,55 @@
         let savedFilterState = null; // Store original filter state to restore
         let gradientTargetColor = null; // Store target color for sorting by proximity
 
-        // Build the gradient as a day cycle: 00:00 → 24:00
-        // dark blues/purples → dawn gold → white daylight → orange afternoon → back to dark
-        function buildColorGradient() {
-            // Fixed day-cycle gradient: midnight → dawn → midday → dusk → midnight
-            colorGradientStrip.style.background = `linear-gradient(to right,
-                #0a0a1a 0%, #0d1030 4%, #1a1545 8%, #2a1f5c 12%,
-                #3d2a6e 16%, #5c3d7a 19%, #8b5e6b 22%, #c47a4a 25%,
-                #e8a635 28%, #f0c040 31%, #f5d870 35%, #fae8a0 39%,
-                #fff5d6 43%, #fffbe8 47%, #ffffff 50%,
-                #fff8e0 53%, #ffe8b0 57%, #ffd080 61%, #f0a848 65%,
-                #e88030 69%, #d05a28 72%, #a83a30 75%,
-                #7a2a50 78%, #5c2060 81%, #3d1a5c 84%,
-                #2a1550 88%, #1a1040 92%, #0d0d30 96%, #0a0a1a 100%)`;
+        // Day-cycle gradient stops: midnight → dawn → midday → dusk → midnight
+        const DAY_GRADIENT_STOPS = [
+            [0,   0x0a, 0x0a, 0x1a], [4,   0x0d, 0x10, 0x30], [8,   0x1a, 0x15, 0x45],
+            [12,  0x2a, 0x1f, 0x5c], [16,  0x3d, 0x2a, 0x6e], [19,  0x5c, 0x3d, 0x7a],
+            [22,  0x8b, 0x5e, 0x6b], [25,  0xc4, 0x7a, 0x4a], [28,  0xe8, 0xa6, 0x35],
+            [31,  0xf0, 0xc0, 0x40], [35,  0xf5, 0xd8, 0x70], [39,  0xfa, 0xe8, 0xa0],
+            [43,  0xff, 0xf5, 0xd6], [47,  0xff, 0xfb, 0xe8], [50,  0xff, 0xff, 0xff],
+            [53,  0xff, 0xf8, 0xe0], [57,  0xff, 0xe8, 0xb0], [61,  0xff, 0xd0, 0x80],
+            [65,  0xf0, 0xa8, 0x48], [69,  0xe8, 0x80, 0x30], [72,  0xd0, 0x5a, 0x28],
+            [75,  0xa8, 0x3a, 0x30], [78,  0x7a, 0x2a, 0x50], [81,  0x5c, 0x20, 0x60],
+            [84,  0x3d, 0x1a, 0x5c], [88,  0x2a, 0x15, 0x50], [92,  0x1a, 0x10, 0x40],
+            [96,  0x0d, 0x0d, 0x30], [100, 0x0a, 0x0a, 0x1a]
+        ];
 
-            // Map each palette to a position on the 24h timeline via its hour metadata
-            const palettesWithTime = Object.entries(PALETTE_DATA).map(([name, info]) => {
-                const hex = info.bg.replace('#', '');
-                const r = parseInt(hex.substr(0, 2), 16) / 255;
-                const g = parseInt(hex.substr(2, 2), 16) / 255;
-                const b = parseInt(hex.substr(4, 2), 16) / 255;
-                const max = Math.max(r, g, b), min = Math.min(r, g, b);
-                let h = 0, s = 0, l = (max + min) / 2;
-                if (max !== min) {
-                    const d = max - min;
-                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-                    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-                    else if (max === g) h = ((b - r) / d + 2) / 6;
-                    else h = ((r - g) / d + 4) / 6;
+        // Interpolate the day-cycle gradient to get RGB at any percent, then convert to HSL
+        function getGradientColorAtPercent(percent) {
+            const p = Math.max(0, Math.min(100, percent));
+            // Find surrounding stops
+            let lo = DAY_GRADIENT_STOPS[0], hi = DAY_GRADIENT_STOPS[DAY_GRADIENT_STOPS.length - 1];
+            for (let i = 0; i < DAY_GRADIENT_STOPS.length - 1; i++) {
+                if (p >= DAY_GRADIENT_STOPS[i][0] && p <= DAY_GRADIENT_STOPS[i + 1][0]) {
+                    lo = DAY_GRADIENT_STOPS[i]; hi = DAY_GRADIENT_STOPS[i + 1]; break;
                 }
-                const meta = PALETTE_META[name];
-                const hour = meta ? meta.hour : '';
-
-                // Parse hour to a 0-24 float for timeline position
-                let timeVal = -1;
-                if (hour && hour !== 'Anytime' && hour !== 'Blue Hour') {
-                    const parts = hour.split(':');
-                    timeVal = parseInt(parts[0]) + (parseInt(parts[1] || 0) / 60);
-                } else if (hour === 'Blue Hour') {
-                    timeVal = 19.5; // Place blue hour around dusk
-                }
-
-                return { name, bg: info.bg, h: h * 360, s: s * 100, l: l * 100, hour, timeVal };
-            });
-
-            // Sort by time value so lookups work; palettes without time go at end
-            palettesWithTime.sort((a, b) => {
-                if (a.timeVal < 0 && b.timeVal < 0) return 0;
-                if (a.timeVal < 0) return 1;
-                if (b.timeVal < 0) return -1;
-                return a.timeVal - b.timeVal;
-            });
-
-            return palettesWithTime;
+            }
+            const t = lo[0] === hi[0] ? 0 : (p - lo[0]) / (hi[0] - lo[0]);
+            const r = (lo[1] + t * (hi[1] - lo[1])) / 255;
+            const g = (lo[2] + t * (hi[2] - lo[2])) / 255;
+            const b = (lo[3] + t * (hi[3] - lo[3])) / 255;
+            // RGB to HSL
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h = 0, s = 0, l = (max + min) / 2;
+            if (max !== min) {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+                else if (max === g) h = ((b - r) / d + 2) / 6;
+                else h = ((r - g) / d + 4) / 6;
+            }
+            return { h: h * 360, s: s * 100, l: l * 100 };
         }
 
-        let gradientPalettes = []; // Will be populated when gradient is shown
+        function buildColorGradient() {
+            // Apply the fixed day-cycle gradient
+            const cssStops = DAY_GRADIENT_STOPS.map(s => {
+                const hex = '#' + [s[1], s[2], s[3]].map(v => v.toString(16).padStart(2, '0')).join('');
+                return `${hex} ${s[0]}%`;
+            });
+            colorGradientStrip.style.background = `linear-gradient(to right, ${cssStops.join(', ')})`;
+        }
 
         function toggleColorGradient() {
             colorGradientActive = !colorGradientActive;
@@ -14059,12 +14052,10 @@
             colorGradientBar.classList.toggle('open', colorGradientActive);
 
             if (colorGradientActive) {
-                gradientPalettes = buildColorGradient();
-                // Save current palette filter state in case user never interacts
+                buildColorGradient();
                 savedFilterState = new Set(gridFilterState.palettes);
             } else {
-                // Keep the current palette selection for the user to explore
-                // Only restore if user never interacted with the gradient
+                // Keep palette selection if user interacted, restore if not
                 if (savedFilterState && !colorGradientStrip.classList.contains('active')) {
                     gridFilterState.palettes = savedFilterState;
                 }
@@ -14078,37 +14069,6 @@
             }
         }
 
-        function getColorFromGradientPosition(percent) {
-            if (!gradientPalettes.length) return { names: [], target: null };
-            const clampedPct = Math.max(0, Math.min(100, percent));
-
-            // Map percent to 24h clock (0% = 0:00, 100% = 24:00)
-            const targetHour = (clampedPct / 100) * 24;
-
-            // Find palettes with time values close to the target hour
-            const timeTolerance = 1.5; // hours
-            const timedPalettes = gradientPalettes.filter(p => p.timeVal >= 0);
-
-            // Sort by distance to target hour, pick closest ones
-            const withDist = timedPalettes.map(p => {
-                const diff = Math.abs(p.timeVal - targetHour);
-                const circDiff = Math.min(diff, 24 - diff);
-                return { ...p, dist: circDiff };
-            });
-            withDist.sort((a, b) => a.dist - b.dist);
-
-            // Take palettes within tolerance, minimum 1
-            const matchingPalettes = withDist.filter(p => p.dist <= timeTolerance);
-            if (matchingPalettes.length === 0 && withDist.length > 0) {
-                matchingPalettes.push(withDist[0]);
-            }
-
-            // Target is the closest palette
-            const target = matchingPalettes.length > 0 ? matchingPalettes[0] : null;
-
-            return { names: matchingPalettes.map(p => p.name), target };
-        }
-
         function handleGradientInteraction(e) {
             const rect = colorGradientStrip.getBoundingClientRect();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -14118,11 +14078,8 @@
             colorGradientMarker.style.left = `${percent}%`;
             colorGradientStrip.classList.add('active');
 
-            // Get matching palette names and target color
-            const { names: matchingNames, target } = getColorFromGradientPosition(percent);
-
-            // Store target color for proximity sorting
-            gradientTargetColor = target;
+            // Get the actual color at this gradient position for sorting
+            gradientTargetColor = getGradientColorAtPercent(percent);
 
             // Show clock time from the gradient position (00:00 - 24:00)
             const posHour = (percent / 100) * 24;
@@ -14131,23 +14088,10 @@
             colorGradientClock.textContent = `${hh}:${mm}`;
             colorGradientClock.classList.add('visible');
 
-            // Temporarily override palette filter
-            gridFilterState.palettes = new Set(matchingNames.length > 0 ? matchingNames : ['__none__']);
+            // Clear palette filter so ALL palettes show, sorted by color proximity
+            gridFilterState.palettes = new Set();
 
-            // Check if few results and show hint
-            const tokens = getGridFilteredTokens();
-            if (tokens.length < 5 && tokens.length > 0) {
-                colorGradientHint.classList.add('visible');
-            } else {
-                colorGradientHint.classList.remove('visible');
-            }
-            if (tokens.length === 0) {
-                colorGradientHint.textContent = 'No results — try clearing other filters';
-                colorGradientHint.classList.add('visible');
-            } else {
-                colorGradientHint.textContent = 'Few results — try clearing other filters';
-            }
-
+            colorGradientHint.classList.remove('visible');
             gridPage = 1;
             renderGrid();
         }
