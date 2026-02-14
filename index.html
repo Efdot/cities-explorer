@@ -2503,7 +2503,7 @@
 
         .grid-content { flex: 1; overflow-y: auto; padding: 20px; -webkit-overflow-scrolling: touch; }
         .grid-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
-        .grid-item { aspect-ratio: 9/16; background: var(--bg-card); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative; contain: layout style paint; content-visibility: auto; contain-intrinsic-size: 0 200px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+        .grid-item { aspect-ratio: 9/16; background: var(--bg-card); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative; contain: layout style paint; content-visibility: auto; contain-intrinsic-size: 0 200px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
         .grid-item:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); z-index: 10; }
         .grid-item.selected { outline: 3px solid var(--teal); }
         .grid-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
@@ -14490,7 +14490,10 @@
         });
 
         colorGradientStrip.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // Prevent text selection when dragging off-window
             colorGradientDragging = true;
+            document.body.style.userSelect = 'none';
+            document.body.style.webkitUserSelect = 'none';
             handleGradientInteraction(e);
         });
         colorGradientStrip.addEventListener('touchstart', (e) => {
@@ -14521,7 +14524,13 @@
         document.addEventListener('touchmove', (e) => {
             if (colorGradientDragging) handleGradientInteraction(e);
         }, { passive: true });
-        document.addEventListener('mouseup', () => { colorGradientDragging = false; });
+        document.addEventListener('mouseup', () => {
+            if (colorGradientDragging) {
+                document.body.style.userSelect = '';
+                document.body.style.webkitUserSelect = '';
+            }
+            colorGradientDragging = false;
+        });
         document.addEventListener('touchend', () => { colorGradientDragging = false; });
 
         // Also close gradient when grid mode changes
