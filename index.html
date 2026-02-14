@@ -1879,6 +1879,8 @@
         .grid-mode-btn.active { background: rgba(232, 184, 109, 0.15); border-color: var(--warm); color: var(--warm); }
         .grid-mode-btn .palette-sort-arrow { margin-left: 4px; transition: transform 0.2s ease; display: inline-block; }
         .grid-mode-btn.sort-asc .palette-sort-arrow { transform: rotate(180deg); }
+        .grid-mode-btn .mode-gradient-dot { width: 14px; height: 14px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); display: inline-block; vertical-align: middle; margin-right: 4px; flex-shrink: 0; }
+        .grid-mode-btn .mode-az-label { font-weight: 900; letter-spacing: 0.04em; }
         .filter-toggle-bar { display: flex; align-items: center; justify-content: center; padding: 10px 16px; background: var(--bg-panel); border-bottom: 1px solid var(--border); cursor: pointer; }
         .filter-toggle-bar span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
         .filter-toggle-bar .arrow { margin-left: 6px; font-size: 8px; transition: transform 0.15s ease; }
@@ -2608,6 +2610,13 @@
             .grid-mode-btn::after { content: none; }
             .grid-mode-btn[data-emoji="🎨"] { font-size: 0; width: 34px; padding: 0; border-radius: 50%; }
             .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; font-size: 15px; line-height: 1; }
+            .grid-mode-btn[data-emoji="gradient"] { font-size: 0; width: 34px; padding: 0; border-radius: 50%; overflow: hidden; }
+            .grid-mode-btn[data-emoji="gradient"] .mode-gradient-dot { width: 100%; height: 100%; border-radius: 50%; margin: 0; position: absolute; inset: 0; }
+            .grid-mode-btn[data-emoji="gradient"]::after { content: ""; display: block; width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); }
+            .grid-mode-btn[data-emoji="👥"] { font-size: 0; width: 34px; padding: 0; border-radius: 50%; }
+            .grid-mode-btn[data-emoji="👥"]::after { content: "👥"; font-size: 14px; line-height: 1; }
+            .grid-mode-btn[data-emoji="az"] { width: auto; padding: 0 10px; }
+            .grid-mode-btn[data-emoji="az"] .mode-az-label { font-size: 11px; }
             .grid-mode-btn .palette-sort-arrow { display: none; }
             .gallery-room-toggle, .grid-size-toggle { width: 44px; height: 44px; font-size: 12px; flex-shrink: 0; }
             /* Palette headers on mobile */
@@ -2773,6 +2782,12 @@
             .grid-mode-btn::after { content: none; }
             .grid-mode-btn[data-emoji="🎨"] { font-size: 0; width: 32px; padding: 0; border-radius: 50%; }
             .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; font-size: 14px; line-height: 1; }
+            .grid-mode-btn[data-emoji="gradient"] { font-size: 0; width: 32px; padding: 0; border-radius: 50%; overflow: hidden; }
+            .grid-mode-btn[data-emoji="gradient"]::after { content: ""; display: block; width: 18px; height: 18px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); }
+            .grid-mode-btn[data-emoji="👥"] { font-size: 0; width: 32px; padding: 0; border-radius: 50%; }
+            .grid-mode-btn[data-emoji="👥"]::after { content: "👥"; font-size: 13px; line-height: 1; }
+            .grid-mode-btn[data-emoji="az"] { width: auto; padding: 0 8px; }
+            .grid-mode-btn[data-emoji="az"] .mode-az-label { font-size: 10px; }
             .grid-mode-btn .palette-sort-arrow { display: none; }
             .gallery-room-toggle, .grid-size-toggle { width: 32px; height: 32px; font-size: 12px; }
             .filter-toggle-bar { padding: 8px 12px; }
@@ -13711,28 +13726,40 @@
 
         // Palette/Color/A-Z/Rarity toggle button
         const paletteColorToggle = document.getElementById('paletteColorToggle');
-        let paletteColorState = 'palette'; // toggles between 'palette', 'color', 'az', 'rarity'
+        let paletteColorState = 'palette'; // toggles between 'palette', 'gradient', 'collector', 'az'
         const toggleStates = {
-            palette: { next: 'color', text: 'BY PALETTE', color: 'var(--warm)' },
-            color: { next: 'az', text: 'BY COLOR', color: 'var(--warm)' },
-            az: { next: 'rarity', text: 'A-Z', color: 'var(--warm)' },
-            rarity: { next: 'collector', text: 'RARITY', color: 'var(--warm)' },
-            collector: { next: 'palette', text: 'BY COLLECTOR', color: 'var(--warm)' }
+            palette: { next: 'gradient', text: 'BY PALETTE', color: 'var(--warm)' },
+            gradient: { next: 'collector', text: 'BY COLOR', color: 'var(--warm)' },
+            collector: { next: 'az', text: 'BY COLLECTOR', color: 'var(--warm)' },
+            az: { next: 'palette', text: 'A-Z', color: 'var(--warm)' }
         };
 
         function updateToggleStyle() {
             const state = toggleStates[paletteColorState];
-            paletteColorToggle.textContent = state.text;
-            paletteColorToggle.dataset.mode = paletteColorState;
+            paletteColorToggle.dataset.mode = paletteColorState === 'gradient' ? 'gradient' : paletteColorState;
             paletteColorToggle.style.borderColor = state.color;
             paletteColorToggle.style.color = state.color;
+
+            if (paletteColorState === 'palette') {
+                paletteColorToggle.dataset.emoji = '🎨';
+                paletteColorToggle.innerHTML = 'BY PALETTE <span class="palette-sort-arrow">↓</span>';
+            } else if (paletteColorState === 'gradient') {
+                paletteColorToggle.dataset.emoji = 'gradient';
+                paletteColorToggle.innerHTML = '<span class="mode-gradient-dot"></span> BY COLOR';
+            } else if (paletteColorState === 'collector') {
+                paletteColorToggle.dataset.emoji = '👥';
+                paletteColorToggle.textContent = 'BY COLLECTOR';
+            } else if (paletteColorState === 'az') {
+                paletteColorToggle.dataset.emoji = 'az';
+                paletteColorToggle.innerHTML = '<span class="mode-az-label"><span style="color:#FFD93D;font-weight:900">A</span><span style="color:#FF6B6B;font-weight:900">-</span><span style="color:#4D96FF;font-weight:900">Z</span></span>';
+            }
         }
 
         gridModeBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 if (btn.id === 'gridCollectorsBtn' || btn.id === 'gridAllFavBtn' || btn.id === 'gridOriginsBtn') return; // Handled separately
                 if (btn.id === 'paletteColorToggle') {
-                    // Cycle through palette -> color -> a-z -> rarity -> palette
+                    // Cycle through palette -> gradient -> collector -> az -> palette
                     paletteColorState = toggleStates[paletteColorState].next;
                     updateToggleStyle();
                 }
@@ -13743,8 +13770,16 @@
                 gridMode = btn.dataset.mode;
                 gridPage = 1;
 
-                // Close color gradient slider when switching modes
-                if (typeof deactivateColorGradient === 'function') deactivateColorGradient();
+                // Handle gradient mode transitions
+                if (paletteColorState === 'gradient') {
+                    // Entering gradient mode - activate color gradient
+                    if (!colorGradientActive) {
+                        toggleColorGradient();
+                    }
+                } else {
+                    // Leaving gradient or in non-gradient mode - deactivate
+                    if (typeof deactivateColorGradient === 'function') deactivateColorGradient();
+                }
 
                 // Clear collector filter when switching modes (hide the banner)
                 if (currentCollectorFilter) {
@@ -14319,6 +14354,12 @@
                 colorGradientStrip.classList.remove('active');
                 colorGradientHint.classList.remove('visible');
                 colorGradientClock.classList.remove('visible');
+                // Sync mode button if it was in gradient state
+                if (paletteColorState === 'gradient') {
+                    paletteColorState = 'palette';
+                    updateToggleStyle();
+                    gridMode = 'palette';
+                }
                 gridPage = 1;
                 renderGrid();
             }
@@ -14426,6 +14467,12 @@
                 colorGradientHint.classList.remove('visible');
                 colorGradientClock.classList.remove('visible');
                 gradientTargetColor = null;
+                // Sync mode button if it was in gradient state
+                if (paletteColorState === 'gradient') {
+                    paletteColorState = 'palette';
+                    updateToggleStyle();
+                    gridMode = 'palette';
+                }
             }
         }
 
@@ -14640,6 +14687,9 @@
                 renderSimpleGrid(tokens);
             } else if (gridMode === 'palette') {
                 renderPaletteGroups(tokens);
+            } else if (gridMode === 'gradient') {
+                // Gradient mode - normally handled by colorGradientActive early return above
+                if (!colorGradientActive) renderPaletteGroups(tokens);
             } else if (gridMode === 'color') {
                 renderColorSorted(tokens);
             } else if (gridMode === 'az') {
