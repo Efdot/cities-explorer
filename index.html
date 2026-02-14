@@ -14358,8 +14358,11 @@
             if (supplyFill) supplyFill.style.width = `${(totalMinted / 500) * 100}%`;
             if (mintedCount) mintedCount.textContent = totalMinted;
 
-            // Use special favorites view when favorites mode is active
-            if (showingFavoritesOnly) {
+            // When gradient is actively being used, render flat grid to preserve color sort order
+            // (palette grouping would re-sort by popularity and lose the color proximity ordering)
+            if (colorGradientActive && gradientTargetColor && !showingFavoritesOnly) {
+                renderSimpleGrid(tokens);
+            } else if (showingFavoritesOnly) {
                 renderFavoritesGrid(tokens);
             } else if (gridMode === 'origins') {
                 renderOriginsGrid();
