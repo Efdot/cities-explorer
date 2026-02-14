@@ -2661,17 +2661,28 @@
             .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; font-size: 16px; line-height: 1; }
             .grid-mode-btn[data-emoji="gradient"] .mode-gradient-dot { display: none; }
             .grid-mode-btn[data-emoji="gradient"]::after { content: ""; display: block; width: 18px; height: 18px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); }
-            .grid-mode-btn[data-emoji="📍"]::after { content: "📍"; font-size: 16px; line-height: 1; }
-            .grid-mode-btn[data-emoji="👤"]::after { content: "👤"; font-size: 16px; line-height: 1; }
+            .grid-mode-btn[data-emoji="✍️"]::after { content: "✍️"; font-size: 16px; line-height: 1; }
             .grid-mode-btn[data-emoji="👥"]::after { content: "👥"; font-size: 16px; line-height: 1; }
             .grid-mode-btn[data-emoji="az"] { width: auto; padding: 0 10px; font-size: 10px; }
             .grid-mode-btn[data-emoji="az"] .mode-az-label { font-size: 11px; }
             .grid-mode-btn .palette-sort-arrow { display: none; }
         }
 
+        /* Hide progress bar and spacers early so grid filters stay on one line */
+        @media (max-width: 1400px) {
+            .grid-supply-tracker, .grid-filter-spacer, .grid-showing-count { display: none !important; }
+        }
+
+        /* Tighten grid filters at medium widths to prevent wrapping */
+        @media (max-width: 1100px) {
+            .grid-filter-bar { gap: 8px; padding: 12px 16px; }
+            .multi-select { min-width: 90px; }
+            .multi-select-btn { padding: 8px 12px; font-size: 10px; }
+        }
+
         /* Condensed sidebar for narrow windows */
         @media (max-width: 1200px) {
-            .supply-tracker, .grid-supply-tracker { display: none; }
+            .supply-tracker { display: none; }
             /* Start collapsed but allow toggle to work */
             .filters-section.collapsed .filters-content, .metadata-section.collapsed .metadata-content { display: none; }
             .filters-section.collapsed .toggle-icon, .metadata-section.collapsed .toggle-icon { transform: rotate(-90deg); }
@@ -4511,7 +4522,7 @@
 
             <div class="about-footer">
                 <div class="about-stats" id="aboutStats">
-                    <span class="about-stat"><strong id="aboutMintedCount">320</strong>/500 minted</span>
+                    <span class="about-stat"><strong id="aboutMintedCount">320</strong>/500 collected</span>
                     <span class="about-stat-sep">·</span>
                     <span class="about-stat"><strong id="aboutCollectorCount">—</strong> collectors</span>
                     <span class="about-stat-sep">·</span>
