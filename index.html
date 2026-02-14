@@ -11668,8 +11668,12 @@
             const samePalette = [];
             const otherCollectors = new Set();
 
-            // Find current owner
-            const currentOwner = COLLECTORS_DATA.find(c => c.tokens && c.tokens.includes(currentTokenId));
+            // Build token→collector lookup once
+            const tokenToCollectorMap = {};
+            COLLECTORS_DATA.forEach(c => {
+                if (c.tokens) c.tokens.forEach(t => { tokenToCollectorMap[t] = c.name; });
+            });
+            const currentOwnerName = tokenToCollectorMap[currentTokenId];
 
             // Find other cities with the same palette and their collectors
             for (let i = 0; i <= MAX_TOKEN; i++) {
@@ -11677,10 +11681,9 @@
                 const t = tokenTraits[i];
                 if (t && t['Palette'] === currentPalette) {
                     samePalette.push(i);
-                    // Find collector for this city (exclude current owner - their name is shown above)
-                    const collector = COLLECTORS_DATA.find(c => c.tokens && c.tokens.includes(i));
-                    if (collector && (!currentOwner || collector.name !== currentOwner.name)) {
-                        otherCollectors.add(collector.name);
+                    const collectorName = tokenToCollectorMap[i];
+                    if (collectorName && collectorName !== currentOwnerName) {
+                        otherCollectors.add(collectorName);
                     }
                 }
             }
@@ -13160,31 +13163,38 @@
         document.getElementById('fanArrowRight').addEventListener('click', fanNavigateNext);
 
         // Palette inspector gradient strip - scrub to navigate by color
+        let inspectorGradientRAFPending = false;
         function handleInspectorGradientInteraction(e) {
             const strip = document.getElementById('paletteGradientStrip');
             const marker = document.getElementById('paletteGradientMarker');
             if (!strip) return;
             const rect = strip.getBoundingClientRect();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const x = clientX - rect.left;
-            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+            const percent = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
             marker.style.left = `${percent}%`;
             strip.classList.add('active');
-            // Find closest palette to the gradient color at this position
-            const target = getGradientColorAtPercent(percent);
-            const cache = getPaletteHSLCache();
-            let bestPalette = null, bestDist = Infinity;
-            for (const [name, hsl] of Object.entries(cache)) {
-                const hueDiff = Math.abs(hsl.h - target.h);
-                const hd = Math.min(hueDiff, 360 - hueDiff);
-                const dist = hd * 2 + Math.abs(hsl.s - target.s) + Math.abs(hsl.l - target.l) * 0.5;
-                if (dist < bestDist) { bestDist = dist; bestPalette = name; }
-            }
-            if (bestPalette && bestPalette !== lastInspectorGradientPalette) {
-                lastInspectorGradientPalette = bestPalette;
-                if (!paletteHistory.includes(bestPalette)) paletteHistory.push(bestPalette);
-                currentPaletteIndex = paletteHistory.indexOf(bestPalette);
-                openPaletteInspector(bestPalette);
+
+            // Throttle expensive palette lookup + inspector render to once per frame
+            if (!inspectorGradientRAFPending) {
+                inspectorGradientRAFPending = true;
+                requestAnimationFrame(() => {
+                    inspectorGradientRAFPending = false;
+                    const target = getGradientColorAtPercent(percent);
+                    const cache = getPaletteHSLCache();
+                    let bestPalette = null, bestDist = Infinity;
+                    for (const [name, hsl] of Object.entries(cache)) {
+                        const hueDiff = Math.abs(hsl.h - target.h);
+                        const hd = Math.min(hueDiff, 360 - hueDiff);
+                        const dist = hd * 2 + Math.abs(hsl.s - target.s) + Math.abs(hsl.l - target.l) * 0.5;
+                        if (dist < bestDist) { bestDist = dist; bestPalette = name; }
+                    }
+                    if (bestPalette && bestPalette !== lastInspectorGradientPalette) {
+                        lastInspectorGradientPalette = bestPalette;
+                        if (!paletteHistory.includes(bestPalette)) paletteHistory.push(bestPalette);
+                        currentPaletteIndex = paletteHistory.indexOf(bestPalette);
+                        openPaletteInspector(bestPalette);
+                    }
+                });
             }
         }
         const paletteGradientStrip = document.getElementById('paletteGradientStrip');
@@ -14271,9 +14281,9 @@
                 check.textContent = '\u2713';
 
                 const img = document.createElement('img');
-                img.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=100`;
+                img.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=200`;
                 img.alt = `City ${id}`;
-                img.loading = 'eager';
+                img.loading = 'lazy';
                 img.decoding = 'async';
 
                 const label = document.createElement('div');
@@ -14291,10 +14301,10 @@
             gridContent.appendChild(fragment);
             document.getElementById('gridPagination').style.display = 'none';
 
-            // Also kick off background preload of all images
-            allTokens.forEach(id => {
+            // Preload only the first ~24 visible images for fast initial display
+            allTokens.slice(0, 24).forEach(id => {
                 const preload = new Image();
-                preload.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=100`;
+                preload.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=200`;
             });
         }
 
@@ -14319,11 +14329,7 @@
         }
 
         function upgradeGradientToHiRes() {
-            if (!gradientGridItems) return;
-            gradientGridItems.forEach(({ el }, id) => {
-                const img = el.querySelector('img');
-                if (img) img.src = `${MEDIA_BASE}/${CONTRACT}/${id}.png?width=200`;
-            });
+            // No-op: images already load at 200px with lazy loading
         }
 
         function teardownGradientGrid() {
@@ -14366,19 +14372,16 @@
             }
         }
 
+        let gradientRAFPending = false;
         function handleGradientInteraction(e) {
-            const rect = colorGradientStrip.getBoundingClientRect();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const x = clientX - rect.left;
-            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
-
+            // Update marker position immediately (cheap CSS update)
+            const rect = colorGradientStrip.getBoundingClientRect();
+            const percent = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
             colorGradientMarker.style.left = `${percent}%`;
             colorGradientStrip.classList.add('active');
 
-            // Get the actual color at this gradient position
-            gradientTargetColor = getGradientColorAtPercent(percent);
-
-            // Show clock time from the gradient position (00:00 - 24:00)
+            // Show clock time immediately (cheap text update)
             const posHour = (percent / 100) * 24;
             const hh = String(Math.floor(posHour)).padStart(2, '0');
             const mm = String(Math.floor((posHour % 1) * 60)).padStart(2, '0');
@@ -14386,12 +14389,15 @@
             colorGradientClock.classList.add('visible');
             colorGradientHint.classList.remove('visible');
 
-            // Reorder existing grid items via CSS order (no DOM rebuild)
-            reorderGradientGrid(gradientTargetColor.h, gradientTargetColor.s, gradientTargetColor.l);
-
-            // Debounce hi-res upgrade: after 400ms of no interaction, load larger thumbnails
-            if (gradientHiResTimer) clearTimeout(gradientHiResTimer);
-            gradientHiResTimer = setTimeout(upgradeGradientToHiRes, 400);
+            // Throttle expensive reorder to once per animation frame
+            if (!gradientRAFPending) {
+                gradientRAFPending = true;
+                requestAnimationFrame(() => {
+                    gradientRAFPending = false;
+                    gradientTargetColor = getGradientColorAtPercent(percent);
+                    reorderGradientGrid(gradientTargetColor.h, gradientTargetColor.s, gradientTargetColor.l);
+                });
+            }
         }
 
         colorGradientToggle.addEventListener('click', (e) => {
@@ -14750,6 +14756,12 @@
             // Sort palettes alphabetically A-Z
             const sortedPalettes = Object.keys(groups).sort((a, b) => a.localeCompare(b));
 
+            // Build token→collector lookup once
+            const tokenToCollector = {};
+            COLLECTORS_DATA.forEach(c => {
+                if (c.tokens) c.tokens.forEach(t => { tokenToCollector[t] = c.name; });
+            });
+
             let html = sortedPalettes.map(palette => {
                 const paletteInfo = PALETTE_DATA[palette];
                 const swatches = paletteInfo?.colors ? paletteInfo.colors.map(c => `<span style="background:${c}"></span>`).join('') : '';
@@ -14761,11 +14773,11 @@
                 // Dark background with light text for better readability
                 const blurb = PALETTE_BLURBS[palette] || '';
 
-                // Get collectors who own cities in this palette
+                // Get collectors who own cities in this palette (fast lookup)
                 const paletteCollectors = new Set();
                 groups[palette].forEach(tokenId => {
-                    const collector = COLLECTORS_DATA.find(c => c.tokens && c.tokens.includes(tokenId));
-                    if (collector) paletteCollectors.add(collector.name);
+                    const name = tokenToCollector[tokenId];
+                    if (name) paletteCollectors.add(name);
                 });
                 const collectorsArray = [...paletteCollectors];
                 const maxShow = 3;
@@ -15137,6 +15149,12 @@
                 return a.localeCompare(b); // Alphabetical for ties
             });
 
+            // Build token→collector lookup once (O(collectors * tokens_per_collector))
+            const tokenToCollector = {};
+            COLLECTORS_DATA.forEach(c => {
+                if (c.tokens) c.tokens.forEach(t => { tokenToCollector[t] = c.name; });
+            });
+
             let html = sortedPalettes.map(palette => {
                 const paletteInfo = PALETTE_DATA[palette];
                 const swatches = paletteInfo?.colors ? paletteInfo.colors.map(c => `<span style="background:${c}"></span>`).join('') : '';
@@ -15146,11 +15164,11 @@
                 const spotColor = getContrastingSpotColor(rawSpotColor, '#14131c'); // Contrast against panel bg
                 const blurb = PALETTE_BLURBS[palette] || '';
 
-                // Find collectors who own cities with this palette
+                // Find collectors who own cities with this palette (fast lookup)
                 const paletteCollectors = new Set();
                 groups[palette].forEach(tokenId => {
-                    const collector = COLLECTORS_DATA.find(c => c.tokens && c.tokens.includes(tokenId));
-                    if (collector) paletteCollectors.add(collector.name);
+                    const name = tokenToCollector[tokenId];
+                    if (name) paletteCollectors.add(name);
                 });
                 const collectorsArray = [...paletteCollectors];
                 const maxShow = 5;
