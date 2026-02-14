@@ -375,10 +375,10 @@
         .grid-items.favorites-grid.grid-4-col { gap: 16px; }
         .grid-items.favorites-grid .grid-item { border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
 
-        /* Collectors button in grid - brighter when not clicked, muted when active */
-        .grid-mode-btn.collectors-btn { background: transparent; border-color: var(--border); color: var(--text-muted); opacity: 0.6; }
+        /* Collectors button in grid */
+        .grid-mode-btn.collectors-btn { background: transparent; border-color: var(--border); color: var(--text-muted); opacity: 0.5; }
         .grid-mode-btn.collectors-btn:hover { background: rgba(255,255,255,0.03); border-color: var(--text-muted); color: var(--text-dim); opacity: 0.8; }
-        .grid-mode-btn.collectors-btn.active { opacity: 0.25; border-color: transparent; color: var(--text-muted); background: transparent; }
+        .grid-mode-btn.collectors-btn.active { opacity: 0.3; border-color: transparent; color: var(--text-muted); background: transparent; }
         .grid-mode-btn.favorites-active { background: #FF6B4A; border-color: #FF6B4A; color: #fff; }
         .grid-mode-btn.favorites-active:hover { background: #ff8566; border-color: #ff8566; color: #fff; }
         /* Origins button in grid */
@@ -2607,10 +2607,10 @@
         .grid-pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
         .grid-pagination .page-info { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
         @media (max-width: 768px) {
-            .grid-header { padding: 14px 16px; flex-direction: column; gap: 10px; min-height: auto; align-items: stretch; }
+            .grid-header { padding: 12px 12px; flex-direction: column; gap: 8px; min-height: auto; align-items: stretch; }
             .grid-brand { position: static; flex-wrap: nowrap; justify-content: flex-start; gap: 8px; align-items: baseline; }
             .grid-brand h1 { font-size: 18px; }
-            .grid-controls { order: 2; justify-content: flex-start; }
+            .grid-controls { order: 2; justify-content: center; gap: 6px; }
             .grid-about-link { margin-left: 4px; margin-right: 40px; }
             .grid-about-link img { height: 14px; }
             .grid-artist-logos { gap: 4px; display: flex; }
@@ -2645,15 +2645,20 @@
             .grid-item { border-radius: 6px; }
             .grid-controls { flex-wrap: nowrap; gap: 4px; justify-content: center; width: 100%; overflow-x: visible; overflow: visible; }
             .grid-mode-btn { padding: 0 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.05em; border-width: 1.5px; height: 34px; min-height: 34px; white-space: nowrap; flex-shrink: 0; border-radius: 50px; display: flex; align-items: center; justify-content: center; width: auto; }
+            /* Mobile: all nav buttons become compact emoji circles */
             .grid-mode-btn::after { content: none; }
-            .grid-mode-btn[data-emoji="🎨"] { font-size: 0; width: 34px; padding: 0; border-radius: 50%; transition: border-color 0.2s ease, filter 0.2s ease; }
-            .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; font-size: 15px; line-height: 1; transition: filter 0.2s ease; }
+            .grid-mode-btn[data-emoji] { font-size: 0; width: 34px; padding: 0; border-radius: 50%; transition: border-color 0.2s ease, filter 0.2s ease; }
+            .grid-mode-btn[data-emoji]::after { font-size: 15px; line-height: 1; transition: filter 0.2s ease; }
+            .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; }
+            .grid-mode-btn[data-emoji="🌍"]::after { content: "🌍"; }
+            .grid-mode-btn[data-emoji="📍"]::after { content: "📍"; }
+            .grid-mode-btn[data-emoji="👤"]::after { content: "👤"; }
             .grid-mode-btn[data-mode="color"]::after { filter: hue-rotate(160deg) saturate(1.5); }
             .grid-mode-btn[data-mode="az"]::after { filter: grayscale(0.8) brightness(1.3); }
             .grid-mode-btn[data-mode="rarity"]::after { filter: hue-rotate(260deg) saturate(1.2); }
             .grid-mode-btn[data-mode="collector"]::after { filter: hue-rotate(100deg) saturate(1.3); }
             .grid-mode-btn .palette-sort-arrow { display: none; }
-            .gallery-room-toggle, .grid-size-toggle { width: 44px; height: 44px; font-size: 12px; flex-shrink: 0; }
+            .gallery-room-toggle, .grid-size-toggle { width: 38px; height: 38px; font-size: 12px; flex-shrink: 0; }
             /* Palette headers on mobile */
             .grid-group { margin-bottom: 16px; }
             .grid-group-header { padding: 10px 12px; gap: 6px; flex-wrap: nowrap; margin-bottom: 8px; }
