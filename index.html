@@ -14398,7 +14398,26 @@
         }
 
         function upgradeGradientToHiRes() {
-            // No-op: images already load at 200px with lazy loading
+            if (!gradientGridItems || !gradientGridContainer) return;
+            // Disconnect any previous observer
+            if (gradientImageObserver) { gradientImageObserver.disconnect(); gradientImageObserver = null; }
+            // Use IntersectionObserver to upgrade only visible images from 20px to 200px
+            gradientImageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const tokenId = img.closest('.grid-item')?.dataset?.token;
+                        if (tokenId && img.src.includes('width=20')) {
+                            img.src = getThumbnailUrl(parseInt(tokenId));
+                        }
+                        gradientImageObserver.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '200px 0px' });
+            // Observe all grid item images
+            gradientGridContainer.querySelectorAll('.grid-item img').forEach(img => {
+                gradientImageObserver.observe(img);
+            });
         }
 
         function teardownGradientGrid() {
@@ -14420,6 +14439,8 @@
                 gridFilterState.palettes = new Set();
                 // Pre-render the entire grid with eager low-res thumbnails
                 preRenderGradientGrid();
+                // Kick off lazy hi-res upgrade for visible images
+                upgradeGradientToHiRes();
                 // Show label then fade it out after 5 seconds
                 const gradLabel = document.querySelector('.grid-color-gradient-label');
                 if (gradLabel) {
@@ -14558,10 +14579,19 @@
             if (colorGradientDragging) {
                 document.body.style.userSelect = '';
                 document.body.style.webkitUserSelect = '';
+                // Debounced hi-res upgrade after reorder settles
+                if (gradientHiResTimer) clearTimeout(gradientHiResTimer);
+                gradientHiResTimer = setTimeout(upgradeGradientToHiRes, 300);
             }
             colorGradientDragging = false;
         });
-        document.addEventListener('touchend', () => { colorGradientDragging = false; });
+        document.addEventListener('touchend', () => {
+            if (colorGradientDragging) {
+                if (gradientHiResTimer) clearTimeout(gradientHiResTimer);
+                gradientHiResTimer = setTimeout(upgradeGradientToHiRes, 300);
+            }
+            colorGradientDragging = false;
+        });
 
         // Also close gradient when grid mode changes
         function deactivateColorGradient() {
