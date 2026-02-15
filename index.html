@@ -2184,6 +2184,12 @@
         .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-tips-toggle:hover { background: rgba(240,240,245,1); border-color: rgba(0,0,0,0.25); }
         .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-tips-toggle .tips-icon { filter: invert(1); }
         .wall-view-tips-toggle .tips-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; font-size: 10px; line-height: 1; }
+        /* Hover tooltip for tips toggle */
+        .wall-view-tips-hover { position: fixed; bottom: 130px; right: 76px; background: rgba(20,20,24,0.95); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; font-size: 11px; color: rgba(255,255,255,0.75); z-index: 23; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; max-width: 220px; line-height: 1.4; white-space: normal; backdrop-filter: blur(8px); text-align: right; }
+        .wall-view-tips-toggle:hover + .wall-view-tips-hover { opacity: 1; }
+        .wall-view-tips-hover:empty { display: none; }
+        /* Light mode hover tooltip */
+        .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-tips-hover { background: rgba(250,250,252,0.98); border-color: rgba(0,0,0,0.1); color: rgba(0,0,0,0.65); }
         @keyframes tipsGlow {
             0%, 85% { box-shadow: none; transform: scale(1); }
             90% { box-shadow: 0 0 12px rgba(201, 162, 39, 0.5); transform: scale(1.08); border-color: rgba(201, 162, 39, 0.5); }
@@ -4230,8 +4236,9 @@
         </div>
         <!-- Collector tips toggle button -->
         <button class="wall-view-tips-toggle" id="wallViewTipsToggle" title="Collection tips">
-            <span class="tips-icon"><span>🏙</span><span>🏙</span><span>🏙</span><span>🏙</span></span>
+            <span class="tips-icon"><span>🌉</span><span>🌇</span><span>🏙️</span><span>🌃</span></span>
         </button>
+        <div class="wall-view-tips-hover" id="wallViewTipsHover"></div>
         <!-- Collector pairing suggestion -->
         <div class="wall-view-suggestion" id="wallViewSuggestion">
             <button class="wall-view-suggestion-close" id="suggestionClose">×</button>
@@ -10115,6 +10122,9 @@
             // Update grid nudge after modal opens
             setTimeout(updateGridNudge, 100);
 
+            // Show city detail hover tooltip for all collectors
+            setTimeout(() => showWallViewCityDetail(items), 150);
+
             // Show suggestions for small collectors (1-3 cities)
             setTimeout(() => showCollectorSuggestions(items, collector), 200);
         }
@@ -10190,6 +10200,62 @@
             e.stopPropagation();
             handleWallButtonClick();
         });
+
+        // Generate a notable detail about the collector's cities for the hover tooltip
+        function getCityDetail(ownedItems) {
+            if (!ownedItems || ownedItems.length === 0) return '';
+            const details = [];
+
+            for (const item of ownedItems) {
+                const traits = tokenTraits[item.id];
+                if (!traits) continue;
+                const palette = traits['Palette'];
+                const energy = traits['Energy'];
+                const traffic = traits['Traffic'];
+                const id = item.id;
+
+                // Rush Hour + Rising Energy = very rare combo
+                if (traffic === 'Rush Hour' && energy === 'Rising') {
+                    details.push({ priority: 1, text: `#${id} has Rush Hour + Rising Energy — an extremely rare combination.` });
+                }
+                // 1-of-1 palette
+                else if (palette && traitCounts.palettes && traitCounts.palettes[palette] === 1) {
+                    details.push({ priority: 2, text: `#${id} is the only city with the ${palette} palette.` });
+                }
+                // Rush Hour alone
+                else if (traffic === 'Rush Hour' && energy !== 'Rising') {
+                    details.push({ priority: 3, text: `#${id} has Rush Hour traffic — one of the rarest traits in the collection.` });
+                }
+                // Rising Energy alone
+                else if (energy === 'Rising') {
+                    details.push({ priority: 4, text: `#${id} has Rising Energy — a rare energy state.` });
+                }
+                // Very rare palette (2 or 3 outputs)
+                else if (palette && traitCounts.palettes && traitCounts.palettes[palette] <= 3) {
+                    const ct = traitCounts.palettes[palette];
+                    details.push({ priority: 5, text: `#${id} is one of only ${ct} cities with the ${palette} palette.` });
+                }
+            }
+
+            if (details.length === 0) return '';
+            details.sort((a, b) => a.priority - b.priority);
+            return details[0].text;
+        }
+
+        // Show the tips toggle with hover detail for any wall view
+        function showWallViewCityDetail(items) {
+            const tipsToggle = document.getElementById('wallViewTipsToggle');
+            const hoverEl = document.getElementById('wallViewTipsHover');
+            if (!tipsToggle || !hoverEl) return;
+
+            const detail = getCityDetail(items);
+            if (detail) {
+                hoverEl.textContent = detail;
+                tipsToggle.classList.add('has-tips');
+            } else {
+                hoverEl.textContent = '';
+            }
+        }
 
         // Suggestion engine - suggests cities based on what collector has
         const ALL_ENERGIES = ['Rising', 'Living', 'Fading', 'Resting'];
@@ -10601,12 +10667,14 @@
             if (window.hauntedTimer) clearTimeout(window.hauntedTimer);
             document.body.style.overflow = '';
 
-            // Reset tips toggle
+            // Reset tips toggle and hover tooltip
             const tipsToggle = document.getElementById('wallViewTipsToggle');
             if (tipsToggle) {
                 tipsToggle.classList.remove('has-tips');
                 tipsToggle.dataset.ready = 'false';
             }
+            const hoverEl = document.getElementById('wallViewTipsHover');
+            if (hoverEl) hoverEl.textContent = '';
             document.getElementById('wallViewSuggestion')?.classList.remove('visible');
 
             // Reset try mode
