@@ -4114,6 +4114,7 @@
                 <button class="wall-view-layout-toggle" id="wallViewLayoutToggle" title="Toggle wide/tall layout">⊞</button>
                 <button class="wall-view-hide-empty" id="wallViewHideEmpty" title="Toggle grid/line view"><span class="line-icon">⊞</span> GRID</button>
                 <button class="wall-view-try-mode" id="wallViewTryMode" title="Try adding cities to your grid">✦ TRY</button>
+                <button class="wall-view-download" id="wallViewDownloadBtn" title="Download wall view">↓ SAVE</button>
                 <div class="collect-btn-wrapper">
                     <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-seg cs-1"></span><span class="collect-seg cs-2"></span><span class="collect-seg cs-3"></span><span class="collect-seg cs-4"></span><span class="collect-seg cs-5"></span></button>
                     <div class="collect-popover" id="collectPopoverWall">
@@ -8766,7 +8767,8 @@
         }
 
         async function downloadWallView(type) {
-            const collectorName = document.getElementById('wallViewCollectorName').textContent;
+            const labelEl = document.getElementById('wallViewCollectorLabel');
+            const collectorName = labelEl?.querySelector('.collector-name-value')?.textContent || labelEl?.dataset.rawName || 'Collector';
 
             // Wall color backgrounds - only gray and black now
             const wallColors = {
@@ -8778,8 +8780,8 @@
 
             // Show loading state
             const downloadBtn = document.getElementById('wallViewDownloadBtn');
-            const originalText = downloadBtn.textContent;
-            downloadBtn.textContent = '⏳ LOADING...';
+            const originalText = downloadBtn ? downloadBtn.textContent : '';
+            if (downloadBtn) downloadBtn.textContent = '⏳ LOADING...';
 
             try {
                 const canvas = document.createElement('canvas');
@@ -8904,7 +8906,7 @@
                     throw new Error('CORS restriction');
                 }
 
-                downloadBtn.textContent = originalText;
+                if (downloadBtn) downloadBtn.textContent = originalText;
 
             } catch (err) {
                 console.error('Download failed:', err);
@@ -8915,7 +8917,7 @@
                 } else {
                     showStatus('That didn\'t work. Try a screenshot instead.');
                 }
-                downloadBtn.textContent = originalText;
+                if (downloadBtn) downloadBtn.textContent = originalText;
             }
         }
 
