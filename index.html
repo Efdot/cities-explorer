@@ -2571,6 +2571,11 @@
         .eq-nudge-stat.clickable { cursor: pointer; transition: all 0.2s ease; }
         .eq-nudge-stat.clickable:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); color: #aaa; transform: scale(1.05); }
         .eq-nudge-stat.clickable:hover .eq-nudge-stat-count { color: #E8B86D; }
+        .eq-nudge-almost { width: 100%; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.04); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; align-items: center; }
+        .eq-nudge-almost-label { width: 100%; font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; color: #444; margin-bottom: 2px; }
+        .eq-nudge-almost-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); font-size: 9px; font-weight: 600; color: #888; cursor: pointer; transition: all 0.2s ease; letter-spacing: 0.02em; }
+        .eq-nudge-almost-chip:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); color: #ccc; }
+        .eq-nudge-almost-missing { font-weight: 400; font-size: 8px; color: #555; font-style: italic; }
         @media (max-width: 768px) {
             .perfect-sets-modal { padding: 20px 12px 60px; }
             .perfect-sets-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
@@ -19048,13 +19053,18 @@
                 }));
                 let energySetCount = 0;
                 let almostCount = 0;
+                const almostCollectors = [];
                 const citySetCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
                 Object.entries(uniqueCollectorMap).forEach(([name, energies]) => {
                     const hasAll = ALL_ENERGIES.every(e => energies[e] > 0);
                     if (hasAll) energySetCount++;
                     else {
-                        const has = ALL_ENERGIES.filter(e => energies[e] > 0).length;
-                        if (has === 3) almostCount++;
+                        const owned = ALL_ENERGIES.filter(e => energies[e] > 0);
+                        if (owned.length === 3) {
+                            const missing = ALL_ENERGIES.find(e => !energies[e]);
+                            almostCollectors.push({ name, missing });
+                            almostCount++;
+                        }
                     }
                     // Count mono city sets (4+ of same energy)
                     ALL_ENERGIES.forEach(e => {
@@ -19074,13 +19084,22 @@
                     }
                     nudgeHtml += '<span class="eq-nudge-arrow">▼</span>';
                     nudgeHtml += '</div>';
-                    // Expandable detail stats for mono city sets
+                    // Expandable detail stats for mono city sets + almost collectors
                     const citySetIcons = { Rising: '☀️', Living: '🏙️', Fading: '🌆', Resting: '🌃' };
                     nudgeHtml += '<div class="eq-nudge-details">';
                     ALL_ENERGIES.forEach(e => {
                         const ct = citySetCounts[e];
                         nudgeHtml += `<span class="eq-nudge-stat clickable" data-energy-filter="${e}" onclick="event.stopPropagation(); openPerfectSets('${e}');" title="View all ${e} City Sets"><span class="eq-nudge-stat-icon">${citySetIcons[e]}</span> <span class="eq-nudge-stat-count">${ct}</span> ${e} City Set${ct !== 1 ? 's' : ''}</span>`;
                     });
+                    if (almostCollectors.length > 0) {
+                        nudgeHtml += '<div class="eq-nudge-almost">';
+                        nudgeHtml += '<div class="eq-nudge-almost-label">One energy away</div>';
+                        almostCollectors.forEach(ac => {
+                            const dn = formatCollectorName(ac.name).toUpperCase();
+                            nudgeHtml += `<span class="eq-nudge-almost-chip" data-collector-name="${ac.name}" title="${dn} needs ${ac.missing}">${dn} <span class="eq-nudge-almost-missing">needs ${ac.missing}</span></span>`;
+                        });
+                        nudgeHtml += '</div>';
+                    }
                     nudgeHtml += '</div>';
                     nudgeEl.innerHTML = nudgeHtml;
                     nudgeEl.classList.add('visible');
@@ -19097,7 +19116,20 @@
                     const name = chip.dataset.collectorName;
                     const collector = COLLECTORS_DATA.find(c => c.name === name);
                     if (collector && collector.tokens) {
-                        closeEnergyQuadrant();
+                        closeEnergyQuadrant(true);
+                        setTimeout(() => openWallView(collector.name, collector.tokens), 150);
+                    }
+                });
+            });
+
+            // Add click handlers to "almost" collector chips
+            modal.querySelectorAll('.eq-nudge-almost-chip').forEach(chip => {
+                chip.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const name = chip.dataset.collectorName;
+                    const collector = COLLECTORS_DATA.find(c => c.name === name);
+                    if (collector && collector.tokens) {
+                        closeEnergyQuadrant(true);
                         setTimeout(() => openWallView(collector.name, collector.tokens), 150);
                     }
                 });
@@ -19107,10 +19139,14 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function closeEnergyQuadrant() {
+        function closeEnergyQuadrant(navigatingAway) {
             const modal = document.getElementById('energyQuadrantModal');
             if (modal) modal.classList.remove('open');
             document.body.style.overflow = '';
+            // Return to collectors panel unless we're navigating to another view
+            if (!navigatingAway) {
+                openCollectorsPanel();
+            }
         }
 
         // Trigger button
@@ -19135,8 +19171,8 @@
             const subtitle = document.getElementById('perfectSetsSubtitle');
             if (!modal || !body || !COLLECTORS_DATA || COLLECTORS_DATA.length === 0) return;
 
-            // Close energy quadrant first
-            closeEnergyQuadrant();
+            // Close energy quadrant first (navigating away, don't reopen collectors)
+            closeEnergyQuadrant(true);
 
             // Build collector -> energy -> token list mapping
             const collectorEnergies = {};
@@ -19224,7 +19260,7 @@
                     const name = el.dataset.collectorName;
                     const collector = COLLECTORS_DATA.find(c => c.name === name);
                     if (collector) {
-                        closePerfectSets();
+                        closePerfectSets(true);
                         setTimeout(() => openWallView(collector.name, collector.tokens), 150);
                     }
                 });
@@ -19235,7 +19271,7 @@
                 el.addEventListener('click', () => {
                     const tokenId = parseInt(el.dataset.tokenId);
                     if (!isNaN(tokenId)) {
-                        closePerfectSets();
+                        closePerfectSets(true);
                         setTimeout(() => loadOutput(tokenId, true), 150);
                     }
                 });
@@ -19253,10 +19289,14 @@
             }
         }
 
-        function closePerfectSets() {
+        function closePerfectSets(navigatingAway) {
             const modal = document.getElementById('perfectSetsModal');
             if (modal) modal.classList.remove('open');
             document.body.style.overflow = '';
+            // Return to energy quadrant unless navigating to a specific view
+            if (!navigatingAway) {
+                openEnergyQuadrant();
+            }
         }
 
         // Close Perfect Sets on Escape
