@@ -4219,7 +4219,6 @@
                 </button>
                 <button class="grid-mode-btn" data-mode="grid" data-emoji="🌍" id="gridAllFavBtn" title="All Cities">ALL</button>
                 <button class="grid-mode-btn active" data-mode="palette" data-emoji="🎨" id="paletteColorToggle" title="Sort by Palette">BY PALETTE <span class="palette-sort-arrow">↓</span></button>
-                <button class="grid-mode-btn" data-mode="traffic" data-emoji="🚦" id="gridTrafficBtn" title="By Traffic">BY TRAFFIC</button>
                 <button class="grid-mode-btn origins-btn" data-mode="origins" data-emoji="✍️" id="gridOriginsBtn" title="Origins">ORIGINS</button>
                 <button class="grid-mode-btn collectors-btn" data-emoji="👥" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
             </div>
@@ -14493,11 +14492,12 @@
 
         // Palette/Color/A-Z/Rarity toggle button
         const paletteColorToggle = document.getElementById('paletteColorToggle');
-        let paletteColorState = 'palette'; // toggles between 'palette', 'gradient', 'collector', 'az'
+        let paletteColorState = 'palette'; // toggles between 'palette', 'gradient', 'collector', 'traffic', 'az'
         const toggleStates = {
             palette: { next: 'gradient', text: 'BY PALETTE', color: 'var(--warm)' },
             gradient: { next: 'collector', text: 'BY COLOR', color: 'var(--warm)' },
-            collector: { next: 'az', text: 'BY COLLECTOR', color: 'var(--warm)' },
+            collector: { next: 'traffic', text: 'BY COLLECTOR', color: 'var(--warm)' },
+            traffic: { next: 'az', text: 'BY TRAFFIC', color: 'var(--warm)' },
             az: { next: 'palette', text: 'A-Z', color: 'var(--warm)' }
         };
 
@@ -14519,6 +14519,9 @@
             } else if (paletteColorState === 'az') {
                 paletteColorToggle.dataset.emoji = 'az';
                 paletteColorToggle.innerHTML = '<span class="mode-az-label"><span style="color:#FFD93D;font-weight:900">A</span><span style="color:#FF6B6B;font-weight:900">-</span><span style="color:#4D96FF;font-weight:900">Z</span></span>';
+            } else if (paletteColorState === 'traffic') {
+                paletteColorToggle.dataset.emoji = '🚦';
+                paletteColorToggle.textContent = 'BY TRAFFIC';
             }
         }
 
@@ -14526,7 +14529,7 @@
             btn.addEventListener('click', () => {
                 if (btn.id === 'gridCollectorsBtn' || btn.id === 'gridAllFavBtn' || btn.id === 'gridOriginsBtn') return; // Handled separately
                 if (btn.id === 'paletteColorToggle') {
-                    // Cycle through palette -> gradient -> collector -> az -> palette
+                    // Cycle through palette -> gradient -> collector -> traffic -> az -> palette
                     paletteColorState = toggleStates[paletteColorState].next;
                     updateToggleStyle();
                 }
