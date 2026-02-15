@@ -272,8 +272,10 @@
         .grid-numbers-toggle.active { opacity: 1; color: var(--warm); }
 
         /* Grid clock - city emoji top left */
-        .grid-clock { position: absolute; top: 4px; left: 10px; font-size: 16px; z-index: 2; cursor: default; opacity: 0.35; transition: opacity 0.3s ease, filter 0.3s ease; filter: grayscale(100%); line-height: 1; }
+        .grid-clock { position: absolute; top: 8px; left: 8px; font-size: 11px; z-index: 2; cursor: default; opacity: 0.35; transition: opacity 0.3s ease, filter 0.3s ease; filter: grayscale(100%); line-height: 1; }
         .grid-clock:hover { opacity: 0.9; filter: grayscale(0%); }
+        .grid-clock .clock-tooltip { position: absolute; left: 50%; top: 100%; transform: translateX(-50%); margin-top: 4px; background: var(--bg-card); color: var(--text-dim); font-size: 9px; font-weight: 600; font-family: Helvetica, Arial, sans-serif; letter-spacing: 0.04em; padding: 3px 7px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+        .grid-clock:hover .clock-tooltip { opacity: 1; }
         .grid-header:hover .grid-clock { opacity: 0.55; }
 
         /* Grid energy clock - non-interactive display */
@@ -13999,8 +14001,8 @@
             // Update top-left city emoji clock
             const clockEl = document.getElementById('gridClock');
             if (clockEl) {
-                clockEl.textContent = energy.cityIcon;
-                clockEl.title = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                clockEl.innerHTML = `${energy.cityIcon}<span class="clock-tooltip">${timeStr}</span>`;
             }
         }
 
