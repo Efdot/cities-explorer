@@ -2068,7 +2068,7 @@
             .wall-view-back-btn { padding: 5px 10px; font-size: 9px; }
             .wall-view-hide-empty { padding: 5px 10px; font-size: 8px; }
             .wall-view-try-mode { padding: 5px 10px; font-size: 8px; }
-            .wall-view-download { padding: 4px 8px; font-size: 8px; }
+
             .wall-view-mint-btn { --ch: 18px; padding: 0 4px; min-width: calc(var(--cw) + 8px); }
             .wall-view-close { width: 24px; height: 24px; font-size: 14px; }
         }
@@ -2461,10 +2461,7 @@
         .print-inquiry-modal.dark .print-inquiry-btn.secondary { background: #1a1a1a; }
         .print-inquiry-modal.dark .print-inquiry-details-toggle { color: #444; }
         .print-inquiry-modal.dark .print-inquiry-details-toggle:hover { color: #666; }
-        .wall-view-download { background: none; border: 1px solid #ddd; color: #888; padding: 5px 10px; font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
-        .wall-view-download:hover { background: #333; border-color: #333; color: #fff; }
-        .wall-view-modal.dark-mode .wall-view-download, .wall-view-modal.wall-black .wall-view-download { border-color: #333; color: #666; }
-        .wall-view-modal.dark-mode .wall-view-download:hover, .wall-view-modal.wall-black .wall-view-download:hover { background: #fff; border-color: #fff; color: #000; }
+
         /* Energy Quadrant Trigger Button */
         .energy-quadrant-btn { position: relative; width: 30px; height: 30px; border: none; background: rgba(255,255,255,0.06); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.2s ease; opacity: 0.7; font-size: 14px; line-height: 1; filter: saturate(0.6); }
         .energy-quadrant-btn:hover { opacity: 1; background: rgba(255,255,255,0.12); filter: saturate(1); }
@@ -4187,7 +4184,7 @@
                 <button class="wall-view-layout-toggle" id="wallViewLayoutToggle" title="Toggle wide/tall layout">⊞</button>
                 <button class="wall-view-hide-empty" id="wallViewHideEmpty" title="Toggle grid/line view"><span class="line-icon">⊞</span> GRID</button>
                 <button class="wall-view-try-mode" id="wallViewTryMode" title="Try adding cities to your grid">✦ TRY</button>
-                <button class="wall-view-download" id="wallViewDownloadBtn" title="Download wall view">↓ SAVE</button>
+
                 <div class="collect-btn-wrapper">
                     <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-seg cs-1"></span><span class="collect-seg cs-2"></span><span class="collect-seg cs-3"></span><span class="collect-seg cs-4"></span><span class="collect-seg cs-5"></span></button>
                     <div class="collect-popover" id="collectPopoverWall">
@@ -8354,10 +8351,6 @@
             document.getElementById('wallViewPrev')?.addEventListener('click', navigateToPrevCollector);
             document.getElementById('wallViewNext')?.addEventListener('click', navigateToNextCollector);
 
-            // Download button - directly downloads with current wall color
-            document.getElementById('wallViewDownloadBtn')?.addEventListener('click', () => {
-                downloadWallView(currentWallColor);
-            });
 
             // Wall color options
             document.getElementById('wallViewWallToggle')?.addEventListener('click', () => {
@@ -8913,175 +8906,6 @@
             }
         }
 
-        async function downloadWallView(type) {
-            const labelEl = document.getElementById('wallViewCollectorLabel');
-            const collectorName = labelEl?.querySelector('.collector-name-value')?.textContent || labelEl?.dataset.rawName || 'Collector';
-
-            // Wall color backgrounds - only gray and black now
-            const wallColors = {
-                'gray': { bg: '#e8e4e0', floor: ['#ddd8d2', '#ccc8c2'], frame: '#d8d4cc', mat: '#ffffff', text: '#666' },
-                'black': { bg: '#0f0f0f', floor: ['#0a0a0a', '#050505'], frame: '#1a1a1a', mat: '#0d0d0d', text: '#555' }
-            };
-            const colors = wallColors[type] || wallColors.gray;
-            const isDark = type === 'black';
-
-            // Show loading state
-            const downloadBtn = document.getElementById('wallViewDownloadBtn');
-            const originalText = downloadBtn ? downloadBtn.textContent : '';
-            if (downloadBtn) downloadBtn.textContent = '⏳ LOADING...';
-
-            try {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-
-                const width = 1920;
-                const height = 1080;
-                canvas.width = width;
-                canvas.height = height;
-
-                // Background
-                ctx.fillStyle = colors.bg;
-                ctx.fillRect(0, 0, width, height);
-
-                // Floor
-                const floorHeight = 80;
-                const gradient = ctx.createLinearGradient(0, height - floorHeight, 0, height);
-                gradient.addColorStop(0, colors.floor[0]);
-                gradient.addColorStop(1, colors.floor[1]);
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, height - floorHeight, width, floorHeight);
-
-                // Use wallViewTokenIds for consistent image loading
-                // Filter out empty slots (they have NaN token IDs)
-                const validTokenIds = wallViewTokenIds.filter(id => !isNaN(id) && id !== null && id !== undefined);
-                const imageCount = validTokenIds.length;
-                if (imageCount === 0) {
-                    throw new Error('No images to export');
-                }
-
-                // Calculate frame size based on count - max 2 rows
-                let cols = imageCount <= 2 ? imageCount :
-                           imageCount <= 4 ? 2 :
-                           imageCount <= 6 ? 3 :
-                           imageCount <= 8 ? 4 :
-                           imageCount <= 10 ? 5 : 6;
-                let rows = Math.ceil(imageCount / cols);
-
-                let frameHeight = rows === 1 ? 320 : 240;
-                if (imageCount > 8) frameHeight = 180;
-                else if (imageCount > 6) frameHeight = 200;
-                const frameWidth = Math.round(frameHeight * 9 / 16);
-
-                const gapX = 30;
-                const gapY = 25;
-                const frameOuterW = frameWidth + 20;
-                const frameOuterH = frameHeight + 24;
-                const totalWidth = cols * frameOuterW + (cols - 1) * gapX;
-                const totalHeight = rows * frameOuterH + (rows - 1) * gapY;
-                const startX = (width - totalWidth) / 2;
-                const startY = (height - floorHeight - totalHeight) / 2 - 30;
-
-                // Get images from the wall view DOM (already loaded) - only valid tokens
-                const loadedImages = await Promise.all(
-                    validTokenIds.map((tokenId, i) => {
-                        return new Promise((resolve) => {
-                            const newImg = new Image();
-                            newImg.crossOrigin = 'anonymous';
-                            const timeout = setTimeout(() => {
-                                console.warn(`Timeout loading image for token ${tokenId}`);
-                                resolve(null);
-                            }, 15000);
-                            newImg.onload = () => { clearTimeout(timeout); resolve(newImg); };
-                            newImg.onerror = () => {
-                                clearTimeout(timeout);
-                                console.warn(`Failed to load image for token ${tokenId}`);
-                                resolve(null);
-                            };
-                            // Try the full res URL
-                            newImg.src = `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png`;
-                        });
-                    })
-                );
-
-                // Check if any images loaded
-                const validImages = loadedImages.filter(img => img !== null);
-                if (validImages.length === 0) {
-                    throw new Error('Could not load images for export');
-                }
-
-                loadedImages.forEach((img, i) => {
-                    if (!img) return;
-                    const col = i % cols;
-                    const row = Math.floor(i / cols);
-                    const x = startX + col * (frameOuterW + gapX);
-                    const y = startY + row * (frameOuterH + gapY);
-
-                    // Frame shadow
-                    ctx.shadowColor = isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.15)';
-                    ctx.shadowBlur = 20;
-                    ctx.shadowOffsetY = 8;
-
-                    // Frame (outer)
-                    ctx.fillStyle = colors.frame;
-                    ctx.fillRect(x, y, frameOuterW, frameOuterH);
-
-                    // Mat
-                    ctx.shadowColor = 'transparent';
-                    ctx.fillStyle = colors.mat;
-                    ctx.fillRect(x + 4, y + 4, frameOuterW - 8, frameOuterH - 8);
-
-                    // Image
-                    ctx.drawImage(img, x + 10, y + 8, frameWidth, frameHeight);
-                });
-
-                // Collector name - simple, one place only
-                ctx.fillStyle = colors.text;
-                ctx.font = '500 12px Helvetica, Arial, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText(`${collectorName.toUpperCase()}`, width/2, height - floorHeight - 25);
-
-                // City numbers below collector name
-                const cityNumbers = wallViewTokenIds.map(id => `#${id}`).join('  ');
-                ctx.font = '400 10px Helvetica, Arial, sans-serif';
-                ctx.fillStyle = isDark ? '#555' : '#aaa';
-                ctx.fillText(cityNumbers, width/2, height - floorHeight - 10);
-
-                // Try to download via blob (more reliable than toDataURL for large canvases)
-                try {
-                    await new Promise((resolve, reject) => {
-                        canvas.toBlob((blob) => {
-                            if (!blob) { reject(new Error('Canvas export failed')); return; }
-                            const url = URL.createObjectURL(blob);
-                            const link = document.createElement('a');
-                            link.download = `cities-${collectorName.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${type}.png`;
-                            link.href = url;
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                            setTimeout(() => URL.revokeObjectURL(url), 5000);
-                            resolve();
-                        }, 'image/png');
-                    });
-                } catch (corsErr) {
-                    // CORS or export blocked - show screenshot instructions
-                    showStatus('📸 Take a screenshot to save this wall view');
-                    throw new Error('CORS restriction');
-                }
-
-                if (downloadBtn) downloadBtn.textContent = originalText;
-
-            } catch (err) {
-                console.error('Download failed:', err);
-                if (err.message === 'CORS restriction') {
-                    showStatus('That didn\'t work. Try a screenshot instead.');
-                } else if (err.message === 'Could not load images for export') {
-                    showStatus('That didn\'t work. Try a screenshot instead.');
-                } else {
-                    showStatus('That didn\'t work. Try a screenshot instead.');
-                }
-                if (downloadBtn) downloadBtn.textContent = originalText;
-            }
-        }
 
         // Daily Collector Feature - picks a collector with best palette pairing
         function initSpotlight() {
