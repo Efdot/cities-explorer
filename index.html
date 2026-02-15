@@ -2465,8 +2465,21 @@
         .print-inquiry-modal.dark .print-inquiry-details-toggle:hover { color: #666; }
 
         /* Energy Quadrant Trigger Button */
-        .energy-quadrant-btn { position: relative; width: 30px; height: 30px; border: none; background: rgba(255,255,255,0.06); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.2s ease; opacity: 0.7; font-size: 14px; line-height: 1; filter: saturate(0.6); }
-        .energy-quadrant-btn:hover { opacity: 1; background: rgba(255,255,255,0.12); filter: saturate(1); }
+        .energy-quadrant-btn { position: relative; width: 34px; height: 34px; border: none; background: rgba(255,255,255,0.06); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0.8; font-size: 15px; line-height: 1; filter: saturate(0.6); border: 1px solid rgba(255,255,255,0.08); }
+        .energy-quadrant-btn:hover { opacity: 1; filter: saturate(1); transform: scale(1.15); border-color: transparent; background: linear-gradient(135deg, rgba(255,179,71,0.25), rgba(135,206,235,0.25), rgba(221,160,221,0.25), rgba(232,184,109,0.3)); box-shadow: 0 0 16px rgba(232,184,109,0.25), 0 0 32px rgba(135,206,235,0.12); }
+        .energy-quadrant-btn:active { transform: scale(0.95); }
+        .energy-quadrant-btn.launching { animation: eqBtnLaunch 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; pointer-events: none; }
+        @keyframes eqBtnShimmer {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+        @keyframes eqBtnLaunch {
+            0% { transform: scale(1); opacity: 1; filter: saturate(1); background: linear-gradient(135deg, rgba(255,179,71,0.3), rgba(135,206,235,0.3), rgba(221,160,221,0.3), rgba(232,184,109,0.4)); box-shadow: 0 0 20px rgba(232,184,109,0.3); border-color: transparent; }
+            20% { transform: scale(1.3); opacity: 1; background: linear-gradient(135deg, #ffb347, #87ceeb, #dda0dd, #E8B86D); box-shadow: 0 0 30px rgba(232,184,109,0.5), 0 0 60px rgba(135,206,235,0.3); border-color: transparent; }
+            40% { transform: scale(1.2) translateX(-20px); opacity: 1; }
+            70% { transform: scale(2.5) translateX(-120px); opacity: 0.6; filter: saturate(1.5) brightness(1.3); box-shadow: 0 0 50px rgba(232,184,109,0.6), 0 0 100px rgba(135,206,235,0.3); }
+            100% { transform: scale(4) translateX(-200px); opacity: 0; filter: saturate(2) brightness(1.5); }
+        }
         /* Energy Quadrant Modal */
         .energy-quadrant-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(8, 8, 12, 0.88); z-index: 2500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(12px); padding: 40px; cursor: pointer; }
         .energy-quadrant-modal.open { display: flex; }
@@ -2506,21 +2519,30 @@
         .eq-chip.eq-chip-lg .eq-chip-count { font-size: 9px; }
         .eq-nudge { text-align: center; margin-bottom: 16px; flex-shrink: 0; display: none; }
         .eq-nudge.visible { display: block; }
-        .eq-nudge-inner { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); font-size: 10px; color: #888; letter-spacing: 0.02em; }
-        .eq-nudge-bolt { font-size: 13px; }
-        .eq-nudge-count { font-weight: 700; color: #E8B86D; }
-        .eq-nudge-text { color: #666; }
-        .eq-nudge-cta { color: #E8B86D; font-weight: 600; }
-        .eq-nudge-inner { cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease; }
-        .eq-nudge-inner:hover { background: rgba(255, 255, 255, 0.07); border-color: rgba(255, 255, 255, 0.12); }
-        .eq-nudge-details { display: none; margin-top: 8px; }
-        .eq-nudge.expanded .eq-nudge-details { display: flex; }
-        .eq-nudge-details { justify-content: center; gap: 12px; flex-wrap: wrap; }
-        .eq-nudge-stat { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); font-size: 9px; color: #777; letter-spacing: 0.02em; }
-        .eq-nudge-stat-icon { font-size: 11px; }
-        .eq-nudge-stat-count { font-weight: 700; color: #bbb; }
-        .eq-nudge-arrow { font-size: 8px; margin-left: 2px; color: #555; transition: transform 0.2s ease; }
-        .eq-nudge.expanded .eq-nudge-arrow { transform: rotate(180deg); }
+        .eq-nudge-showcase { display: flex; flex-direction: column; gap: 10px; }
+        .eq-nudge-set-row { display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: all 0.2s ease; }
+        .eq-nudge-set-row:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+        .eq-nudge-set-icon { font-size: 13px; flex-shrink: 0; }
+        .eq-nudge-set-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #666; flex-shrink: 0; min-width: 50px; }
+        .eq-nudge-set-names { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
+        .eq-nudge-set-name { font-size: 9px; font-weight: 600; color: #bbb; padding: 2px 8px; border-radius: 10px; background: rgba(255,255,255,0.04); letter-spacing: 0.02em; transition: all 0.2s ease; cursor: pointer; }
+        .eq-nudge-set-name:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .eq-nudge-set-count { font-size: 8px; color: #444; flex-shrink: 0; margin-left: auto; }
+        .eq-nudge-set-row.rising .eq-nudge-set-label { color: #ffb347; }
+        .eq-nudge-set-row.living .eq-nudge-set-label { color: #87ceeb; }
+        .eq-nudge-set-row.fading .eq-nudge-set-label { color: #dda0dd; }
+        .eq-nudge-set-row.resting .eq-nudge-set-label { color: #6b7280; }
+        .eq-nudge-set-row.energy-full .eq-nudge-set-label { color: #E8B86D; }
+        .eq-nudge-set-row.rising .eq-nudge-set-name { color: #ffb347; }
+        .eq-nudge-set-row.living .eq-nudge-set-name { color: #87ceeb; }
+        .eq-nudge-set-row.fading .eq-nudge-set-name { color: #dda0dd; }
+        .eq-nudge-set-row.resting .eq-nudge-set-name { color: #8b95a5; }
+        .eq-nudge-set-row.energy-full .eq-nudge-set-name { color: #E8B86D; }
+        .eq-nudge-almost-row { margin-top: 4px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.03); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; align-items: center; }
+        .eq-nudge-almost-tag { font-size: 8px; text-transform: uppercase; letter-spacing: 0.08em; color: #333; width: 100%; text-align: center; margin-bottom: 2px; }
+        .eq-nudge-almost-name { font-size: 8px; color: #444; padding: 2px 7px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: all 0.2s ease; }
+        .eq-nudge-almost-name:hover { color: #888; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+        .eq-nudge-almost-miss { font-style: italic; color: #333; }
         @media (max-width: 768px) {
             .energy-quadrant-modal { padding: 20px; }
             .energy-quadrant-container { padding: 20px; border-radius: 14px; }
@@ -2568,14 +2590,6 @@
         .perfect-set-cell:hover img { transform: scale(1.08); }
         .perfect-set-cell-id { position: absolute; bottom: 2px; right: 4px; font-size: 8px; font-weight: 600; color: rgba(255,255,255,0.7); text-shadow: 0 1px 3px rgba(0,0,0,0.8); pointer-events: none; }
         .perfect-set-empty { text-align: center; padding: 30px 20px; color: #333; font-size: 10px; letter-spacing: 0.04em; }
-        .eq-nudge-stat.clickable { cursor: pointer; transition: all 0.2s ease; }
-        .eq-nudge-stat.clickable:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); color: #aaa; transform: scale(1.05); }
-        .eq-nudge-stat.clickable:hover .eq-nudge-stat-count { color: #E8B86D; }
-        .eq-nudge-almost { width: 100%; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.04); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; align-items: center; }
-        .eq-nudge-almost-label { width: 100%; font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; color: #444; margin-bottom: 2px; }
-        .eq-nudge-almost-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); font-size: 9px; font-weight: 600; color: #888; cursor: pointer; transition: all 0.2s ease; letter-spacing: 0.02em; }
-        .eq-nudge-almost-chip:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); color: #ccc; }
-        .eq-nudge-almost-missing { font-weight: 400; font-size: 8px; color: #555; font-style: italic; }
         @media (max-width: 768px) {
             .perfect-sets-modal { padding: 20px 12px 60px; }
             .perfect-sets-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
@@ -4027,7 +4041,7 @@
         <div class="collectors-header">
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›››</span></h2>
             <div class="collectors-header-actions">
-                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map" onclick="if(typeof openEnergyQuadrant==='function') openEnergyQuadrant()">⚡</button>
+                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map">⚡</button>
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
@@ -19051,59 +19065,67 @@
                     if (!uniqueCollectorMap[c.name]) uniqueCollectorMap[c.name] = {};
                     uniqueCollectorMap[c.name][e] = c.count;
                 }));
-                let energySetCount = 0;
-                let almostCount = 0;
+                const energySetCollectors = [];
                 const almostCollectors = [];
-                const citySetCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                const citySetCollectors = { Rising: [], Living: [], Fading: [], Resting: [] };
                 Object.entries(uniqueCollectorMap).forEach(([name, energies]) => {
                     const hasAll = ALL_ENERGIES.every(e => energies[e] > 0);
-                    if (hasAll) energySetCount++;
+                    if (hasAll) energySetCollectors.push(name);
                     else {
                         const owned = ALL_ENERGIES.filter(e => energies[e] > 0);
                         if (owned.length === 3) {
                             const missing = ALL_ENERGIES.find(e => !energies[e]);
                             almostCollectors.push({ name, missing });
-                            almostCount++;
                         }
                     }
-                    // Count mono city sets (4+ of same energy)
                     ALL_ENERGIES.forEach(e => {
-                        if ((energies[e] || 0) >= 4) citySetCounts[e]++;
+                        if ((energies[e] || 0) >= 4) citySetCollectors[e].push(name);
                     });
                 });
-                const totalCitySets = citySetCounts.Rising + citySetCounts.Living + citySetCounts.Fading + citySetCounts.Resting;
-                if (energySetCount > 0 || almostCount > 0 || totalCitySets > 0) {
-                    let nudgeHtml = '<div class="eq-nudge-inner" onclick="this.closest(\'.eq-nudge\').classList.toggle(\'expanded\')">';
-                    nudgeHtml += '<span class="eq-nudge-bolt">⚡️</span>';
-                    if (energySetCount > 0) {
-                        nudgeHtml += `<span><span class="eq-nudge-count">${energySetCount}</span> <span class="eq-nudge-text">${energySetCount === 1 ? 'collector has' : 'collectors have'} completed the</span> <span class="eq-nudge-cta">Energy Set</span></span>`;
-                    }
-                    if (almostCount > 0) {
-                        nudgeHtml += energySetCount > 0 ? '<span class="eq-nudge-text" style="margin: 0 2px;">·</span>' : '';
-                        nudgeHtml += `<span><span class="eq-nudge-count">${almostCount}</span> <span class="eq-nudge-text">${almostCount === 1 ? 'is' : 'are'} one energy away</span></span>`;
-                    }
-                    nudgeHtml += '<span class="eq-nudge-arrow">▼</span>';
-                    nudgeHtml += '</div>';
-                    // Expandable detail stats for mono city sets + almost collectors
+                const hasAnySets = energySetCollectors.length > 0 || ALL_ENERGIES.some(e => citySetCollectors[e].length > 0);
+                if (hasAnySets) {
                     const citySetIcons = { Rising: '☀️', Living: '🏙️', Fading: '🌆', Resting: '🌃' };
-                    nudgeHtml += '<div class="eq-nudge-details">';
-                    ALL_ENERGIES.forEach(e => {
-                        const ct = citySetCounts[e];
-                        nudgeHtml += `<span class="eq-nudge-stat clickable" data-energy-filter="${e}" onclick="event.stopPropagation(); openPerfectSets('${e}');" title="View all ${e} City Sets"><span class="eq-nudge-stat-icon">${citySetIcons[e]}</span> <span class="eq-nudge-stat-count">${ct}</span> ${e} City Set${ct !== 1 ? 's' : ''}</span>`;
-                    });
-                    if (almostCollectors.length > 0) {
-                        nudgeHtml += '<div class="eq-nudge-almost">';
-                        nudgeHtml += '<div class="eq-nudge-almost-label">One energy away</div>';
-                        almostCollectors.forEach(ac => {
-                            const dn = formatCollectorName(ac.name).toUpperCase();
-                            nudgeHtml += `<span class="eq-nudge-almost-chip" data-collector-name="${ac.name}" title="${dn} needs ${ac.missing}">${dn} <span class="eq-nudge-almost-missing">needs ${ac.missing}</span></span>`;
+                    let nudgeHtml = '<div class="eq-nudge-showcase">';
+                    // Energy Set holders (all 4 energies) - shown first and proudest
+                    if (energySetCollectors.length > 0) {
+                        nudgeHtml += `<div class="eq-nudge-set-row energy-full" onclick="openPerfectSets()">`;
+                        nudgeHtml += `<span class="eq-nudge-set-icon">⚡</span>`;
+                        nudgeHtml += `<span class="eq-nudge-set-label">Energy Set</span>`;
+                        nudgeHtml += `<span class="eq-nudge-set-names">`;
+                        energySetCollectors.forEach(name => {
+                            nudgeHtml += `<span class="eq-nudge-set-name" data-collector-name="${name}">${formatCollectorName(name).toUpperCase()}</span>`;
                         });
-                        nudgeHtml += '</div>';
+                        nudgeHtml += `</span>`;
+                        nudgeHtml += `</div>`;
+                    }
+                    // Per-energy set holders
+                    ALL_ENERGIES.forEach(e => {
+                        const names = citySetCollectors[e];
+                        if (names.length > 0) {
+                            nudgeHtml += `<div class="eq-nudge-set-row ${e.toLowerCase()}" onclick="openPerfectSets('${e}')">`;
+                            nudgeHtml += `<span class="eq-nudge-set-icon">${citySetIcons[e]}</span>`;
+                            nudgeHtml += `<span class="eq-nudge-set-label">${e}</span>`;
+                            nudgeHtml += `<span class="eq-nudge-set-names">`;
+                            names.forEach(name => {
+                                nudgeHtml += `<span class="eq-nudge-set-name" data-collector-name="${name}">${formatCollectorName(name).toUpperCase()}</span>`;
+                            });
+                            nudgeHtml += `</span>`;
+                            nudgeHtml += `<span class="eq-nudge-set-count">${names.length}</span>`;
+                            nudgeHtml += `</div>`;
+                        }
+                    });
+                    // Almost collectors - subtle, de-emphasized
+                    if (almostCollectors.length > 0) {
+                        nudgeHtml += `<div class="eq-nudge-almost-row">`;
+                        nudgeHtml += `<span class="eq-nudge-almost-tag">${almostCollectors.length} one away</span>`;
+                        almostCollectors.forEach(ac => {
+                            nudgeHtml += `<span class="eq-nudge-almost-name" data-collector-name="${ac.name}" title="${formatCollectorName(ac.name)} needs ${ac.missing}">${formatCollectorName(ac.name).toUpperCase()} <span class="eq-nudge-almost-miss">· ${ac.missing}</span></span>`;
+                        });
+                        nudgeHtml += `</div>`;
                     }
                     nudgeHtml += '</div>';
                     nudgeEl.innerHTML = nudgeHtml;
                     nudgeEl.classList.add('visible');
-                    nudgeEl.classList.remove('expanded');
                 } else {
                     nudgeEl.classList.remove('visible');
                 }
@@ -19122,8 +19144,8 @@
                 });
             });
 
-            // Add click handlers to "almost" collector chips
-            modal.querySelectorAll('.eq-nudge-almost-chip').forEach(chip => {
+            // Add click handlers to set name chips and almost-name chips in nudge
+            modal.querySelectorAll('.eq-nudge-set-name, .eq-nudge-almost-name').forEach(chip => {
                 chip.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const name = chip.dataset.collectorName;
@@ -19149,8 +19171,20 @@
             }
         }
 
-        // Trigger button
-        document.getElementById('energyQuadrantBtn')?.addEventListener('click', openEnergyQuadrant);
+        // Trigger button with boost launch animation
+        document.getElementById('energyQuadrantBtn')?.addEventListener('click', function() {
+            const btn = this;
+            if (btn.classList.contains('launching')) return;
+            btn.classList.add('launching');
+            // Open the modal partway through the animation
+            setTimeout(() => {
+                openEnergyQuadrant();
+                // Reset button state after animation completes
+                setTimeout(() => {
+                    btn.classList.remove('launching');
+                }, 400);
+            }, 350);
+        });
 
         // Close on backdrop click (outside the container)
         document.getElementById('energyQuadrantModal')?.addEventListener('click', (e) => {
