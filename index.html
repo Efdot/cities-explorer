@@ -2466,7 +2466,9 @@
         .energy-quadrant-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(8, 8, 12, 0.88); z-index: 2500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(12px); padding: 40px; cursor: pointer; }
         .energy-quadrant-modal.open { display: flex; }
         .energy-quadrant-container { background: #111114; border-radius: 20px; width: 100%; max-width: 900px; max-height: calc(100vh - 80px); padding: 28px; cursor: default; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.06); overflow: hidden; display: flex; flex-direction: column; }
-        .energy-quadrant-header { text-align: center; margin-bottom: 20px; flex-shrink: 0; }
+        .energy-quadrant-header { text-align: center; margin-bottom: 20px; flex-shrink: 0; position: relative; }
+        .eq-close-btn { position: absolute; top: -6px; right: -6px; width: 30px; height: 30px; border-radius: 50%; background: none; border: 1px solid rgba(255,255,255,0.15); color: #666; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .eq-close-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: #fff; }
         .energy-quadrant-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; }
         .energy-quadrant-subtitle { display: block; font-size: 9px; color: #444; margin-top: 4px; letter-spacing: 0.05em; }
         .energy-quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; flex: 1; min-height: 0; border-radius: 12px; overflow: hidden; }
@@ -2481,10 +2483,14 @@
         .eq-living .eq-label { color: #87ceeb; }
         .eq-fading .eq-label { color: #dda0dd; }
         .eq-resting .eq-label { color: #6b7280; }
+        .energy-quadrant:hover .eq-label { filter: brightness(1.4); }
+        .energy-quadrant:hover .eq-chip { filter: brightness(1.2); }
+        .energy-quadrant:hover .eq-chip:hover { filter: brightness(1.6); }
         .eq-collectors { display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; }
         .eq-chip { padding: 5px 12px; border-radius: 20px; font-size: 9px; font-weight: 500; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap; line-height: 1.2; display: inline-flex; align-items: center; gap: 5px; position: relative; }
         .eq-chip .eq-chip-count { font-size: 8px; opacity: 0.5; font-weight: 400; }
-        .eq-chip:hover { transform: scale(1.12) translateY(-2px); z-index: 10; }
+        .eq-chip:hover { transform: scale(1.12) translateY(-2px); z-index: 10; filter: brightness(1.5); }
+        .eq-chip:hover .eq-chip-count { opacity: 0.9; }
         .eq-chip.eq-chip-lg { font-size: 10px; padding: 6px 14px; font-weight: 600; }
         .eq-chip.eq-chip-lg .eq-chip-count { font-size: 9px; }
         @media (max-width: 768px) {
@@ -4333,6 +4339,7 @@
             <div class="energy-quadrant-header">
                 <span class="energy-quadrant-title">Collector Energy Map</span>
                 <span class="energy-quadrant-subtitle" id="eqSubtitle"></span>
+                <button class="eq-close-btn" id="eqCloseBtn" title="Close" onclick="closeEnergyQuadrant()">&times;</button>
             </div>
             <div class="energy-quadrant-grid">
                 <div class="energy-quadrant eq-rising" data-energy="Rising">
