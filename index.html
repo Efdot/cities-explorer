@@ -577,13 +577,17 @@
         .similar-palette-chip:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
         .palette-inspector-close { background: var(--bg-input); border: none; color: var(--text-dim); padding: 12px 28px; border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; margin-top: 18px; }
         /* Sidebar inspect palette button */
-        .sidebar-inspect-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 7px 14px; margin-bottom: 6px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
+        .sidebar-inspect-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 10px 14px; margin-bottom: 6px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.3s ease; position: relative; }
         .sidebar-inspect-btn:hover { border-color: var(--text-muted); }
         .sidebar-inspect-btn:hover .inspect-icon { transform: scale(1.15); }
-        .inspect-dots { display: flex; gap: 3px; align-items: center; }
+        .sidebar-inspect-btn:hover .inspect-dots { opacity: 0; transform: scale(0.8); }
+        .sidebar-inspect-btn:hover .inspect-icon { opacity: 0; transform: scale(0.8); }
+        .sidebar-inspect-btn .inspect-hover-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: all 0.3s ease; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; color: var(--text-dim); }
+        .sidebar-inspect-btn:hover .inspect-hover-label { opacity: 1; }
+        .inspect-dots { display: flex; gap: 3px; align-items: center; transition: all 0.3s ease; }
         .inspect-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; transition: transform 0.2s ease; }
         .sidebar-inspect-btn:hover .inspect-dot { transform: scale(1.15); }
-        .inspect-icon { font-size: 13px; flex-shrink: 0; transition: transform 0.2s ease; line-height: 1; }
+        .inspect-icon { flex-shrink: 0; transition: all 0.3s ease; line-height: 1; display: flex; align-items: center; }
         .palette-inspector-close:hover { background: var(--bg-card); color: var(--text); }
         /* Palette inspector prev/next arrows - subtle edge nav like wall view */
         .palette-nav-arrow { display: none; }
@@ -1664,7 +1668,7 @@
         .supply-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, rgba(180, 140, 80, 0.8), rgba(200, 160, 100, 0.8), rgba(180, 140, 80, 0.8)); background-size: 200% 100%; border-radius: 9px; transition: all 0.4s ease; }
         .supply-tracker:hover .supply-fill { background: linear-gradient(90deg, #D4A574, #E8B86D, #D4A574); background-size: 200% 100%; }
         @keyframes supplyShimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 10px; font-size: 7px; font-weight: 800; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.5); z-index: 2; transition: color 0.3s ease; }
+        .supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 10px; font-size: 7px; font-weight: 800; letter-spacing: 0.08em; color: rgba(163, 123, 55, 0.85); z-index: 2; transition: color 0.3s ease; }
         .supply-tracker:hover .supply-label { color: #000; }
         .supply-tracker .mint-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; opacity: 0; color: #000; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; transition: opacity 0.3s ease; z-index: 3; border-radius: 9px; background: linear-gradient(90deg, var(--orange), var(--yellow), var(--pink), var(--orange)); background-size: 300% 100%; text-shadow: none; }
         .supply-tracker:hover .supply-bar { box-shadow: 0 2px 8px rgba(212, 165, 116, 0.25); }
@@ -1965,7 +1969,7 @@
         .grid-supply-tracker:hover .grid-supply-bar { box-shadow: 0 2px 8px rgba(212, 165, 116, 0.25); }
         .grid-supply-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, rgba(160, 130, 90, 0.5), rgba(180, 150, 100, 0.5), rgba(160, 130, 90, 0.5)); background-size: 200% 100%; border-radius: 14px; transition: all 0.4s ease; }
         .grid-supply-tracker:hover .grid-supply-fill { background: linear-gradient(90deg, #D4A574, #E8B86D, #D4A574); background-size: 200% 100%; }
-        .grid-supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 12px; font-size: 8px; font-weight: 800; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.45); z-index: 2; transition: color 0.3s ease; }
+        .grid-supply-label { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; padding: 0 12px; font-size: 8px; font-weight: 800; letter-spacing: 0.05em; color: rgba(163, 123, 55, 0.85); z-index: 2; transition: color 0.3s ease; }
         .grid-supply-tracker:hover .grid-supply-label { color: #000; }
         .grid-showing-count { font-size: 10px; font-weight: 500; color: var(--text-muted); display: none; letter-spacing: 0.03em; white-space: nowrap; flex-shrink: 0; }
         .grid-showing-count.visible { display: inline; opacity: 0.4; }
@@ -10592,7 +10596,8 @@
                 const dotColors = [pInfo.bg, ...pColors.slice(0, 9)];
                 const leftDots = dotColors.slice(0, 5).map(c => `<span class="inspect-dot" style="background:${c}"></span>`).join('');
                 const rightDots = dotColors.slice(5, 10).map(c => `<span class="inspect-dot" style="background:${c}"></span>`).join('');
-                inspectBtn.innerHTML = `<span class="inspect-dots">${leftDots}</span><span class="inspect-icon">\ud83d\udd0d</span><span class="inspect-dots">${rightDots}</span>`;
+                const magSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke="rgba(255,255,255,0.7)" stroke-width="2" fill="rgba(255,255,255,0.08)"/><line x1="15.5" y1="15.5" x2="21" y2="21" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"/><ellipse cx="8.5" cy="8.5" rx="2.5" ry="1.5" transform="rotate(-30 8.5 8.5)" fill="rgba(255,255,255,0.15)"/></svg>`;
+                inspectBtn.innerHTML = `<span class="inspect-dots">${leftDots}</span><span class="inspect-icon">${magSvg}</span><span class="inspect-dots">${rightDots}</span><span class="inspect-hover-label">INSPECT PALETTE</span>`;
                 inspectBtn.style.background = '';
                 inspectBtn.style.border = '';
                 inspectBtn.style.color = '';
