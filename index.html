@@ -2511,6 +2511,16 @@
         .eq-nudge-count { font-weight: 700; color: #E8B86D; }
         .eq-nudge-text { color: #666; }
         .eq-nudge-cta { color: #E8B86D; font-weight: 600; }
+        .eq-nudge-inner { cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease; }
+        .eq-nudge-inner:hover { background: rgba(255, 255, 255, 0.07); border-color: rgba(255, 255, 255, 0.12); }
+        .eq-nudge-details { display: none; margin-top: 8px; }
+        .eq-nudge.expanded .eq-nudge-details { display: flex; }
+        .eq-nudge-details { justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .eq-nudge-stat { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); font-size: 9px; color: #777; letter-spacing: 0.02em; }
+        .eq-nudge-stat-icon { font-size: 11px; }
+        .eq-nudge-stat-count { font-weight: 700; color: #bbb; }
+        .eq-nudge-arrow { font-size: 8px; margin-left: 2px; color: #555; transition: transform 0.2s ease; }
+        .eq-nudge.expanded .eq-nudge-arrow { transform: rotate(180deg); }
         @media (max-width: 768px) {
             .energy-quadrant-modal { padding: 20px; }
             .energy-quadrant-container { padding: 20px; border-radius: 14px; }
@@ -7575,15 +7585,15 @@
                 // Mono set badges (4+ of same energy)
                 if (rising >= 4) {
                     const count = Math.floor(rising / 4);
-                    badges.push(`<span class="achievement-badge rising-set" title="Rising Set (${rising} rising energy)">☀️${count > 1 ? count : ''}</span>`);
+                    badges.push(`<span class="achievement-badge rising-set" title="Rising City Set · ${rising} rising energy cities">☀️${count > 1 ? count : ''}</span>`);
                 }
                 if (living >= 4) {
                     const count = Math.floor(living / 4);
-                    badges.push(`<span class="achievement-badge living-set" title="Living Set (${living} living energy)">🏙️${count > 1 ? count : ''}</span>`);
+                    badges.push(`<span class="achievement-badge living-set" title="Living City Set · ${living} living energy cities">🏙️${count > 1 ? count : ''}</span>`);
                 }
                 if (fading >= 4) {
                     const count = Math.floor(fading / 4);
-                    badges.push(`<span class="achievement-badge fading-set" title="Fading Set (${fading} fading energy)">🌆${count > 1 ? count : ''}</span>`);
+                    badges.push(`<span class="achievement-badge fading-set" title="Fading City Set · ${fading} fading energy cities">🌆${count > 1 ? count : ''}</span>`);
                 }
                 if (resting >= 4) {
                     const count = Math.floor(resting / 4);
@@ -7691,7 +7701,7 @@
                         { name: 'Resting', count: energyCounts.Resting }
                     ].filter(e => e.count >= 4).sort((a, b) => b.count - a.count);
                     if (setEntries.length > 0) {
-                        statusLabel = setEntries[0].name + ' Set';
+                        statusLabel = setEntries[0].name + ' City Set';
                         dotClass = 'energy-' + setEntries[0].name.toLowerCase();
                     }
                 }
@@ -9354,7 +9364,7 @@
                     }
                 }
 
-                // 2. Complete energy set
+                // 2. Complete Energy Set
                 if (missingEnergies.length > 0 && missingEnergies.length < 4) {
                     const energySuggestions = [];
                     for (const energy of missingEnergies) {
@@ -9368,7 +9378,7 @@
 
                     if (energySuggestions.length > 0) {
                         html += `<div class="try-city-picker-smart-row">
-                            <div class="try-city-picker-smart-label"><span class="label-icon">✦</span> Complete energy set (need ${missingEnergies.join(', ')})</div>
+                            <div class="try-city-picker-smart-label"><span class="label-icon">✦</span> Complete Energy Set (need ${missingEnergies.join(', ')})</div>
                             <div class="try-city-picker-smart-cities">${energySuggestions.map(s =>
                                 `<div class="try-city-picker-thumb" data-id="${s.id}" title="${s.energy}"><img src="${MEDIA_BASE}/${CONTRACT}/${s.id}.png?width=120" alt="#${s.id}"></div>`
                             ).join('')}</div>
@@ -10201,7 +10211,7 @@
 
             } else if (missingEnergies.length > 0 && missingEnergies.length < 4) {
                 // They have some variety but not complete set
-                label = 'Complete the energy set';
+                label = 'Complete the Energy Set';
 
                 for (let i = 0; i <= MAX_TOKEN; i++) {
                     if (ownedIds.has(i) || PROJECT_WALLET_TOKENS.has(i)) continue;
@@ -10236,7 +10246,7 @@
                 const missingList = missingEnergies.join(' & ');
                 const missingCount = missingEnergies.length;
 
-                messageHtml = `${collectorName} has <strong>${ownedList}</strong> ${ownedEnergies.length === 1 && energyCounts[ownedEnergies[0]] === 1 ? 'city' : 'cities'}. Add <strong>${missingList}</strong> (${missingCount} ${missingCount === 1 ? 'city' : 'cities'}) for a complete energy set.`;
+                messageHtml = `${collectorName} has <strong>${ownedList}</strong> ${ownedEnergies.length === 1 && energyCounts[ownedEnergies[0]] === 1 ? 'city' : 'cities'}. Add <strong>${missingList}</strong> (${missingCount} ${missingCount === 1 ? 'city' : 'cities'}) for a complete Energy Set.`;
 
             } else {
                 suggestionEl.classList.remove('visible');
@@ -18969,7 +18979,7 @@
                 subtitle.textContent = `${uniqueNames.size} collectors · ${totalCities} cities across ${ALL_ENERGIES.length} energies`;
             }
 
-            // Energy Set nudge: show how many collectors have completed the full set
+            // Energy Set nudge: show how many collectors have completed the full set + mono city sets
             const nudgeEl = document.getElementById('eqNudge');
             if (nudgeEl) {
                 const uniqueCollectorMap = {};
@@ -18979,6 +18989,7 @@
                 }));
                 let energySetCount = 0;
                 let almostCount = 0;
+                const citySetCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
                 Object.entries(uniqueCollectorMap).forEach(([name, energies]) => {
                     const hasAll = ALL_ENERGIES.every(e => energies[e] > 0);
                     if (hasAll) energySetCount++;
@@ -18986,9 +18997,15 @@
                         const has = ALL_ENERGIES.filter(e => energies[e] > 0).length;
                         if (has === 3) almostCount++;
                     }
+                    // Count mono city sets (4+ of same energy)
+                    ALL_ENERGIES.forEach(e => {
+                        if ((energies[e] || 0) >= 4) citySetCounts[e]++;
+                    });
                 });
-                if (energySetCount > 0 || almostCount > 0) {
-                    let nudgeHtml = '<div class="eq-nudge-inner"><span class="eq-nudge-bolt">⚡️</span>';
+                const totalCitySets = citySetCounts.Rising + citySetCounts.Living + citySetCounts.Fading + citySetCounts.Resting;
+                if (energySetCount > 0 || almostCount > 0 || totalCitySets > 0) {
+                    let nudgeHtml = '<div class="eq-nudge-inner" onclick="this.closest(\'.eq-nudge\').classList.toggle(\'expanded\')">';
+                    nudgeHtml += '<span class="eq-nudge-bolt">⚡️</span>';
                     if (energySetCount > 0) {
                         nudgeHtml += `<span><span class="eq-nudge-count">${energySetCount}</span> <span class="eq-nudge-text">${energySetCount === 1 ? 'collector has' : 'collectors have'} completed the</span> <span class="eq-nudge-cta">Energy Set</span></span>`;
                     }
@@ -18996,9 +19013,19 @@
                         nudgeHtml += energySetCount > 0 ? '<span class="eq-nudge-text" style="margin: 0 2px;">·</span>' : '';
                         nudgeHtml += `<span><span class="eq-nudge-count">${almostCount}</span> <span class="eq-nudge-text">${almostCount === 1 ? 'is' : 'are'} one energy away</span></span>`;
                     }
+                    nudgeHtml += '<span class="eq-nudge-arrow">▼</span>';
+                    nudgeHtml += '</div>';
+                    // Expandable detail stats for mono city sets
+                    const citySetIcons = { Rising: '☀️', Living: '🏙️', Fading: '🌆', Resting: '🌃' };
+                    nudgeHtml += '<div class="eq-nudge-details">';
+                    ALL_ENERGIES.forEach(e => {
+                        const ct = citySetCounts[e];
+                        nudgeHtml += `<span class="eq-nudge-stat"><span class="eq-nudge-stat-icon">${citySetIcons[e]}</span> <span class="eq-nudge-stat-count">${ct}</span> ${e} City Set${ct !== 1 ? 's' : ''}</span>`;
+                    });
                     nudgeHtml += '</div>';
                     nudgeEl.innerHTML = nudgeHtml;
                     nudgeEl.classList.add('visible');
+                    nudgeEl.classList.remove('expanded');
                 } else {
                     nudgeEl.classList.remove('visible');
                 }
