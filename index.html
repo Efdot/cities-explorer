@@ -2452,11 +2452,11 @@
         .wall-view-modal.dark-mode .wall-view-download, .wall-view-modal.wall-black .wall-view-download { border-color: #333; color: #666; }
         .wall-view-modal.dark-mode .wall-view-download:hover, .wall-view-modal.wall-black .wall-view-download:hover { background: #fff; border-color: #fff; color: #000; }
         /* Energy Quadrant Trigger Button */
-        .energy-quadrant-btn { position: relative; width: 34px; height: 34px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-right: 2px; padding: 0; transition: opacity 0.2s ease; opacity: 0.45; }
-        .energy-quadrant-btn:hover { opacity: 1; }
+        .energy-quadrant-btn { position: relative; width: 30px; height: 30px; border: none; background: rgba(255,255,255,0.06); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.2s ease; opacity: 0.7; }
+        .energy-quadrant-btn:hover { opacity: 1; background: rgba(255,255,255,0.12); }
         .eq-grid-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: 14px; height: 14px; }
         .eq-grid-icon span { background: currentColor; border-radius: 1px; opacity: 0.7; }
-        .eq-bolt { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); font-size: 9px; line-height: 1; pointer-events: none; filter: saturate(0.6); }
+        .eq-bolt { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); font-size: 8px; line-height: 1; pointer-events: none; filter: saturate(0.6); }
         /* Energy Quadrant Modal */
         .energy-quadrant-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(8, 8, 12, 0.88); z-index: 2500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(12px); padding: 40px; cursor: pointer; }
         .energy-quadrant-modal.open { display: flex; }
@@ -3907,10 +3907,6 @@
                 <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Marketplace <span>OpenSea</span></a>
             </div>
         </div>
-        <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map">
-            <span class="eq-grid-icon"><span></span><span></span><span></span><span></span></span>
-            <span class="eq-bolt">&#9889;</span>
-        </button>
         <button class="view-toggle-btn" id="viewToggleBtn" title="Toggle Grid/Single View" aria-label="Toggle between grid and single view" aria-expanded="false">
             <img src="glyph-blob-static.png" alt="" class="glyph-img glyph-static glyph-blob">
             <img src="glyph-blob.gif" alt="" class="glyph-img glyph-animated glyph-blob">
@@ -3945,6 +3941,10 @@
         <div class="collectors-header">
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›››</span></h2>
             <div class="collectors-header-actions">
+                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map">
+                    <span class="eq-grid-icon"><span></span><span></span><span></span><span></span></span>
+                    <span class="eq-bolt">&#9889;</span>
+                </button>
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
