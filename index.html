@@ -14297,6 +14297,8 @@
         // Gradient grid state: pre-rendered DOM nodes for instant reordering
         let gradientGridItems = null; // Map<tokenId, { el, palette }>
         let gradientGridContainer = null; // The .grid-items wrapper
+        let gradientPaletteGroups = null; // { paletteName: [el, el, ...] } for fast reorder
+        let gradientImageObserver = null; // IntersectionObserver for lazy image loading
 
         function preRenderGradientGrid() {
             // Build all tokens that pass current non-palette filters
@@ -14317,8 +14319,8 @@
                 allTokens.push(i);
             }
 
-            // Load 50px thumbnails — first ~36 eager (viewport), rest native lazy
             gradientGridItems = new Map();
+            gradientPaletteGroups = {};
             const fragment = document.createDocumentFragment();
             const container = document.createElement('div');
             container.className = `grid-items grid-${gridSize}`;
@@ -14353,11 +14355,11 @@
                 check.className = 'compare-check';
                 check.textContent = '\u2713';
 
+                // Withhold src — IntersectionObserver will set it for visible images only
                 const img = document.createElement('img');
-                img.src = getSmallThumbnailUrl(id);
+                img.dataset.src = getSmallThumbnailUrl(id);
                 img.alt = '';
                 img.decoding = 'async';
-                img.loading = idx < 36 ? 'eager' : 'lazy';
 
                 const label = document.createElement('div');
                 label.className = 'grid-item-label';
@@ -14366,6 +14368,9 @@
                 div.append(favBtn, check, img, label);
                 container.appendChild(div);
                 gradientGridItems.set(id, { el: div, palette });
+                // Build palette groups for fast reorder (sort ~50 groups, not 500 items)
+                if (!gradientPaletteGroups[palette]) gradientPaletteGroups[palette] = [];
+                gradientPaletteGroups[palette].push(div);
             });
 
             fragment.appendChild(container);
@@ -14373,44 +14378,60 @@
             gridContent.innerHTML = '';
             gridContent.appendChild(fragment);
             document.getElementById('gridPagination').style.display = 'none';
+
+            // Lazy-load images via IntersectionObserver — only visible images fetch
+            if (gradientImageObserver) gradientImageObserver.disconnect();
+            gradientImageObserver = new IntersectionObserver((entries) => {
+                for (let i = 0; i < entries.length; i++) {
+                    if (entries[i].isIntersecting) {
+                        const img = entries[i].target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+                        gradientImageObserver.unobserve(img);
+                    }
+                }
+            }, { rootMargin: '150px 0px' });
+            container.querySelectorAll('.grid-item img').forEach(img => {
+                gradientImageObserver.observe(img);
+            });
         }
 
-        // Persistent sorted array to avoid re-allocating each frame
-        let gradientSortedEntries = null;
+        // Reusable palette name array for sorting (~50 items, not 500)
+        let gradientPaletteKeys = null;
 
         function reorderGradientGrid(tH, tS, tL) {
-            if (!gradientGridItems) return;
-            // Compute distance per palette (only ~50 palettes, very fast)
-            const paletteDist = {};
-            gradientGridItems.forEach(({ palette }) => {
-                if (paletteDist[palette] === undefined) {
-                    paletteDist[palette] = getPaletteColorDist(palette, tH, tS, tL);
-                }
-            });
-
-            // Reuse array across frames — only allocate once
-            if (!gradientSortedEntries || gradientSortedEntries.length !== gradientGridItems.size) {
-                gradientSortedEntries = [...gradientGridItems.entries()];
+            if (!gradientPaletteGroups) return;
+            // Build palette key list once, reuse across frames
+            if (!gradientPaletteKeys) {
+                gradientPaletteKeys = Object.keys(gradientPaletteGroups);
             }
-            gradientSortedEntries.sort((a, b) => {
-                return (paletteDist[a[1].palette] ?? 9999) - (paletteDist[b[1].palette] ?? 9999);
+            // Sort only ~50 palette names by color distance
+            gradientPaletteKeys.sort((a, b) => {
+                return getPaletteColorDist(a, tH, tS, tL) - getPaletteColorDist(b, tH, tS, tL);
             });
-            // Only touch elements whose order actually changed
-            for (let i = 0; i < gradientSortedEntries.length; i++) {
-                const el = gradientSortedEntries[i][1].el;
-                if (el._gradOrder !== i) {
-                    el.style.order = i;
-                    el._gradOrder = i;
+            // Assign CSS order sequentially by palette group — only touch changed elements
+            let order = 0;
+            for (let p = 0; p < gradientPaletteKeys.length; p++) {
+                const group = gradientPaletteGroups[gradientPaletteKeys[p]];
+                for (let i = 0; i < group.length; i++) {
+                    const el = group[i];
+                    if (el._gradOrder !== order) {
+                        el.style.order = order;
+                        el._gradOrder = order;
+                    }
+                    order++;
                 }
             }
         }
 
-        // Images load at 50px directly with native lazy loading — no upgrade step needed
-
         function teardownGradientGrid() {
+            if (gradientImageObserver) { gradientImageObserver.disconnect(); gradientImageObserver = null; }
             gradientGridItems = null;
             gradientGridContainer = null;
-            gradientSortedEntries = null;
+            gradientPaletteGroups = null;
+            gradientPaletteKeys = null;
         }
 
         function toggleColorGradient() {
