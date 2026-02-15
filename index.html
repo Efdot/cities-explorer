@@ -14397,32 +14397,70 @@
             entries.forEach(([, { el }], idx) => { el.style.order = idx; });
         }
 
+        let gradientUpgradeQueue = [];
+        let gradientUpgradeRunning = false;
+
+        function processGradientUpgradeQueue() {
+            if (gradientUpgradeRunning || gradientUpgradeQueue.length === 0) return;
+            gradientUpgradeRunning = true;
+            // Process batch of 6 (matches browser per-domain connection limit)
+            const batch = gradientUpgradeQueue.splice(0, 6);
+            let loaded = 0;
+            batch.forEach(img => {
+                const tokenId = img.closest('.grid-item')?.dataset?.token;
+                if (tokenId && img.src.includes('width=20')) {
+                    const onDone = () => {
+                        loaded++;
+                        if (loaded >= batch.length) {
+                            gradientUpgradeRunning = false;
+                            processGradientUpgradeQueue();
+                        }
+                    };
+                    img.onload = onDone;
+                    img.onerror = onDone;
+                    img.src = getSmallThumbnailUrl(parseInt(tokenId));
+                } else {
+                    loaded++;
+                    if (loaded >= batch.length) {
+                        gradientUpgradeRunning = false;
+                        processGradientUpgradeQueue();
+                    }
+                }
+            });
+        }
+
         function upgradeGradientToHiRes() {
             if (!gradientGridItems || !gradientGridContainer) return;
-            // Disconnect any previous observer
+            // Disconnect any previous observer and clear pending queue
             if (gradientImageObserver) { gradientImageObserver.disconnect(); gradientImageObserver = null; }
-            // Use IntersectionObserver to upgrade only visible images from 20px to 200px
+            gradientUpgradeQueue = [];
+            gradientUpgradeRunning = false;
+            // Use IntersectionObserver to queue visible images for upgrade from 20px to 50px
             gradientImageObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
-                        const tokenId = img.closest('.grid-item')?.dataset?.token;
-                        if (tokenId && img.src.includes('width=20')) {
-                            img.src = getThumbnailUrl(parseInt(tokenId));
+                        if (img.src.includes('width=20')) {
+                            gradientUpgradeQueue.push(img);
                         }
                         gradientImageObserver.unobserve(img);
                     }
                 });
-            }, { rootMargin: '200px 0px' });
-            // Observe all grid item images
+                processGradientUpgradeQueue();
+            }, { rootMargin: '100px 0px' });
+            // Observe all grid item images that still need upgrading
             gradientGridContainer.querySelectorAll('.grid-item img').forEach(img => {
-                gradientImageObserver.observe(img);
+                if (img.src.includes('width=20')) {
+                    gradientImageObserver.observe(img);
+                }
             });
         }
 
         function teardownGradientGrid() {
             if (gradientHiResTimer) { clearTimeout(gradientHiResTimer); gradientHiResTimer = null; }
             if (gradientImageObserver) { gradientImageObserver.disconnect(); gradientImageObserver = null; }
+            gradientUpgradeQueue = [];
+            gradientUpgradeRunning = false;
             gradientGridItems = null;
             gradientGridContainer = null;
         }
