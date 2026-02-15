@@ -1505,7 +1505,7 @@
         /* Subtle C-only in single view — reveal full COLLECT on hover */
         body:not(.grid-open) .mint-toggle { opacity: 0.3; }
         body:not(.grid-open) .mint-toggle:hover { opacity: 0.8; }
-        body:not(.grid-open) .collect-seg:not(.cs-1) { width: 0; opacity: 0; transition: width 0.25s ease, opacity 0.25s ease; }
+        body:not(.grid-open) .mint-toggle .collect-seg:not(.cs-1) { width: 0; opacity: 0; transition: width 0.25s ease, opacity 0.25s ease; }
         body:not(.grid-open) .mint-toggle:hover .cs-2 { width: calc(var(--cw) * 0.291); opacity: 1; }
         body:not(.grid-open) .mint-toggle:hover .cs-3 { width: calc(var(--cw) * 0.119); opacity: 1; }
         body:not(.grid-open) .mint-toggle:hover .cs-4 { width: calc(var(--cw) * 0.118); opacity: 1; }
@@ -1513,7 +1513,7 @@
         /* Collapse COLLECT to C when collectors panel is open — less clutter */
         body.collectors-open .mint-toggle { opacity: 0.3; }
         body.collectors-open .mint-toggle:hover { opacity: 0.8; }
-        body.collectors-open .collect-seg:not(.cs-1) { width: 0; opacity: 0; transition: width 0.25s ease, opacity 0.25s ease; }
+        body.collectors-open .mint-toggle .collect-seg:not(.cs-1) { width: 0; opacity: 0; transition: width 0.25s ease, opacity 0.25s ease; }
         body.collectors-open .mint-toggle:hover .cs-2 { width: calc(var(--cw) * 0.291); opacity: 1; }
         body.collectors-open .mint-toggle:hover .cs-3 { width: calc(var(--cw) * 0.119); opacity: 1; }
         body.collectors-open .mint-toggle:hover .cs-4 { width: calc(var(--cw) * 0.118); opacity: 1; }
@@ -8273,7 +8273,7 @@
                 wallViewTryMode = btn?.classList.contains('active') || false;
 
                 if (wallViewTryMode && wall) {
-                    // Add empty try-mode slots
+                    // Add one empty try-mode slot
                     const existingTrySlots = wall.querySelectorAll('.wall-view-artwork.try-mode-slot').length;
 
                     if (existingTrySlots === 0) {
@@ -8281,27 +8281,12 @@
                         const tempCities = wall.querySelectorAll('.wall-view-frame.temp-city').length;
                         const totalCities = realCities + tempCities;
 
-                        // For small collections (1-3), expand to a 2-col grid for try mode
-                        if (totalCities < 4) {
-                            wall.className = wall.className.replace(/cols-\d+/, '');
-                            wall.classList.add('cols-2');
-                            const slotsNeeded = 4 - totalCities;
-                            for (let i = 0; i < slotsNeeded; i++) {
-                                addTryModeSlot(wall);
-                            }
-                            modal.classList.add('has-empty-slots');
-                        } else {
-                            // For larger collections, fill out the current row
-                            const colsMatch = wall.className.match(/cols-(\d+)/);
-                            const currentCols = colsMatch ? parseInt(colsMatch[1]) : 2;
-                            const totalItems = wall.querySelectorAll('.wall-view-frame').length;
-                            const remainder = totalItems % currentCols;
-                            const slotsNeeded = remainder === 0 ? currentCols : (currentCols - remainder);
-
-                            for (let i = 0; i < slotsNeeded; i++) {
-                                addTryModeSlot(wall);
-                            }
-                        }
+                        // Add exactly one try slot and recalculate grid for count + 1
+                        addTryModeSlot(wall);
+                        const newLayout = getOptimalGridLayout(totalCities + 1);
+                        wall.className = wall.className.replace(/cols-\d+/, '');
+                        wall.classList.add(`cols-${newLayout.cols}`);
+                        modal.classList.add('has-empty-slots');
                     }
                 } else if (!wallViewTryMode && wall) {
                     // Remove try-mode empty slots (keep temp cities)
@@ -8691,7 +8676,7 @@
 
         function getOptimalGridLayout(count) {
             // Returns optimal columns for display
-            // Avoids single-item orphan rows for cleaner presentation
+            // Snaps to clean rectangular grids: 3x3 at 9, 3x4 at 10-12, then wider
             if (count === 1) return { cols: 1, rows: 1 };
             if (count === 2) return { cols: 2, rows: 1 };
             if (count === 3) return { cols: 3, rows: 1 };
@@ -8700,13 +8685,8 @@
             if (count === 6) return { cols: 3, rows: 2 };
             if (count === 7) return { cols: 4, rows: 2 }; // 4+3
             if (count === 8) return { cols: 4, rows: 2 };
-            if (count === 9) return { cols: 3, rows: 3 };
-            if (count === 10) return { cols: 5, rows: 2 }; // 5+5 perfect
-            if (count === 11) return { cols: 4, rows: 3 }; // 4+4+3
-            if (count === 12) return { cols: 4, rows: 3 };
-            if (count === 13) return { cols: 5, rows: 3 }; // 5+5+3 (avoids 4+4+4+1 orphan)
-            if (count === 14) return { cols: 5, rows: 3 }; // 5+5+4
-            if (count === 15) return { cols: 5, rows: 3 }; // 5+5+5 perfect
+            if (count === 9) return { cols: 3, rows: 3 }; // 3x3 perfect
+            if (count <= 12) return { cols: 3, rows: 4 }; // 3x4 for 10-12
             if (count <= 16) return { cols: 4, rows: 4 };
             if (count <= 20) return { cols: 5, rows: 4 };
             return { cols: 5, rows: 5 };
@@ -8735,7 +8715,23 @@
             const collectorName = labelEl?.querySelector('.collector-name-value')?.textContent || labelEl?.dataset.rawName || 'Collector';
 
             if (totalCities > 0) {
-                nudgeText.innerHTML = `<span>${collectorName}</span> is building a set 🏙️ <span class="grid-count">${totalCities}</span> cities and counting`;
+                // Check if this collector has a complete set
+                const allTokenIds = wallViewTokenIds || [];
+                const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                allTokenIds.forEach(id => {
+                    const traits = tokenTraits[id];
+                    if (traits?.Energy) energyCounts[traits.Energy]++;
+                });
+                const hasSpectrum = energyCounts.Rising >= 1 && energyCounts.Living >= 1 && energyCounts.Fading >= 1 && energyCounts.Resting >= 1;
+                const gridCount = Math.floor(totalCities / 4);
+
+                if (hasSpectrum) {
+                    nudgeText.innerHTML = `<span>${collectorName}</span> completed the Spectrum Set 🌈 <span class="grid-count">${totalCities}</span> cities`;
+                } else if (gridCount >= 1) {
+                    nudgeText.innerHTML = `<span>${collectorName}</span> collected a full set 🏙️ <span class="grid-count">${totalCities}</span> cities`;
+                } else {
+                    nudgeText.innerHTML = `<span>${collectorName}</span> is building a set 🏙️ <span class="grid-count">${totalCities}</span> cities and counting`;
+                }
                 nudge.classList.add('ready');
             } else {
                 nudge.classList.remove('ready');
@@ -9717,11 +9713,18 @@
             // Track temp city
             wallViewTempCities.push(tokenId);
 
-            // If TRY mode is active, add another empty slot so user can keep adding
+            // If TRY mode is active, add one more empty slot so user can keep adding
             if (wallViewTryMode) {
                 addTryModeSlot(wall);
             }
-            // Don't recalculate grid columns - keep layout stable
+
+            // Recalculate grid to snap to the right layout
+            const realCount = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
+            const tempCount = wall.querySelectorAll('.wall-view-frame.temp-city').length;
+            const tryCount = wall.querySelectorAll('.wall-view-artwork.try-mode-slot').length;
+            const newLayout = getOptimalGridLayout(realCount + tempCount + tryCount);
+            wall.className = wall.className.replace(/cols-\d+/, '');
+            wall.classList.add(`cols-${newLayout.cols}`);
 
             // Update grid nudge
             updateGridNudge();
