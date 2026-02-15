@@ -1698,7 +1698,7 @@
         .collectors-header h2:hover .collapse-arrow { opacity: 1; letter-spacing: -1px; }
         .collectors-close { background: var(--bg-input); border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
         .collectors-close:hover { background: var(--bg-card); color: var(--text); }
-        .collectors-header-actions { display: flex; gap: 8px; align-items: center; }
+        .collectors-header-actions { display: flex; gap: 8px; align-items: center; position: relative; z-index: 2; }
 
         .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 20px; padding: 12px 18px; background: var(--bg-input); border-radius: 50px; }
         .collectors-stats strong { color: var(--teal); }
@@ -2311,6 +2311,13 @@
         .wall-view-modal.wall-black .wall-view-frame-mat { background: #1a1a1a; }
         .wall-view-modal.wall-black .wall-view-frame-inner { background: #121212; box-shadow: none; }
         .wall-view-frame img { display: block; width: 100%; height: auto; aspect-ratio: 9/16; object-fit: contain; transition: all 0.3s ease; }
+        /* Drag-to-swap states */
+        .wall-view-artwork.dragging { opacity: 0.4; transform: scale(0.95); transition: opacity 0.2s ease, transform 0.2s ease; }
+        .wall-view-artwork.dragging .wall-view-frame { box-shadow: none; }
+        .wall-view-artwork.drag-over .wall-view-frame { box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.8), 0 0 20px rgba(201, 162, 39, 0.3); transform: scale(1.04); }
+        .wall-view-modal.wall-black .wall-view-artwork.drag-over .wall-view-frame { box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.8), 0 0 24px rgba(201, 162, 39, 0.4); }
+        .wall-view-artwork.swap-flash { animation: swapFlash 0.35s ease-out; }
+        @keyframes swapFlash { 0% { transform: scale(0.92); opacity: 0.6; } 50% { transform: scale(1.03); } 100% { transform: scale(1); opacity: 1; } }
         /* Responsive wall - consistent 16px gap, adjust frame size for viewport */
         @media (max-width: 1400px) {
             .wall-view-wall { grid-template-columns: repeat(auto-fit, minmax(100px, 160px)); }
@@ -4041,7 +4048,7 @@
         <div class="collectors-header">
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›››</span></h2>
             <div class="collectors-header-actions">
-                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map" onclick="if(typeof launchEnergyQuadrant==='function') launchEnergyQuadrant()">⚡</button>
+                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map">⚡</button>
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
@@ -8737,7 +8744,171 @@
                 }
                 // Update wallViewTokenIds to match new order
                 wallViewTokenIds = Array.from(wall.querySelectorAll('.wall-view-frame')).map(f => parseInt(f.dataset.tokenId));
+                saveWallOrder();
             });
+
+            // Drag-to-swap: click and drag one city onto another to swap positions
+            let dragSourceArtwork = null;
+            let dragStartPos = { x: 0, y: 0 };
+            const DRAG_THRESHOLD = 8; // px before drag activates
+
+            function setupDragSwap(wall) {
+                if (!wall) return;
+
+                wall.addEventListener('mousedown', (e) => {
+                    const artwork = e.target.closest('.wall-view-artwork');
+                    if (!artwork || !artwork.querySelector('.wall-view-frame:not(.empty-slot)')) return;
+                    // Don't initiate drag on buttons or action elements
+                    if (e.target.closest('button') || e.target.closest('.temp-city-actions')) return;
+
+                    dragStartPos = { x: e.clientX, y: e.clientY };
+                    dragSourceArtwork = artwork;
+                    isDragSwapping = false;
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!dragSourceArtwork) return;
+                    const dx = e.clientX - dragStartPos.x;
+                    const dy = e.clientY - dragStartPos.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (!isDragSwapping && dist > DRAG_THRESHOLD) {
+                        isDragSwapping = true;
+                        dragSourceArtwork.classList.add('dragging');
+                        e.preventDefault();
+                    }
+
+                    if (isDragSwapping) {
+                        e.preventDefault();
+                        // Find artwork under cursor
+                        const allArtworks = wall.querySelectorAll('.wall-view-artwork');
+                        allArtworks.forEach(a => a.classList.remove('drag-over'));
+
+                        const target = getArtworkAtPoint(e.clientX, e.clientY, wall);
+                        if (target && target !== dragSourceArtwork && target.querySelector('.wall-view-frame:not(.empty-slot)')) {
+                            target.classList.add('drag-over');
+                        }
+                    }
+                });
+
+                document.addEventListener('mouseup', (e) => {
+                    if (!dragSourceArtwork) return;
+
+                    if (isDragSwapping) {
+                        const target = getArtworkAtPoint(e.clientX, e.clientY, wall);
+                        if (target && target !== dragSourceArtwork && target.querySelector('.wall-view-frame:not(.empty-slot)')) {
+                            swapArtworks(dragSourceArtwork, target, wall);
+                        }
+                    }
+
+                    // Clean up all drag states
+                    wall.querySelectorAll('.wall-view-artwork').forEach(a => {
+                        a.classList.remove('dragging', 'drag-over');
+                    });
+                    dragSourceArtwork = null;
+                    isDragSwapping = false;
+                });
+
+                // Touch support
+                wall.addEventListener('touchstart', (e) => {
+                    const artwork = e.target.closest('.wall-view-artwork');
+                    if (!artwork || !artwork.querySelector('.wall-view-frame:not(.empty-slot)')) return;
+                    if (e.target.closest('button') || e.target.closest('.temp-city-actions')) return;
+
+                    const touch = e.touches[0];
+                    dragStartPos = { x: touch.clientX, y: touch.clientY };
+                    dragSourceArtwork = artwork;
+                    isDragSwapping = false;
+                }, { passive: true });
+
+                wall.addEventListener('touchmove', (e) => {
+                    if (!dragSourceArtwork) return;
+                    const touch = e.touches[0];
+                    const dx = touch.clientX - dragStartPos.x;
+                    const dy = touch.clientY - dragStartPos.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (!isDragSwapping && dist > DRAG_THRESHOLD) {
+                        isDragSwapping = true;
+                        dragSourceArtwork.classList.add('dragging');
+                    }
+
+                    if (isDragSwapping) {
+                        e.preventDefault();
+                        wall.querySelectorAll('.wall-view-artwork').forEach(a => a.classList.remove('drag-over'));
+                        const target = getArtworkAtPoint(touch.clientX, touch.clientY, wall);
+                        if (target && target !== dragSourceArtwork && target.querySelector('.wall-view-frame:not(.empty-slot)')) {
+                            target.classList.add('drag-over');
+                        }
+                    }
+                }, { passive: false });
+
+                wall.addEventListener('touchend', (e) => {
+                    if (!dragSourceArtwork) return;
+
+                    if (isDragSwapping) {
+                        const touch = e.changedTouches[0];
+                        const target = getArtworkAtPoint(touch.clientX, touch.clientY, wall);
+                        if (target && target !== dragSourceArtwork && target.querySelector('.wall-view-frame:not(.empty-slot)')) {
+                            swapArtworks(dragSourceArtwork, target, wall);
+                        }
+                    }
+
+                    wall.querySelectorAll('.wall-view-artwork').forEach(a => {
+                        a.classList.remove('dragging', 'drag-over');
+                    });
+                    dragSourceArtwork = null;
+                    isDragSwapping = false;
+                });
+            }
+
+            function getArtworkAtPoint(x, y, wall) {
+                const artworks = wall.querySelectorAll('.wall-view-artwork');
+                for (const artwork of artworks) {
+                    const rect = artwork.getBoundingClientRect();
+                    if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                        return artwork;
+                    }
+                }
+                return null;
+            }
+
+            function swapArtworks(a, b, wall) {
+                // Swap DOM positions
+                const aNext = a.nextElementSibling;
+                const bNext = b.nextElementSibling;
+                const parent = wall;
+
+                if (aNext === b) {
+                    // a is right before b
+                    parent.insertBefore(b, a);
+                } else if (bNext === a) {
+                    // b is right before a
+                    parent.insertBefore(a, b);
+                } else {
+                    // Not adjacent - use placeholder approach
+                    const placeholder = document.createElement('div');
+                    parent.insertBefore(placeholder, a);
+                    parent.insertBefore(a, bNext);
+                    parent.insertBefore(b, placeholder);
+                    placeholder.remove();
+                }
+
+                // Flash animation
+                a.classList.add('swap-flash');
+                b.classList.add('swap-flash');
+                setTimeout(() => {
+                    a.classList.remove('swap-flash');
+                    b.classList.remove('swap-flash');
+                }, 350);
+
+                // Update tracking
+                wallViewTokenIds = Array.from(wall.querySelectorAll('.wall-view-frame')).map(f => parseInt(f.dataset.tokenId));
+                saveWallOrder();
+            }
+
+            // Initialize drag-swap on wall
+            setupDragSwap(document.getElementById('wallViewWall'));
 
             // Zoom controls - smaller increments for smoother zooming
             document.getElementById('wallViewZoomIn')?.addEventListener('click', () => {
@@ -8892,6 +9063,72 @@
         let wallPanX = 0;
         let wallPanY = 0;
         let wideLayoutMode = false;
+        let isDragSwapping = false;
+
+        // Save custom wall order to localStorage
+        function saveWallOrder() {
+            const wall = document.getElementById('wallViewWall');
+            if (!wall) return;
+            const labelEl = document.getElementById('wallViewCollectorLabel');
+            const collectorName = labelEl?.dataset.rawName;
+            if (!collectorName) return;
+
+            const order = Array.from(wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)'))
+                .map(f => parseInt(f.dataset.tokenId));
+            if (order.length === 0) return;
+
+            try {
+                const saved = JSON.parse(localStorage.getItem('cities-wall-orders') || '{}');
+                saved[collectorName] = { order, timestamp: Date.now() };
+                localStorage.setItem('cities-wall-orders', JSON.stringify(saved));
+            } catch(e) {}
+        }
+
+        // Get saved wall order for a collector
+        function getSavedWallOrder(collectorName) {
+            try {
+                const saved = JSON.parse(localStorage.getItem('cities-wall-orders') || '{}');
+                return saved[collectorName]?.order || null;
+            } catch(e) { return null; }
+        }
+
+        // Save try-grid cities for a collector (48-hour expiry)
+        function saveTryCities(collectorName, tokenIds) {
+            if (!collectorName) return;
+            try {
+                const saved = JSON.parse(localStorage.getItem('cities-try-placements') || '{}');
+                if (tokenIds.length === 0) {
+                    delete saved[collectorName];
+                } else {
+                    saved[collectorName] = { tokens: tokenIds, timestamp: Date.now() };
+                }
+                localStorage.setItem('cities-try-placements', JSON.stringify(saved));
+            } catch(e) {}
+        }
+
+        // Get saved try-grid cities for a collector (returns null if expired)
+        function getSavedTryCities(collectorName) {
+            try {
+                const saved = JSON.parse(localStorage.getItem('cities-try-placements') || '{}');
+                const entry = saved[collectorName];
+                if (!entry) return null;
+                const FORTY_EIGHT_HOURS = 48 * 60 * 60 * 1000;
+                if (Date.now() - entry.timestamp > FORTY_EIGHT_HOURS) {
+                    // Expired — clean up
+                    delete saved[collectorName];
+                    localStorage.setItem('cities-try-placements', JSON.stringify(saved));
+                    return null;
+                }
+                return entry.tokens;
+            } catch(e) { return null; }
+        }
+
+        // Get current collector name from wall view
+        function getCurrentWallCollector() {
+            const labelEl = document.getElementById('wallViewCollectorLabel');
+            return labelEl?.dataset.rawName || null;
+        }
+
         // Grid analysis - supports multiple grids, super grids, etc.
         function analyzeGridStatus(count) {
             // Check for perfect grids first
@@ -9838,6 +10075,7 @@
 
             // Track temp city
             wallViewTempCities.push(tokenId);
+            saveTryCities(getCurrentWallCollector(), wallViewTempCities);
 
             // Deactivate try mode after placing a city — clean grid, no lingering slots
             wallViewTryMode = false;
@@ -9865,6 +10103,7 @@
 
             // Remove from tracking
             wallViewTempCities = wallViewTempCities.filter(id => id !== tokenId);
+            saveTryCities(getCurrentWallCollector(), wallViewTempCities);
 
             // Recalculate grid to snap to clean layout
             const realCities = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
@@ -9909,6 +10148,24 @@
                     id: item.dataset.tokenId,
                     src: item.querySelector('img').src
                 }));
+
+            // Apply saved wall order if available
+            const savedOrder = getSavedWallOrder(name);
+            if (savedOrder && savedOrder.length > 0) {
+                const itemMap = {};
+                items.forEach(item => { itemMap[item.id] = item; });
+                const reordered = [];
+                savedOrder.forEach(id => {
+                    if (itemMap[id]) {
+                        reordered.push(itemMap[id]);
+                        delete itemMap[id];
+                    }
+                });
+                // Append any new items not in saved order
+                Object.values(itemMap).forEach(item => reordered.push(item));
+                items.length = 0;
+                reordered.forEach(item => items.push(item));
+            }
 
             wallViewTokenIds = items.map(item => item.id);
             const count = items.length;
@@ -9957,9 +10214,10 @@
                 };
                 fullImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png`;
 
-                // Click frame to open framed mockup view
+                // Click frame to open framed mockup view (skip if drag-swapping)
                 frame.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    if (isDragSwapping) return;
                     const tokenId = parseInt(frame.dataset.tokenId);
                     openFrameMockup(tokenId, name);
                 });
@@ -10058,6 +10316,25 @@
 
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
+
+            // Restore saved try cities (48-hour persistence)
+            const savedTryCities = getSavedTryCities(name);
+            if (savedTryCities && savedTryCities.length > 0) {
+                savedTryCities.forEach(tryTokenId => {
+                    // Don't add if this city is already owned by this collector
+                    if (items.some(item => String(item.id) === String(tryTokenId))) return;
+                    addTempCity(tryTokenId, null);
+                });
+                // Recalculate zoom for the expanded grid
+                const totalWithTry = count + wallViewTempCities.length;
+                const tryLayout = getOptimalGridLayout(totalWithTry);
+                if (tryLayout.rows >= 3 && tryLayout.cols >= 7) wallViewZoom = 0.55;
+                else if (tryLayout.rows >= 3) wallViewZoom = 0.6;
+                else if (tryLayout.rows >= 2 && tryLayout.cols >= 5) wallViewZoom = 0.65;
+                else if (totalWithTry === 4) wallViewZoom = 0.72;
+                else if (tryLayout.rows >= 2) wallViewZoom = 0.7;
+                if (wrapper) wrapper.style.transform = `translate(${wallPanX}px, ${wallPanY}px) scale(${wallViewZoom})`;
+            }
 
             // Update grid nudge after modal opens
             setTimeout(updateGridNudge, 100);
@@ -10617,8 +10894,9 @@
             if (hoverEl) hoverEl.textContent = '';
             document.getElementById('wallViewSuggestion')?.classList.remove('visible');
 
-            // Reset try mode
+            // Reset try mode and drag state
             wallViewTryMode = false;
+            isDragSwapping = false;
             document.getElementById('wallViewTryMode')?.classList.remove('active');
 
             // Reset line view
@@ -19178,14 +19456,21 @@
             btn.classList.add('launching');
             // Open the modal partway through the animation
             setTimeout(() => {
-                openEnergyQuadrant();
-                // Reset button state after animation completes
+                try {
+                    openEnergyQuadrant();
+                } catch(e) {
+                    console.error('Energy quadrant error:', e);
+                }
+                // Reset button state after animation completes (always runs)
                 setTimeout(() => {
                     btn.classList.remove('launching');
                 }, 400);
             }, 350);
         };
-        document.getElementById('energyQuadrantBtn')?.addEventListener('click', launchEnergyQuadrant);
+        document.getElementById('energyQuadrantBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            launchEnergyQuadrant();
+        });
 
         // Close on backdrop click (outside the container)
         document.getElementById('energyQuadrantModal')?.addEventListener('click', (e) => {
