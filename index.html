@@ -14355,9 +14355,11 @@
                 check.className = 'compare-check';
                 check.textContent = '\u2713';
 
-                // Withhold src — IntersectionObserver will set it for visible images only
+                // 20px micro-thumb on all images (~400 bytes each, ~200KB total — instant fill)
+                // IntersectionObserver upgrades visible ones to 50px for clarity
                 const img = document.createElement('img');
-                img.dataset.src = getSmallThumbnailUrl(id);
+                img.src = getMicroThumbnailUrl(id);
+                img.dataset.hires = getSmallThumbnailUrl(id);
                 img.alt = '';
                 img.decoding = 'async';
 
@@ -14379,15 +14381,15 @@
             gridContent.appendChild(fragment);
             document.getElementById('gridPagination').style.display = 'none';
 
-            // Lazy-load images via IntersectionObserver — only visible images fetch
+            // Upgrade visible images from 20px micro-thumbs to 50px via IntersectionObserver
             if (gradientImageObserver) gradientImageObserver.disconnect();
             gradientImageObserver = new IntersectionObserver((entries) => {
                 for (let i = 0; i < entries.length; i++) {
                     if (entries[i].isIntersecting) {
                         const img = entries[i].target;
-                        if (img.dataset.src) {
-                            img.src = img.dataset.src;
-                            img.removeAttribute('data-src');
+                        if (img.dataset.hires) {
+                            img.src = img.dataset.hires;
+                            delete img.dataset.hires;
                         }
                         gradientImageObserver.unobserve(img);
                     }
@@ -14424,6 +14426,13 @@
                     order++;
                 }
             }
+        }
+
+        function reobserveGradientImages() {
+            if (!gradientImageObserver || !gradientGridContainer) return;
+            gradientGridContainer.querySelectorAll('.grid-item img[data-hires]').forEach(img => {
+                gradientImageObserver.observe(img);
+            });
         }
 
         function teardownGradientGrid() {
@@ -14584,10 +14593,14 @@
             if (colorGradientDragging) {
                 document.body.style.userSelect = '';
                 document.body.style.webkitUserSelect = '';
+                reobserveGradientImages();
             }
             colorGradientDragging = false;
         });
-        document.addEventListener('touchend', () => { colorGradientDragging = false; });
+        document.addEventListener('touchend', () => {
+            if (colorGradientDragging) reobserveGradientImages();
+            colorGradientDragging = false;
+        });
 
         // Also close gradient when grid mode changes
         function deactivateColorGradient() {
