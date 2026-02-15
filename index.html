@@ -4062,7 +4062,7 @@
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›››</span></h2>
             <div class="collectors-header-actions">
                 <button class="dream-grid-btn" id="dreamGridBtn" title="Dream Collection" aria-label="Build a dream collection" onclick="event.stopPropagation(); if(window.openDreamGrid) openDreamGrid();">&#x1F4AD;</button>
-                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map" onclick="event.stopPropagation(); if(window.launchEnergyQuadrant) launchEnergyQuadrant();">⚡</button>
+                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map" onclick="event.stopPropagation(); if(window.openEnergyQuadrant) openEnergyQuadrant(); else if(window.launchEnergyQuadrant) launchEnergyQuadrant();">⚡</button>
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
@@ -19593,6 +19593,7 @@
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
         }
+        window.openEnergyQuadrant = openEnergyQuadrant;
 
         function closeEnergyQuadrant(navigatingAway) {
             const modal = document.getElementById('energyQuadrantModal');
