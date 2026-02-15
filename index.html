@@ -271,14 +271,15 @@
         .grid-numbers-toggle:hover { opacity: 0.8; background: var(--bg-input); }
         .grid-numbers-toggle.active { opacity: 1; color: var(--warm); }
 
-        /* Grid clock - city emoji in filter bar, swaps to digital time on hover */
-        .grid-clock { font-size: 14px; cursor: default; opacity: 0.5; transition: opacity 0.3s ease, filter 0.3s ease; filter: grayscale(100%); line-height: 1; white-space: nowrap; margin-right: 6px; position: relative; display: inline-grid; place-items: center; min-width: 1.2em; }
+        /* Grid clock - city emoji in filter bar, left-aligned under Cities title */
+        .grid-clock { font-size: 14px; cursor: default; opacity: 0.5; transition: opacity 0.3s ease, filter 0.3s ease; filter: grayscale(100%); line-height: 1; white-space: nowrap; position: absolute; left: 28px; display: inline-grid; place-items: center; min-width: 1.2em; }
         .grid-clock:hover { opacity: 1; filter: grayscale(0%); }
         .grid-clock .clock-emoji, .grid-clock .clock-time { grid-area: 1 / 1; transition: opacity 0.2s ease; }
         .grid-clock .clock-time { opacity: 0; font-size: 9px; font-weight: 600; font-family: Helvetica, Arial, sans-serif; letter-spacing: 0.04em; color: var(--text-muted); }
         .grid-clock:hover .clock-emoji { opacity: 0; }
         .grid-clock:hover .clock-time { opacity: 1; }
         .filter-toggle-bar:hover .grid-clock { opacity: 0.7; }
+        @media (max-width: 768px) { .grid-clock { display: none; } }
 
         /* Grid energy clock - non-interactive display */
         .grid-energy-clock { background: none; border: none; cursor: default; padding: 4px 8px; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); opacity: 0.5; transition: all 0.3s ease; border-radius: 12px; white-space: nowrap; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
@@ -1900,7 +1901,7 @@
         .grid-mode-btn.sort-asc .palette-sort-arrow { transform: rotate(180deg); }
         .grid-mode-btn .mode-gradient-dot { width: 14px; height: 14px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); display: inline-block; vertical-align: middle; margin-right: 4px; flex-shrink: 0; }
         .grid-mode-btn .mode-az-label { font-weight: 900; letter-spacing: 0.04em; }
-        .filter-toggle-bar { display: flex; align-items: center; justify-content: center; padding: 10px 16px; background: var(--bg-panel); border-bottom: 1px solid var(--border); cursor: pointer; }
+        .filter-toggle-bar { display: flex; align-items: center; justify-content: center; padding: 10px 16px; background: var(--bg-panel); border-bottom: 1px solid var(--border); cursor: pointer; position: relative; }
         .filter-toggle-bar span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
         .filter-toggle-bar .arrow { margin-left: 6px; font-size: 8px; transition: transform 0.15s ease; }
         .filter-toggle-bar.open .arrow { transform: rotate(180deg); }
