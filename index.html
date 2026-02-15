@@ -4041,7 +4041,7 @@
         <div class="collectors-header">
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›››</span></h2>
             <div class="collectors-header-actions">
-                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map">⚡</button>
+                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map" onclick="if(typeof launchEnergyQuadrant==='function') launchEnergyQuadrant()">⚡</button>
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
@@ -19171,10 +19171,10 @@
             }
         }
 
-        // Trigger button with boost launch animation
-        document.getElementById('energyQuadrantBtn')?.addEventListener('click', function() {
-            const btn = this;
-            if (btn.classList.contains('launching')) return;
+        // Trigger button with boost launch animation (global so onclick fallback works)
+        window.launchEnergyQuadrant = function() {
+            const btn = document.getElementById('energyQuadrantBtn');
+            if (!btn || btn.classList.contains('launching')) return;
             btn.classList.add('launching');
             // Open the modal partway through the animation
             setTimeout(() => {
@@ -19184,7 +19184,8 @@
                     btn.classList.remove('launching');
                 }, 400);
             }, 350);
-        });
+        };
+        document.getElementById('energyQuadrantBtn')?.addEventListener('click', launchEnergyQuadrant);
 
         // Close on backdrop click (outside the container)
         document.getElementById('energyQuadrantModal')?.addEventListener('click', (e) => {
