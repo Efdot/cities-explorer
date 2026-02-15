@@ -2479,20 +2479,33 @@
         .eq-resting { background: rgba(74, 85, 104, 0.08); }
         .eq-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 5px; }
         .eq-label-icon { font-size: 12px; }
+        .eq-total { font-size: 8px; font-weight: 500; opacity: 0.5; margin-left: auto; letter-spacing: 0; text-transform: none; }
         .eq-rising .eq-label { color: #ffb347; }
         .eq-living .eq-label { color: #87ceeb; }
         .eq-fading .eq-label { color: #dda0dd; }
         .eq-resting .eq-label { color: #6b7280; }
         .energy-quadrant:hover .eq-label { filter: brightness(1.4); }
-        .energy-quadrant:hover .eq-chip { filter: brightness(1.2); }
-        .energy-quadrant:hover .eq-chip:hover { filter: brightness(1.6); }
+        .energy-quadrant:hover .eq-chip { filter: brightness(1.05); }
+        .energy-quadrant:hover .eq-chip:hover { filter: brightness(1.15); }
+        .eq-rising { border-left: 2px solid rgba(255, 179, 71, 0.35); border-top: 2px solid rgba(255, 179, 71, 0.35); }
+        .eq-living { border-right: 2px solid rgba(135, 206, 235, 0.35); border-top: 2px solid rgba(135, 206, 235, 0.35); }
+        .eq-fading { border-left: 2px solid rgba(221, 160, 221, 0.35); border-bottom: 2px solid rgba(221, 160, 221, 0.35); }
+        .eq-resting { border-right: 2px solid rgba(74, 85, 104, 0.45); border-bottom: 2px solid rgba(74, 85, 104, 0.45); }
         .eq-collectors { display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; }
-        .eq-chip { padding: 5px 12px; border-radius: 20px; font-size: 9px; font-weight: 500; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap; line-height: 1.2; display: inline-flex; align-items: center; gap: 5px; position: relative; }
-        .eq-chip .eq-chip-count { font-size: 8px; opacity: 0.5; font-weight: 400; }
-        .eq-chip:hover { transform: scale(1.12) translateY(-2px); z-index: 10; filter: brightness(1.5); }
-        .eq-chip:hover .eq-chip-count { opacity: 0.9; }
-        .eq-chip.eq-chip-lg { font-size: 10px; padding: 6px 14px; font-weight: 600; }
+        .eq-chip { padding: 5px 12px; border-radius: 20px; font-size: 9px; font-weight: 600; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap; line-height: 1.2; display: inline-flex; align-items: center; gap: 5px; position: relative; }
+        .eq-chip .eq-chip-name { font-weight: 700; }
+        .eq-chip .eq-chip-count { font-size: 8px; opacity: 0.7; font-weight: 500; }
+        .eq-chip:hover { transform: scale(1.12) translateY(-2px); z-index: 10; }
+        .eq-chip:hover .eq-chip-count { opacity: 1; }
+        .eq-chip.eq-chip-lg { font-size: 10px; padding: 6px 14px; font-weight: 700; }
         .eq-chip.eq-chip-lg .eq-chip-count { font-size: 9px; }
+        .eq-nudge { text-align: center; margin-bottom: 16px; flex-shrink: 0; display: none; }
+        .eq-nudge.visible { display: block; }
+        .eq-nudge-inner { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); font-size: 10px; color: #888; letter-spacing: 0.02em; }
+        .eq-nudge-bolt { font-size: 13px; }
+        .eq-nudge-count { font-weight: 700; color: #E8B86D; }
+        .eq-nudge-text { color: #666; }
+        .eq-nudge-cta { color: #E8B86D; font-weight: 600; }
         @media (max-width: 768px) {
             .energy-quadrant-modal { padding: 20px; }
             .energy-quadrant-container { padding: 20px; border-radius: 14px; }
@@ -4341,21 +4354,22 @@
                 <span class="energy-quadrant-subtitle" id="eqSubtitle"></span>
                 <button class="eq-close-btn" id="eqCloseBtn" title="Close" onclick="closeEnergyQuadrant()">&times;</button>
             </div>
+            <div class="eq-nudge" id="eqNudge"></div>
             <div class="energy-quadrant-grid">
                 <div class="energy-quadrant eq-rising" data-energy="Rising">
-                    <div class="eq-label"><span class="eq-label-icon">&#9728;</span> Rising</div>
+                    <div class="eq-label"><span class="eq-label-icon">&#9728;</span> Rising <span class="eq-total" id="eqTotalRising"></span></div>
                     <div class="eq-collectors" id="eqRising"></div>
                 </div>
                 <div class="energy-quadrant eq-living" data-energy="Living">
-                    <div class="eq-label"><span class="eq-label-icon">&#128694;</span> Living</div>
+                    <div class="eq-label"><span class="eq-label-icon">&#128694;</span> Living <span class="eq-total" id="eqTotalLiving"></span></div>
                     <div class="eq-collectors" id="eqLiving"></div>
                 </div>
                 <div class="energy-quadrant eq-fading" data-energy="Fading">
-                    <div class="eq-label"><span class="eq-label-icon">&#9925;</span> Fading</div>
+                    <div class="eq-label"><span class="eq-label-icon">&#9925;</span> Fading <span class="eq-total" id="eqTotalFading"></span></div>
                     <div class="eq-collectors" id="eqFading"></div>
                 </div>
                 <div class="energy-quadrant eq-resting" data-energy="Resting">
-                    <div class="eq-label"><span class="eq-label-icon">&#127769;</span> Resting</div>
+                    <div class="eq-label"><span class="eq-label-icon">&#127769;</span> Resting <span class="eq-total" id="eqTotalResting"></span></div>
                     <div class="eq-collectors" id="eqResting"></div>
                 </div>
             </div>
@@ -4603,9 +4617,9 @@
                                     </div>
                                 </div>
                                 <div class="about-set-type">
-                                    <span class="about-set-icon">🌈</span>
+                                    <span class="about-set-icon">⚡️</span>
                                     <div class="about-set-info">
-                                        <span class="about-set-name">Spectrum</span>
+                                        <span class="about-set-name">Energy Set ⚡️</span>
                                         <span class="about-set-desc">One from each group</span>
                                     </div>
                                 </div>
@@ -7547,9 +7561,9 @@
                     badges.push(`<span class="achievement-badge grid" title="Grid (${totalCities} cities)"><span class="grid-icon-mini"><b></b><b></b><b></b><b></b></span>${multiplier}</span>`);
                 }
 
-                // Spectrum badge (one of each energy)
+                // Energy Set badge (one of each energy)
                 if (rising >= 1 && living >= 1 && fading >= 1 && resting >= 1) {
-                    badges.push('<span class="achievement-badge spectrum" title="Spectrum City Set · one of each energy">🌈</span>');
+                    badges.push('<span class="achievement-badge spectrum" title="Energy Set ⚡️ · one of each energy">⚡️</span>');
                 }
 
                 // Mono set badges (4+ of same energy)
@@ -7654,13 +7668,13 @@
                     const traits = tokenTraits[id];
                     if (traits?.Energy) energyCounts[traits.Energy]++;
                 });
-                const hasSpectrum = energyCounts.Rising >= 1 && energyCounts.Living >= 1 && energyCounts.Fading >= 1 && energyCounts.Resting >= 1;
+                const hasEnergySet = energyCounts.Rising >= 1 && energyCounts.Living >= 1 && energyCounts.Fading >= 1 && energyCounts.Resting >= 1;
 
                 // Determine primary status and dot color
                 let statusLabel = '';
                 let dotClass = '';
-                if (hasSpectrum) {
-                    statusLabel = 'Spectrum City Set';
+                if (hasEnergySet) {
+                    statusLabel = 'Energy Set ⚡️';
                     dotClass = 'energy-spectrum';
                 } else {
                     // Find dominant energy set (4+ of same type)
@@ -8842,11 +8856,11 @@
                     const traits = tokenTraits[id];
                     if (traits?.Energy) energyCounts[traits.Energy]++;
                 });
-                const hasSpectrum = energyCounts.Rising >= 1 && energyCounts.Living >= 1 && energyCounts.Fading >= 1 && energyCounts.Resting >= 1;
+                const hasEnergySet = energyCounts.Rising >= 1 && energyCounts.Living >= 1 && energyCounts.Fading >= 1 && energyCounts.Resting >= 1;
                 const gridCount = Math.floor(totalCities / 4);
 
-                if (hasSpectrum) {
-                    nudgeText.innerHTML = `<span>${collectorName}</span> completed the Spectrum Set 🌈 <span class="grid-count">${totalCities}</span> cities`;
+                if (hasEnergySet) {
+                    nudgeText.innerHTML = `<span>${collectorName}</span> completed the Energy Set ⚡️ <span class="grid-count">${totalCities}</span> cities`;
                 } else if (gridCount >= 1) {
                     nudgeText.innerHTML = `<span>${collectorName}</span> collected a full set 🏙️ <span class="grid-count">${totalCities}</span> cities`;
                 } else {
@@ -18955,23 +18969,73 @@
                 return [parseInt(h.substring(0,2),16), parseInt(h.substring(2,4),16), parseInt(h.substring(4,6),16)];
             }
 
+            // Count total cities per energy across all collectors
+            const energyCityTotals = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+
+            // Helper: get best palette bg color for a collector's cities (uses most-owned city palette)
+            function getCollectorPaletteBg(tokens) {
+                if (!tokens || tokens.length === 0) return null;
+                // Count palette frequency
+                const paletteCounts = {};
+                tokens.forEach(id => {
+                    const traits = tokenTraits[id];
+                    if (traits && traits['Palette']) {
+                        paletteCounts[traits['Palette']] = (paletteCounts[traits['Palette']] || 0) + 1;
+                    }
+                });
+                // Get most common palette
+                const sorted = Object.entries(paletteCounts).sort((a, b) => b[1] - a[1]);
+                if (sorted.length > 0) {
+                    const paletteName = sorted[0][0];
+                    const paletteInfo = PALETTE_DATA[paletteName];
+                    if (paletteInfo) {
+                        // Use a mid-tone color from the palette for the pill background
+                        const colors = paletteInfo.colors || [];
+                        return colors[1] || colors[0] || paletteInfo.bg || null;
+                    }
+                }
+                return null;
+            }
+
+            // Helper: pick black or white text for contrast against a background
+            function getContrastTextColor(hexBg) {
+                const h = hexBg.replace('#', '');
+                const r = parseInt(h.substring(0, 2), 16);
+                const g = parseInt(h.substring(2, 4), 16);
+                const b = parseInt(h.substring(4, 6), 16);
+                const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                return luminance > 0.45 ? '#111111' : '#ffffff';
+            }
+
             ALL_ENERGIES.forEach(energy => {
                 const container = document.getElementById(quadrantIds[energy]);
                 if (!container) return;
                 const collectors = energyCollectors[energy];
                 totalCollectors += collectors.length;
 
+                // Sum total cities for this energy
+                const energyTotal = collectors.reduce((sum, c) => sum + c.count, 0);
+                energyCityTotals[energy] = energyTotal;
+
+                // Update the total label
+                const totalEl = document.getElementById('eqTotal' + energy);
+                if (totalEl) {
+                    totalEl.textContent = `${collectors.length} collectors · ${energyTotal} cities`;
+                }
+
                 container.innerHTML = collectors.map(c => {
                     const displayName = formatCollectorName(c.name);
                     const isLarge = c.count >= 3;
-                    const accent = getCollectorAccentColor(c.tokens) || '#888';
-                    const [r, g, b] = hexToRgb(accent);
-                    const bgStyle = `background:rgba(${r},${g},${b},0.12);color:${accent};border:1px solid rgba(${r},${g},${b},0.18);--chip-r:${r};--chip-g:${g};--chip-b:${b};--chip-accent:${accent}`;
-                    return `<div class="eq-chip${isLarge ? ' eq-chip-lg' : ''}" data-collector-name="${c.name}" title="${displayName}: ${c.count} ${energy} ${c.count === 1 ? 'city' : 'cities'}" style="${bgStyle}"
-                        onmouseenter="this.style.background='rgba(${r},${g},${b},0.28)';this.style.borderColor='rgba(${r},${g},${b},0.45)';this.style.boxShadow='0 4px 18px rgba(${r},${g},${b},0.35), 0 0 8px rgba(${r},${g},${b},0.18)';this.style.color='${accent}';this.style.textShadow='0 0 8px rgba(${r},${g},${b},0.5)'"
-                        onmouseleave="this.style.background='rgba(${r},${g},${b},0.12)';this.style.borderColor='rgba(${r},${g},${b},0.18)';this.style.boxShadow='none';this.style.color='${accent}';this.style.textShadow='none'">
+                    const pillBg = getCollectorPaletteBg(c.tokens) || '#555';
+                    const textColor = getContrastTextColor(pillBg);
+                    const [r, g, b] = hexToRgb(pillBg);
+                    const countColor = textColor === '#111111' ? 'rgba(0,0,0,0.45)' : 'rgba(255,255,255,0.55)';
+                    const hoverBg = textColor === '#111111' ? `rgba(${r},${g},${b},0.85)` : `rgba(${Math.min(r+30,255)},${Math.min(g+30,255)},${Math.min(b+30,255)},1)`;
+                    return `<div class="eq-chip${isLarge ? ' eq-chip-lg' : ''}" data-collector-name="${c.name}" title="${displayName}: ${c.count} ${energy} ${c.count === 1 ? 'city' : 'cities'} (${c.total} total)" style="background:${pillBg};color:${textColor};border:1px solid rgba(${r},${g},${b},0.3);"
+                        onmouseenter="this.style.background='${hoverBg}';this.style.boxShadow='0 4px 16px rgba(${r},${g},${b},0.4)';this.style.borderColor='rgba(${r},${g},${b},0.5)'"
+                        onmouseleave="this.style.background='${pillBg}';this.style.boxShadow='none';this.style.borderColor='rgba(${r},${g},${b},0.3)'">
                         <span class="eq-chip-name">${displayName}</span>
-                        <span class="eq-chip-count">${c.count}</span>
+                        <span class="eq-chip-count" style="color:${countColor}">${c.count}</span>
                     </div>`;
                 }).join('');
             });
@@ -18981,7 +19045,43 @@
             if (subtitle) {
                 const uniqueNames = new Set();
                 ALL_ENERGIES.forEach(e => energyCollectors[e].forEach(c => uniqueNames.add(c.name)));
-                subtitle.textContent = `${uniqueNames.size} collectors across ${ALL_ENERGIES.length} energies`;
+                const totalCities = Object.values(energyCityTotals).reduce((a, b) => a + b, 0);
+                subtitle.textContent = `${uniqueNames.size} collectors · ${totalCities} cities across ${ALL_ENERGIES.length} energies`;
+            }
+
+            // Energy Set nudge: show how many collectors have completed the full set
+            const nudgeEl = document.getElementById('eqNudge');
+            if (nudgeEl) {
+                const uniqueCollectorMap = {};
+                ALL_ENERGIES.forEach(e => energyCollectors[e].forEach(c => {
+                    if (!uniqueCollectorMap[c.name]) uniqueCollectorMap[c.name] = {};
+                    uniqueCollectorMap[c.name][e] = c.count;
+                }));
+                let energySetCount = 0;
+                let almostCount = 0;
+                Object.entries(uniqueCollectorMap).forEach(([name, energies]) => {
+                    const hasAll = ALL_ENERGIES.every(e => energies[e] > 0);
+                    if (hasAll) energySetCount++;
+                    else {
+                        const has = ALL_ENERGIES.filter(e => energies[e] > 0).length;
+                        if (has === 3) almostCount++;
+                    }
+                });
+                if (energySetCount > 0 || almostCount > 0) {
+                    let nudgeHtml = '<div class="eq-nudge-inner"><span class="eq-nudge-bolt">⚡️</span>';
+                    if (energySetCount > 0) {
+                        nudgeHtml += `<span><span class="eq-nudge-count">${energySetCount}</span> <span class="eq-nudge-text">${energySetCount === 1 ? 'collector has' : 'collectors have'} completed the</span> <span class="eq-nudge-cta">Energy Set</span></span>`;
+                    }
+                    if (almostCount > 0) {
+                        nudgeHtml += energySetCount > 0 ? '<span class="eq-nudge-text" style="margin: 0 2px;">·</span>' : '';
+                        nudgeHtml += `<span><span class="eq-nudge-count">${almostCount}</span> <span class="eq-nudge-text">${almostCount === 1 ? 'is' : 'are'} one energy away</span></span>`;
+                    }
+                    nudgeHtml += '</div>';
+                    nudgeEl.innerHTML = nudgeHtml;
+                    nudgeEl.classList.add('visible');
+                } else {
+                    nudgeEl.classList.remove('visible');
+                }
             }
 
             // Add click handlers to chips
