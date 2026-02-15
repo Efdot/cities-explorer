@@ -2026,13 +2026,9 @@
         .wall-view-collector-name { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; }
         .wall-view-modal.dark-mode .wall-view-collector-name, .wall-view-modal.wall-black .wall-view-collector-name { color: #888; }
         .wall-view-controls { display: flex; align-items: center; gap: 8px; }
-        .wall-view-wall-colors { display: flex; gap: 4px; margin-right: 8px; }
-        .wall-view-wall-color { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease; }
-        .wall-view-wall-color:hover { transform: scale(1.15); }
-        .wall-view-wall-color.active { border-color: #333; box-shadow: 0 0 0 2px rgba(255,255,255,0.5); }
-        .wall-view-wall-color.gray { background: #e8e4e0; border: 2px solid #ccc; }
-        .wall-view-wall-color.black { background: #1a1a1a; border: 2px solid #333; }
-        .wall-view-modal.wall-black .wall-view-wall-color.active { box-shadow: 0 0 0 2px rgba(255,255,255,0.3); }
+        .wall-view-wall-toggle { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 1.5px solid #999; background: linear-gradient(to right, #e8e4e0 50%, #1a1a1a 50%); transition: all 0.2s ease; padding: 0; flex-shrink: 0; }
+        .wall-view-wall-toggle:hover { transform: scale(1.15); border-color: #666; }
+        .wall-view-modal.wall-black .wall-view-wall-toggle { border-color: #555; }
         .wall-view-mode-toggle { background: none; border: 1px solid #ddd; color: #888; padding: 5px 10px; font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; display: none; }
         .wall-view-modal.wall-black .wall-view-mode-toggle { display: inline-flex; }
         .wall-view-mode-toggle:hover { background: #333; border-color: #333; color: #fff; }
@@ -2063,6 +2059,18 @@
         @media (max-width: 600px) {
             .wall-view-modal.line-view .wall-view-artwork { width: 100px; }
             .wall-view-modal.line-view .wall-view-wall { gap: 24px; padding: 24px 60px; }
+        }
+        @media (max-width: 768px) {
+            .wall-view-header { padding: 8px 12px; gap: 6px; }
+            .wall-view-header-left { gap: 8px; }
+            .wall-view-logo { font-size: 16px; }
+            .wall-view-controls { gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+            .wall-view-back-btn { padding: 5px 10px; font-size: 9px; }
+            .wall-view-hide-empty { padding: 5px 10px; font-size: 8px; }
+            .wall-view-try-mode { padding: 5px 10px; font-size: 8px; }
+            .wall-view-download { padding: 4px 8px; font-size: 8px; }
+            .wall-view-mint-btn { --ch: 18px; padding: 0 4px; min-width: calc(var(--cw) + 8px); }
+            .wall-view-close { width: 24px; height: 24px; font-size: 14px; }
         }
         .wall-view-modal.dark-mode .wall-view-mode-toggle { border-color: #333; color: #666; }
         .wall-view-modal.dark-mode .wall-view-mode-toggle:hover { background: #fff; border-color: #fff; color: #000; }
@@ -2452,11 +2460,8 @@
         .wall-view-modal.dark-mode .wall-view-download, .wall-view-modal.wall-black .wall-view-download { border-color: #333; color: #666; }
         .wall-view-modal.dark-mode .wall-view-download:hover, .wall-view-modal.wall-black .wall-view-download:hover { background: #fff; border-color: #fff; color: #000; }
         /* Energy Quadrant Trigger Button */
-        .energy-quadrant-btn { position: relative; width: 30px; height: 30px; border: none; background: rgba(255,255,255,0.06); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.2s ease; opacity: 0.7; }
-        .energy-quadrant-btn:hover { opacity: 1; background: rgba(255,255,255,0.12); }
-        .eq-grid-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: 14px; height: 14px; }
-        .eq-grid-icon span { background: currentColor; border-radius: 1px; opacity: 0.7; }
-        .eq-bolt { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); font-size: 8px; line-height: 1; pointer-events: none; filter: saturate(0.6); }
+        .energy-quadrant-btn { position: relative; width: 30px; height: 30px; border: none; background: rgba(255,255,255,0.06); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.2s ease; opacity: 0.7; font-size: 14px; line-height: 1; filter: saturate(0.6); }
+        .energy-quadrant-btn:hover { opacity: 1; background: rgba(255,255,255,0.12); filter: saturate(1); }
         /* Energy Quadrant Modal */
         .energy-quadrant-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(8, 8, 12, 0.88); z-index: 2500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(12px); padding: 40px; cursor: pointer; }
         .energy-quadrant-modal.open { display: flex; }
@@ -3941,10 +3946,7 @@
         <div class="collectors-header">
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›››</span></h2>
             <div class="collectors-header-actions">
-                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map">
-                    <span class="eq-grid-icon"><span></span><span></span><span></span><span></span></span>
-                    <span class="eq-bolt">&#9889;</span>
-                </button>
+                <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map" onclick="if(typeof openEnergyQuadrant==='function') openEnergyQuadrant()">⚡</button>
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
@@ -4161,10 +4163,7 @@
                 <span class="wall-view-logo">Cities</span>
             </div>
             <div class="wall-view-controls">
-                <div class="wall-view-wall-colors">
-                    <div class="wall-view-wall-color gray active" data-wall="gray" title="Light wall"></div>
-                    <div class="wall-view-wall-color black" data-wall="black" title="Dark wall"></div>
-                </div>
+                <button class="wall-view-wall-toggle" id="wallViewWallToggle" title="Toggle wall color" aria-label="Toggle light/dark wall"></button>
                 <button class="wall-view-layout-toggle" id="wallViewLayoutToggle" title="Toggle wide/tall layout">⊞</button>
                 <button class="wall-view-hide-empty" id="wallViewHideEmpty" title="Toggle grid/line view"><span class="line-icon">⊞</span> GRID</button>
                 <button class="wall-view-try-mode" id="wallViewTryMode" title="Try adding cities to your grid">✦ TRY</button>
@@ -5242,6 +5241,8 @@
 
         // Collectors data - will be fetched from API for live updates
         let COLLECTORS_DATA = [];
+        // Token IDs owned by project wallets (Efdot, Diid, Deployer, Lost Cities) - excluded from try-mode suggestions
+        let PROJECT_WALLET_TOKENS = new Set();
 
         // Trait counts for grid filtering (moved up for early access)
         const traitCounts = {
@@ -7940,13 +7941,30 @@
 
                     // Build collectors array (exclude efdot and efdot x diid)
                     const excludeNames = ['efdot', 'efdot x diid', 'efdotxdiid'];
-                    const rawCollectors = addresses.map(addr => ({
+                    // Names whose tokens should be excluded from try-mode suggestions
+                    const tryModeExcludeNames = ['efdot', 'efdot x diid', 'efdotxdiid', 'diid', 'the lost cities'];
+                    const LOST_CITIES_PREFIX = '0xcf22';
+
+                    const allCollectorsRaw = addresses.map(addr => ({
                         name: addressToName[addr] || addr.slice(0, 6) + '...' + addr.slice(-4),
                         address: addr,
                         count: ownerCounts[addr].count,
                         tokens: ownerCounts[addr].tokens,
                         hasName: !!addressToName[addr]
-                    })).filter(c => !excludeNames.some(ex => c.name.toLowerCase().includes(ex.toLowerCase())));
+                    }));
+
+                    // Collect project wallet tokens for try-mode exclusion
+                    PROJECT_WALLET_TOKENS = new Set();
+                    allCollectorsRaw.forEach(c => {
+                        const nameLower = c.name.toLowerCase();
+                        const isExcluded = tryModeExcludeNames.some(ex => nameLower.includes(ex)) ||
+                            (c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX));
+                        if (isExcluded) {
+                            c.tokens.forEach(t => PROJECT_WALLET_TOKENS.add(t));
+                        }
+                    });
+
+                    const rawCollectors = allCollectorsRaw.filter(c => !excludeNames.some(ex => c.name.toLowerCase().includes(ex.toLowerCase())));
 
                     // Merge collectors with same display name (e.g., WillEP from multiple wallets)
                     const mergedByName = {};
@@ -8217,8 +8235,7 @@
                         if (modal) {
                             modal.classList.remove('wall-gray');
                             modal.classList.add('wall-black');
-                            document.querySelectorAll('.wall-view-wall-color').forEach(b => b.classList.remove('active'));
-                            document.querySelector('.wall-view-wall-color.black')?.classList.add('active');
+                            currentWallColor = 'black';
                         }
                     }, 50);
                     return true;
@@ -8235,8 +8252,7 @@
                     if (modal) {
                         modal.classList.remove('wall-gray');
                         modal.classList.add('wall-black');
-                        document.querySelectorAll('.wall-view-wall-color').forEach(b => b.classList.remove('active'));
-                        document.querySelector('.wall-view-wall-color.black')?.classList.add('active');
+                        currentWallColor = 'black';
                     }
                 }, 10);
             }
@@ -8294,18 +8310,17 @@
             });
 
             // Wall color options
-            document.querySelectorAll('.wall-view-wall-color').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.wall-view-wall-color').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    const wallType = btn.dataset.wall;
-                    const modal = document.getElementById('wallViewModal');
-                    modal.classList.remove('wall-gray', 'wall-black', 'wall-colorful', 'dark-mode');
-                    if (wallType === 'gray') modal.classList.add('wall-gray');
-                    else if (wallType === 'black') modal.classList.add('wall-black');
-                    else if (wallType === 'colorful') modal.classList.add('wall-colorful');
-                    currentWallColor = wallType;
-                });
+            document.getElementById('wallViewWallToggle')?.addEventListener('click', () => {
+                const modal = document.getElementById('wallViewModal');
+                const isBlack = modal.classList.contains('wall-black');
+                modal.classList.remove('wall-gray', 'wall-black', 'wall-colorful', 'dark-mode');
+                if (isBlack) {
+                    modal.classList.add('wall-gray');
+                    currentWallColor = 'gray';
+                } else {
+                    modal.classList.add('wall-black');
+                    currentWallColor = 'black';
+                }
             });
 
             // Grid / Line view toggle - button shows CURRENT state
@@ -9352,7 +9367,7 @@
             const energyBtns = picker.querySelectorAll('.try-city-picker-energy-btn');
 
             // Get minted cities list from tokenTraits (the source of truth)
-            const mintedList = Object.keys(tokenTraits).map(Number);
+            const mintedList = Object.keys(tokenTraits).map(Number).filter(id => !PROJECT_WALLET_TOKENS.has(id));
 
             // Function to populate suggestions based on energy filter
             function populateSuggestions(energyFilter = 'all') {
@@ -9994,8 +10009,6 @@
             // Start in dark mode as default
             modal.classList.remove('wall-black', 'wall-gray');
             modal.classList.add('wall-black');
-            document.querySelectorAll('.wall-view-wall-color').forEach(b => b.classList.remove('active'));
-            document.querySelector('.wall-view-wall-color.black')?.classList.add('active');
             currentWallColor = 'black';
 
             // Check if this is "The Lost Cities" for haunted effect
@@ -10200,7 +10213,7 @@
                 const diverseSuggestions = [];
 
                 for (let i = 0; i <= MAX_TOKEN; i++) {
-                    if (ownedIds.has(i)) continue;
+                    if (ownedIds.has(i) || PROJECT_WALLET_TOKENS.has(i)) continue;
                     const traits = tokenTraits[i];
                     if (!traits) continue;
 
@@ -10242,7 +10255,7 @@
                 label = 'Complete the energy set';
 
                 for (let i = 0; i <= MAX_TOKEN; i++) {
-                    if (ownedIds.has(i)) continue;
+                    if (ownedIds.has(i) || PROJECT_WALLET_TOKENS.has(i)) continue;
                     const traits = tokenTraits[i];
                     if (!traits) continue;
 
@@ -10819,8 +10832,7 @@
                             if (modal) {
                                 modal.classList.remove('wall-gray');
                                 modal.classList.add('wall-black');
-                                document.querySelectorAll('.wall-view-wall-color').forEach(b => b.classList.remove('active'));
-                                document.querySelector('.wall-view-wall-color.black')?.classList.add('active');
+                                currentWallColor = 'black';
                             }
                         }, 50);
                     } else {
@@ -15267,8 +15279,7 @@
                                 if (modal) {
                                     modal.classList.remove('wall-gray');
                                     modal.classList.add('wall-black');
-                                    document.querySelectorAll('.wall-view-wall-color').forEach(b => b.classList.remove('active'));
-                                    document.querySelector('.wall-view-wall-color.black')?.classList.add('active');
+                                    currentWallColor = 'black';
                                 }
                             }, 50);
                         }
@@ -15404,8 +15415,7 @@
                             if (modal) {
                                 modal.classList.remove('wall-gray');
                                 modal.classList.add('wall-black');
-                                document.querySelectorAll('.wall-view-wall-color').forEach(b => b.classList.remove('active'));
-                                document.querySelector('.wall-view-wall-color.black')?.classList.add('active');
+                                currentWallColor = 'black';
                             }
                         }, 50);
                     } else {
