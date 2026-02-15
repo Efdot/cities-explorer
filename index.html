@@ -271,13 +271,13 @@
         .grid-numbers-toggle:hover { opacity: 0.8; background: var(--bg-input); }
         .grid-numbers-toggle.active { opacity: 1; color: var(--warm); }
 
-        /* Grid clock - city emoji top left, swaps to digital time on hover */
-        .grid-clock { position: absolute; top: 8px; left: 8px; font-size: 11px; z-index: 2; cursor: default; opacity: 0.35; transition: opacity 0.3s ease, filter 0.3s ease; filter: grayscale(100%); line-height: 1; white-space: nowrap; }
-        .grid-clock:hover { opacity: 0.9; filter: grayscale(0%); }
+        /* Grid clock - city emoji in filter bar, swaps to digital time on hover */
+        .grid-clock { font-size: 14px; cursor: default; opacity: 0.5; transition: opacity 0.3s ease, filter 0.3s ease; filter: grayscale(100%); line-height: 1; white-space: nowrap; margin-right: 6px; }
+        .grid-clock:hover { opacity: 1; filter: grayscale(0%); }
         .grid-clock .clock-time { display: none; font-size: 9px; font-weight: 600; font-family: Helvetica, Arial, sans-serif; letter-spacing: 0.04em; color: var(--text-muted); }
         .grid-clock:hover .clock-emoji { display: none; }
         .grid-clock:hover .clock-time { display: inline; }
-        .grid-header:hover .grid-clock { opacity: 0.55; }
+        .filter-toggle-bar:hover .grid-clock { opacity: 0.7; }
 
         /* Grid energy clock - non-interactive display */
         .grid-energy-clock { background: none; border: none; cursor: default; padding: 4px 8px; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); opacity: 0.5; transition: all 0.3s ease; border-radius: 12px; white-space: nowrap; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
@@ -3047,7 +3047,7 @@
         .gallery-room-frame:hover { transform: scale(1.02); }
         .gallery-room-frame:hover img { transform: scale(1.08); }
         .gallery-room-frame-label { display: none; }
-        .gallery-room-counter { position: fixed; top: 30px; left: 130px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.15em; opacity: 0; transition: opacity 0.3s ease; }
+        .gallery-room-counter { position: fixed; top: 68px; left: 30px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.15em; opacity: 0; transition: opacity 0.3s ease; }
         .gallery-room:hover .gallery-room-counter { opacity: 1; }
         .gallery-room-close { position: fixed; top: 30px; right: 30px; width: 44px; height: 44px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 50%; color: rgba(255,255,255,0.4); font-size: 20px; cursor: pointer; opacity: 0; transition: all 0.3s ease; z-index: 10001; }
         .gallery-room:hover .gallery-room-close { opacity: 1; cursor: pointer; }
@@ -3058,8 +3058,15 @@
         .frame-mockup .view-back-btn { top: 78px; }
         .frame-mockup:not(.dark-mode) .view-back-btn { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.12); color: rgba(0,0,0,0.5); }
         .frame-mockup:not(.dark-mode) .view-back-btn:hover { background: rgba(0,0,0,0.1); color: rgba(0,0,0,0.8); }
-        .gallery-room .view-back-btn { position: fixed; opacity: 0; top: 30px; left: 30px; }
-        .gallery-room:hover .view-back-btn { opacity: 1; }
+        .gallery-room .gallery-room-top-left { position: fixed; top: 24px; left: 30px; z-index: 10001; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; opacity: 0; transition: opacity 0.3s ease; }
+        .gallery-room:hover .gallery-room-top-left { opacity: 1; }
+        .gallery-room-title { font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.7); font-family: Helvetica, Arial, sans-serif; line-height: 1; }
+        .gallery-room .view-back-btn { position: static; opacity: 1; }
+        .gallery-room-about { position: fixed; top: 30px; right: 80px; z-index: 10001; opacity: 0; transition: all 0.3s ease; }
+        .gallery-room:hover .gallery-room-about { opacity: 0.4; }
+        .gallery-room-about:hover { opacity: 0.8 !important; }
+        .gallery-room-about img { height: 20px; width: auto; filter: brightness(0) invert(1); transition: all 0.3s ease; }
+        .gallery-room-about:hover img { filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.3)); }
         .gallery-room-info { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.2); font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0; transition: opacity 0.3s ease; }
         .gallery-room:hover .gallery-room-info { opacity: 1; }
         .gallery-room-controls { display: none; }
@@ -3989,7 +3996,6 @@
 
     <div class="grid-panel open hide-numbers" id="gridPanel" role="dialog" aria-label="Cities grid view" aria-hidden="true">
         <div class="grid-header">
-            <div class="grid-clock" id="gridClock"></div>
             <div class="grid-brand">
                 <h1 id="gridTitle">Cities</h1>
                 <div class="grid-artist-logos">
@@ -4009,7 +4015,7 @@
                 <button class="grid-mode-btn collectors-btn" data-emoji="👥" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
             </div>
         </div>
-        <div class="filter-toggle-bar" id="filterToggleBar"><span>FILTERS</span><span class="arrow">▼</span></div>
+        <div class="filter-toggle-bar" id="filterToggleBar"><div class="grid-clock" id="gridClock"></div><span>FILTERS</span><span class="arrow">▼</span></div>
         <div class="grid-filter-bar" id="gridFilterBar">
             <div class="multi-select" id="paletteMultiSelect">
                 <button class="multi-select-btn" type="button">PALETTE <span class="arrow">▼</span></button>
@@ -4328,7 +4334,11 @@
     <div class="gallery-room" id="galleryRoom">
         <div class="gallery-room-ambient"></div>
         <div class="gallery-room-wall" id="galleryRoomWall"></div>
-        <button class="view-back-btn" id="galleryRoomBack">← BACK</button>
+        <div class="gallery-room-top-left">
+            <span class="gallery-room-title">Cities</span>
+            <button class="view-back-btn" id="galleryRoomBack">← BACK</button>
+        </div>
+        <a href="#" class="gallery-room-about" id="galleryRoomAbout" title="About" onclick="if(window.openAboutModal) window.openAboutModal(); return false;"><img src="info-icon.png" alt="About"></a>
         <div class="gallery-room-counter" id="galleryRoomCounter">12 Cities</div>
         <button class="gallery-room-close" id="galleryRoomClose">×</button>
         <div class="gallery-room-controls">
