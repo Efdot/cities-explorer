@@ -4252,9 +4252,9 @@
     <!-- OpenSea Warning Modal -->
     <div class="opensea-warning-modal" id="openseaWarningModal">
         <div class="opensea-warning-content">
-            <div class="opensea-warning-icon">⚠</div>
-            <div class="opensea-warning-title">Leaving Cities Explorer</div>
-            <div class="opensea-warning-text">You're about to visit <a href="https://opensea.io" target="_blank">OpenSea</a> to make an offer on this City. Continue?</div>
+            <div class="opensea-warning-icon">⛵</div>
+            <div class="opensea-warning-title">Taking a Detour to OpenSea</div>
+            <div class="opensea-warning-text">You'll leave Cities Explorer to view this City on <a href="https://opensea.io" target="_blank">OpenSea</a>.</div>
             <div class="opensea-warning-actions">
                 <button class="opensea-warning-btn primary" id="openseaWarningContinue">Continue to OpenSea</button>
                 <button class="opensea-warning-btn secondary" id="openseaWarningCancel">Cancel</button>
@@ -11230,14 +11230,16 @@
                 ctx.fillStyle = '#f5f5f5';
                 ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-                // Load the image
+                // Load image via fetch+blob to avoid CORS canvas tainting
+                const response = await fetch(frameImage.src);
+                const blob = await response.blob();
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
 
                 await new Promise((resolve, reject) => {
                     img.onload = resolve;
                     img.onerror = reject;
-                    img.src = frameImage.src;
+                    img.src = URL.createObjectURL(blob);
                 });
 
                 // Calculate framed image size to fit nicely in 4:5 with margins
@@ -11314,6 +11316,7 @@
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
+                    URL.revokeObjectURL(img.src);
                     showStatus('FRAMED IMAGE SAVED');
                 }, 'image/jpeg', 0.95);
 
@@ -11395,7 +11398,7 @@
             e.stopPropagation();
             const tokenId = frameMockupTokens[frameMockupCurrentIndex] || currentTokenId;
             if (tokenId !== undefined) {
-                const confirmed = confirm('You are about to leave this page and go to OpenSea to make an offer on City #' + tokenId + '. Continue?');
+                const confirmed = confirm('Taking a detour to OpenSea — you\'ll leave Cities Explorer to view City #' + tokenId + '.');
                 if (confirmed) {
                     window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`, '_blank');
                 }
