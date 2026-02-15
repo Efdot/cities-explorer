@@ -4099,25 +4099,34 @@
                     <div class="collector-guide-step-num active" data-step="1">1</div>
                     <div class="collector-guide-step-num" data-step="2">2</div>
                     <div class="collector-guide-step-num" data-step="3">3</div>
+                    <div class="collector-guide-step-num" data-step="4">4</div>
                 </div>
             </div>
 
-            <!-- Step 1: What is digital art ownership? -->
+            <!-- Step 1: What are Cities? -->
             <div class="collector-guide-step active" data-step="1">
                 <div class="collector-guide-title">Own a City</div>
                 <div class="collector-guide-desc">
-                    500 Cities, made of code, inspired by hand drawings. Rendered on&#8209;chain via Art Blocks Studio. Four energies: Rising, Living, Fading, Resting. Each one is one&#8209;of&#8209;one, fully yours&nbsp;forever.
+                    500 Cities made of lines and dots, inspired by Efdot's hand drawings and hard coded by&nbsp;Diid. Rendered on&#8209;chain via Art Blocks&nbsp;Studio.
                 </div>
-                <div class="collector-guide-highlight">500 city grids, one shared&nbsp;energy.</div>
             </div>
 
-            <!-- Step 2: How to collect -->
-            <div class="collector-guide-step" data-step="2" style="position: relative;">
+            <!-- Step 2: The four energies -->
+            <div class="collector-guide-step" data-step="2">
+                <div class="collector-guide-title">Four energies</div>
+                <div class="collector-guide-desc">
+                    Over 100 color palettes fall into four groups: Rising, Living, Fading,&nbsp;Resting.
+                </div>
+                <div class="collector-guide-highlight">500 city grids, four shared&nbsp;energies.</div>
+            </div>
+
+            <!-- Step 3: How to collect -->
+            <div class="collector-guide-step" data-step="3" style="position: relative;">
                 <div class="collector-guide-title">How to get one</div>
                 <div class="collector-guide-desc">
                     Mint with ETH on Art&nbsp;Blocks, use a credit card at the Efdot Studio&nbsp;Shop, or grab one on&nbsp;OpenSea.
                 </div>
-                <div class="collector-guide-highlight">4&nbsp;Cities = a&nbsp;set = future airdrop eligibility. Collect all 4&nbsp;energies (Rising, Living, Fading, Resting) for a complete energy&nbsp;set.</div>
+                <div class="collector-guide-highlight">4&nbsp;Cities = a&nbsp;set = future airdrop eligibility. Collect all 4&nbsp;energies for a complete energy&nbsp;set.</div>
                 <a href="https://www.artblocks.io/marketplace/collections/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn">
                     Mint a new City on Art Blocks
                 </a>
@@ -4127,8 +4136,8 @@
                 <button class="dream-grid-btn" id="guideDreamGrid" title="Dream Collection" style="position: absolute; bottom: -28px; right: 0; font-size: 11px; opacity: 0.2;" onclick="if(window.openDreamGrid) openDreamGrid();">&#x1F4AD;</button>
             </div>
 
-            <!-- Step 3: Digital + Physical -->
-            <div class="collector-guide-step" data-step="3">
+            <!-- Step 4: Digital + Physical -->
+            <div class="collector-guide-step" data-step="4">
                 <div class="collector-guide-title">Print it</div>
                 <div class="collector-guide-desc">Owners get access to hand&#8209;signed prints. Posters available to everyone at the Efdot Studio&nbsp;Shop.</div>
                 <a href="https://www.artblocks.io/marketplace/collections/cities-by-efdot-x-diid" target="_blank" class="collector-guide-pill-btn">
@@ -7862,7 +7871,7 @@
 
         // Citizen Guide functionality - step-by-step onboarding
         let currentGuideStep = 1;
-        const totalGuideSteps = 3;
+        const totalGuideSteps = 4;
 
         function showCollectorGuideView() {
             document.getElementById('pillsView').classList.add('hidden');
