@@ -2481,25 +2481,18 @@
         .eq-living .eq-label { color: #87ceeb; }
         .eq-fading .eq-label { color: #dda0dd; }
         .eq-resting .eq-label { color: #6b7280; }
-        .eq-collectors { display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start; }
-        .eq-chip { padding: 4px 8px; border-radius: 4px; font-size: 9px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; line-height: 1.2; display: flex; align-items: center; gap: 4px; }
+        .eq-collectors { display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; }
+        .eq-chip { padding: 5px 12px; border-radius: 20px; font-size: 9px; font-weight: 500; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap; line-height: 1.2; display: inline-flex; align-items: center; gap: 5px; position: relative; }
         .eq-chip .eq-chip-count { font-size: 8px; opacity: 0.5; font-weight: 400; }
-        .eq-rising .eq-chip { background: rgba(255, 179, 71, 0.1); color: rgba(255, 179, 71, 0.7); border: 1px solid rgba(255, 179, 71, 0.12); }
-        .eq-rising .eq-chip:hover { background: rgba(255, 179, 71, 0.2); color: #ffb347; border-color: rgba(255, 179, 71, 0.3); }
-        .eq-living .eq-chip { background: rgba(135, 206, 235, 0.1); color: rgba(135, 206, 235, 0.7); border: 1px solid rgba(135, 206, 235, 0.12); }
-        .eq-living .eq-chip:hover { background: rgba(135, 206, 235, 0.2); color: #87ceeb; border-color: rgba(135, 206, 235, 0.3); }
-        .eq-fading .eq-chip { background: rgba(221, 160, 221, 0.1); color: rgba(221, 160, 221, 0.7); border: 1px solid rgba(221, 160, 221, 0.12); }
-        .eq-fading .eq-chip:hover { background: rgba(221, 160, 221, 0.2); color: #dda0dd; border-color: rgba(221, 160, 221, 0.3); }
-        .eq-resting .eq-chip { background: rgba(107, 114, 128, 0.12); color: rgba(107, 114, 128, 0.7); border: 1px solid rgba(107, 114, 128, 0.12); }
-        .eq-resting .eq-chip:hover { background: rgba(107, 114, 128, 0.22); color: #9ca3af; border-color: rgba(107, 114, 128, 0.3); }
-        .eq-chip.eq-chip-lg { font-size: 10px; padding: 5px 10px; font-weight: 600; }
+        .eq-chip:hover { transform: scale(1.12) translateY(-2px); z-index: 10; }
+        .eq-chip.eq-chip-lg { font-size: 10px; padding: 6px 14px; font-weight: 600; }
         .eq-chip.eq-chip-lg .eq-chip-count { font-size: 9px; }
         @media (max-width: 768px) {
             .energy-quadrant-modal { padding: 20px; }
             .energy-quadrant-container { padding: 20px; border-radius: 14px; }
             .energy-quadrant-grid { gap: 1px; }
             .energy-quadrant { padding: 14px; }
-            .eq-chip { font-size: 8px; padding: 3px 6px; }
+            .eq-chip { font-size: 8px; padding: 3px 8px; }
         }
         @media (max-width: 480px) {
             .energy-quadrant-modal { padding: 12px; }
@@ -18910,6 +18903,24 @@
             const quadrantIds = { Rising: 'eqRising', Living: 'eqLiving', Fading: 'eqFading', Resting: 'eqResting' };
             let totalCollectors = 0;
 
+            // Helper: get accent color from a collector's most recently minted city
+            function getCollectorAccentColor(tokens) {
+                if (!tokens || tokens.length === 0) return null;
+                const mostRecent = Math.max(...tokens);
+                const traits = tokenTraits[mostRecent];
+                if (traits && traits['Palette'] && PALETTE_DATA[traits['Palette']]) {
+                    const colors = PALETTE_DATA[traits['Palette']].colors;
+                    // Pick a visible accent — try index 2, then 1, then 0
+                    return colors[2] || colors[1] || colors[0] || null;
+                }
+                return null;
+            }
+
+            function hexToRgb(hex) {
+                const h = hex.replace('#', '');
+                return [parseInt(h.substring(0,2),16), parseInt(h.substring(2,4),16), parseInt(h.substring(4,6),16)];
+            }
+
             ALL_ENERGIES.forEach(energy => {
                 const container = document.getElementById(quadrantIds[energy]);
                 if (!container) return;
@@ -18919,7 +18930,12 @@
                 container.innerHTML = collectors.map(c => {
                     const displayName = formatCollectorName(c.name);
                     const isLarge = c.count >= 3;
-                    return `<div class="eq-chip${isLarge ? ' eq-chip-lg' : ''}" data-collector-name="${c.name}" title="${displayName}: ${c.count} ${energy} ${c.count === 1 ? 'city' : 'cities'}">
+                    const accent = getCollectorAccentColor(c.tokens) || '#888';
+                    const [r, g, b] = hexToRgb(accent);
+                    const bgStyle = `background:rgba(${r},${g},${b},0.12);color:${accent};border:1px solid rgba(${r},${g},${b},0.18);--chip-r:${r};--chip-g:${g};--chip-b:${b};--chip-accent:${accent}`;
+                    return `<div class="eq-chip${isLarge ? ' eq-chip-lg' : ''}" data-collector-name="${c.name}" title="${displayName}: ${c.count} ${energy} ${c.count === 1 ? 'city' : 'cities'}" style="${bgStyle}"
+                        onmouseenter="this.style.background='rgba(${r},${g},${b},0.28)';this.style.borderColor='rgba(${r},${g},${b},0.45)';this.style.boxShadow='0 4px 18px rgba(${r},${g},${b},0.35), 0 0 8px rgba(${r},${g},${b},0.18)';this.style.color='${accent}';this.style.textShadow='0 0 8px rgba(${r},${g},${b},0.5)'"
+                        onmouseleave="this.style.background='rgba(${r},${g},${b},0.12)';this.style.borderColor='rgba(${r},${g},${b},0.18)';this.style.boxShadow='none';this.style.color='${accent}';this.style.textShadow='none'">
                         <span class="eq-chip-name">${displayName}</span>
                         <span class="eq-chip-count">${c.count}</span>
                     </div>`;
