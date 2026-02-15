@@ -2245,6 +2245,11 @@
         .temp-city-remove { position: absolute; top: -8px; right: -8px; width: 20px; height: 20px; background: var(--badge-bg, #c9a227); border: none; border-radius: 50%; color: var(--badge-text, #000); font-size: 12px; font-weight: 700; cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 15; transition: all 0.2s ease; }
         .wall-view-frame.temp-city:hover .temp-city-remove { display: flex; }
         .temp-city-remove:hover { background: #fff; transform: scale(1.1); }
+        /* Inline try-another + button on last placed try city */
+        .try-add-more { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; color: rgba(255,255,255,0.3); font-size: 14px; font-weight: 300; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 16; transition: all 0.2s ease; line-height: 1; }
+        .try-add-more:hover { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.35); transform: scale(1.15); }
+        .wall-view-modal:not(.wall-black):not(.dark-mode) .try-add-more { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.12); color: rgba(0,0,0,0.25); }
+        .wall-view-modal:not(.wall-black):not(.dark-mode) .try-add-more:hover { background: rgba(0,0,0,0.1); color: rgba(0,0,0,0.6); border-color: rgba(0,0,0,0.25); }
         /* Try city picker modal */
         .try-city-picker { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 3000; backdrop-filter: blur(8px); }
         .try-city-picker-content { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; width: 380px; max-width: 90vw; }
@@ -9717,6 +9722,32 @@
 
             artwork.appendChild(frame);
             artwork.appendChild(label);
+
+            // Remove any existing try-add-more button from previous temp cities
+            wall.querySelectorAll('.try-add-more').forEach(btn => btn.remove());
+
+            // Add inline "+" button to this artwork for quick try-another
+            const addMoreBtn = document.createElement('button');
+            addMoreBtn.className = 'try-add-more';
+            addMoreBtn.innerHTML = '+';
+            addMoreBtn.title = 'Try another city';
+            addMoreBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Activate try mode and add one empty slot
+                wallViewTryMode = true;
+                const tryBtn = document.getElementById('wallViewTryMode');
+                tryBtn?.classList.add('active');
+                addTryModeSlot(wall);
+                const rc = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
+                const tc = wall.querySelectorAll('.wall-view-frame.temp-city').length;
+                const newL = getOptimalGridLayout(rc + tc + 1);
+                wall.className = wall.className.replace(/cols-\d+/, '');
+                wall.classList.add(`cols-${newL.cols}`);
+                document.getElementById('wallViewModal')?.classList.add('has-empty-slots');
+                addMoreBtn.remove();
+                updateGridNudge();
+            });
+            artwork.appendChild(addMoreBtn);
 
             // Replace the empty slot or add to the wall
             if (slotElement && slotElement.parentNode) {
