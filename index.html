@@ -271,6 +271,10 @@
         .grid-numbers-toggle:hover { opacity: 0.8; background: var(--bg-input); }
         .grid-numbers-toggle.active { opacity: 1; color: var(--warm); }
 
+        /* Grid clock - small text top left */
+        .grid-clock { position: absolute; top: 6px; left: 12px; font-size: 9px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); opacity: 0.35; z-index: 2; font-family: Helvetica, Arial, sans-serif; pointer-events: none; transition: opacity 0.3s ease; }
+        .grid-header:hover .grid-clock { opacity: 0.55; }
+
         /* Grid energy clock - non-interactive display */
         .grid-energy-clock { background: none; border: none; cursor: default; padding: 4px 8px; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); opacity: 0.5; transition: all 0.3s ease; border-radius: 12px; white-space: nowrap; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
         .grid-energy-clock .energy-icon { filter: grayscale(100%); transition: filter 0.3s ease; font-size: 16px; }
@@ -2590,6 +2594,7 @@
         .grid-pagination .page-info { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
         @media (max-width: 768px) {
             .grid-header { padding: 14px 16px; flex-direction: column; gap: 10px; min-height: auto; align-items: stretch; }
+            .grid-clock { top: 4px; left: 8px; font-size: 8px; }
             .grid-brand { position: static; flex-wrap: nowrap; justify-content: flex-start; gap: 8px; align-items: baseline; }
             .grid-brand h1 { font-size: 18px; }
             .grid-controls { order: 2; justify-content: flex-start; }
@@ -3972,6 +3977,7 @@
 
     <div class="grid-panel open hide-numbers" id="gridPanel" role="dialog" aria-label="Cities grid view" aria-hidden="true">
         <div class="grid-header">
+            <div class="grid-clock" id="gridClock"></div>
             <div class="grid-brand">
                 <h1 id="gridTitle">Cities</h1>
                 <div class="grid-artist-logos">
@@ -13983,10 +13989,16 @@
         function updateEnergyClock() {
             const energy = getCurrentEnergy();
             const btn = document.getElementById('gridEnergyToggle');
-            if (!btn) return; // Button was removed
-            btn.className = 'grid-energy-clock ' + energy.className;
-            btn.innerHTML = `<span class="energy-icon">${energy.icon}</span>`;
-            btn.title = `${energy.name} (${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})`;
+            if (btn) {
+                btn.className = 'grid-energy-clock ' + energy.className;
+                btn.innerHTML = `<span class="energy-icon">${energy.icon}</span>`;
+                btn.title = `${energy.name} (${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})`;
+            }
+            // Update top-left clock text
+            const clockEl = document.getElementById('gridClock');
+            if (clockEl) {
+                clockEl.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            }
         }
 
         // Initialize and update every minute
