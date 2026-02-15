@@ -1950,6 +1950,10 @@
         .grid-color-gradient-close:hover { opacity: 1; color: rgba(0,0,0,0.7); }
         .grid-color-gradient-hint { font-size: 8px; color: rgba(180, 80, 0, 0.7); opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; }
         .grid-color-gradient-hint.visible { opacity: 0.8; }
+        .gradient-step-toggle { position: absolute; bottom: 4px; right: 6px; z-index: 4; width: 20px; height: 20px; padding: 3px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.25); border-radius: 4px; color: rgba(255,255,255,0.7); cursor: pointer; pointer-events: auto; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+        .gradient-step-toggle:hover { background: rgba(0,0,0,0.4); color: rgba(255,255,255,0.95); border-color: rgba(255,255,255,0.4); }
+        .gradient-step-toggle.active { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.45); }
+        .gradient-step-toggle svg { width: 100%; height: 100%; }
         @media (max-width: 768px) {
             .grid-color-gradient-inner { padding: 0; }
             .grid-color-gradient-label { display: none; }
@@ -4037,6 +4041,7 @@
                     </div>
                     <div class="grid-color-gradient-strip" id="gridColorGradientStrip">
                         <div class="grid-color-gradient-marker" id="gridColorGradientMarker"></div>
+                        <button class="gradient-step-toggle" id="gradientStepToggle" title="Toggle smooth / stepped"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14 h3.5 v-4 h3.5 v-4 h3.5 v-4"/></svg></button>
                     </div>
                 </div>
             </div>
@@ -14211,8 +14216,10 @@
         const colorGradientClose = document.getElementById('gridColorGradientClose');
         const colorGradientHint = document.getElementById('gridColorGradientHint');
         const colorGradientClock = document.getElementById('gridColorGradientClock');
+        const gradientStepToggle = document.getElementById('gradientStepToggle');
         let colorGradientActive = false;
         let colorGradientDragging = false;
+        let colorGradientStepped = false; // false = smooth, true = stepped
         let savedFilterState = null; // Store original filter state to restore
         let gradientTargetColor = null; // Store target color for sorting by proximity
 
@@ -14258,12 +14265,26 @@
         }
 
         function buildColorGradient() {
-            // Apply the fixed day-cycle gradient
-            const cssStops = DAY_GRADIENT_STOPS.map(s => {
-                const hex = '#' + [s[1], s[2], s[3]].map(v => v.toString(16).padStart(2, '0')).join('');
-                return `${hex} ${s[0]}%`;
-            });
-            colorGradientStrip.style.background = `linear-gradient(to right, ${cssStops.join(', ')})`;
+            if (colorGradientStepped) {
+                // Stepped mode: discrete blocks, one per palette, using bg colors
+                buildPaletteGradientSlots();
+                const n = paletteGradientSlots.length;
+                const stops = [];
+                for (let i = 0; i < n; i++) {
+                    const color = PALETTE_DATA[paletteGradientSlots[i].name].bg;
+                    const start = (i / n) * 100;
+                    const end = ((i + 1) / n) * 100;
+                    stops.push(`${color} ${start}%`, `${color} ${end}%`);
+                }
+                colorGradientStrip.style.background = `linear-gradient(to right, ${stops.join(', ')})`;
+            } else {
+                // Smooth mode: continuous day-cycle gradient
+                const cssStops = DAY_GRADIENT_STOPS.map(s => {
+                    const hex = '#' + [s[1], s[2], s[3]].map(v => v.toString(16).padStart(2, '0')).join('');
+                    return `${hex} ${s[0]}%`;
+                });
+                colorGradientStrip.style.background = `linear-gradient(to right, ${cssStops.join(', ')})`;
+            }
         }
 
         // Pre-computed palette HSL values (populated once on first gradient use)
@@ -14579,8 +14600,13 @@
             colorGradientStrip.classList.add('active');
 
             // Update marker color to match gradient position
-            const [mr, mg, mb] = getGradientRGBAtPercent(percent);
-            colorGradientMarker.style.background = `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.5), rgb(${mr},${mg},${mb}) 70%)`;
+            if (colorGradientStepped) {
+                const palName = getPaletteAtGradientPercent(percent);
+                colorGradientMarker.style.background = `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.5), ${PALETTE_DATA[palName].bg} 70%)`;
+            } else {
+                const [mr, mg, mb] = getGradientRGBAtPercent(percent);
+                colorGradientMarker.style.background = `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.5), rgb(${mr},${mg},${mb}) 70%)`;
+            }
 
             // Show clock time immediately (cheap text update)
             const posHour = (percent / 100) * 24;
@@ -14632,6 +14658,18 @@
             if (colorGradientActive) toggleColorGradient();
         });
 
+        // Stepped / smooth gradient toggle
+        gradientStepToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            colorGradientStepped = !colorGradientStepped;
+            gradientStepToggle.classList.toggle('active', colorGradientStepped);
+            // Swap icon: staircase for smooth mode, wave for stepped mode
+            gradientStepToggle.innerHTML = colorGradientStepped
+                ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12 C5 4, 8 14, 14 4"/></svg>'
+                : '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14 h3.5 v-4 h3.5 v-4 h3.5 v-4"/></svg>';
+            buildColorGradient();
+        });
+
         colorGradientStrip.addEventListener('mousedown', (e) => {
             e.preventDefault(); // Prevent text selection when dragging off-window
             colorGradientDragging = true;
@@ -14654,8 +14692,13 @@
                     const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
                     colorGradientMarker.style.left = `${percent}%`;
                     // Update marker color on hover
-                    const [hr, hg, hb] = getGradientRGBAtPercent(percent);
-                    colorGradientMarker.style.background = `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.5), rgb(${hr},${hg},${hb}) 70%)`;
+                    if (colorGradientStepped) {
+                        const palName = getPaletteAtGradientPercent(percent);
+                        colorGradientMarker.style.background = `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.5), ${PALETTE_DATA[palName].bg} 70%)`;
+                    } else {
+                        const [hr, hg, hb] = getGradientRGBAtPercent(percent);
+                        colorGradientMarker.style.background = `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.5), rgb(${hr},${hg},${hb}) 70%)`;
+                    }
                     // Show clock on hover too
                     const posHour = (percent / 100) * 24;
                     const hh = String(Math.floor(posHour)).padStart(2, '0');
