@@ -9238,22 +9238,29 @@
             const collectorName = labelEl?.querySelector('.collector-name-value')?.textContent || labelEl?.dataset.rawName || 'Collector';
 
             if (totalCities > 0) {
-                // Check if this collector has a complete set
-                const allTokenIds = wallViewTokenIds || [];
-                const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
-                allTokenIds.forEach(id => {
-                    const traits = tokenTraits[id];
-                    if (traits?.Energy) energyCounts[traits.Energy]++;
-                });
-                const hasEnergySet = energyCounts.Rising >= 1 && energyCounts.Living >= 1 && energyCounts.Fading >= 1 && energyCounts.Resting >= 1;
-                const gridCount = Math.floor(totalCities / 4);
+                const isDream = labelEl?.dataset.rawName === '__dream__';
 
-                if (hasEnergySet) {
-                    nudgeText.innerHTML = `<span>${collectorName}</span> completed the Energy Set ⚡️ <span class="grid-count">${totalCities}</span> cities`;
-                } else if (gridCount >= 1) {
-                    nudgeText.innerHTML = `<span>${collectorName}</span> collected a full set 🏙️ <span class="grid-count">${totalCities}</span> cities`;
+                if (isDream) {
+                    // Dream grid: keep it minimal and aspirational
+                    nudgeText.innerHTML = `<span class="grid-count">${totalCities}</span> ${totalCities === 1 ? 'city' : 'cities'} on the wall`;
                 } else {
-                    nudgeText.innerHTML = `<span>${collectorName}</span> is building a set 🏙️ <span class="grid-count">${totalCities}</span> cities and counting`;
+                    // Real collector wall: show set/energy progress
+                    const allTokenIds = wallViewTokenIds || [];
+                    const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                    allTokenIds.forEach(id => {
+                        const traits = tokenTraits[id];
+                        if (traits?.Energy) energyCounts[traits.Energy]++;
+                    });
+                    const hasEnergySet = energyCounts.Rising >= 1 && energyCounts.Living >= 1 && energyCounts.Fading >= 1 && energyCounts.Resting >= 1;
+                    const gridCount = Math.floor(totalCities / 4);
+
+                    if (hasEnergySet) {
+                        nudgeText.innerHTML = `<span>${collectorName}</span> completed the Energy Set ⚡️ <span class="grid-count">${totalCities}</span> cities`;
+                    } else if (gridCount >= 1) {
+                        nudgeText.innerHTML = `<span>${collectorName}</span> collected a full set 🏙️ <span class="grid-count">${totalCities}</span> cities`;
+                    } else {
+                        nudgeText.innerHTML = `<span>${collectorName}</span> is building a set 🏙️ <span class="grid-count">${totalCities}</span> cities and counting`;
+                    }
                 }
                 nudge.classList.add('ready');
             } else {
@@ -9453,30 +9460,30 @@
                 <div class="empty-slot-dropdown-item" data-action="try">
                     <span class="empty-slot-dropdown-icon">👁️</span>
                     <div class="empty-slot-dropdown-text">
-                        <div class="empty-slot-dropdown-title">Try a City</div>
-                        <div class="empty-slot-dropdown-desc">Preview how a City would look here</div>
+                        <div class="empty-slot-dropdown-title">Preview</div>
+                        <div class="empty-slot-dropdown-desc">Try a City on this wall</div>
                     </div>
                 </div>
                 <div class="empty-slot-dropdown-divider"></div>
                 <div class="empty-slot-dropdown-item" data-action="mint">
                     <span class="empty-slot-dropdown-icon">✨</span>
                     <div class="empty-slot-dropdown-text">
-                        <div class="empty-slot-dropdown-title">Get a New City</div>
-                        <div class="empty-slot-dropdown-desc">On Art Blocks</div>
+                        <div class="empty-slot-dropdown-title">Mint</div>
+                        <div class="empty-slot-dropdown-desc">Create a new City on Art Blocks</div>
                     </div>
                 </div>
                 <div class="empty-slot-dropdown-item" data-action="offer">
                     <span class="empty-slot-dropdown-icon">🏷️</span>
                     <div class="empty-slot-dropdown-text">
-                        <div class="empty-slot-dropdown-title">Buy on Marketplace</div>
-                        <div class="empty-slot-dropdown-desc">Browse and make an offer on a specific City</div>
+                        <div class="empty-slot-dropdown-title">Browse</div>
+                        <div class="empty-slot-dropdown-desc">Find a City on OpenSea</div>
                     </div>
                 </div>
                 <div class="empty-slot-dropdown-item" data-action="bid">
                     <span class="empty-slot-dropdown-icon">📋</span>
                     <div class="empty-slot-dropdown-text">
-                        <div class="empty-slot-dropdown-title">Collection Offer</div>
-                        <div class="empty-slot-dropdown-desc">Offer on any available City</div>
+                        <div class="empty-slot-dropdown-title">Offer</div>
+                        <div class="empty-slot-dropdown-desc">Place a collection offer</div>
                     </div>
                 </div>
             `;
@@ -10179,9 +10186,19 @@
             // Recalculate grid to snap to clean layout
             const realCities = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
             const tempCities = wall.querySelectorAll('.wall-view-frame.temp-city').length;
-            const newLayout = getOptimalGridLayout(realCities + tempCities);
-            wall.className = wall.className.replace(/cols-\d+/, '');
-            wall.classList.add(`cols-${newLayout.cols}`);
+            const totalRemaining = realCities + tempCities;
+
+            if (totalRemaining === 0 && getCurrentWallCollector() === '__dream__') {
+                // Dream grid is empty: show a single centered + slot
+                addTryModeSlot(wall);
+                wall.className = wall.className.replace(/cols-\d+/, '');
+                wall.classList.add('cols-2');
+                document.getElementById('wallViewModal')?.classList.add('has-empty-slots');
+            } else {
+                const newLayout = getOptimalGridLayout(totalRemaining);
+                wall.className = wall.className.replace(/cols-\d+/, '');
+                wall.classList.add(`cols-${newLayout.cols}`);
+            }
 
             // Update grid nudge
             updateGridNudge();
