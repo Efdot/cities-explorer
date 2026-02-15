@@ -1808,6 +1808,9 @@
         .become-collector-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(255,179,71,0.05); }
         .not-collector-link { display: block; width: 100%; padding: 8px 0; margin-bottom: 12px; background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; }
         .not-collector-link:hover { opacity: 1; color: var(--warm); }
+        .dream-grid-btn { background: none; border: none; cursor: pointer; font-size: 14px; line-height: 1; padding: 4px; opacity: 0.35; transition: all 0.25s ease; filter: grayscale(0.6); }
+        .dream-grid-btn:hover { opacity: 0.9; filter: grayscale(0); transform: scale(1.15); }
+        .dream-grid-btn[title]::after { content: ''; }
         /* Citizen Guide View - Clean onboarding */
         .collector-guide-view { display: none; }
         .collector-guide-view.active { display: block; }
@@ -4048,6 +4051,7 @@
         <div class="collectors-header">
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›››</span></h2>
             <div class="collectors-header-actions">
+                <button class="dream-grid-btn" id="dreamGridBtn" title="Dream Collection" aria-label="Build a dream collection">&#x1F4AD;</button>
                 <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map">⚡</button>
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
@@ -4110,6 +4114,9 @@
                 <div class="collector-guide-highlight">Every 4&nbsp;Cities you own is a&nbsp;set. Each set earns one airdrop of future&nbsp;drops. One City of each energy&nbsp;type&mdash;Rising, Living, Fading, Resting&mdash;is a complete energy&nbsp;set.</div>
                 <button class="collector-guide-pill-btn secondary" id="guideExploreGrid">
                     Explore the grid
+                </button>
+                <button class="collector-guide-pill-btn secondary" id="guideDreamGrid">
+                    &#x1F4AD; Build a dream collection
                 </button>
             </div>
 
@@ -7919,6 +7926,13 @@
                 });
             }
 
+            const guideDreamBtn = document.getElementById('guideDreamGrid');
+            if (guideDreamBtn) {
+                guideDreamBtn.addEventListener('click', () => {
+                    if (typeof openDreamGrid === 'function') openDreamGrid();
+                });
+            }
+
             // Allow clicking step numbers to navigate
             const stepNums = document.querySelectorAll('.collector-guide-step-num');
             stepNums.forEach(num => {
@@ -10348,6 +10362,89 @@
         // Expose openWallView globally and set the forward reference
         window.openWallView = openWallView;
         openWallViewFn = openWallView;
+
+        // Dream Grid — build a collection from scratch using try mode
+        function openDreamGrid() {
+            const DREAM_KEY = '__dream__';
+            const wall = document.getElementById('wallViewWall');
+            wall.innerHTML = '';
+            wallViewZoom = 1;
+            wallPanX = 0;
+            wallPanY = 0;
+
+            // Collector info
+            const collectorInfo = document.createElement('div');
+            collectorInfo.className = 'wall-view-collector-info';
+            collectorInfo.id = 'wallViewCollectorInfo';
+            const collectorLabel = document.createElement('div');
+            collectorLabel.className = 'wall-view-collector-name';
+            collectorLabel.id = 'wallViewCollectorLabel';
+            collectorLabel.innerHTML = '<span class="collector-label">YOUR</span> <span class="collector-name-value">Dream Collection</span>';
+            collectorLabel.dataset.rawName = DREAM_KEY;
+            collectorInfo.appendChild(collectorLabel);
+            wall.appendChild(collectorInfo);
+
+            wallViewTokenIds = [];
+            wall.className = 'wall-view-wall cols-2';
+
+            const modal = document.getElementById('wallViewModal');
+            modal.classList.remove('has-empty-slots', 'wall-gray', 'line-view', 'show-layout-toggle', 'haunted-active');
+            modal.classList.add('wall-black');
+            currentWallColor = 'black';
+
+            // Lighting
+            const lightingEl = document.getElementById('wallViewLightingEffect');
+            if (lightingEl) lightingEl.style.background = 'radial-gradient(ellipse at 50% 30%, rgba(201,162,39,0.08) 0%, transparent 60%)';
+
+            // Reset try mode / layout
+            wallViewTryMode = false;
+            wallViewTempCities = [];
+            isDragSwapping = false;
+            wideLayoutMode = false;
+            document.getElementById('wallViewTryMode')?.classList.remove('active');
+            document.getElementById('wallViewLayoutToggle')?.classList.remove('active');
+            modal.classList.remove('line-view');
+            const lineBtn = document.getElementById('wallViewHideEmpty');
+            if (lineBtn) { lineBtn.classList.remove('active'); lineBtn.innerHTML = '<span class="line-icon">⊞</span> GRID'; }
+
+            // Zoom
+            wallViewZoom = 0.8;
+            const wrapper = document.getElementById('wallViewWrapper');
+            if (wrapper) wrapper.style.transform = `translate(0px, 0px) scale(${wallViewZoom})`;
+
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            // Restore saved dream cities (48-hour persistence)
+            const savedDream = getSavedTryCities(DREAM_KEY);
+            if (savedDream && savedDream.length > 0) {
+                savedDream.forEach(tryTokenId => addTempCity(tryTokenId, null));
+                // Recalculate zoom for restored dream grid
+                const dreamLayout = getOptimalGridLayout(wallViewTempCities.length);
+                if (dreamLayout.rows >= 3 && dreamLayout.cols >= 7) wallViewZoom = 0.55;
+                else if (dreamLayout.rows >= 3) wallViewZoom = 0.6;
+                else if (dreamLayout.rows >= 2 && dreamLayout.cols >= 5) wallViewZoom = 0.65;
+                else if (wallViewTempCities.length === 4) wallViewZoom = 0.72;
+                else if (dreamLayout.rows >= 2) wallViewZoom = 0.7;
+                if (wrapper) wrapper.style.transform = `translate(0px, 0px) scale(${wallViewZoom})`;
+            }
+
+            // If grid is empty, immediately add a try slot and open picker
+            if (wallViewTempCities.length === 0) {
+                wallViewTryMode = true;
+                document.getElementById('wallViewTryMode')?.classList.add('active');
+                addTryModeSlot(wall);
+                modal.classList.add('has-empty-slots');
+                // Auto-open the picker after a beat
+                setTimeout(() => {
+                    const slot = wall.querySelector('.wall-view-artwork.try-mode-slot');
+                    if (slot) openTryCityPicker(slot);
+                }, 400);
+            }
+
+            setTimeout(updateGridNudge, 100);
+        }
+        window.openDreamGrid = openDreamGrid;
 
         // Wall button handler - opens wall view for current collector
         function handleWallButtonClick() {
@@ -19470,6 +19567,12 @@
         document.getElementById('energyQuadrantBtn')?.addEventListener('click', (e) => {
             e.stopPropagation();
             launchEnergyQuadrant();
+        });
+
+        // Dream grid button in collectors header
+        document.getElementById('dreamGridBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (typeof openDreamGrid === 'function') openDreamGrid();
         });
 
         // Close on backdrop click (outside the container)
