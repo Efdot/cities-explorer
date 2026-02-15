@@ -2451,6 +2451,56 @@
         .wall-view-download:hover { background: #333; border-color: #333; color: #fff; }
         .wall-view-modal.dark-mode .wall-view-download, .wall-view-modal.wall-black .wall-view-download { border-color: #333; color: #666; }
         .wall-view-modal.dark-mode .wall-view-download:hover, .wall-view-modal.wall-black .wall-view-download:hover { background: #fff; border-color: #fff; color: #000; }
+        /* Energy Quadrant Trigger Button */
+        .energy-quadrant-btn { position: relative; width: 34px; height: 34px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-right: 2px; padding: 0; transition: opacity 0.2s ease; opacity: 0.45; }
+        .energy-quadrant-btn:hover { opacity: 1; }
+        .eq-grid-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: 14px; height: 14px; }
+        .eq-grid-icon span { background: currentColor; border-radius: 1px; opacity: 0.7; }
+        .eq-bolt { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); font-size: 9px; line-height: 1; pointer-events: none; filter: saturate(0.6); }
+        /* Energy Quadrant Modal */
+        .energy-quadrant-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(8, 8, 12, 0.88); z-index: 2500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(12px); padding: 40px; cursor: pointer; }
+        .energy-quadrant-modal.open { display: flex; }
+        .energy-quadrant-container { background: #111114; border-radius: 20px; width: 100%; max-width: 900px; max-height: calc(100vh - 80px); padding: 28px; cursor: default; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.06); overflow: hidden; display: flex; flex-direction: column; }
+        .energy-quadrant-header { text-align: center; margin-bottom: 20px; flex-shrink: 0; }
+        .energy-quadrant-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; }
+        .energy-quadrant-subtitle { display: block; font-size: 9px; color: #444; margin-top: 4px; letter-spacing: 0.05em; }
+        .energy-quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; flex: 1; min-height: 0; border-radius: 12px; overflow: hidden; }
+        .energy-quadrant { padding: 20px; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
+        .eq-rising { background: rgba(255, 179, 71, 0.06); }
+        .eq-living { background: rgba(135, 206, 235, 0.06); }
+        .eq-fading { background: rgba(221, 160, 221, 0.06); }
+        .eq-resting { background: rgba(74, 85, 104, 0.08); }
+        .eq-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 5px; }
+        .eq-label-icon { font-size: 12px; }
+        .eq-rising .eq-label { color: #ffb347; }
+        .eq-living .eq-label { color: #87ceeb; }
+        .eq-fading .eq-label { color: #dda0dd; }
+        .eq-resting .eq-label { color: #6b7280; }
+        .eq-collectors { display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start; }
+        .eq-chip { padding: 4px 8px; border-radius: 4px; font-size: 9px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; line-height: 1.2; display: flex; align-items: center; gap: 4px; }
+        .eq-chip .eq-chip-count { font-size: 8px; opacity: 0.5; font-weight: 400; }
+        .eq-rising .eq-chip { background: rgba(255, 179, 71, 0.1); color: rgba(255, 179, 71, 0.7); border: 1px solid rgba(255, 179, 71, 0.12); }
+        .eq-rising .eq-chip:hover { background: rgba(255, 179, 71, 0.2); color: #ffb347; border-color: rgba(255, 179, 71, 0.3); }
+        .eq-living .eq-chip { background: rgba(135, 206, 235, 0.1); color: rgba(135, 206, 235, 0.7); border: 1px solid rgba(135, 206, 235, 0.12); }
+        .eq-living .eq-chip:hover { background: rgba(135, 206, 235, 0.2); color: #87ceeb; border-color: rgba(135, 206, 235, 0.3); }
+        .eq-fading .eq-chip { background: rgba(221, 160, 221, 0.1); color: rgba(221, 160, 221, 0.7); border: 1px solid rgba(221, 160, 221, 0.12); }
+        .eq-fading .eq-chip:hover { background: rgba(221, 160, 221, 0.2); color: #dda0dd; border-color: rgba(221, 160, 221, 0.3); }
+        .eq-resting .eq-chip { background: rgba(107, 114, 128, 0.12); color: rgba(107, 114, 128, 0.7); border: 1px solid rgba(107, 114, 128, 0.12); }
+        .eq-resting .eq-chip:hover { background: rgba(107, 114, 128, 0.22); color: #9ca3af; border-color: rgba(107, 114, 128, 0.3); }
+        .eq-chip.eq-chip-lg { font-size: 10px; padding: 5px 10px; font-weight: 600; }
+        .eq-chip.eq-chip-lg .eq-chip-count { font-size: 9px; }
+        @media (max-width: 768px) {
+            .energy-quadrant-modal { padding: 20px; }
+            .energy-quadrant-container { padding: 20px; border-radius: 14px; }
+            .energy-quadrant-grid { gap: 1px; }
+            .energy-quadrant { padding: 14px; }
+            .eq-chip { font-size: 8px; padding: 3px 6px; }
+        }
+        @media (max-width: 480px) {
+            .energy-quadrant-modal { padding: 12px; }
+            .energy-quadrant-container { padding: 14px; }
+            .energy-quadrant { padding: 10px; }
+        }
         /* Haunted wall view effect for The Lost Cities */
         .wall-view-haunted-effect { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 2s ease; z-index: 15; }
         .wall-view-modal.wall-black.haunted-active .wall-view-haunted-effect { opacity: 1; }
@@ -3857,6 +3907,10 @@
                 <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank" class="collect-popover-option">Browse Marketplace <span>OpenSea</span></a>
             </div>
         </div>
+        <button class="energy-quadrant-btn" id="energyQuadrantBtn" title="Energy Collector Map" aria-label="Open energy collector map">
+            <span class="eq-grid-icon"><span></span><span></span><span></span><span></span></span>
+            <span class="eq-bolt">&#9889;</span>
+        </button>
         <button class="view-toggle-btn" id="viewToggleBtn" title="Toggle Grid/Single View" aria-label="Toggle between grid and single view" aria-expanded="false">
             <img src="glyph-blob-static.png" alt="" class="glyph-img glyph-static glyph-blob">
             <img src="glyph-blob.gif" alt="" class="glyph-img glyph-animated glyph-blob">
@@ -4275,6 +4329,34 @@
             <div class="opensea-warning-actions">
                 <button class="opensea-warning-btn primary" id="openseaWarningContinue">Continue to OpenSea</button>
                 <button class="opensea-warning-btn secondary" id="openseaWarningCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Energy Quadrant View -->
+    <div class="energy-quadrant-modal" id="energyQuadrantModal">
+        <div class="energy-quadrant-container" id="energyQuadrantContainer">
+            <div class="energy-quadrant-header">
+                <span class="energy-quadrant-title">Collector Energy Map</span>
+                <span class="energy-quadrant-subtitle" id="eqSubtitle"></span>
+            </div>
+            <div class="energy-quadrant-grid">
+                <div class="energy-quadrant eq-rising" data-energy="Rising">
+                    <div class="eq-label"><span class="eq-label-icon">&#9728;</span> Rising</div>
+                    <div class="eq-collectors" id="eqRising"></div>
+                </div>
+                <div class="energy-quadrant eq-living" data-energy="Living">
+                    <div class="eq-label"><span class="eq-label-icon">&#128694;</span> Living</div>
+                    <div class="eq-collectors" id="eqLiving"></div>
+                </div>
+                <div class="energy-quadrant eq-fading" data-energy="Fading">
+                    <div class="eq-label"><span class="eq-label-icon">&#9925;</span> Fading</div>
+                    <div class="eq-collectors" id="eqFading"></div>
+                </div>
+                <div class="energy-quadrant eq-resting" data-energy="Resting">
+                    <div class="eq-label"><span class="eq-label-icon">&#127769;</span> Resting</div>
+                    <div class="eq-collectors" id="eqResting"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -18779,6 +18861,106 @@
             });
         })();
 
+
+        // Energy Quadrant View
+        function openEnergyQuadrant() {
+            const modal = document.getElementById('energyQuadrantModal');
+            if (!modal || !COLLECTORS_DATA || COLLECTORS_DATA.length === 0) return;
+
+            // Build energy-to-collector mapping
+            const energyCollectors = { Rising: [], Living: [], Fading: [], Resting: [] };
+
+            COLLECTORS_DATA.forEach(collector => {
+                if (!collector.tokens || collector.tokens.length === 0) return;
+                const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                collector.tokens.forEach(tokenId => {
+                    const traits = tokenTraits[tokenId];
+                    if (traits && traits['Energy'] && energyCounts.hasOwnProperty(traits['Energy'])) {
+                        energyCounts[traits['Energy']]++;
+                    }
+                });
+                ALL_ENERGIES.forEach(energy => {
+                    if (energyCounts[energy] > 0) {
+                        energyCollectors[energy].push({
+                            name: collector.name,
+                            count: energyCounts[energy],
+                            total: collector.count,
+                            tokens: collector.tokens
+                        });
+                    }
+                });
+            });
+
+            // Sort each quadrant by count descending
+            ALL_ENERGIES.forEach(energy => {
+                energyCollectors[energy].sort((a, b) => b.count - a.count);
+            });
+
+            // Render each quadrant
+            const quadrantIds = { Rising: 'eqRising', Living: 'eqLiving', Fading: 'eqFading', Resting: 'eqResting' };
+            let totalCollectors = 0;
+
+            ALL_ENERGIES.forEach(energy => {
+                const container = document.getElementById(quadrantIds[energy]);
+                if (!container) return;
+                const collectors = energyCollectors[energy];
+                totalCollectors += collectors.length;
+
+                container.innerHTML = collectors.map(c => {
+                    const displayName = formatCollectorName(c.name);
+                    const isLarge = c.count >= 3;
+                    return `<div class="eq-chip${isLarge ? ' eq-chip-lg' : ''}" data-collector-name="${c.name}" title="${displayName}: ${c.count} ${energy} ${c.count === 1 ? 'city' : 'cities'}">
+                        <span class="eq-chip-name">${displayName}</span>
+                        <span class="eq-chip-count">${c.count}</span>
+                    </div>`;
+                }).join('');
+            });
+
+            // Update subtitle
+            const subtitle = document.getElementById('eqSubtitle');
+            if (subtitle) {
+                const uniqueNames = new Set();
+                ALL_ENERGIES.forEach(e => energyCollectors[e].forEach(c => uniqueNames.add(c.name)));
+                subtitle.textContent = `${uniqueNames.size} collectors across ${ALL_ENERGIES.length} energies`;
+            }
+
+            // Add click handlers to chips
+            modal.querySelectorAll('.eq-chip').forEach(chip => {
+                chip.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const name = chip.dataset.collectorName;
+                    const collector = COLLECTORS_DATA.find(c => c.name === name);
+                    if (collector && collector.tokens) {
+                        closeEnergyQuadrant();
+                        setTimeout(() => openWallView(collector.name, collector.tokens), 150);
+                    }
+                });
+            });
+
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEnergyQuadrant() {
+            const modal = document.getElementById('energyQuadrantModal');
+            if (modal) modal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Trigger button
+        document.getElementById('energyQuadrantBtn')?.addEventListener('click', openEnergyQuadrant);
+
+        // Close on backdrop click (outside the container)
+        document.getElementById('energyQuadrantModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'energyQuadrantModal') closeEnergyQuadrant();
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('energyQuadrantModal')?.classList.contains('open')) {
+                closeEnergyQuadrant();
+            }
+        });
 
     </script>
 
