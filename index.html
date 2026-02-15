@@ -9728,16 +9728,10 @@
             // Track temp city
             wallViewTempCities.push(tokenId);
 
-            // If TRY mode is active, add one more empty slot so user can keep adding
-            if (wallViewTryMode) {
-                addTryModeSlot(wall);
-            }
-
-            // Recalculate grid to snap to the right layout
+            // Recalculate grid to snap to the right layout (no auto-adding another slot)
             const realCount = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
             const tempCount = wall.querySelectorAll('.wall-view-frame.temp-city').length;
-            const tryCount = wall.querySelectorAll('.wall-view-artwork.try-mode-slot').length;
-            const newLayout = getOptimalGridLayout(realCount + tempCount + tryCount);
+            const newLayout = getOptimalGridLayout(realCount + tempCount);
             wall.className = wall.className.replace(/cols-\d+/, '');
             wall.classList.add(`cols-${newLayout.cols}`);
 
