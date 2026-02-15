@@ -14621,7 +14621,12 @@
                 gradientRAFPending = true;
                 requestAnimationFrame(() => {
                     gradientRAFPending = false;
-                    gradientTargetColor = getGradientColorAtPercent(percent);
+                    if (colorGradientStepped) {
+                        const palName = getPaletteAtGradientPercent(percent);
+                        gradientTargetColor = getPaletteHSLCache()[palName];
+                    } else {
+                        gradientTargetColor = getGradientColorAtPercent(percent);
+                    }
                     reorderGradientGrid(gradientTargetColor.h, gradientTargetColor.s, gradientTargetColor.l);
                 });
             }
