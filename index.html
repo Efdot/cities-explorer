@@ -14390,7 +14390,9 @@
             document.getElementById('gridPagination').style.display = 'none';
 
             // Upgrade visible images from 20px micro-thumbs to 50px via IntersectionObserver
+            // Use larger rootMargin on mobile to pre-load further ahead (fast scroll/reorder)
             if (gradientImageObserver) gradientImageObserver.disconnect();
+            const obsMargin = window.innerWidth <= 768 ? '600px 0px' : '150px 0px';
             gradientImageObserver = new IntersectionObserver((entries) => {
                 for (let i = 0; i < entries.length; i++) {
                     if (entries[i].isIntersecting) {
@@ -14402,7 +14404,7 @@
                         gradientImageObserver.unobserve(img);
                     }
                 }
-            }, { rootMargin: '150px 0px' });
+            }, { rootMargin: obsMargin });
             container.querySelectorAll('.grid-item img').forEach(img => {
                 gradientImageObserver.observe(img);
             });
@@ -14438,13 +14440,27 @@
 
         function reobserveGradientImages() {
             if (!gradientImageObserver || !gradientGridContainer) return;
+            // Eagerly upgrade images currently in (or near) the viewport — skip IO latency
+            const scrollParent = gradientGridContainer.closest('.grid-content') || document.documentElement;
+            const vpTop = scrollParent.scrollTop - 200;
+            const vpBot = scrollParent.scrollTop + scrollParent.clientHeight + 200;
             gradientGridContainer.querySelectorAll('.grid-item img[data-hires]').forEach(img => {
-                gradientImageObserver.observe(img);
+                const rect = img.getBoundingClientRect();
+                const parentRect = scrollParent.getBoundingClientRect();
+                const relTop = rect.top - parentRect.top + scrollParent.scrollTop;
+                if (relTop + rect.height >= vpTop && relTop <= vpBot) {
+                    img.src = img.dataset.hires;
+                    delete img.dataset.hires;
+                    gradientImageObserver.unobserve(img);
+                } else {
+                    gradientImageObserver.observe(img);
+                }
             });
         }
 
         function teardownGradientGrid() {
             if (gradientImageObserver) { gradientImageObserver.disconnect(); gradientImageObserver = null; }
+            if (gradientReobserveTimer) { clearTimeout(gradientReobserveTimer); gradientReobserveTimer = null; }
             gradientGridItems = null;
             gradientGridContainer = null;
             gradientPaletteGroups = null;
@@ -14493,6 +14509,7 @@
         }
 
         let gradientRAFPending = false;
+        let gradientReobserveTimer = null;
         function getGradientRGBAtPercent(percent) {
             const p = Math.max(0, Math.min(100, percent));
             let lo = DAY_GRADIENT_STOPS[0], hi = DAY_GRADIENT_STOPS[DAY_GRADIENT_STOPS.length - 1];
@@ -14533,6 +14550,14 @@
                     gradientTargetColor = getGradientColorAtPercent(percent);
                     reorderGradientGrid(gradientTargetColor.h, gradientTargetColor.s, gradientTargetColor.l);
                 });
+            }
+
+            // Re-observe images periodically during drag so newly visible items start loading
+            if (!gradientReobserveTimer) {
+                gradientReobserveTimer = setTimeout(() => {
+                    gradientReobserveTimer = null;
+                    reobserveGradientImages();
+                }, 250);
             }
         }
 
