@@ -9728,7 +9728,12 @@
             // Track temp city
             wallViewTempCities.push(tokenId);
 
-            // Recalculate grid to snap to the right layout (no auto-adding another slot)
+            // Deactivate try mode after placing a city — clean grid, no lingering slots
+            wallViewTryMode = false;
+            document.getElementById('wallViewTryMode')?.classList.remove('active');
+            document.getElementById('wallViewModal')?.classList.remove('has-empty-slots');
+
+            // Recalculate grid to snap to the right layout
             const realCount = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
             const tempCount = wall.querySelectorAll('.wall-view-frame.temp-city').length;
             const newLayout = getOptimalGridLayout(realCount + tempCount);
@@ -9744,29 +9749,18 @@
             const wall = document.getElementById('wallViewWall');
             if (!wall || !artworkElement) return;
 
-            // Create an empty try-mode slot so it gets cleaned up when TRY is toggled off
-            const artwork = document.createElement('div');
-            artwork.className = 'wall-view-artwork try-mode-slot';
-
-            const frame = document.createElement('div');
-            frame.className = 'wall-view-frame empty-slot';
-
-            const emptyFrame = document.createElement('div');
-            emptyFrame.className = 'wall-view-empty-frame';
-            emptyFrame.innerHTML = '<span class="slot-plus">+</span><span class="slot-label"><span class="slot-grid-icon">▦</span> try</span>';
-            emptyFrame.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showEmptySlotOptions(e, artwork);
-            });
-
-            frame.appendChild(emptyFrame);
-            artwork.appendChild(frame);
-
-            // Replace the temp city with empty slot
-            artworkElement.parentNode.replaceChild(artwork, artworkElement);
+            // Simply remove the temp city and recalculate grid
+            artworkElement.remove();
 
             // Remove from tracking
             wallViewTempCities = wallViewTempCities.filter(id => id !== tokenId);
+
+            // Recalculate grid to snap to clean layout
+            const realCities = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
+            const tempCities = wall.querySelectorAll('.wall-view-frame.temp-city').length;
+            const newLayout = getOptimalGridLayout(realCities + tempCities);
+            wall.className = wall.className.replace(/cols-\d+/, '');
+            wall.classList.add(`cols-${newLayout.cols}`);
 
             // Update grid nudge
             updateGridNudge();
