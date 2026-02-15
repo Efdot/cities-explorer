@@ -2741,6 +2741,8 @@
             .grid-mode-btn::after { content: none; }
             .grid-mode-btn[data-emoji="🌍"] { font-size: 0; }
             .grid-mode-btn[data-emoji="🌍"]::after { content: "🌍"; font-size: 16px; line-height: 1; }
+            .grid-mode-btn[data-emoji="❤️"] { font-size: 0; }
+            .grid-mode-btn[data-emoji="❤️"]::after { content: "❤️"; font-size: 16px; line-height: 1; }
             .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; font-size: 16px; line-height: 1; }
             .grid-mode-btn[data-emoji="gradient"] .mode-gradient-dot { display: none; }
             .grid-mode-btn[data-emoji="gradient"]::after { content: ""; display: block; width: 18px; height: 18px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); }
@@ -8930,8 +8932,13 @@
                         return new Promise((resolve) => {
                             const newImg = new Image();
                             newImg.crossOrigin = 'anonymous';
-                            newImg.onload = () => resolve(newImg);
+                            const timeout = setTimeout(() => {
+                                console.warn(`Timeout loading image for token ${tokenId}`);
+                                resolve(null);
+                            }, 15000);
+                            newImg.onload = () => { clearTimeout(timeout); resolve(newImg); };
                             newImg.onerror = () => {
+                                clearTimeout(timeout);
                                 console.warn(`Failed to load image for token ${tokenId}`);
                                 resolve(null);
                             };
@@ -8984,14 +8991,24 @@
                 ctx.fillStyle = isDark ? '#555' : '#aaa';
                 ctx.fillText(cityNumbers, width/2, height - floorHeight - 10);
 
-                // Try to download - may fail due to CORS
+                // Try to download via blob (more reliable than toDataURL for large canvases)
                 try {
-                    const link = document.createElement('a');
-                    link.download = `cities-${collectorName.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${type}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
+                    await new Promise((resolve, reject) => {
+                        canvas.toBlob((blob) => {
+                            if (!blob) { reject(new Error('Canvas export failed')); return; }
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.download = `cities-${collectorName.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${type}.png`;
+                            link.href = url;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            setTimeout(() => URL.revokeObjectURL(url), 5000);
+                            resolve();
+                        }, 'image/png');
+                    });
                 } catch (corsErr) {
-                    // CORS blocked - show screenshot instructions
+                    // CORS or export blocked - show screenshot instructions
                     showStatus('📸 Take a screenshot to save this wall view');
                     throw new Error('CORS restriction');
                 }
@@ -14176,8 +14193,9 @@
             gridAllFavBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 showingFavoritesOnly = !showingFavoritesOnly;
-                // Show current state as button label
+                // Show current state as button label + update emoji for mobile
                 gridAllFavBtn.textContent = showingFavoritesOnly ? 'FAVS' : 'ALL';
+                gridAllFavBtn.dataset.emoji = showingFavoritesOnly ? '❤️' : '🌍';
                 gridAllFavBtn.classList.toggle('favorites-active', showingFavoritesOnly);
                 gridPage = 1;
                 renderGrid();
@@ -15083,6 +15101,15 @@
             // When gradient is actively being used, grid is pre-rendered with CSS order reordering
             // (skip full re-render; reorderGradientGrid handles sorting via CSS order)
             if (colorGradientActive && gradientGridItems && !showingFavoritesOnly) {
+                // Check if gradient grid is still in the DOM (it gets destroyed when switching to favorites view)
+                if (gradientGridContainer && gradientGridContainer.parentNode) {
+                    return;
+                }
+                // Gradient grid was destroyed, rebuild it
+                preRenderGradientGrid();
+                if (gradientTargetColor) {
+                    reorderGradientGrid(gradientTargetColor.h, gradientTargetColor.s, gradientTargetColor.l);
+                }
                 return;
             } else if (showingFavoritesOnly) {
                 renderFavoritesGrid(tokens);
