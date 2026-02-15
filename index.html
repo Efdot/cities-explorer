@@ -8991,18 +8991,9 @@
                 if (wallRoom) wallRoom.style.cursor = 'grab';
             });
 
-            // Click on empty wall area (not a drag) → back to collectors panel
-            wallRoom?.addEventListener('click', (e) => {
-                if (wallDragDistance > 5) return;
-                if (e.target.closest('.wall-view-frame') || e.target.closest('.wall-view-empty-frame') || e.target.closest('button') || e.target.closest('a') || e.target.closest('.wall-view-collector-info')) return;
-                closeWallView();
-                currentCollectorFilter = null;
-                document.getElementById('collectorBanner')?.classList.remove('visible');
-                collectorsPanel.classList.add('open');
-                document.body.classList.add('collectors-open');
-                startPatronsAutoReveal();
-                renderGrid();
-            });
+            // Click on empty wall area (not a drag) — no longer auto-closes
+            // Use the ✕ close button or BACK button in the header instead
+            // This prevents accidental closure when clicking between frames
 
             // Mouse wheel / trackpad zoom - very smooth and gradual
             wallRoom?.addEventListener('wheel', (e) => {
@@ -10025,7 +10016,24 @@
             swapBtn.textContent = 'Try Another';
             swapBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                removeTempCity(tokenId, artwork);
+                // Replace: remove this city, add a try slot in its place, open picker
+                const wall = document.getElementById('wallViewWall');
+                const parentArtwork = artwork;
+                removeTempCity(tokenId, parentArtwork);
+                // Add a new try slot and open the picker
+                if (wall) {
+                    wallViewTryMode = true;
+                    document.getElementById('wallViewTryMode')?.classList.add('active');
+                    addTryModeSlot(wall);
+                    const rc = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
+                    const tc = wall.querySelectorAll('.wall-view-frame.temp-city').length;
+                    const newL = getOptimalGridLayout(rc + tc + 1);
+                    wall.className = wall.className.replace(/cols-\d+/, '');
+                    wall.classList.add(`cols-${newL.cols}`);
+                    document.getElementById('wallViewModal')?.classList.add('has-empty-slots');
+                    const slot = wall.querySelector('.wall-view-artwork.try-mode-slot');
+                    if (slot) setTimeout(() => openTryCityPicker(slot), 150);
+                }
             });
 
             actions.appendChild(offerBtn);
