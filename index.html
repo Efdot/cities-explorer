@@ -271,8 +271,9 @@
         .grid-numbers-toggle:hover { opacity: 0.8; background: var(--bg-input); }
         .grid-numbers-toggle.active { opacity: 1; color: var(--warm); }
 
-        /* Grid clock - small text top left */
-        .grid-clock { position: absolute; top: 6px; left: 12px; font-size: 9px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); opacity: 0.35; z-index: 2; font-family: Helvetica, Arial, sans-serif; pointer-events: none; transition: opacity 0.3s ease; }
+        /* Grid clock - city emoji top left */
+        .grid-clock { position: absolute; top: 4px; left: 10px; font-size: 16px; z-index: 2; cursor: default; opacity: 0.35; transition: opacity 0.3s ease, filter 0.3s ease; filter: grayscale(100%); line-height: 1; }
+        .grid-clock:hover { opacity: 0.9; filter: grayscale(0%); }
         .grid-header:hover .grid-clock { opacity: 0.55; }
 
         /* Grid energy clock - non-interactive display */
@@ -4254,7 +4255,7 @@
         <div class="opensea-warning-content">
             <div class="opensea-warning-icon">⛵</div>
             <div class="opensea-warning-title">Taking a Detour to OpenSea</div>
-            <div class="opensea-warning-text">You'll leave Cities Explorer to view this City on <a href="https://opensea.io" target="_blank">OpenSea</a>.</div>
+            <div class="opensea-warning-text">Opens in a new tab.</div>
             <div class="opensea-warning-actions">
                 <button class="opensea-warning-btn primary" id="openseaWarningContinue">Continue to OpenSea</button>
                 <button class="opensea-warning-btn secondary" id="openseaWarningCancel">Cancel</button>
@@ -13980,11 +13981,11 @@
         // Dawn (Rising): 5am-9am, Day (Living): 9am-5pm, Dusk (Fading): 5pm-9pm, Night (Resting): 9pm-5am
         function getCurrentEnergy() {
             const hour = new Date().getHours();
-            // 4 distinct icons for each energy state
-            if (hour >= 5 && hour < 9) return { name: 'Rising', icon: '\u{1F305}', iconColor: '#ffb347', className: 'energy-rising' };   // Dawn/sunrise
-            if (hour >= 9 && hour < 17) return { name: 'Living', icon: '\u2600', iconColor: '#87ceeb', className: 'energy-living' };  // Day/sun
-            if (hour >= 17 && hour < 21) return { name: 'Fading', icon: '\u{1F306}', iconColor: '#dda0dd', className: 'energy-fading' }; // Dusk/sunset
-            return { name: 'Resting', icon: '\u{1F319}', iconColor: '#4a5568', className: 'energy-resting' };                            // Night/moon
+            // 4 distinct city icons for each energy state
+            if (hour >= 5 && hour < 9) return { name: 'Rising', icon: '\u{1F305}', cityIcon: '\u{1F307}', iconColor: '#ffb347', className: 'energy-rising' };   // Dawn/sunrise → 🌇
+            if (hour >= 9 && hour < 17) return { name: 'Living', icon: '\u2600', cityIcon: '\u{1F3D9}\uFE0F', iconColor: '#87ceeb', className: 'energy-living' };  // Day/sun → 🏙️
+            if (hour >= 17 && hour < 21) return { name: 'Fading', icon: '\u{1F306}', cityIcon: '\u{1F306}', iconColor: '#dda0dd', className: 'energy-fading' }; // Dusk/sunset → 🌆
+            return { name: 'Resting', icon: '\u{1F319}', cityIcon: '\u{1F303}', iconColor: '#4a5568', className: 'energy-resting' };                            // Night/moon → 🌃
         }
 
         function updateEnergyClock() {
@@ -13995,10 +13996,11 @@
                 btn.innerHTML = `<span class="energy-icon">${energy.icon}</span>`;
                 btn.title = `${energy.name} (${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})`;
             }
-            // Update top-left clock text
+            // Update top-left city emoji clock
             const clockEl = document.getElementById('gridClock');
             if (clockEl) {
-                clockEl.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                clockEl.textContent = energy.cityIcon;
+                clockEl.title = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             }
         }
 
