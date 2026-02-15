@@ -942,6 +942,10 @@
         .timeline-group-item-year { font-size: 9px; color: var(--text-muted); display: block; margin-top: 2px; }
         .timeline-group-item-collector { font-size: 8px; color: var(--text-muted); display: block; margin-top: 3px; opacity: 0.6; }
         .timeline-group-collectors { font-size: 10px; color: var(--text-muted); margin-top: 16px; letter-spacing: 0.03em; }
+        .timeline-group-collectors .collector-link { cursor: pointer; transition: color 0.2s ease; }
+        .timeline-group-collectors .collector-link:hover { color: var(--yellow); }
+        .provenance-name.collector-link { cursor: pointer; transition: color 0.2s ease; }
+        .provenance-name.collector-link:hover { color: var(--yellow); }
         /* Vertical pair layout for portrait cities */
         .timeline-group-grid.vertical-pair { grid-template-columns: repeat(2, 1fr); max-width: 500px; margin: 0 auto; }
         .timeline-group-grid.vertical-pair .timeline-group-item img { aspect-ratio: 9/16; object-fit: cover; }
@@ -4901,7 +4905,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="timeline-group-collectors">Collected by Sighduck · Valdi · Fin444 · AMT Collections</div>
+                    <div class="timeline-group-collectors">Collected by <span class="collector-link" data-collector="Sighduck">Sighduck</span> · <span class="collector-link" data-collector="Valdi">Valdi</span> · <span class="collector-link" data-collector="Fin444">Fin444</span> · <span class="collector-link" data-collector="AMT Collections">AMT Collections</span></div>
                 </div>
 
                 <!-- 2021: O.M.A.G.E. & Efdot Lab -->
@@ -4940,7 +4944,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="timeline-group-collectors">Collected by 0x17Bf...072B · Coinbilly</div>
+                    <div class="timeline-group-collectors">Collected by <span class="collector-link" data-collector="0x17Bf...072B">0x17Bf...072B</span> · <span class="collector-link" data-collector="Coinbilly">Coinbilly</span></div>
                 </div>
 
                 <!-- 2022 -->
@@ -4957,7 +4961,7 @@
                             <span class="timeline-item-desc">Urban observations frozen in motion. A reflection of simplicity and chaos. Created live at The Gateway, Miami during Art Basel 2022.</span>
                         </div>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/22" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Reginald de la Grarbs</span>
+                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/22" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name collector-link" data-collector="Reginald de la Grarbs">Reginald de la Grarbs</span>
                         </div>
                     </div>
                 </div>
@@ -4982,7 +4986,7 @@
                         <span class="timeline-item-title">Light Pulp</span>
                         <span class="timeline-item-year">2022</span>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/17" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Easp0rts</span>
+                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/17" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name collector-link" data-collector="Easp0rts">Easp0rts</span>
                         </div>
                     </div>
                 </div>
@@ -5009,7 +5013,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="timeline-group-collectors">Collected by Sendrock · Cosimo Medici</div>
+                    <div class="timeline-group-collectors">Collected by <span class="collector-link" data-collector="Sendrock">Sendrock</span> · <span class="collector-link" data-collector="Cosimo De Medici">Cosimo Medici</span></div>
                 </div>
 
                 <!-- 2023 -->
@@ -5023,7 +5027,7 @@
                         <span class="timeline-item-title">Luminosity</span>
                         <span class="timeline-item-year">2023</span>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://foundation.app/mint/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/23" target="_blank" title="View on Foundation">⟐</a> <span class="provenance-name">0x17Bf...072B</span>
+                            <a class="provenance-link" href="https://foundation.app/mint/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/23" target="_blank" title="View on Foundation">⟐</a> <span class="provenance-name collector-link" data-collector="0x17Bf...072B">0x17Bf...072B</span>
                         </div>
                     </div>
                 </div>
@@ -5035,7 +5039,7 @@
                         <span class="timeline-item-title">Street View</span>
                         <span class="timeline-item-year">2023</span>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/29" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Diid</span>
+                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/29" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name collector-link" data-collector="Diid">Diid</span>
                         </div>
                     </div>
                 </div>
@@ -5056,7 +5060,7 @@
                         <span class="timeline-item-title">Traffic on the Avenue</span>
                         <span class="timeline-item-year">2023</span>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/33" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Redbeard</span>
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/33" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name collector-link" data-collector="Redbeard">Redbeard</span>
                         </div>
                     </div>
                 </div>
@@ -5068,7 +5072,7 @@
                         <span class="timeline-item-title">Roundabout</span>
                         <span class="timeline-item-year">2023</span>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/34" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Paperbuddha</span>
+                            <a class="provenance-link" href="https://superrare.com/0x822f1418072e15e1d1f07533138b35a72a8a0f55/34" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name collector-link" data-collector="Paper Buddha">Paper Buddha</span>
                         </div>
                     </div>
                 </div>
@@ -5084,7 +5088,7 @@
                         <span class="timeline-item-title">Silent Skyline</span>
                         <span class="timeline-item-year">2024</span>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/36" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Blondie</span>
+                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/36" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name collector-link" data-collector="Blondie23lmd">Blondie</span>
                         </div>
                     </div>
                 </div>
@@ -5100,7 +5104,7 @@
                             <span class="timeline-item-desc">The introduction of glyph lines. A new layer of language woven into the grid.</span>
                         </div>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/42" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Batsoupyum</span>
+                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/42" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name collector-link" data-collector="BatSoupYum">Batsoupyum</span>
                         </div>
                     </div>
                 </div>
@@ -5132,7 +5136,7 @@
                             <span class="timeline-item-desc">Wall to screen. A Rio mural turned digital.</span>
                         </div>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x51650bf8cda4d93b00dbfa97f65aba14a82b2a9e/1" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name">Alex Zuttre</span>
+                            <a class="provenance-link" href="https://superrare.com/artwork/eth/0x51650bf8cda4d93b00dbfa97f65aba14a82b2a9e/1" target="_blank" title="View on SuperRare">⟐</a> <span class="provenance-name collector-link" data-collector="Alex Zuttre">Alex Zuttre</span>
                         </div>
                     </div>
                 </div>
@@ -5159,7 +5163,7 @@
                         <div class="timeline-item-actions-inline">
                             <a class="timeline-action-inline share-btn" href="#" title="Share on X">𝕏</a>
                         </div>
-                        <div class="timeline-italy-collectors">Collected by: Soren Wrenn · BatSoupYum · M Studio · Almost Serious Gallery · Georgie · R Alderman</div>
+                        <div class="timeline-italy-collectors">Collected by: <span class="collector-link" data-collector="Soren Wrenn">Soren Wrenn</span> · <span class="collector-link" data-collector="BatSoupYum">BatSoupYum</span> · <span class="collector-link" data-collector="M Studio">M Studio</span> · <span class="collector-link" data-collector="Almost Serious Gallery">Almost Serious Gallery</span> · <span class="collector-link" data-collector="Georgie">Georgie</span> · <span class="collector-link" data-collector="R Alderman">R Alderman</span></div>
                     </div>
                 </div>
 
@@ -5201,7 +5205,7 @@
                         <span class="timeline-item-title">Desert Grid</span>
                         <span class="timeline-item-year">2025 · Cities // Marfa</span>
                         <div class="timeline-provenance">
-                            <a class="provenance-link" href="https://opensea.io/item/ethereum/0x10abb881add1de70d4a9b2c712b9a8ac8853418b/4" target="_blank" title="View on OpenSea">⟐</a> <span class="provenance-name">Norcal & Klutch</span>
+                            <a class="provenance-link" href="https://opensea.io/item/ethereum/0x10abb881add1de70d4a9b2c712b9a8ac8853418b/4" target="_blank" title="View on OpenSea">⟐</a> <span class="provenance-name collector-link" data-collector="Norcal & Klutch">Norcal & Klutch</span>
                         </div>
                     </div>
                     <span class="desert-grid-hint">Day / Night</span>
@@ -18971,8 +18975,8 @@
             });
         });
 
-        // Timeline collector links - click to view their collection
-        document.querySelectorAll('.timeline-italy-collectors .collector-link').forEach(link => {
+        // Timeline collector links - click any collector name to view their collection
+        document.querySelectorAll('.timeline-group-collectors .collector-link, .timeline-italy-collectors .collector-link, .provenance-name.collector-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const collectorName = link.dataset.collector;
