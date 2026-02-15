@@ -8459,8 +8459,12 @@
             // (handleCollectorNameClick and handleWallButtonClick)
             document.getElementById('wallViewClose')?.addEventListener('click', closeWallView);
 
-            // Back to all collectors button
+            // Back to all collectors button (returns to perfect sets if opened from there)
             document.getElementById('wallViewBackBtn')?.addEventListener('click', () => {
+                if (wallFromPerfectSets) {
+                    closeWallView();
+                    return;
+                }
                 closeWallView();
                 currentCollectorFilter = null;
                 document.getElementById('collectorBanner')?.classList.remove('visible');
@@ -10303,11 +10307,20 @@
                 fullImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png`;
 
                 // Click frame to open framed mockup view (skip if drag-swapping)
+                // When opened from perfect sets, go to single output instead
                 frame.addEventListener('click', (e) => {
                     e.stopPropagation();
                     if (isDragSwapping) return;
                     const tokenId = parseInt(frame.dataset.tokenId);
-                    openFrameMockup(tokenId, name);
+                    if (wallFromPerfectSets) {
+                        wallWasOpenForOutput = true;
+                        const wallModal = document.getElementById('wallViewModal');
+                        if (wallModal) wallModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                        loadOutput(tokenId, true);
+                    } else {
+                        openFrameMockup(tokenId, name);
+                    }
                 });
 
                 inner.appendChild(frameImg);
@@ -11085,6 +11098,15 @@
             // Clean up any lingering overlays
             document.querySelector('.try-city-picker')?.remove();
             document.querySelector('.empty-slot-dropdown')?.remove();
+
+            // If opened from perfect sets, return to perfect sets view
+            if (wallFromPerfectSets) {
+                wallFromPerfectSets = false;
+                wallWasOpenForOutput = false;
+                const psModal = document.getElementById('perfectSetsModal');
+                if (psModal) { psModal.style.display = ''; psModal.classList.add('open'); }
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function getTraitRarity(traitKey, traitValue) {
@@ -11339,8 +11361,10 @@
         let outputHistory = [];
         const MAX_HISTORY = 20;
 
-        // Track perfect sets state for back-button navigation
+        // Track navigation state for perfect sets → wall → single output flow
         let perfectSetsWasOpen = false;
+        let wallFromPerfectSets = false;
+        let wallWasOpenForOutput = false;
 
         // Grid navigation: ordered list of tokens from the grid the user clicked from
         // When set, prev/next follows this order instead of default minted order
@@ -11350,7 +11374,10 @@
         function updateBackButton() {
             const backBtn = document.getElementById('backToPrevious');
             if (backBtn) {
-                if (perfectSetsWasOpen) {
+                if (wallWasOpenForOutput) {
+                    backBtn.style.display = 'block';
+                    backBtn.textContent = '↩ Back to Wall';
+                } else if (perfectSetsWasOpen) {
                     backBtn.style.display = 'block';
                     backBtn.textContent = '↩ Back to Sets';
                 } else {
@@ -13142,6 +13169,14 @@
 
         // Back to previous output button
         document.getElementById('backToPrevious')?.addEventListener('click', () => {
+            if (wallWasOpenForOutput) {
+                wallWasOpenForOutput = false;
+                const wallModal = document.getElementById('wallViewModal');
+                if (wallModal) { wallModal.style.display = ''; wallModal.classList.add('open'); }
+                document.body.style.overflow = 'hidden';
+                updateBackButton();
+                return;
+            }
             if (perfectSetsWasOpen) {
                 perfectSetsWasOpen = false;
                 const modal = document.getElementById('perfectSetsModal');
@@ -19690,6 +19725,8 @@
             // Close energy quadrant first (navigating away, don't reopen collectors)
             closeEnergyQuadrant(true);
             perfectSetsWasOpen = true;
+            wallFromPerfectSets = false;
+            wallWasOpenForOutput = false;
 
             // Helper: get palette bg for a token
             function getTokenPaletteBg(tokenId) {
@@ -19846,26 +19883,41 @@
                 subtitle.textContent = `${fullSetLabel}${totalSets} mono set${totalSets !== 1 ? 's' : ''} across all energies`;
             }
 
+            // Click handler: open collector wall view with set tokens arranged first
+            function openWallFromSets(card) {
+                const collectorEl = card.querySelector('.perfect-set-collector');
+                const collectorName = collectorEl?.dataset.collectorName;
+                if (!collectorName) return;
+                const collector = COLLECTORS_DATA.find(c => c.name === collectorName);
+                if (!collector) return;
+
+                // Get set tokens in display order from the card
+                const setTokens = Array.from(card.querySelectorAll('.perfect-set-cell'))
+                    .map(c => parseInt(c.dataset.tokenId))
+                    .filter(id => !isNaN(id));
+
+                // Arrange: set tokens first, then remaining collection
+                const remaining = collector.tokens.filter(t => !setTokens.includes(t));
+                const orderedTokens = [...setTokens, ...remaining];
+
+                wallFromPerfectSets = true;
+                closePerfectSets(true);
+                setTimeout(() => openWallView(collector.name, orderedTokens), 150);
+            }
+
             // Add click handlers for collector names
             body.querySelectorAll('.perfect-set-collector').forEach(el => {
                 el.addEventListener('click', () => {
-                    const name = el.dataset.collectorName;
-                    const collector = COLLECTORS_DATA.find(c => c.name === name);
-                    if (collector) {
-                        closePerfectSets(true);
-                        setTimeout(() => openWallView(collector.name, collector.tokens), 150);
-                    }
+                    const card = el.closest('.perfect-set-card');
+                    if (card) openWallFromSets(card);
                 });
             });
 
-            // Add click handlers for individual city cells -> open single output with back button
+            // Add click handlers for individual city cells -> open collector wall view
             body.querySelectorAll('.perfect-set-cell').forEach(el => {
                 el.addEventListener('click', () => {
-                    const tokenId = parseInt(el.dataset.tokenId);
-                    if (!isNaN(tokenId)) {
-                        modal.style.display = 'none';
-                        loadOutput(tokenId, true);
-                    }
+                    const card = el.closest('.perfect-set-card');
+                    if (card) openWallFromSets(card);
                 });
             });
 
@@ -19887,6 +19939,8 @@
             document.body.style.overflow = '';
             if (!navigatingAway) {
                 perfectSetsWasOpen = false;
+                wallFromPerfectSets = false;
+                wallWasOpenForOutput = false;
                 openEnergyQuadrant();
             }
         }
