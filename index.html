@@ -923,6 +923,12 @@
         .timeline-group::before { content: ''; position: absolute; left: 50%; top: -40px; bottom: -40px; width: 100px; transform: translateX(-50%); background: var(--bg-deep); z-index: -1; }
         .timeline-group-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
         .timeline-group-subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 20px; letter-spacing: 0.05em; line-height: 1.7; }
+        .openminds-caption-full { display: none; }
+        .openminds-more-btn { background: none; border: none; color: var(--warm); cursor: pointer; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; padding: 0 0 0 4px; opacity: 0.7; transition: opacity 0.2s; }
+        .openminds-more-btn:hover { opacity: 1; }
+        .timeline-group-subtitle.expanded .openminds-caption-preview { display: none; }
+        .timeline-group-subtitle.expanded .openminds-caption-full { display: inline; }
+        .timeline-group-subtitle.expanded .openminds-more-btn { display: block; margin-top: 8px; padding: 0; }
         .timeline-group-grid { display: grid; gap: 12px; }
         .timeline-group-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
         .timeline-group-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
@@ -4859,7 +4865,11 @@
 
                 <div class="timeline-group">
                     <div class="timeline-group-title">Open Minds</div>
-                    <div class="timeline-group-subtitle">What does the mind see,<br>as it expands and connects the dots?<br>Hand-drawn lines, frame by frame,<br>finding beauty in the spaces between.</div>
+                    <div class="timeline-group-subtitle">
+                        <span class="openminds-caption-preview">What does the mind see?</span>
+                        <button class="openminds-more-btn" onclick="this.parentElement.classList.toggle('expanded'); this.textContent = this.parentElement.classList.contains('expanded') ? 'less' : 'more';">more</button>
+                        <span class="openminds-caption-full">What does the mind see,<br>as it expands and connects the dots?<br>Hand-drawn lines, frame by frame,<br>finding beauty in the spaces between.</span>
+                    </div>
                     <div class="timeline-group-grid cols-2 openminds-grid">
                         <div class="timeline-group-item" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1633128130116-DDEYOHRNG1IRBEEXG1JD/Efdot_Open+Mind+1_You+Are+Here.gif" data-link="https://opensea.io/collection/efdot-openminds" data-title="You Are Here" data-year="2020">
                             <div class="timeline-group-item-img">
