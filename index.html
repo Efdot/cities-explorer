@@ -2090,20 +2090,20 @@
         .wall-view-room { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow: auto; cursor: grab; }
         .wall-view-room:active { cursor: grabbing; }
         .wall-view-room.zoomed { overflow: auto; }
-        .wall-view-wall-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100%; padding: 120px 80px 80px; transition: transform 0.3s ease; transform-origin: center center; }
-        .wall-view-wall { display: grid; gap: 30px; justify-content: center; justify-items: center; align-items: start; width: 100%; max-width: 1600px; margin: 0 auto; grid-template-columns: repeat(auto-fit, minmax(100px, 150px)); position: relative; }
-        /* Override columns based on item count for better layouts */
+        .wall-view-wall-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100%; padding: 100px 60px 60px; transition: transform 0.3s ease; transform-origin: center center; }
+        .wall-view-wall { display: grid; gap: 16px; justify-content: center; justify-items: center; align-items: start; width: 100%; max-width: 1800px; margin: 0 auto; grid-template-columns: repeat(auto-fit, minmax(100px, 150px)); position: relative; }
+        /* Override columns based on item count for better layouts - consistent 16px gap */
         .wall-view-wall.cols-1 { grid-template-columns: 1fr; max-width: 220px; }
-        .wall-view-wall.cols-2 { grid-template-columns: repeat(2, 1fr); max-width: 420px; gap: 40px; }
-        .wall-view-wall.cols-3 { grid-template-columns: repeat(3, 1fr); max-width: 700px; }
-        .wall-view-wall.cols-4 { grid-template-columns: repeat(4, 1fr); max-width: 800px; gap: 36px; }
-        .wall-view-wall.cols-5 { grid-template-columns: repeat(5, 1fr); max-width: 1140px; }
-        .wall-view-wall.cols-6 { grid-template-columns: repeat(6, 1fr); max-width: 1360px; }
-        .wall-view-wall.cols-7 { grid-template-columns: repeat(7, 1fr); max-width: 1580px; }
-        .wall-view-wall.cols-8 { grid-template-columns: repeat(8, 1fr); max-width: 1800px; }
-        .wall-view-wall.cols-9 { grid-template-columns: repeat(9, 1fr); max-width: 2000px; }
+        .wall-view-wall.cols-2 { grid-template-columns: repeat(2, 1fr); max-width: 420px; }
+        .wall-view-wall.cols-3 { grid-template-columns: repeat(3, 1fr); max-width: 660px; }
+        .wall-view-wall.cols-4 { grid-template-columns: repeat(4, 1fr); max-width: 880px; }
+        .wall-view-wall.cols-5 { grid-template-columns: repeat(5, 1fr); max-width: 1100px; }
+        .wall-view-wall.cols-6 { grid-template-columns: repeat(6, 1fr); max-width: 1320px; }
+        .wall-view-wall.cols-7 { grid-template-columns: repeat(7, 1fr); max-width: 1540px; }
+        .wall-view-wall.cols-8 { grid-template-columns: repeat(8, 1fr); max-width: 1760px; }
+        .wall-view-wall.cols-9 { grid-template-columns: repeat(9, 1fr); max-width: 1980px; }
         .wall-view-wall.cols-10 { grid-template-columns: repeat(10, 1fr); max-width: 2200px; }
-        .wall-view-artwork { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+        .wall-view-artwork { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
         .wall-view-artwork-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #666; font-family: 'Nunito', sans-serif; }
         /* Collector info above wall */
         .wall-view-collector-info { text-align: center; margin-bottom: 48px; cursor: pointer; padding: 0 20px; grid-column: 1 / -1; width: 100%; }
@@ -2311,24 +2311,26 @@
         .wall-view-modal.wall-black .wall-view-frame-mat { background: #1a1a1a; }
         .wall-view-modal.wall-black .wall-view-frame-inner { background: #121212; box-shadow: none; }
         .wall-view-frame img { display: block; width: 100%; height: auto; aspect-ratio: 9/16; object-fit: contain; transition: all 0.3s ease; }
-        /* Responsive wall - adjust gap and frame size based on viewport */
+        /* Responsive wall - consistent 16px gap, adjust frame size for viewport */
         @media (max-width: 1400px) {
-            .wall-view-wall { gap: 32px; grid-template-columns: repeat(auto-fit, minmax(100px, 160px)); }
+            .wall-view-wall { grid-template-columns: repeat(auto-fit, minmax(100px, 160px)); }
         }
         @media (max-width: 1100px) {
-            .wall-view-wall { gap: 24px; grid-template-columns: repeat(auto-fit, minmax(90px, 140px)); }
+            .wall-view-wall { grid-template-columns: repeat(auto-fit, minmax(90px, 140px)); }
             .wall-view-frame { padding: 3px; }
             .wall-view-frame-mat { padding: 5px; }
         }
         @media (max-width: 900px) {
-            .wall-view-wall { gap: 20px; grid-template-columns: repeat(auto-fit, minmax(80px, 120px)); }
+            .wall-view-wall { grid-template-columns: repeat(auto-fit, minmax(80px, 120px)); }
             .wall-view-frame { padding: 2px; }
             .wall-view-frame-mat { padding: 4px; }
+            .wall-view-wall-wrapper { padding: 80px 40px 60px; }
         }
         @media (max-width: 700px) {
-            .wall-view-wall { gap: 16px; grid-template-columns: repeat(auto-fit, minmax(70px, 100px)); }
+            .wall-view-wall { gap: 12px; grid-template-columns: repeat(auto-fit, minmax(60px, 90px)); }
             .wall-view-frame { padding: 2px; }
             .wall-view-frame-mat { padding: 3px; }
+            .wall-view-wall-wrapper { padding: 70px 20px 50px; }
         }
         .wall-view-placard { text-align: center; }
         .wall-view-placard-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #333; margin-bottom: 3px; transition: color 0.5s ease; }
@@ -8411,14 +8413,14 @@
                     // Default layout
                     const layout = getOptimalGridLayout(cityCount);
                     wall.classList.add(`cols-${layout.cols}`);
-                    // Reset zoom based on rows - match openWallView logic
-                    if (layout.rows >= 5) wallViewZoom = 0.65;
-                    else if (layout.rows >= 4) wallViewZoom = 0.75;
-                    else if (layout.rows >= 3) wallViewZoom = 0.85;
-                    else if (cityCount === 4) wallViewZoom = 0.78;
-                    else if (layout.rows >= 2) wallViewZoom = 0.85;
-                    else if (cityCount === 2) wallViewZoom = 0.8;
-                    else if (cityCount <= 3) wallViewZoom = 0.85;
+                    // Reset zoom based on grid size - match openWallView logic
+                    if (layout.rows >= 3 && layout.cols >= 7) wallViewZoom = 0.55;
+                    else if (layout.rows >= 3) wallViewZoom = 0.6;
+                    else if (layout.rows >= 2 && layout.cols >= 5) wallViewZoom = 0.65;
+                    else if (cityCount === 4) wallViewZoom = 0.72;
+                    else if (layout.rows >= 2) wallViewZoom = 0.7;
+                    else if (cityCount === 2) wallViewZoom = 0.75;
+                    else if (cityCount <= 3) wallViewZoom = 0.8;
                     else wallViewZoom = 1;
                 }
                 applyWallZoom();
@@ -8837,7 +8839,7 @@
 
         function getOptimalGridLayout(count) {
             // Returns optimal columns for display
-            // Snaps to clean rectangular grids: 3x3 at 9, 3x4 at 10-12, then wider
+            // Prioritizes fewer rows: max 2 rows on desktop, 3 rows for large collections
             if (count === 1) return { cols: 1, rows: 1 };
             if (count === 2) return { cols: 2, rows: 1 };
             if (count === 3) return { cols: 3, rows: 1 };
@@ -8846,11 +8848,13 @@
             if (count === 6) return { cols: 3, rows: 2 };
             if (count === 7) return { cols: 4, rows: 2 }; // 4+3
             if (count === 8) return { cols: 4, rows: 2 };
-            if (count === 9) return { cols: 3, rows: 3 }; // 3x3 perfect
-            if (count <= 12) return { cols: 3, rows: 4 }; // 3x4 for 10-12
-            if (count <= 16) return { cols: 4, rows: 4 };
-            if (count <= 20) return { cols: 5, rows: 4 };
-            return { cols: 5, rows: 5 };
+            if (count === 9) return { cols: 5, rows: 2 }; // 5+4
+            if (count === 10) return { cols: 5, rows: 2 }; // 5x2 perfect
+            if (count <= 12) return { cols: 4, rows: 3 }; // 4x3 for 11-12
+            if (count <= 15) return { cols: 5, rows: 3 };
+            if (count <= 18) return { cols: 6, rows: 3 };
+            if (count <= 21) return { cols: 7, rows: 3 };
+            return { cols: 8, rows: 3 };
         }
 
         // Generate a dynamic grid icon that matches the actual grid layout
@@ -9919,28 +9923,25 @@
             wallPanY = 0;
             const wrapper = document.getElementById('wallViewWrapper');
 
-            // Auto zoom out based on row count to ensure collections fit
-            // Small collections get comfortable zoom with generous negative space
-            if (layout.rows >= 5) {
-                wallViewZoom = 0.65;
-            } else if (layout.rows >= 4) {
-                wallViewZoom = 0.75;
+            // Auto zoom out based on grid size to ensure collections fit without cropping
+            // Wider grids (more cols) need more zoom-out; fewer rows = more visible
+            if (layout.rows >= 3 && layout.cols >= 7) {
+                wallViewZoom = 0.55;
             } else if (layout.rows >= 3) {
-                wallViewZoom = 0.85;
-            } else if (count > 9) {
-                wallViewZoom = 0.9;
+                wallViewZoom = 0.6;
+            } else if (layout.rows >= 2 && layout.cols >= 5) {
+                // 2-row wide grids (9-10 cities) - zoom out enough to see all
+                wallViewZoom = 0.65;
             } else if (count === 4) {
-                // 2x2 grid - zoom out to show full grid with generous negative space
-                wallViewZoom = 0.78;
+                // 2x2 grid
+                wallViewZoom = 0.72;
             } else if (layout.rows >= 2) {
                 // Other 2-row grids (5-8 cities)
-                wallViewZoom = 0.85;
+                wallViewZoom = 0.7;
             } else if (count === 2) {
-                // 2 cities side by side - zoom out for breathing room
-                wallViewZoom = 0.8;
+                wallViewZoom = 0.75;
             } else if (count <= 3) {
-                // 1-3 cities in a single row - show them proudly with breathing room
-                wallViewZoom = 0.85;
+                wallViewZoom = 0.8;
             }
             if (wrapper) wrapper.style.transform = `translate(${wallPanX}px, ${wallPanY}px) scale(${wallViewZoom})`;
 
