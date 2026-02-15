@@ -2020,7 +2020,7 @@
         .wall-view-modal.wall-black .wall-view-artwork-label { color: rgba(255,255,255,0.5); }
         .wall-view-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background: rgba(255,255,255,0.95); border-bottom: 1px solid rgba(0,0,0,0.06); position: absolute; top: 0; left: 0; right: 0; z-index: 10; transition: all 0.5s ease; overflow: visible; }
         .wall-view-modal.dark-mode .wall-view-header { background: rgba(10,10,10,0.95); border-bottom-color: rgba(255,255,255,0.06); }
-        .wall-view-header-left { display: flex; align-items: center; gap: 16px; }
+        .wall-view-header-left { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
         .wall-view-logo { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 0.02em; color: #333; }
         .wall-view-modal.dark-mode .wall-view-logo, .wall-view-modal.wall-black .wall-view-logo { color: #fff; }
         .wall-view-collector-name { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; }
@@ -2061,8 +2061,8 @@
             .wall-view-modal.line-view .wall-view-wall { gap: 24px; padding: 24px 60px; }
         }
         @media (max-width: 768px) {
-            .wall-view-header { padding: 8px 12px; gap: 6px; }
-            .wall-view-header-left { gap: 8px; }
+            .wall-view-header { padding: 8px 12px; gap: 6px; align-items: flex-start; }
+            .wall-view-header-left { gap: 8px; padding-top: 4px; }
             .wall-view-logo { font-size: 16px; }
             .wall-view-controls { gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
             .wall-view-back-btn { padding: 5px 10px; font-size: 9px; }
