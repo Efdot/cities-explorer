@@ -2766,7 +2766,7 @@
         .grid-group-header:hover .grid-group-swatches span { width: 14px; border-radius: 3px; }
         .grid-group-name { flex: 1; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); cursor: pointer; user-select: none; }
         .collector-group .collector-name:hover { color: var(--yellow); }
-        .collector-group-wall-btn { background: none; border: 1px solid rgba(232, 184, 109, 0.3); color: rgba(232, 184, 109, 0.6); padding: 4px 12px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 16px; cursor: pointer; transition: all 0.2s ease; opacity: 0; margin-left: auto; }
+        .collector-group-wall-btn { background: none; border: 1px solid rgba(232, 184, 109, 0.3); color: rgba(232, 184, 109, 0.6); padding: 4px 12px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 16px; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; margin-left: auto; }
         .grid-group-header:hover .collector-group-wall-btn { opacity: 1; }
         .collector-group-wall-btn:hover { background: rgba(232, 184, 109, 0.15); border-color: rgba(232, 184, 109, 0.6); color: rgba(232, 184, 109, 1); }
         .collector-rank { font-size: 10px; font-weight: 700; color: var(--text-muted); padding: 2px 8px; background: rgba(255,255,255,0.05); border-radius: 10px; }
@@ -3752,6 +3752,7 @@
                 <button id="nextToken" aria-label="Next city">&rarr;</button>
             </div>
             <button class="back-to-previous" id="backToPrevious" style="display: none;" title="Back to previous city">↩ Back</button>
+            <button class="back-to-previous" id="goToWallBtn" style="display: none;" title="View collector wall">⊞ Wall</button>
         </div>
         <div class="owner-display" id="ownerDisplay"></div>
         <div class="listing-info" id="listingInfo"></div>
@@ -10203,6 +10204,11 @@
             const name = collectorName || document.getElementById('collectorBannerName').textContent;
             const displayName = formatCollectorName(name);
 
+            // Preserve collector context for navigation between wall and single output
+            if (tokenIds && tokenIds.length > 0) {
+                currentCollectorFilter = { name: name, tokens: tokenIds };
+            }
+
             const wall = document.getElementById('wallViewWall');
             wall.innerHTML = '';
             wallViewZoom = 1;
@@ -10297,21 +10303,16 @@
                 };
                 fullImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png`;
 
-                // Click frame to open framed mockup view (skip if drag-swapping)
-                // When opened from perfect sets, go to single output instead
+                // Click frame to go to single output view (skip if drag-swapping)
                 frame.addEventListener('click', (e) => {
                     e.stopPropagation();
                     if (isDragSwapping) return;
                     const tokenId = parseInt(frame.dataset.tokenId);
-                    if (wallFromPerfectSets) {
-                        wallWasOpenForOutput = true;
-                        const wallModal = document.getElementById('wallViewModal');
-                        if (wallModal) wallModal.style.display = 'none';
-                        document.body.style.overflow = '';
-                        loadOutput(tokenId, true);
-                    } else {
-                        openFrameMockup(tokenId, name);
-                    }
+                    wallWasOpenForOutput = true;
+                    const wallModal = document.getElementById('wallViewModal');
+                    if (wallModal) wallModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                    loadOutput(tokenId, true);
                 });
 
                 inner.appendChild(frameImg);
@@ -11354,6 +11355,7 @@
 
         function updateBackButton() {
             const backBtn = document.getElementById('backToPrevious');
+            const wallBtn = document.getElementById('goToWallBtn');
             if (backBtn) {
                 if (wallWasOpenForOutput) {
                     backBtn.style.display = 'block';
@@ -11364,6 +11366,14 @@
                 } else {
                     backBtn.style.display = outputHistory.length > 1 ? 'block' : 'none';
                     backBtn.textContent = '↩ Back';
+                }
+            }
+            // Show wall button when we have a collector context
+            if (wallBtn) {
+                if (currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
+                    wallBtn.style.display = 'block';
+                } else {
+                    wallBtn.style.display = 'none';
                 }
             }
         }
@@ -13150,6 +13160,22 @@
             tokenIdInput.value = newToken;
             loadOutput(newToken, true, false);
             updateNavButtonStates();
+        });
+
+        // Wall button in single output view - opens wall for current collector
+        document.getElementById('goToWallBtn')?.addEventListener('click', () => {
+            if (currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
+                wallWasOpenForOutput = false;
+                openWallView(currentCollectorFilter.name, currentCollectorFilter.tokens);
+                setTimeout(() => {
+                    const modal = document.getElementById('wallViewModal');
+                    if (modal) {
+                        modal.classList.remove('wall-gray');
+                        modal.classList.add('wall-black');
+                        currentWallColor = 'black';
+                    }
+                }, 50);
+            }
         });
 
         // Back to previous output button
@@ -16012,10 +16038,12 @@
             const useEagerLoad = currentCollectorFilter !== null || tokens.length <= 50;
 
             // Build cities section first (on top)
+            // For collector views, use adaptive grid sizing: 1-4 cities = 4 cols (large), 5+ = 8 cols (compact)
             let citiesHtml = '';
             if (tokens.length > 0) {
                 const citiesLabel = originalsHtml ? `<div class="collector-cities-header"><span class="collector-cities-label">Cities</span><span class="collector-cities-count">${tokens.length}</span></div>` : '';
-                citiesHtml = `${citiesLabel}<div class="grid-items grid-${gridSize}">${tokens.map(id => generateGridItem(id, false, 0, useEagerLoad)).join('')}</div>`;
+                const collectorGridSize = currentCollectorFilter ? (tokens.length <= 4 ? '4-col' : '8-col') : gridSize;
+                citiesHtml = `${citiesLabel}<div class="grid-items grid-${collectorGridSize}">${tokens.map(id => generateGridItem(id, false, 0, useEagerLoad)).join('')}</div>`;
             }
 
             // Cities first, then Originals below
@@ -19454,9 +19482,13 @@
 
             // Build energy-to-collector mapping
             const energyCollectors = { Rising: [], Living: [], Fading: [], Resting: [] };
+            const LOST_CITIES_PREFIX_EQ = '0xcf22';
 
             COLLECTORS_DATA.forEach(collector => {
                 if (!collector.tokens || collector.tokens.length === 0) return;
+                // Exclude The Lost Cities distribution wallet
+                if (collector.name === 'The Lost Cities' ||
+                    (collector.address && collector.address.toLowerCase().startsWith(LOST_CITIES_PREFIX_EQ))) return;
                 const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
                 collector.tokens.forEach(tokenId => {
                     const traits = tokenTraits[tokenId];
@@ -19774,8 +19806,12 @@
             // Build collector -> energy -> token list mapping
             const collectorEnergies = {};
             const collectorAllEnergies = {}; // Track all energies per collector for full set detection
+            const LOST_CITIES_PREFIX_PS = '0xcf22';
             COLLECTORS_DATA.forEach(collector => {
                 if (!collector.tokens || collector.tokens.length === 0) return;
+                // Exclude The Lost Cities distribution wallet
+                if (collector.name === 'The Lost Cities' ||
+                    (collector.address && collector.address.toLowerCase().startsWith(LOST_CITIES_PREFIX_PS))) return;
                 const energyTokens = { Rising: [], Living: [], Fading: [], Resting: [] };
                 collector.tokens.forEach(tokenId => {
                     const traits = tokenTraits[tokenId];
