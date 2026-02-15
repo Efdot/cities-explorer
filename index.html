@@ -2252,7 +2252,7 @@
         .wall-view-frame.temp-city .temp-city-badge { position: absolute; top: 6px; right: 6px; background: var(--badge-bg, #c9a227); color: var(--badge-text, #000); font-size: 7px; font-weight: 700; padding: 3px 6px; border-radius: 2px; letter-spacing: 0.05em; z-index: 10; text-transform: uppercase; }
         .wall-view-frame.temp-city .wall-view-frame-mat { opacity: 0.9; }
         /* Temp city action buttons on hover */
-        .temp-city-actions { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: none; gap: 6px; z-index: 15; }
+        .temp-city-actions { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: none; gap: 4px; z-index: 15; flex-wrap: wrap; justify-content: center; max-width: 95%; }
         .wall-view-frame.temp-city:hover .temp-city-actions { display: flex; }
         .temp-city-action { background: rgba(0,0,0,0.8); border: none; border-radius: 4px; color: #fff; font-size: 8px; font-weight: 600; padding: 5px 8px; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
         .temp-city-action:hover { background: #fff; color: #000; }
@@ -10012,16 +10012,36 @@
                 window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`, '_blank');
             });
 
-            const swapBtn = document.createElement('button');
-            swapBtn.className = 'temp-city-action';
-            swapBtn.textContent = 'Try Another';
-            swapBtn.addEventListener('click', (e) => {
+            // Change button — swap this city for a different one
+            const changeBtn = document.createElement('button');
+            changeBtn.className = 'temp-city-action';
+            changeBtn.textContent = 'Change';
+            changeBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                // Replace: remove this city, add a try slot in its place, open picker
                 const wall = document.getElementById('wallViewWall');
-                const parentArtwork = artwork;
-                removeTempCity(tokenId, parentArtwork);
-                // Add a new try slot and open the picker
+                removeTempCity(tokenId, artwork);
+                if (wall) {
+                    wallViewTryMode = true;
+                    document.getElementById('wallViewTryMode')?.classList.add('active');
+                    addTryModeSlot(wall);
+                    const rc = wall.querySelectorAll('.wall-view-frame:not(.empty-slot):not(.temp-city)').length;
+                    const tc = wall.querySelectorAll('.wall-view-frame.temp-city').length;
+                    const newL = getOptimalGridLayout(rc + tc + 1);
+                    wall.className = wall.className.replace(/cols-\d+/, '');
+                    wall.classList.add(`cols-${newL.cols}`);
+                    document.getElementById('wallViewModal')?.classList.add('has-empty-slots');
+                    const slot = wall.querySelector('.wall-view-artwork.try-mode-slot');
+                    if (slot) setTimeout(() => openTryCityPicker(slot), 150);
+                }
+            });
+
+            // Add Another button — keep this city, add a new slot to the grid
+            const addAnotherBtn = document.createElement('button');
+            addAnotherBtn.className = 'temp-city-action';
+            addAnotherBtn.textContent = 'Add Another';
+            addAnotherBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const wall = document.getElementById('wallViewWall');
                 if (wall) {
                     wallViewTryMode = true;
                     document.getElementById('wallViewTryMode')?.classList.add('active');
@@ -10038,7 +10058,8 @@
             });
 
             actions.appendChild(offerBtn);
-            actions.appendChild(swapBtn);
+            actions.appendChild(changeBtn);
+            actions.appendChild(addAnotherBtn);
 
             // Remove button
             const removeBtn = document.createElement('button');
