@@ -14297,8 +14297,6 @@
         // Gradient grid state: pre-rendered DOM nodes for instant reordering
         let gradientGridItems = null; // Map<tokenId, { el, palette }>
         let gradientGridContainer = null; // The .grid-items wrapper
-        let gradientHiResTimer = null; // Debounce timer for hi-res upgrade
-        let gradientImageObserver = null; // IntersectionObserver for lazy loading gradient images
 
         function preRenderGradientGrid() {
             // Build all tokens that pass current non-palette filters
@@ -14319,8 +14317,7 @@
                 allTokens.push(i);
             }
 
-            // Pre-render with 20px micro thumbnails (~300-500 bytes each)
-            // 500 images × ~400 bytes ≈ 200KB total — loads nearly instantly
+            // Load 50px thumbnails — first ~36 eager (viewport), rest native lazy
             gradientGridItems = new Map();
             const fragment = document.createDocumentFragment();
             const container = document.createElement('div');
@@ -14357,9 +14354,10 @@
                 check.textContent = '\u2713';
 
                 const img = document.createElement('img');
-                img.src = getMicroThumbnailUrl(id);
+                img.src = getSmallThumbnailUrl(id);
                 img.alt = '';
                 img.decoding = 'async';
+                img.loading = idx < 36 ? 'eager' : 'lazy';
 
                 const label = document.createElement('div');
                 label.className = 'grid-item-label';
@@ -14377,6 +14375,9 @@
             document.getElementById('gridPagination').style.display = 'none';
         }
 
+        // Persistent sorted array to avoid re-allocating each frame
+        let gradientSortedEntries = null;
+
         function reorderGradientGrid(tH, tS, tL) {
             if (!gradientGridItems) return;
             // Compute distance per palette (only ~50 palettes, very fast)
@@ -14387,82 +14388,29 @@
                 }
             });
 
-            // Build sorted array and assign CSS order
-            const entries = [...gradientGridItems.entries()];
-            entries.sort((a, b) => {
-                const dA = paletteDist[a[1].palette] ?? 9999;
-                const dB = paletteDist[b[1].palette] ?? 9999;
-                return dA - dB;
+            // Reuse array across frames — only allocate once
+            if (!gradientSortedEntries || gradientSortedEntries.length !== gradientGridItems.size) {
+                gradientSortedEntries = [...gradientGridItems.entries()];
+            }
+            gradientSortedEntries.sort((a, b) => {
+                return (paletteDist[a[1].palette] ?? 9999) - (paletteDist[b[1].palette] ?? 9999);
             });
-            entries.forEach(([, { el }], idx) => { el.style.order = idx; });
-        }
-
-        let gradientUpgradeQueue = [];
-        let gradientUpgradeRunning = false;
-
-        function processGradientUpgradeQueue() {
-            if (gradientUpgradeRunning || gradientUpgradeQueue.length === 0) return;
-            gradientUpgradeRunning = true;
-            // Process batch of 6 (matches browser per-domain connection limit)
-            const batch = gradientUpgradeQueue.splice(0, 6);
-            let loaded = 0;
-            batch.forEach(img => {
-                const tokenId = img.closest('.grid-item')?.dataset?.token;
-                if (tokenId && img.src.includes('width=20')) {
-                    const onDone = () => {
-                        loaded++;
-                        if (loaded >= batch.length) {
-                            gradientUpgradeRunning = false;
-                            processGradientUpgradeQueue();
-                        }
-                    };
-                    img.onload = onDone;
-                    img.onerror = onDone;
-                    img.src = getSmallThumbnailUrl(parseInt(tokenId));
-                } else {
-                    loaded++;
-                    if (loaded >= batch.length) {
-                        gradientUpgradeRunning = false;
-                        processGradientUpgradeQueue();
-                    }
+            // Only touch elements whose order actually changed
+            for (let i = 0; i < gradientSortedEntries.length; i++) {
+                const el = gradientSortedEntries[i][1].el;
+                if (el._gradOrder !== i) {
+                    el.style.order = i;
+                    el._gradOrder = i;
                 }
-            });
+            }
         }
 
-        function upgradeGradientToHiRes() {
-            if (!gradientGridItems || !gradientGridContainer) return;
-            // Disconnect any previous observer and clear pending queue
-            if (gradientImageObserver) { gradientImageObserver.disconnect(); gradientImageObserver = null; }
-            gradientUpgradeQueue = [];
-            gradientUpgradeRunning = false;
-            // Use IntersectionObserver to queue visible images for upgrade from 20px to 50px
-            gradientImageObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        if (img.src.includes('width=20')) {
-                            gradientUpgradeQueue.push(img);
-                        }
-                        gradientImageObserver.unobserve(img);
-                    }
-                });
-                processGradientUpgradeQueue();
-            }, { rootMargin: '100px 0px' });
-            // Observe all grid item images that still need upgrading
-            gradientGridContainer.querySelectorAll('.grid-item img').forEach(img => {
-                if (img.src.includes('width=20')) {
-                    gradientImageObserver.observe(img);
-                }
-            });
-        }
+        // Images load at 50px directly with native lazy loading — no upgrade step needed
 
         function teardownGradientGrid() {
-            if (gradientHiResTimer) { clearTimeout(gradientHiResTimer); gradientHiResTimer = null; }
-            if (gradientImageObserver) { gradientImageObserver.disconnect(); gradientImageObserver = null; }
-            gradientUpgradeQueue = [];
-            gradientUpgradeRunning = false;
             gradientGridItems = null;
             gradientGridContainer = null;
+            gradientSortedEntries = null;
         }
 
         function toggleColorGradient() {
@@ -14475,10 +14423,8 @@
                 savedFilterState = new Set(gridFilterState.palettes);
                 // Clear palette filter so all palettes are included
                 gridFilterState.palettes = new Set();
-                // Pre-render the entire grid with eager low-res thumbnails
+                // Pre-render the entire grid (50px thumbs, lazy-loaded beyond first viewport)
                 preRenderGradientGrid();
-                // Kick off lazy hi-res upgrade for visible images
-                upgradeGradientToHiRes();
                 // Show label then fade it out after 5 seconds
                 const gradLabel = document.querySelector('.grid-color-gradient-label');
                 if (gradLabel) {
@@ -14617,19 +14563,10 @@
             if (colorGradientDragging) {
                 document.body.style.userSelect = '';
                 document.body.style.webkitUserSelect = '';
-                // Debounced hi-res upgrade after reorder settles
-                if (gradientHiResTimer) clearTimeout(gradientHiResTimer);
-                gradientHiResTimer = setTimeout(upgradeGradientToHiRes, 300);
             }
             colorGradientDragging = false;
         });
-        document.addEventListener('touchend', () => {
-            if (colorGradientDragging) {
-                if (gradientHiResTimer) clearTimeout(gradientHiResTimer);
-                gradientHiResTimer = setTimeout(upgradeGradientToHiRes, 300);
-            }
-            colorGradientDragging = false;
-        });
+        document.addEventListener('touchend', () => { colorGradientDragging = false; });
 
         // Also close gradient when grid mode changes
         function deactivateColorGradient() {
