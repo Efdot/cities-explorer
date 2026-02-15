@@ -579,11 +579,11 @@
         /* Sidebar inspect palette button */
         .sidebar-inspect-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 7px 14px; margin-bottom: 6px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
         .sidebar-inspect-btn:hover { border-color: var(--text-muted); }
-        .sidebar-inspect-btn:hover .inspect-text { color: var(--text); }
+        .sidebar-inspect-btn:hover .inspect-icon { transform: scale(1.15); }
         .inspect-dots { display: flex; gap: 3px; align-items: center; }
         .inspect-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; transition: transform 0.2s ease; }
         .sidebar-inspect-btn:hover .inspect-dot { transform: scale(1.15); }
-        .inspect-text { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; color: var(--text-dim); transition: color 0.2s ease; }
+        .inspect-icon { font-size: 13px; flex-shrink: 0; transition: transform 0.2s ease; line-height: 1; }
         .palette-inspector-close:hover { background: var(--bg-card); color: var(--text); }
         /* Palette inspector prev/next arrows - subtle edge nav like wall view */
         .palette-nav-arrow { display: none; }
@@ -10579,14 +10579,15 @@
 
             traitsDisplay.innerHTML = html;
 
-            // Style the inspect palette button with colored dots from the palette
+            // Style the inspect palette button with colored dots flanking a magnifying glass
             const inspectBtn = document.getElementById('inspectPalette');
             if (inspectBtn && palette && PALETTE_DATA[palette]) {
                 const pInfo = PALETTE_DATA[palette];
                 const pColors = pInfo.colors || [];
-                const dotColors = [pInfo.bg, ...pColors.slice(0, 7)];
-                const dots = dotColors.map(c => `<span class="inspect-dot" style="background:${c}"></span>`).join('');
-                inspectBtn.innerHTML = `<span class="inspect-dots">${dots}</span><span class="inspect-text">INSPECT PALETTE</span>`;
+                const dotColors = [pInfo.bg, ...pColors.slice(0, 9)];
+                const leftDots = dotColors.slice(0, 5).map(c => `<span class="inspect-dot" style="background:${c}"></span>`).join('');
+                const rightDots = dotColors.slice(5, 10).map(c => `<span class="inspect-dot" style="background:${c}"></span>`).join('');
+                inspectBtn.innerHTML = `<span class="inspect-dots">${leftDots}</span><span class="inspect-icon">\ud83d\udd0d</span><span class="inspect-dots">${rightDots}</span>`;
                 inspectBtn.style.background = '';
                 inspectBtn.style.border = '';
                 inspectBtn.style.color = '';
@@ -13176,18 +13177,10 @@
                     inspStrip.style.background = `linear-gradient(to right, ${cssStops.join(', ')})`;
                     inspStrip.dataset.built = '1';
                 }
-                // Position marker at current palette's closest gradient position (skip during scrub)
-                const bgHSL = getPaletteHSLCache()[paletteName];
-                if (bgHSL && inspMarker && !inspectorGradientDragging) {
-                    let bestPercent = 50, bestDist = Infinity;
-                    for (let p = 0; p <= 100; p += 2) {
-                        const tc = getGradientColorAtPercent(p);
-                        const hueDiff = Math.abs(bgHSL.h - tc.h);
-                        const hd = Math.min(hueDiff, 360 - hueDiff);
-                        const dist = hd * 2 + Math.abs(bgHSL.s - tc.s) + Math.abs(bgHSL.l - tc.l) * 0.5;
-                        if (dist < bestDist) { bestDist = dist; bestPercent = p; }
-                    }
-                    inspMarker.style.left = `${bestPercent}%`;
+                // Position marker at current palette's slot on the gradient (skip during scrub)
+                if (inspMarker && !inspectorGradientDragging) {
+                    const slotPercent = getGradientPercentForPalette(paletteName);
+                    inspMarker.style.left = `${slotPercent}%`;
                     inspStrip.classList.add('active');
                 }
                 lastInspectorGradientPalette = paletteName;
@@ -13257,15 +13250,7 @@
                 inspectorGradientRAFPending = true;
                 requestAnimationFrame(() => {
                     inspectorGradientRAFPending = false;
-                    const target = getGradientColorAtPercent(percent);
-                    const cache = getPaletteHSLCache();
-                    let bestPalette = null, bestDist = Infinity;
-                    for (const [name, hsl] of Object.entries(cache)) {
-                        const hueDiff = Math.abs(hsl.h - target.h);
-                        const hd = Math.min(hueDiff, 360 - hueDiff);
-                        const dist = hd * 2 + Math.abs(hsl.s - target.s) + Math.abs(hsl.l - target.l) * 0.5;
-                        if (dist < bestDist) { bestDist = dist; bestPalette = name; }
-                    }
+                    const bestPalette = getPaletteAtGradientPercent(percent);
                     if (bestPalette && bestPalette !== lastInspectorGradientPalette) {
                         lastInspectorGradientPalette = bestPalette;
                         if (!paletteHistory.includes(bestPalette)) paletteHistory.push(bestPalette);
@@ -14312,6 +14297,57 @@
             const hueDiff = Math.abs(c.h - tH);
             const hd = Math.min(hueDiff, 360 - hueDiff);
             return hd * 2 + Math.abs(c.s - tS) + Math.abs(c.l - tL) * 0.5;
+        }
+
+        // Pre-computed palette gradient slots — guarantees every palette is reachable
+        let paletteGradientSlots = null;   // sorted array of { name, slotPercent }
+        let paletteGradientSlotMap = null;  // name -> slotPercent
+
+        function buildPaletteGradientSlots() {
+            if (paletteGradientSlots) return;
+            const cache = getPaletteHSLCache();
+            const names = Object.keys(cache);
+            // Find each palette's best natural gradient position
+            const entries = names.map(name => {
+                const hsl = cache[name];
+                let bestPercent = 50, bestDist = Infinity;
+                for (let p = 0; p <= 100; p += 1) {
+                    const tc = getGradientColorAtPercent(p);
+                    const hueDiff = Math.abs(hsl.h - tc.h);
+                    const hd = Math.min(hueDiff, 360 - hueDiff);
+                    const dist = hd * 2 + Math.abs(hsl.s - tc.s) + Math.abs(hsl.l - tc.l) * 0.5;
+                    if (dist < bestDist) { bestDist = dist; bestPercent = p; }
+                }
+                return { name, naturalPercent: bestPercent };
+            });
+            // Sort by natural position on the day-cycle gradient
+            entries.sort((a, b) => a.naturalPercent - b.naturalPercent);
+            // Assign evenly-spaced slots so every palette owns a unique region
+            const count = entries.length;
+            paletteGradientSlots = entries.map((e, i) => ({
+                name: e.name,
+                slotPercent: count > 1 ? (i / (count - 1)) * 100 : 50
+            }));
+            paletteGradientSlotMap = {};
+            for (const slot of paletteGradientSlots) {
+                paletteGradientSlotMap[slot.name] = slot.slotPercent;
+            }
+        }
+
+        function getPaletteAtGradientPercent(percent) {
+            buildPaletteGradientSlots();
+            let best = paletteGradientSlots[0];
+            let bestDist = Math.abs(best.slotPercent - percent);
+            for (let i = 1; i < paletteGradientSlots.length; i++) {
+                const dist = Math.abs(paletteGradientSlots[i].slotPercent - percent);
+                if (dist < bestDist) { bestDist = dist; best = paletteGradientSlots[i]; }
+            }
+            return best.name;
+        }
+
+        function getGradientPercentForPalette(paletteName) {
+            buildPaletteGradientSlots();
+            return paletteGradientSlotMap[paletteName] ?? 50;
         }
 
         // Gradient grid state: pre-rendered DOM nodes for instant reordering
