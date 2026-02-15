@@ -4100,7 +4100,7 @@
             <div class="collector-guide-step active" data-step="1">
                 <div class="collector-guide-title">Own a City</div>
                 <div class="collector-guide-desc">
-                    500 Cities. Four energies&mdash;Rising, Living, Fading, Resting&mdash;one shared grid. Each City is one&#8209;of&#8209;one, fully yours, on&#8209;chain&nbsp;forever.
+                    500 Cities. Four energies: Rising, Living, Fading, Resting. One shared grid. Each City is one&#8209;of&#8209;one, fully yours, on&#8209;chain&nbsp;forever.
                 </div>
                 <div class="collector-guide-highlight">500 city grids, one shared&nbsp;energy.</div>
             </div>
@@ -4223,7 +4223,7 @@
                     <div class="grid-color-gradient-meta">
                         <span class="grid-color-gradient-clock" id="gridColorGradientClock"></span>
                         <span class="grid-color-gradient-label">SLIDE TO FILTER BY COLOR</span>
-                        <span class="grid-color-gradient-hint" id="gridColorGradientHint">Few results — try clearing other filters</span>
+                        <span class="grid-color-gradient-hint" id="gridColorGradientHint">Few results, try clearing other filters</span>
                         <button class="grid-color-gradient-close" id="gridColorGradientClose" title="Close color filter">&times;</button>
                     </div>
                     <div class="grid-color-gradient-strip" id="gridColorGradientStrip">
@@ -4777,7 +4777,7 @@
                 <div class="about-stats" id="aboutStats">
                     <span class="about-stat"><strong id="aboutMintedCount">320</strong>/500 collected</span>
                     <span class="about-stat-sep">·</span>
-                    <span class="about-stat"><strong id="aboutCollectorCount">—</strong> collectors</span>
+                    <span class="about-stat"><strong id="aboutCollectorCount">-</strong> collectors</span>
                     <span class="about-stat-sep">·</span>
                     <span class="about-stat"><strong>112</strong> palettes</span>
                 </div>
@@ -6724,7 +6724,7 @@
                 const omageCta = collection === 'O.M.A.G.E.' ? `
                     <div class="omage-print-cta" id="omagePrintCta" style="display: none; margin-top: 16px; padding: 16px; background: linear-gradient(135deg, rgba(232, 184, 109, 0.1), rgba(212, 165, 116, 0.1)); border-radius: 12px; border: 1px dashed rgba(232, 184, 109, 0.3);">
                         <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); margin-bottom: 8px;">🖼 O.M.A.G.E. Monoprints</div>
-                        <div style="font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px;">18×18" screen prints — Efdot's first analog generative system. Each one is unique, layered by hand from the Open Minds series.</div>
+                        <div style="font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px;">18×18" screen prints. Efdot's first analog generative system. Each one is unique, layered by hand from the Open Minds series.</div>
                         <button class="omage-inquiry-btn" onclick="openOmageInquiry()" style="background: transparent; border: 1px solid var(--warm); color: var(--warm); padding: 8px 16px; border-radius: 20px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease;">
                             Inquire About Prints
                         </button>
@@ -8177,7 +8177,7 @@
                 // Show error state instead of infinite loading
                 const pillsEl = document.getElementById('collectorsPills');
                 if (pillsEl && pillsEl.innerHTML.includes('Loading')) {
-                    pillsEl.innerHTML = '<span style="color: var(--text-muted); font-size: 10px; cursor: pointer;" onclick="initCollectorsPanel()">Collectors unavailable — tap to retry</span>';
+                    pillsEl.innerHTML = '<span style="color: var(--text-muted); font-size: 10px; cursor: pointer;" onclick="initCollectorsPanel()">Collectors unavailable. Tap to retry</span>';
                 }
             }
         }
@@ -10568,7 +10568,7 @@
 
                 // Rush Hour + Rising Energy = very rare combo
                 if (traffic === 'Rush Hour' && energy === 'Rising') {
-                    details.push({ priority: 1, text: `#${id} has Rush Hour + Rising Energy — an extremely rare combination.` });
+                    details.push({ priority: 1, text: `#${id} has Rush Hour + Rising Energy, an extremely rare combination.` });
                 }
                 // 1-of-1 palette
                 else if (palette && traitCounts.palettes && traitCounts.palettes[palette] === 1) {
@@ -10576,11 +10576,11 @@
                 }
                 // Rush Hour alone
                 else if (traffic === 'Rush Hour' && energy !== 'Rising') {
-                    details.push({ priority: 3, text: `#${id} has Rush Hour traffic — one of the rarest traits in the collection.` });
+                    details.push({ priority: 3, text: `#${id} has Rush Hour traffic, one of the rarest traits in the collection.` });
                 }
                 // Rising Energy alone
                 else if (energy === 'Rising') {
-                    details.push({ priority: 4, text: `#${id} has Rising Energy — a rare energy state.` });
+                    details.push({ priority: 4, text: `#${id} has Rising Energy, a rare energy state.` });
                 }
                 // Very rare palette (2 or 3 outputs)
                 else if (palette && traitCounts.palettes && traitCounts.palettes[palette] <= 3) {
@@ -17907,7 +17907,7 @@
                 const mintedCountEl = document.getElementById('aboutMintedCount');
                 const sidebarMinted = document.getElementById('mintedCount')?.textContent;
                 if (mintedCountEl) {
-                    mintedCountEl.textContent = sidebarMinted && sidebarMinted !== '—' ? sidebarMinted : (MAX_TOKEN + 1);
+                    mintedCountEl.textContent = sidebarMinted && sidebarMinted !== '-' ? sidebarMinted : (MAX_TOKEN + 1);
                 }
                 // Update collector count
                 const collectorCountEl = document.getElementById('aboutCollectorCount');
@@ -18130,13 +18130,13 @@
 
         // Thank you messages that rotate on each load
         const thankYouMessages = [
-            "To the collectors who saw something worth holding onto — you made this possible.",
+            "To the collectors who saw something worth holding onto. You made this possible.",
             "Every piece found its home because someone believed in the vision.",
             "Art lives when it's collected. Thank you for giving these works a life.",
-            "From my walls to yours — grateful for every collector who took the leap.",
+            "From my walls to yours. Grateful for every collector who took the leap.",
             "You didn't just collect art. You supported a dream.",
             "Three years of Cities, made real by the people who believed early.",
-            "To those who collect with their hearts — this journey is yours too."
+            "To those who collect with their hearts. This journey is yours too."
         ];
 
         function openTimeline() {
@@ -18644,7 +18644,7 @@
             shareBtn.title = 'Share';
             shareBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const shareText = `${title} by @eaboricua — part of the Cities collection`;
+                const shareText = `${title} by @eaboricua, part of the Cities collection`;
                 if (navigator.share) {
                     navigator.share({ title, text: shareText, url: link || window.location.href });
                 } else {
@@ -18803,7 +18803,7 @@
             const item = zoomableItems[currentZoomIndex];
             const title = item?.dataset.title || 'Cities artwork';
             const link = item?.dataset.link || window.location.href;
-            const shareText = `${title} by @eaboricua — part of the Cities collection`;
+            const shareText = `${title} by @eaboricua, part of the Cities collection`;
             if (navigator.share) {
                 navigator.share({ title, text: shareText, url: link });
             } else {
