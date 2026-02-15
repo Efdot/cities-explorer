@@ -18,6 +18,11 @@
     <meta name="twitter:description" content="Explore the Cities generative art collection. Browse unique city maps, filter by traits, and discover collectors.">
     <meta name="twitter:image" content="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
 
+    <!-- Preconnect to critical API endpoints -->
+    <link rel="preconnect" href="https://data.artblocks.io" crossorigin>
+    <link rel="preconnect" href="https://token.artblocks.io" crossorigin>
+    <link rel="dns-prefetch" href="https://api.ensideas.com">
+
     <!-- Preconnect to image CDNs for faster loading -->
     <link rel="preconnect" href="https://blush-worried-heron-358.mypinata.cloud" crossorigin>
     <link rel="preconnect" href="https://ipfs.io" crossorigin>
@@ -36,6 +41,9 @@
     <meta name="theme-color" content="#00E5CC">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Preload splash screen asset for instant display -->
+    <link rel="preload" href="loading-goo.gif" as="image">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -586,7 +594,7 @@
         .btn-inspect:hover { border-color: var(--teal); color: var(--teal); }
 
         /* About Modal */
-        .about-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.98); z-index: 2550; display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 20px 80px; cursor: pointer; opacity: 0; transition: opacity 0.15s ease; }
+        .about-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.98); z-index: 2550; display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 20px 80px; cursor: pointer; opacity: 0; transition: opacity 0.15s ease; content-visibility: auto; }
         .about-modal.open { display: flex; opacity: 1; }
         .about-close { position: fixed; top: 20px; right: 20px; background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.6); width: 40px; height: 40px; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10; }
         .about-close:hover { background: #fff; border-color: #fff; color: #000; }
@@ -1505,7 +1513,7 @@
         @keyframes segWave { 0% { transform: translateY(0) rotate(0deg); } 30% { transform: translateY(-5px) rotate(-4deg); } 50% { transform: translateY(-2px) rotate(2deg); } 70% { transform: translateY(-3px) rotate(-1deg); } 100% { transform: translateY(0) rotate(0deg); } }
         @keyframes segVibrate { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 20% { transform: translate(0.6px, -0.8px) rotate(0.7deg); } 40% { transform: translate(-0.4px, 0.6px) rotate(-0.6deg); } 60% { transform: translate(0.5px, -0.3px) rotate(0.4deg); } 80% { transform: translate(-0.3px, 0.5px) rotate(-0.3deg); } }
 
-        .gallery-panel { position: fixed; top: 0; right: 0; width: 380px; height: 100vh; background: var(--bg-panel); padding: 28px 24px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 99; will-change: transform; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+        .gallery-panel { position: fixed; top: 0; right: 0; width: 380px; height: 100vh; background: var(--bg-panel); padding: 28px 24px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 99; will-change: transform; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; content-visibility: auto; }
         .gallery-panel.open { transform: translateX(0); }
         .gallery-panel.dragging { transition: none; }
         .gallery-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; padding-top: 20px; }
@@ -1661,7 +1669,7 @@
         .supply-tracker.sold-out .supply-label { color: #fff; }
 
         .collectors-toggle { display: none; }
-        .collectors-panel { position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: var(--bg-panel); padding: 28px 24px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 550; pointer-events: none; will-change: transform; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+        .collectors-panel { position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: var(--bg-panel); padding: 28px 24px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 550; pointer-events: none; will-change: transform; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; content-visibility: auto; }
         .collectors-panel.open { transform: translateX(0); pointer-events: auto; }
         .collectors-panel.dragging { transition: none; }
         .collectors-panel::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 80px; background: var(--border); border-radius: 0 4px 4px 0; cursor: ew-resize; transition: background 0.2s, width 0.2s, opacity 0.2s; opacity: 0; pointer-events: none; }
@@ -2927,7 +2935,7 @@
         @media (max-width: 768px) { .side-nav-arrow { display: none; } }
 
         /* Welcome/loading screen */
-        .welcome-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-deep); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        .welcome-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-deep); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; will-change: opacity; }
         .welcome-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .welcome-content { display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .welcome-greeting { position: absolute; top: 18%; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4em; color: var(--text-muted); opacity: 0.25; cursor: default; transition: opacity 0.3s ease; }
@@ -7789,7 +7797,7 @@
                     // Try ENS resolution for ALL addresses without names
                     // Process in batches to avoid overwhelming the API
                     const addressesWithoutNames = addresses.filter(addr => !addressToName[addr]);
-                    const batchSize = 10;
+                    const batchSize = 25;
 
                     for (let i = 0; i < addressesWithoutNames.length; i += batchSize) {
                         const batch = addressesWithoutNames.slice(i, i + batchSize);
@@ -15707,11 +15715,22 @@
             console.log('Using MAX_TOKEN fallback for minted count');
             updateMintedUI(MAX_TOKEN + 1);
         }
-        // Set initial value immediately from MAX_TOKEN, then update from API
+        // Set initial value immediately from MAX_TOKEN
+        // (loadAllTokenData already fetches the authoritative minted count on startup,
+        //  so we skip the redundant updateMintedCount() call here)
         updateMintedUI(MAX_TOKEN + 1);
-        updateMintedCount();
-        // Refresh every 30 seconds to catch new mints
-        setInterval(updateMintedCount, 30000);
+        // Refresh every 30 seconds to catch new mints, but only when tab is visible
+        let mintedCountInterval = setInterval(updateMintedCount, 30000);
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                clearInterval(mintedCountInterval);
+                mintedCountInterval = null;
+            } else {
+                // Immediately refresh when tab becomes visible again, then resume polling
+                updateMintedCount();
+                mintedCountInterval = setInterval(updateMintedCount, 30000);
+            }
+        });
 
         // Mint button wave animation - each segment waves independently (hover only)
         function triggerMintWave() {
@@ -17664,21 +17683,28 @@
             });
         });
 
-        // Update active year on scroll
+        // Update active year on scroll (throttled with rAF)
         if (timelineView) {
+            let timelineScrollTicking = false;
             timelineView.addEventListener('scroll', () => {
-                const yearEls = document.querySelectorAll('.timeline-year[data-year]');
-                let activeYear = null;
-                yearEls.forEach(el => {
-                    const rect = el.getBoundingClientRect();
-                    if (rect.top < window.innerHeight / 2) {
-                        activeYear = el.dataset.year;
-                    }
-                });
-                yearNavItems.forEach(item => {
-                    item.classList.toggle('active', item.dataset.year === activeYear);
-                });
-            });
+                if (!timelineScrollTicking) {
+                    timelineScrollTicking = true;
+                    requestAnimationFrame(() => {
+                        const yearEls = document.querySelectorAll('.timeline-year[data-year]');
+                        let activeYear = null;
+                        yearEls.forEach(el => {
+                            const rect = el.getBoundingClientRect();
+                            if (rect.top < window.innerHeight / 2) {
+                                activeYear = el.dataset.year;
+                            }
+                        });
+                        yearNavItems.forEach(item => {
+                            item.classList.toggle('active', item.dataset.year === activeYear);
+                        });
+                        timelineScrollTicking = false;
+                    });
+                }
+            }, { passive: true });
         }
 
         // Timeline inline action buttons (download and share for physical pieces)
