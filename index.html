@@ -1649,8 +1649,12 @@
         .traits-display .palette-row .palette-swatches span:last-child { border-radius: 0 2px 2px 0; }
         .traits-display .digital-clock { font-family: 'Courier New', monospace; font-size: 11px; font-weight: 700; color: var(--text); background: var(--bg-input); padding: 3px 8px; border-radius: 4px; margin-left: 6px; letter-spacing: 0.05em; }
         .traits-display .energy-icon { font-size: 14px; margin-left: 6px; filter: grayscale(100%) brightness(1.2); flex-shrink: 0; }
-        .traits-display .trait-rarity { font-size: 7px; color: var(--text-muted); background: var(--bg-card); padding: 2px 5px; border-radius: 3px; flex-shrink: 0; }
+        .traits-display .trait-rarity { font-size: 7px; color: var(--text-muted); background: var(--bg-card); padding: 2px 5px; border-radius: 3px; flex-shrink: 0; display: none; }
+        .traits-display.show-rarity .trait-rarity { display: inline; }
         .traits-display .trait-rarity.rare { color: var(--orange); background: rgba(255, 140, 66, 0.15); }
+        .show-rarity-btn { display: block; margin: 8px auto 0; background: none; border: 1px solid var(--border); color: var(--text-muted); font-size: 8px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; cursor: pointer; opacity: 0.5; transition: all 0.2s ease; }
+        .show-rarity-btn:hover { opacity: 0.8; border-color: var(--text-dim); }
+        .show-rarity-btn.active { opacity: 0.7; border-color: var(--warm); color: var(--warm); }
 
         .collection-link { display: block; text-align: center; padding: 14px 20px; background: var(--bg-input); border-radius: 50px; color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; transition: all 0.3s ease; }
         .collection-link:hover { background: var(--bg-card); color: var(--teal); }
@@ -1816,6 +1820,12 @@
         /* Become a Collector */
         .become-collector-btn { display: block; width: 100%; padding: 12px 16px; margin-bottom: 16px; background: transparent; border: 1px dashed var(--border); color: var(--text-muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
         .become-collector-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(255,179,71,0.05); }
+        .collector-badge-legend { display: flex; align-items: center; justify-content: flex-end; padding: 0 12px 4px; gap: 6px; }
+        .badge-legend-toggle { background: none; border: none; color: var(--text-muted); font-size: 11px; cursor: pointer; opacity: 0.4; transition: opacity 0.2s ease; padding: 2px 4px; }
+        .badge-legend-toggle:hover { opacity: 0.8; }
+        .badge-legend-tip { font-size: 9px; color: var(--text-muted); letter-spacing: 0.04em; opacity: 0; max-width: 0; overflow: hidden; white-space: nowrap; transition: all 0.3s ease; }
+        .collector-badge-legend.open .badge-legend-tip { opacity: 0.6; max-width: 250px; }
+        .collector-badge-legend.open .badge-legend-toggle { opacity: 0.8; }
         .not-collector-link { display: block; width: 100%; padding: 8px 0; margin-bottom: 12px; background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; }
         .not-collector-link:hover { opacity: 1; color: var(--warm); }
         .dream-grid-btn { background: none; border: none; cursor: pointer; font-size: 14px; line-height: 1; padding: 4px; opacity: 0.35; transition: all 0.25s ease; filter: grayscale(0.6); }
@@ -2733,7 +2743,7 @@
         .grid-item-tooltip-row:last-child { margin-bottom: 0; }
         .grid-item-tooltip-label { color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
         .grid-item-tooltip-value { color: var(--text); font-weight: 700; text-transform: uppercase; }
-        .grid-item-tooltip-pct { color: var(--text-muted); margin-left: 6px; }
+        .grid-item-tooltip-pct { color: var(--text-muted); margin-left: 6px; display: none; }
         .grid-item-tooltip-pct.rare { color: var(--orange); }
         .grid-group { margin-bottom: 24px; }
         .grid-group-header { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: var(--bg-panel); border-radius: 50px; margin-bottom: 12px; cursor: pointer; transition: background 0.3s ease; will-change: background; }
@@ -2867,6 +2877,8 @@
             .grid-mode-btn[data-emoji="🎨"]::after { content: "🎨"; font-size: 16px; line-height: 1; }
             .grid-mode-btn[data-emoji="gradient"] .mode-gradient-dot { display: none; }
             .grid-mode-btn[data-emoji="gradient"]::after { content: ""; display: block; width: 18px; height: 18px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); }
+            .grid-mode-btn[data-emoji="🚦"] { font-size: 0; }
+            .grid-mode-btn[data-emoji="🚦"]::after { content: "🚦"; font-size: 16px; line-height: 1; }
             .grid-mode-btn[data-emoji="✍️"]::after { content: "✍️"; font-size: 16px; line-height: 1; }
             .grid-mode-btn[data-emoji="👥"]::after { content: "👥"; font-size: 16px; line-height: 1; }
             .grid-mode-btn[data-emoji="az"] { width: auto; padding: 0 10px; font-size: 10px; }
@@ -3743,8 +3755,7 @@
         </div>
         <div class="owner-display" id="ownerDisplay"></div>
         <div class="listing-info" id="listingInfo"></div>
-        <div class="owner-actions" id="ownerActions" style="margin-top: 4px; margin-bottom: 6px;">
-            <a href="#" target="_blank" class="marketplace-link offer-btn" id="makeOfferBtn">MAKE OFFER</a>
+        <div class="owner-actions" id="ownerActions" style="margin-top: 4px; margin-bottom: 6px; display: none;">
         </div>
 
         <!-- Neighbors - Same Palette Cities -->
@@ -3775,6 +3786,7 @@
             </div>
             <div class="metadata-content">
                 <div id="traitsDisplay" class="traits-display">LOADING...</div>
+                <button class="show-rarity-btn" id="showRarityBtn" onclick="this.classList.toggle('active'); document.getElementById('traitsDisplay').classList.toggle('show-rarity'); this.textContent = this.classList.contains('active') ? 'hide %' : 'show %';">show %</button>
             </div>
         </div>
 
@@ -3868,13 +3880,12 @@
             <span class="countdown-timer" id="countdownTimer"></span>
         </div>
 
-        <a href="https://www.artblocks.io/collection/0x7c78f67700e700b4005c8a3d920a1a99e6004800-0" target="_blank" class="supply-tracker" id="supplyTracker" onclick="return confirm('You are about to leave Cities Explorer and visit Art Blocks. Continue?');">
+        <div class="supply-tracker" id="supplyTracker" style="pointer-events: none; text-decoration: none;">
             <div class="supply-bar">
                 <div class="supply-fill" id="supplyFill" style="width: 0%;"></div>
                 <div class="supply-label"><span id="mintedCount"></span>&nbsp;COLLECTED</div>
             </div>
-            <span class="mint-text">VIEW ON ARTBLOCKS</span>
-        </a>
+        </div>
 
         <!-- Sidebar Footer - Clean layout -->
         <div class="sidebar-footer">
@@ -3888,6 +3899,9 @@
                 <button class="sidebar-footer-btn" id="toggleGallery" title="Favorites">
                     <span class="footer-icon">♡</span>
                     <span class="fav-badge" id="favCount">0</span>
+                </button>
+                <button class="sidebar-footer-btn" id="sidebarDriftBtn" title="Drift Mode" onclick="if(window.openDriftMode) window.openDriftMode();">
+                    <span class="footer-icon">&infin;</span>
                 </button>
             </div>
         </div>
@@ -3938,7 +3952,7 @@
             <div class="collection-promo" id="collectionPromo">
                 <div class="collection-promo-text">Complete your Energy Set to unlock a free Efdot artwork!</div>
                 <div class="collection-promo-link">
-                    <a href="https://www.artblocks.io/collection/0x7c78f67700e700b4005c8a3d920a1a99e6004800-0" target="_blank">COLLECT MORE →</a>
+                    <span style="cursor: pointer; color: var(--warm); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;" onclick="if(window.openDreamGrid) window.openDreamGrid();">EXPLORE →</span>
                 </div>
             </div>
         </div>
@@ -3977,7 +3991,7 @@
                 <button class="mob-menu-btn" id="mobGrid"><span class="mob-menu-icon">⊞</span><span class="mob-menu-label">Grid</span></button>
                 <button class="mob-menu-btn" id="mobFilters"><span class="mob-menu-icon">⚙</span><span class="mob-menu-label">Filters</span></button>
                 <button class="mob-menu-btn" id="mobPalette"><span class="mob-menu-icon">◐</span><span class="mob-menu-label">Palette</span></button>
-                <button class="mob-menu-btn" id="mobCopyLink"><span class="mob-menu-icon">🔗</span><span class="mob-menu-label">Link</span></button>
+                <button class="mob-menu-btn" id="mobDrift"><span class="mob-menu-icon">&infin;</span><span class="mob-menu-label">Drift</span></button>
             </div>
         </div>
         <div class="mobile-sheet-section">
@@ -3985,7 +3999,7 @@
             <div class="mobile-sheet-row">
                 <button class="mob-menu-btn" id="mobCollectors"><span class="mob-menu-icon">👥</span><span class="mob-menu-label">Collectors</span></button>
                 <button class="mob-menu-btn" id="mobFavorites"><span class="mob-menu-icon">♡</span><span class="mob-menu-label">Favorites</span></button>
-                <button class="mob-menu-btn" id="mobOpenSea"><span class="mob-menu-icon">⛵</span><span class="mob-menu-label">OpenSea</span></button>
+                <button class="mob-menu-btn" id="mobCopyLink"><span class="mob-menu-icon">🔗</span><span class="mob-menu-label">Link</span></button>
                 <button class="mob-menu-btn" id="mobAbout"><span class="mob-menu-icon">ⓘ</span><span class="mob-menu-label">About</span></button>
             </div>
         </div>
@@ -4005,7 +4019,7 @@
                 <div class="loading-text">Cities</div>
             </div>
             <img id="preview-image" class="preview-image" alt="Cities Preview">
-            <div class="click-to-view" id="clickToView">VIEW ON OPENSEA</div>
+            <div class="click-to-view" id="clickToView">VIEW DETAILS</div>
             <button class="explore-fullscreen-btn" id="exploreFullscreenBtn" title="Enter Fullscreen" aria-label="Enter fullscreen mode">⛶</button>
         </div>
         <div class="fullscreen-exit-hint" id="fullscreenExitHint">TAP TO EXIT</div>
@@ -4067,6 +4081,10 @@
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
+        </div>
+        <div class="collector-badge-legend" id="collectorBadgeLegend">
+            <button class="badge-legend-toggle" id="badgeLegendToggle" title="Badge legend" onclick="this.parentElement.classList.toggle('open');">ⓘ</button>
+            <div class="badge-legend-tip">⚡ = energy set · ⊞ = grid set</div>
         </div>
         <button class="not-collector-link" id="notCollectorTop">Not a collector yet? ✦</button>
         <div class="pills-view" id="pillsView">
@@ -4200,6 +4218,7 @@
                 </button>
                 <button class="grid-mode-btn" data-mode="grid" data-emoji="🌍" id="gridAllFavBtn" title="All Cities">ALL</button>
                 <button class="grid-mode-btn active" data-mode="palette" data-emoji="🎨" id="paletteColorToggle" title="Sort by Palette">BY PALETTE <span class="palette-sort-arrow">↓</span></button>
+                <button class="grid-mode-btn" data-mode="traffic" data-emoji="🚦" id="gridTrafficBtn" title="By Traffic">BY TRAFFIC</button>
                 <button class="grid-mode-btn origins-btn" data-mode="origins" data-emoji="✍️" id="gridOriginsBtn" title="Origins">ORIGINS</button>
                 <button class="grid-mode-btn collectors-btn" data-emoji="👥" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
             </div>
@@ -9477,20 +9496,6 @@
                         <div class="empty-slot-dropdown-desc">Create a new City on Art Blocks</div>
                     </div>
                 </div>
-                <div class="empty-slot-dropdown-item" data-action="offer">
-                    <span class="empty-slot-dropdown-icon">🏷️</span>
-                    <div class="empty-slot-dropdown-text">
-                        <div class="empty-slot-dropdown-title">Browse</div>
-                        <div class="empty-slot-dropdown-desc">Find a City on OpenSea</div>
-                    </div>
-                </div>
-                <div class="empty-slot-dropdown-item" data-action="bid">
-                    <span class="empty-slot-dropdown-icon">📋</span>
-                    <div class="empty-slot-dropdown-text">
-                        <div class="empty-slot-dropdown-title">Offer</div>
-                        <div class="empty-slot-dropdown-desc">Place a collection offer</div>
-                    </div>
-                </div>
             `;
 
             // Position dropdown at click location
@@ -9514,12 +9519,6 @@
                         openTryCityPicker(slotElement);
                     } else if (action === 'mint') {
                         window.open('https://www.artblocks.io/collection/cities-by-efdot-x-diid', '_blank');
-                    } else if (action === 'offer') {
-                        // Go to collection to browse and make offers on specific cities
-                        window.open('https://opensea.io/collection/cities-by-efdot-x-diid', '_blank');
-                    } else if (action === 'bid') {
-                        // Collection offer page
-                        window.open('https://opensea.io/collection/cities-by-efdot-x-diid/offers', '_blank');
                     }
                 });
             });
@@ -10043,14 +10042,6 @@
             const actions = document.createElement('div');
             actions.className = 'temp-city-actions';
 
-            const offerBtn = document.createElement('button');
-            offerBtn.className = 'temp-city-action offer';
-            offerBtn.textContent = 'Make Offer';
-            offerBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`, '_blank');
-            });
-
             // Change button — swap this city for a different one
             const changeBtn = document.createElement('button');
             changeBtn.className = 'temp-city-action';
@@ -10096,7 +10087,6 @@
                 }
             });
 
-            actions.appendChild(offerBtn);
             actions.appendChild(changeBtn);
             actions.appendChild(addAnotherBtn);
 
@@ -10853,13 +10843,6 @@
                         <div class="suggestion-option-desc">See how it looks in the collection</div>
                     </div>
                 </div>
-                <div class="suggestion-option" data-action="offer">
-                    <span class="suggestion-option-icon">⛵</span>
-                    <div class="suggestion-option-text">
-                        <div class="suggestion-option-title">Make offer on OpenSea</div>
-                        <div class="suggestion-option-desc">Place a bid on City #${tokenId}</div>
-                    </div>
-                </div>
                 <div class="suggestion-option" data-action="mint">
                     <span class="suggestion-option-icon">✦</span>
                     <div class="suggestion-option-text">
@@ -10888,9 +10871,6 @@
                     if (action === 'try') {
                         // Add to TRY grid
                         addTempCity(tokenId);
-                    } else if (action === 'offer') {
-                        // Open OpenSea offer page
-                        window.open(`https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`, '_blank');
                     } else if (action === 'mint') {
                         // Open Art Blocks mint page
                         window.open('https://www.artblocks.io/collection/cities-by-efdot-x-diid', '_blank');
@@ -11479,14 +11459,18 @@
                 window.open(url, '_blank');
             }
         }
-        // Click/tap on frame toggles the OpenSea overlay; clicking the overlay itself navigates
+        // Click/tap on frame toggles the details overlay; clicking the overlay opens sidebar
         const clickToViewEl = document.getElementById('clickToView');
         let clickToViewTimer = null;
         frameContainer.addEventListener('click', (e) => {
             if (document.body.classList.contains('fullscreen-mode')) return;
-            // If clicking the overlay text itself, navigate to OpenSea
+            // If clicking the overlay text itself, open sidebar/metadata
             if (e.target === clickToViewEl || e.target.closest('.click-to-view')) {
-                openFullView();
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) { sidebar.classList.add('open'); }
+                const metaSection = document.getElementById('metadataSection');
+                if (metaSection) metaSection.classList.remove('collapsed');
+                clickToViewEl.classList.remove('visible');
                 return;
             }
             // Otherwise toggle the overlay visibility
@@ -14226,6 +14210,10 @@
                 closeSheet();
                 if (typeof openGridView === 'function') openGridView();
             });
+            document.getElementById('mobDrift')?.addEventListener('click', () => {
+                closeSheet();
+                if (window.openDriftMode) window.openDriftMode();
+            });
             document.getElementById('mobCollectors')?.addEventListener('click', () => {
                 closeSheet();
                 if (typeof openCollectorsPanel === 'function') openCollectorsPanel();
@@ -15657,8 +15645,8 @@
                 renderColorSorted(tokens);
             } else if (gridMode === 'az') {
                 renderAZPalettes(tokens);
-            } else if (gridMode === 'rarity') {
-                renderRaritySorted(tokens);
+            } else if (gridMode === 'traffic') {
+                renderTrafficSorted(tokens);
             } else if (gridMode === 'collector') {
                 renderCollectorGroups(tokens);
             }
@@ -16416,6 +16404,42 @@
                 });
             });
             // Grid item click handled by inline onclick="handleGridItemClick()"
+        }
+
+        function renderTrafficSorted(tokens) {
+            // Group tokens by Traffic trait, then sort groups by busyness
+            const trafficOrder = ['Rush Hour', 'Heavy', 'Moderate', 'Light', 'Quiet', 'Empty'];
+            const groups = {};
+            tokens.forEach(id => {
+                const traits = tokenTraits[id];
+                const traffic = traits?.['Traffic'] || 'Unknown';
+                if (!groups[traffic]) groups[traffic] = [];
+                groups[traffic].push(id);
+            });
+
+            // Sort groups by traffic order
+            const sortedKeys = Object.keys(groups).sort((a, b) => {
+                const ai = trafficOrder.indexOf(a);
+                const bi = trafficOrder.indexOf(b);
+                return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+            });
+
+            let html = '';
+            sortedKeys.forEach(traffic => {
+                const ids = groups[traffic];
+                html += `<div class="palette-group-label"><span class="palette-group-name">${traffic.toUpperCase()}</span> <span class="palette-group-count">${ids.length}</span></div>`;
+                html += `<div class="grid-items grid-${gridSize}">${ids.map(id => generateGridItem(id)).join('')}</div>`;
+            });
+
+            gridContent.innerHTML = html;
+            document.getElementById('gridPagination').style.display = 'none';
+
+            gridContent.querySelectorAll('.grid-item-fav').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleCityFavorite(parseInt(btn.dataset.token), e);
+                });
+            });
         }
 
         const urlParams = getUrlParams();
