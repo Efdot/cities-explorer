@@ -3644,7 +3644,7 @@
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
             <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
-            <button class="icon-btn text-btn compare-btn" id="compareBtn" title="Compare two cities (Shift+click a neighbor)" aria-label="Compare cities">compare</button>
+            <button class="icon-btn compare-btn" id="compareBtn" title="Compare two cities" aria-label="Compare cities"><svg width="15" height="14" viewBox="0 0 15 14" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="5" height="12" rx="1"/><rect x="9" y="1" width="5" height="12" rx="1"/></svg></button>
         </div>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
@@ -5084,6 +5084,33 @@
         <div class="origins-lightbox-year" id="originsLightboxYear"></div>
         <div class="origins-lightbox-price" id="originsLightboxPrice"></div>
         <a href="#" target="_blank" class="origins-lightbox-btn" id="originsLightboxBtn">View on SuperRare</a>
+    </div>
+
+    <!-- Compare Mode - Pick City B prompt -->
+    <div class="compare-pick-prompt" id="comparePickPrompt">
+        <span>Comparing <strong id="comparePickA">#—</strong> with…</span>
+        <input type="text" id="comparePickInput" placeholder="#id" maxlength="6">
+        <button class="compare-pick-go" id="comparePickGo">Go</button>
+        <button class="compare-pick-cancel" id="comparePickCancel">cancel</button>
+    </div>
+
+    <!-- Compare Mode Overlay -->
+    <div class="compare-overlay" id="compareOverlay">
+        <div class="compare-header">
+            <div class="compare-title">Compare</div>
+            <button class="compare-close" id="compareClose">&times;</button>
+        </div>
+        <div class="compare-body">
+            <div class="compare-col compare-col-a">
+                <div class="compare-img-wrap"><img class="compare-img" id="compareImgA" alt="City A"></div>
+                <div class="compare-city-label" id="compareLabelA"></div>
+            </div>
+            <div class="compare-diff" id="compareDiff"></div>
+            <div class="compare-col compare-col-b">
+                <div class="compare-img-wrap"><img class="compare-img" id="compareImgB" alt="City B"></div>
+                <div class="compare-city-label" id="compareLabelB"></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -11824,21 +11851,8 @@
 
             grid.querySelectorAll('.pairs-well-item').forEach(el => {
                 el.addEventListener('click', () => {
-                    // Open the palette in the inspector fan view
-                    const paletteName = el.dataset.palette;
-                    if (paletteName) {
-                        // Initialize history with current palette and clicked palette
-                        const currentTraits = tokenTraits[currentTokenId];
-                        const currentPalette = currentTraits ? currentTraits['Palette'] : null;
-                        if (currentPalette) {
-                            paletteHistory = [currentPalette, paletteName];
-                            currentPaletteIndex = 1;
-                        } else {
-                            paletteHistory = [paletteName];
-                            currentPaletteIndex = 0;
-                        }
-                        openPaletteInspector(paletteName);
-                    }
+                    const tokenId = parseInt(el.dataset.token, 10);
+                    if (!isNaN(tokenId)) loadOutput(tokenId, true, true);
                 });
             });
 
@@ -18331,33 +18345,6 @@
     </script>
 
     <a href="https://shop.efdotstudio.com/collections/cities-collection/Cities" target="_blank" title="Shop Cities Prints"><img src="ef-logo.png" alt="Efdot" class="efdot-shop-fixed"></a>
-
-    <!-- Compare Mode - Pick City B prompt -->
-    <div class="compare-pick-prompt" id="comparePickPrompt">
-        <span>Comparing <strong id="comparePickA">#—</strong> with…</span>
-        <input type="text" id="comparePickInput" placeholder="#id" maxlength="6">
-        <button class="compare-pick-go" id="comparePickGo">Go</button>
-        <button class="compare-pick-cancel" id="comparePickCancel">cancel</button>
-    </div>
-
-    <!-- Compare Mode Overlay -->
-    <div class="compare-overlay" id="compareOverlay">
-        <div class="compare-header">
-            <div class="compare-title">Compare</div>
-            <button class="compare-close" id="compareClose">&times;</button>
-        </div>
-        <div class="compare-body">
-            <div class="compare-col compare-col-a">
-                <div class="compare-img-wrap"><img class="compare-img" id="compareImgA" alt="City A"></div>
-                <div class="compare-city-label" id="compareLabelA"></div>
-            </div>
-            <div class="compare-diff" id="compareDiff"></div>
-            <div class="compare-col compare-col-b">
-                <div class="compare-img-wrap"><img class="compare-img" id="compareImgB" alt="City B"></div>
-                <div class="compare-city-label" id="compareLabelB"></div>
-            </div>
-        </div>
-    </div>
 
     <!-- Drift Mode - Meditative Gallery -->
     <div class="drift-mode dark" id="driftMode">
