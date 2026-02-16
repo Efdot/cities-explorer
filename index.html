@@ -263,19 +263,7 @@
         .grid-numbers-toggle:hover { opacity: 0.8; background: var(--bg-input); }
         .grid-numbers-toggle.active { opacity: 1; color: var(--warm); }
 
-        /* Grid energy clock - non-interactive display */
-        .grid-energy-clock { background: none; border: none; cursor: default; padding: 4px 8px; font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); opacity: 0.5; transition: all 0.3s ease; border-radius: 12px; white-space: nowrap; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
-        .grid-energy-clock .energy-icon { filter: grayscale(100%); transition: filter 0.3s ease; font-size: 16px; }
-        .grid-energy-clock:hover { opacity: 0.8; }
-        .grid-energy-clock:hover .energy-icon { filter: grayscale(0%); }
-        .grid-energy-clock.energy-rising { color: #ffb347; }
-        .grid-energy-clock.energy-rising:hover .energy-icon { filter: grayscale(0%) drop-shadow(0 0 4px #ffb347); }
-        .grid-energy-clock.energy-living { color: #87ceeb; }
-        .grid-energy-clock.energy-living:hover .energy-icon { filter: grayscale(0%) drop-shadow(0 0 4px #87ceeb); }
-        .grid-energy-clock.energy-fading { color: #dda0dd; }
-        .grid-energy-clock.energy-fading:hover .energy-icon { filter: grayscale(0%) drop-shadow(0 0 4px #dda0dd); }
-        .grid-energy-clock.energy-resting { color: #6b7280; }
-        .grid-energy-clock.energy-resting:hover .energy-icon { filter: grayscale(0%) drop-shadow(0 0 4px #6b7280); }
+        /* Grid energy clock - removed */
 
         /* Story link next to info */
         .story-link { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); text-decoration: none; opacity: 0.4; transition: all 0.3s ease; cursor: pointer; display: flex; align-items: center; gap: 4px; }
@@ -1750,7 +1738,7 @@
         .energy-complete-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); margin-bottom: 10px; }
         .energy-complete-collector { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: rgba(232,184,109,0.06); border: 1px solid rgba(232,184,109,0.15); border-radius: 10px; margin-bottom: 6px; cursor: pointer; transition: all 0.2s ease; }
         .energy-complete-collector:hover { background: rgba(232,184,109,0.12); border-color: rgba(232,184,109,0.3); }
-        .energy-complete-name { font-size: 11px; font-weight: 600; color: var(--text); flex: 1; }
+        .energy-complete-name { font-size: 11px; font-weight: 600; color: var(--text); flex: 1; text-transform: uppercase; letter-spacing: 0.04em; }
         .energy-complete-dots { display: flex; gap: 4px; }
         .energy-complete-dot { width: 10px; height: 10px; border-radius: 50%; }
         .energy-set-section { margin-bottom: 14px; }
@@ -1783,7 +1771,7 @@
         .energy-group-name.fading { color: #DDA0DD; }
         .energy-group-name.resting { color: #B19CD9; }
         .energy-group-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-        .energy-group-pill { padding: 5px 10px; border-radius: 14px; font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; border: 1px solid transparent; }
+        .energy-group-pill { padding: 5px 10px; border-radius: 14px; font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; border: 1px solid transparent; text-transform: uppercase; letter-spacing: 0.04em; }
         .energy-group-pill:hover { transform: scale(1.05); }
         .energy-group-pill .eg-count { opacity: 0.5; margin-left: 3px; font-size: 9px; }
         .energy-group-pill .eg-thumb { width: 16px; height: 16px; border-radius: 3px; object-fit: cover; margin-right: 4px; vertical-align: middle; display: inline-block; }
@@ -1978,7 +1966,8 @@
         .grid-color-gradient-inner { padding: 6px 0; width: 100%; display: flex; flex-direction: column; gap: 3px; }
         .grid-color-gradient-strip { height: 32px; border-radius: 0; cursor: pointer; position: relative; touch-action: none; }
         .grid-color-gradient-strip::after { content: ''; position: absolute; inset: 0; border-radius: 0; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), inset 0 -1px 2px rgba(0,0,0,0.1); pointer-events: none; }
-        .grid-color-gradient-marker { position: absolute; width: 2px; height: 40px; background: rgba(255,255,255,0.8); border-radius: 1px; top: -4px; transform: translateX(-50%); box-shadow: 0 0 6px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+        .grid-color-gradient-marker { position: absolute; width: 18px; height: 18px; background: #fff; border-radius: 50%; top: 50%; transform: translate(-50%, -50%); box-shadow: 0 1px 4px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9); opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 3; }
+        .grid-color-gradient-marker::before { content: ''; position: absolute; left: 50%; top: -20px; bottom: -20px; width: 1px; background: rgba(255,255,255,0.5); transform: translateX(-50%); pointer-events: none; }
         .grid-color-gradient-strip:hover .grid-color-gradient-marker, .grid-color-gradient-strip.active .grid-color-gradient-marker { opacity: 1; }
         .grid-color-gradient-meta { display: flex; justify-content: space-between; align-items: center; padding: 0 12px; }
         .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
@@ -3983,7 +3972,6 @@
                 <button class="grid-mode-btn active" data-mode="palette" data-emoji="🎨" id="paletteColorToggle" title="Sort by Palette">BY PALETTE <span class="palette-sort-arrow">↓</span></button>
                 <button class="grid-mode-btn origins-btn" data-mode="origins" data-emoji="📍" id="gridOriginsBtn" title="Origins">ORIGINS</button>
                 <button class="grid-mode-btn collectors-btn" data-emoji="👤" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
-                <button class="grid-energy-clock" id="gridEnergyToggle" title="Energy"></button>
             </div>
         </div>
         <div class="filter-toggle-bar" id="filterToggleBar"><span>FILTERS</span><span class="arrow">▼</span></div>
@@ -6566,8 +6554,25 @@
             } catch (e) { return null; }
         }
 
+        // Timeout wrapper for fetch calls
+        function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
+            return Promise.race([
+                fetch(url, options),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeoutMs))
+            ]);
+        }
+
         async function fetchTokenOwner(tokenId) {
             if (tokenOwners[tokenId]) return tokenOwners[tokenId];
+
+            // First try to resolve from local COLLECTORS_DATA (instant, no API call)
+            const localMatch = COLLECTORS_DATA.find(c => c.tokens && c.tokens.includes(tokenId));
+            if (localMatch) {
+                const owner = { address: localMatch.address, ens: null, artblocksName: localMatch.name };
+                tokenOwners[tokenId] = owner;
+                return owner;
+            }
+
             try {
                 // Use Art Blocks Hasura GraphQL API for owner data and user display name
                 const query = `{
@@ -6576,7 +6581,7 @@
                         owner_address
                     }
                 }`;
-                const response = await fetch('https://data.artblocks.io/v1/graphql', {
+                const response = await fetchWithTimeout('https://data.artblocks.io/v1/graphql', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ query })
@@ -6593,29 +6598,28 @@
 
                     // Try to get Art Blocks display name for the owner
                     try {
-                        // Lowercase the address for API query (Art Blocks stores addresses in lowercase)
                         const normalizedAddress = ownerAddress.toLowerCase();
                         const userQuery = `{ users(where: {public_address: {_eq: "${normalizedAddress}"}}) { display_name } }`;
-                        const userResponse = await fetch('https://data.artblocks.io/v1/graphql', {
+                        const userResponse = await fetchWithTimeout('https://data.artblocks.io/v1/graphql', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ query: userQuery })
-                        });
+                        }, 5000);
                         const userData = await userResponse.json();
                         if (userData.data?.users?.[0]?.display_name) {
                             owner.artblocksName = userData.data.users[0].display_name;
                         }
-                    } catch (e) { /* User fetch failed */ }
+                    } catch (e) { /* User fetch failed or timed out */ }
 
                     // Try ENS lookup if no Art Blocks name
                     if (!owner.artblocksName) {
                         try {
-                            const ensResponse = await fetch(`https://api.ensideas.com/ens/resolve/${ownerAddress}`);
+                            const ensResponse = await fetchWithTimeout(`https://api.ensideas.com/ens/resolve/${ownerAddress}`, {}, 4000);
                             if (ensResponse.ok) {
                                 const ensData = await ensResponse.json();
                                 if (ensData.name) owner.ens = ensData.name;
                             }
-                        } catch (e) { /* ENS fetch failed */ }
+                        } catch (e) { /* ENS fetch failed or timed out */ }
                     }
 
                     tokenOwners[tokenId] = owner;
@@ -9644,11 +9648,22 @@
                 };
                 fullImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png`;
 
-                // Click frame to open framed mockup view
+                // Click frame to open single output view for inspection
                 frame.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const tokenId = parseInt(frame.dataset.tokenId);
-                    openFrameMockup(tokenId, name);
+                    // Close wall view and navigate to single output
+                    window.cameFromWallView = true;
+                    const wallModal = document.getElementById('wallViewModal');
+                    if (wallModal) wallModal.classList.remove('open');
+                    document.body.style.overflow = '';
+                    // Close grid if open
+                    const gp = document.getElementById('gridPanel');
+                    if (gp) gp.classList.remove('open');
+                    document.body.classList.remove('grid-open');
+                    if (typeof window.loadOutput === 'function') {
+                        window.loadOutput(tokenId, true);
+                    }
                 });
 
                 inner.appendChild(frameImg);
@@ -13348,6 +13363,17 @@
                         } else if (currentCollectorFilter) {
                             // Clear collector filter to show all cities
                             clearCollectorFilter();
+                        } else if (gridMode === 'origins') {
+                            // Return from origins to regular grid view
+                            gridMode = 'palette';
+                            paletteColorState = 'palette';
+                            if (typeof updateToggleStyle === 'function') updateToggleStyle();
+                            const modeBtns = document.querySelectorAll('.grid-mode-btn');
+                            modeBtns.forEach(b => b.classList.remove('active'));
+                            document.querySelector('[data-mode="palette"]')?.classList.add('active');
+                            document.getElementById('gridOriginsBtn')?.classList.remove('active');
+                            gridPage = 1;
+                            renderGrid();
                         } else if (isZoomedIn()) {
                             zoomOutToFullGrid();
                         } else {
@@ -13766,8 +13792,8 @@
         const toggleStates = {
             palette: { next: 'color', text: 'BY PALETTE', color: 'var(--warm)' },
             color: { next: 'az', text: 'BY COLOR', color: 'var(--warm)' },
-            az: { next: 'rarity', text: 'A-Z', color: 'var(--warm)' },
-            rarity: { next: 'collector', text: 'RARITY', color: 'var(--warm)' },
+            az: { next: 'traffic', text: 'A-Z', color: 'var(--warm)' },
+            traffic: { next: 'collector', text: 'BY TRAFFIC', color: 'var(--warm)' },
             collector: { next: 'palette', text: 'BY COLLECTOR', color: 'var(--warm)' }
         };
 
@@ -14611,8 +14637,8 @@
                 renderColorSorted(tokens);
             } else if (gridMode === 'az') {
                 renderAZPalettes(tokens);
-            } else if (gridMode === 'rarity') {
-                renderRaritySorted(tokens);
+            } else if (gridMode === 'traffic') {
+                renderTrafficSorted(tokens);
             } else if (gridMode === 'collector') {
                 renderCollectorGroups(tokens);
             }
@@ -15277,6 +15303,58 @@
                 });
             });
             // Grid item click handled by inline onclick="handleGridItemClick()"
+        }
+
+        function renderTrafficSorted(tokens) {
+            // Sort by traffic intensity (Rush Hour first) and wider zoom levels
+            const trafficOrder = { 'Rush Hour': 0, 'Heavy': 1, 'Moderate': 2, 'Light': 3, 'Quiet': 4 };
+            const zoomWidth = { 'Wide': 0, 'Far': 1, 'Very Far': 1, 'Macro': 2, 'Close': 3, 'Very Close': 4 };
+
+            const sorted = [...tokens].sort((a, b) => {
+                const tA = tokenTraits[a] || {};
+                const tB = tokenTraits[b] || {};
+                const trafficA = trafficOrder[tA['Traffic']] ?? 5;
+                const trafficB = trafficOrder[tB['Traffic']] ?? 5;
+                if (trafficA !== trafficB) return trafficA - trafficB;
+                // Secondary: wider pieces first
+                const zoomA = zoomWidth[tA['Zoom']] ?? 3;
+                const zoomB = zoomWidth[tB['Zoom']] ?? 3;
+                if (zoomA !== zoomB) return zoomA - zoomB;
+                return a - b;
+            });
+
+            // Group by traffic level for section headers
+            const groups = {};
+            sorted.forEach(id => {
+                const traffic = tokenTraits[id]?.['Traffic'] || 'Unknown';
+                if (!groups[traffic]) groups[traffic] = [];
+                groups[traffic].push(id);
+            });
+
+            const orderedKeys = Object.keys(groups).sort((a, b) => (trafficOrder[a] ?? 5) - (trafficOrder[b] ?? 5));
+
+            let html = orderedKeys.map(traffic => {
+                const ids = groups[traffic];
+                const count = ids.length;
+                return `<div class="grid-group" data-palette="${traffic}">
+                    <div class="grid-group-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                        <div class="grid-group-title">${traffic}</div>
+                        <span class="grid-group-count">${count}</span>
+                        <span class="grid-group-arrow">▾</span>
+                    </div>
+                    <div class="grid-items grid-${gridSize}">${ids.map(id => generateGridItem(id)).join('')}</div>
+                </div>`;
+            }).join('');
+
+            gridContent.innerHTML = html;
+            document.getElementById('gridPagination').style.display = 'none';
+
+            gridContent.querySelectorAll('.grid-item-fav').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleCityFavorite(parseInt(btn.dataset.token), e);
+                });
+            });
         }
 
         function calculateRarityScore(tokenId) {
