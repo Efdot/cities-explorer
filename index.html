@@ -1833,8 +1833,9 @@
         .leaderboard-list { list-style: none; contain: content; }
         .leaderboard-btn.back-btn { margin-bottom: 24px; }
         /* Become a Collector */
-        .collectors-icon-btn { width: 28px; height: 28px; background: none; border: 1px solid var(--border); border-radius: 50%; font-size: 13px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; padding: 0; }
-        .collectors-icon-btn:hover { border-color: var(--warm); background: rgba(255,179,71,0.08); transform: scale(1.1); }
+        .collectors-icon-btn { width: 24px; height: 24px; background: none; border: none; font-size: 0; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; padding: 0; opacity: 0.35; }
+        .collectors-icon-btn:hover { opacity: 0.7; transform: scale(1.1); }
+        .collectors-icon-btn svg { width: 18px; height: 18px; }
         .become-collector-btn { display: block; width: 100%; padding: 12px 16px; margin-bottom: 16px; background: transparent; border: 1px dashed var(--border); color: var(--text-muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
         .become-collector-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(255,179,71,0.05); }
         .not-collector-link { display: block; width: 100%; padding: 8px 0; margin-bottom: 12px; background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; }
@@ -1967,25 +1968,30 @@
         .top-50-dot { background: #C0C0C0; }
         .top-100-dot { background: #CD7F32; }
         /* Color gradient slider for grid view */
-        .grid-color-gradient-toggle { padding: 10px 16px; background: var(--bg-input); border: none; border-radius: 50px; font-size: 11px; font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .grid-color-gradient-toggle { padding: 10px 12px; background: var(--bg-input); border: none; border-radius: 50px; font-size: 0; font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0; white-space: nowrap; line-height: 0; }
         .grid-color-gradient-toggle:hover { background: var(--bg-card); }
-        .grid-color-gradient-toggle .color-dot { width: 10px; height: 10px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; }
-        .grid-color-gradient-toggle.active { background: rgba(0,229,204,0.15); color: var(--teal); }
+        .grid-color-gradient-toggle .color-dot { width: 12px; height: 12px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; }
+        .grid-color-gradient-toggle.active { background: rgba(0,229,204,0.15); }
+        .grid-color-gradient-toggle.active .color-dot { background: conic-gradient(#00e5cc, #00b8a9, #00e5cc); }
         .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; background: var(--bg-panel); pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center; border-radius: 0; }
         .grid-color-gradient-bar.open { opacity: 1; pointer-events: auto; }
-        .grid-color-gradient-inner { padding: 8px 28px; width: 100%; display: flex; flex-direction: column; gap: 4px; }
-        .grid-color-gradient-strip { height: 28px; border-radius: 14px; cursor: pointer; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.15); touch-action: none; }
-        .grid-color-gradient-strip::after { content: ''; position: absolute; inset: 0; border-radius: 14px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), inset 0 -1px 2px rgba(0,0,0,0.1); pointer-events: none; }
-        .grid-color-gradient-marker { position: absolute; width: 6px; height: 36px; background: #fff; border-radius: 3px; top: -4px; transform: translateX(-50%); box-shadow: 0 2px 8px rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+        .grid-color-gradient-inner { padding: 6px 0; width: 100%; display: flex; flex-direction: column; gap: 3px; }
+        .grid-color-gradient-strip { height: 32px; border-radius: 0; cursor: pointer; position: relative; touch-action: none; }
+        .grid-color-gradient-strip::after { content: ''; position: absolute; inset: 0; border-radius: 0; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), inset 0 -1px 2px rgba(0,0,0,0.1); pointer-events: none; }
+        .grid-color-gradient-marker { position: absolute; width: 2px; height: 40px; background: rgba(255,255,255,0.8); border-radius: 1px; top: -4px; transform: translateX(-50%); box-shadow: 0 0 6px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
         .grid-color-gradient-strip:hover .grid-color-gradient-marker, .grid-color-gradient-strip.active .grid-color-gradient-marker { opacity: 1; }
-        .grid-color-gradient-meta { display: flex; justify-content: space-between; align-items: center; }
+        .grid-color-gradient-meta { display: flex; justify-content: space-between; align-items: center; padding: 0 12px; }
         .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
         .grid-color-gradient-close { background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.6; transition: opacity 0.2s; }
         .grid-color-gradient-close:hover { opacity: 1; color: var(--text); }
         .grid-color-gradient-hint { font-size: 8px; color: var(--orange); opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; }
         .grid-color-gradient-hint.visible { opacity: 0.7; }
+        .grid-color-gradient-clock { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-family: 'Courier New', monospace; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.85); letter-spacing: 0.08em; text-shadow: 0 1px 4px rgba(0,0,0,0.6); opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 2; }
+        .grid-color-gradient-clock.visible { opacity: 1; }
+        .grid-color-gradient-palette-name { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.7); letter-spacing: 0.04em; text-shadow: 0 1px 4px rgba(0,0,0,0.6); opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 2; text-transform: uppercase; }
+        .grid-color-gradient-palette-name.visible { opacity: 1; }
         @media (max-width: 768px) {
-            .grid-color-gradient-inner { padding: 8px 16px; }
+            .grid-color-gradient-inner { padding: 6px 0; }
         }
         .grid-filter-spacer { flex: 1; }
         .grid-supply-tracker { width: 120px; height: 28px; position: relative; flex-shrink: 0; cursor: pointer; display: block; text-decoration: none; }
@@ -3821,8 +3827,8 @@
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›››</span></h2>
             <div class="collectors-header-actions">
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
-                <button class="collectors-icon-btn" id="energySetBtn" title="Energy groups">⚡</button>
-                <button class="collectors-icon-btn" id="dreamBubbleBtn" title="Dream grid">🫧</button>
+                <button class="collectors-icon-btn" id="energySetBtn" title="Energy groups"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11,2 7,10 12,10 8,18"/></svg></button>
+                <button class="collectors-icon-btn" id="dreamBubbleBtn" title="Dream grid"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="3" x2="3" y2="9"/><line x1="3" y1="11" x2="3" y2="17"/><line x1="0" y1="6" x2="6" y2="6"/><line x1="0" y1="14" x2="6" y2="14"/><line x1="11" y1="3" x2="11" y2="9"/><line x1="11" y1="11" x2="11" y2="17"/><line x1="8" y1="6" x2="14" y2="6"/><line x1="8" y1="14" x2="14" y2="14"/></svg></button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
         </div>
@@ -3919,6 +3925,7 @@
                 <button class="leaderboard-btn back-btn" id="backFromEnergy">← BACK</button>
                 <button class="energy-fullscreen-btn" id="energyFullscreenBtn" title="Fullscreen">⛶</button>
             </div>
+            <div class="energy-explanation" style="font-size:10px;color:var(--text-muted);padding:0 0 12px;line-height:1.5;opacity:0.7;letter-spacing:0.02em;">Each of the 112 palettes carries one of four energies — Rising, Living, Fading, or Resting — reflecting the arc of a day across the collection.</div>
             <div class="energy-complete-sets" id="energyCompleteSets"></div>
             <div class="energy-groups-content" id="energyGroupsContent"></div>
         </div>
@@ -4008,15 +4015,17 @@
             <label class="grid-checkbox"><input type="checkbox" id="gridWaterFilter"> WATER</label>
             <button class="grid-sort-toggle sort-desc" id="gridSortToggle" title="Sort order">NEW <span class="sort-arrow">↑</span></button>
             <button class="grid-numbers-toggle" id="gridNumbersToggle" title="Toggle output numbers">#</button>
-            <button class="grid-color-gradient-toggle" id="gridColorGradientToggle" title="Filter by color"><span class="color-dot"></span> COLOR</button>
+            <button class="grid-color-gradient-toggle" id="gridColorGradientToggle" title="Filter by color"><span class="color-dot"></span></button>
             <div class="grid-color-gradient-bar" id="gridColorGradientBar">
                 <div class="grid-color-gradient-inner">
                     <div class="grid-color-gradient-meta">
-                        <span class="grid-color-gradient-label">SLIDE TO FILTER BY COLOR</span>
+                        <span class="grid-color-gradient-label">SLIDE TO FILTER BY TIME OF DAY</span>
                         <span class="grid-color-gradient-hint" id="gridColorGradientHint">Few results — try clearing other filters</span>
                         <button class="grid-color-gradient-close" id="gridColorGradientClose" title="Close color filter">&times;</button>
                     </div>
                     <div class="grid-color-gradient-strip" id="gridColorGradientStrip">
+                        <div class="grid-color-gradient-clock" id="gridColorGradientClock">00:00</div>
+                        <div class="grid-color-gradient-palette-name" id="gridColorGradientPaletteName"></div>
                         <div class="grid-color-gradient-marker" id="gridColorGradientMarker"></div>
                     </div>
                 </div>
@@ -12288,25 +12297,28 @@
             });
         }
 
-        // Dream bubble button - opens wall view in try mode with blank grid
-        document.getElementById('dreamBubbleBtn')?.addEventListener('click', () => {
-            closeCollectorsPanel();
-            const fn = window.openWallView;
-            if (fn) {
-                fn('Your Dream Grid', []);
-                // Auto-activate try mode after wall opens
-                setTimeout(() => {
-                    const tryBtn = document.getElementById('wallViewTryMode');
-                    if (tryBtn && !tryBtn.classList.contains('active')) {
-                        tryBtn.click();
-                    }
-                }, 300);
+        // Dream bubble and Energy set buttons - use event delegation for reliability
+        document.querySelector('.collectors-header-actions')?.addEventListener('click', (e) => {
+            const dreamBtn = e.target.closest('#dreamBubbleBtn');
+            const energyBtn = e.target.closest('#energySetBtn');
+            if (dreamBtn) {
+                closeCollectorsPanel();
+                const fn = window.openWallView;
+                if (fn) {
+                    fn('Your Dream Grid', []);
+                    setTimeout(() => {
+                        const tryBtn = document.getElementById('wallViewTryMode');
+                        if (tryBtn && !tryBtn.classList.contains('active')) {
+                            tryBtn.click();
+                        }
+                    }, 300);
+                }
+                return;
             }
-        });
-
-        // Energy set button - shows collectors grouped by energy
-        document.getElementById('energySetBtn')?.addEventListener('click', () => {
-            showEnergyGroupsView();
+            if (energyBtn) {
+                showEnergyGroupsView();
+                return;
+            }
         });
         document.getElementById('backFromEnergy')?.addEventListener('click', () => {
             document.getElementById('energyGroupsView')?.classList.remove('active');
@@ -13730,6 +13742,10 @@
         const gridFilterBar = document.getElementById('gridFilterBar');
         filterToggleBar.addEventListener('click', (e) => {
             e.stopPropagation();
+            // Close color gradient if open
+            if (typeof deactivateColorGradient === 'function' && colorGradientActive) {
+                deactivateColorGradient();
+            }
             filterToggleBar.classList.toggle('open');
             gridFilterBar.classList.toggle('open');
         });
@@ -13778,8 +13794,13 @@
                 gridMode = btn.dataset.mode;
                 gridPage = 1;
 
-                // Close color gradient slider when switching modes
-                if (typeof deactivateColorGradient === 'function') deactivateColorGradient();
+                // Close color gradient slider when switching modes (unless entering color mode)
+                if (typeof deactivateColorGradient === 'function' && paletteColorState !== 'color') deactivateColorGradient();
+
+                // Auto-open gradient when entering "BY COLOR" mode (follows "BY PALETTE")
+                if (btn.id === 'paletteColorToggle' && paletteColorState === 'color' && !colorGradientActive) {
+                    setTimeout(() => { if (typeof toggleColorGradient === 'function') toggleColorGradient(); }, 100);
+                }
 
                 // Clear collector filter when switching modes (hide the banner)
                 if (currentCollectorFilter) {
@@ -14114,46 +14135,93 @@
         gridNextPage.addEventListener('click', () => { gridPage++; renderGrid(); });
 
         // === Color Gradient Slider for Grid View ===
+        // Day-cycle gradient: 00:00-24:00, dark→yellow→white→orange→dark
         const colorGradientToggle = document.getElementById('gridColorGradientToggle');
         const colorGradientBar = document.getElementById('gridColorGradientBar');
         const colorGradientStrip = document.getElementById('gridColorGradientStrip');
         const colorGradientMarker = document.getElementById('gridColorGradientMarker');
         const colorGradientClose = document.getElementById('gridColorGradientClose');
         const colorGradientHint = document.getElementById('gridColorGradientHint');
+        const colorGradientClock = document.getElementById('gridColorGradientClock');
+        const colorGradientPaletteName = document.getElementById('gridColorGradientPaletteName');
         let colorGradientActive = false;
         let colorGradientDragging = false;
-        let savedFilterState = null; // Store original filter state to restore
+        let colorGradientSortTarget = null; // The target palette bg color for proximity sort
 
-        // Build the gradient from actual palette bg colors sorted by hue
-        function buildColorGradient() {
-            const palettesByHue = Object.entries(PALETTE_DATA).map(([name, info]) => {
-                const hex = info.bg.replace('#', '');
-                const r = parseInt(hex.substr(0, 2), 16) / 255;
-                const g = parseInt(hex.substr(2, 2), 16) / 255;
-                const b = parseInt(hex.substr(4, 2), 16) / 255;
-                const max = Math.max(r, g, b), min = Math.min(r, g, b);
-                let h = 0, s = 0, l = (max + min) / 2;
-                if (max !== min) {
-                    const d = max - min;
-                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-                    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-                    else if (max === g) h = ((b - r) / d + 2) / 6;
-                    else h = ((r - g) / d + 4) / 6;
+        // Parse PALETTE_META hours into numeric values (0-24)
+        function parseHourToNumber(hourStr) {
+            if (!hourStr || hourStr === 'Anytime' || hourStr === 'Blue Hour') return null;
+            const parts = hourStr.split(':');
+            if (parts.length !== 2) return null;
+            const h = parseInt(parts[0], 10);
+            const m = parseInt(parts[1], 10);
+            if (isNaN(h) || isNaN(m)) return null;
+            return h + m / 60;
+        }
+
+        // Build palette list sorted by hour for the day-cycle gradient
+        function buildGradientPalettes() {
+            const palettes = [];
+            Object.keys(PALETTE_DATA).forEach(name => {
+                const meta = PALETTE_META[name];
+                if (!meta) return;
+                const hourNum = parseHourToNumber(meta.hour);
+                // Assign approximate hours for non-numeric values
+                let sortHour = hourNum;
+                if (sortHour === null) {
+                    if (meta.hour === 'Blue Hour') sortHour = 19.5;
+                    else if (meta.time === 'Night') sortHour = 23;
+                    else if (meta.time === 'Dawn') sortHour = 6;
+                    else if (meta.time === 'Morning') sortHour = 9;
+                    else if (meta.time === 'Daylight') sortHour = 12;
+                    else if (meta.time === 'Afternoon') sortHour = 15;
+                    else if (meta.time === 'Dusk') sortHour = 18.5;
+                    else if (meta.time === 'Evening') sortHour = 20.5;
+                    else sortHour = 12;
                 }
-                return { name, bg: info.bg, h: h * 360, s: s * 100, l: l * 100 };
+                palettes.push({
+                    name,
+                    bg: PALETTE_DATA[name].bg,
+                    hour: sortHour,
+                    clockStr: meta.hour || '',
+                    energy: meta.energy,
+                    time: meta.time
+                });
             });
+            palettes.sort((a, b) => a.hour - b.hour);
+            return palettes;
+        }
 
-            // Sort by hue for a smooth rainbow gradient
-            palettesByHue.sort((a, b) => a.h - b.h);
-
-            // Build CSS gradient stops from sorted palette colors
-            const stops = palettesByHue.map((p, i) => {
-                const pct = (i / (palettesByHue.length - 1)) * 100;
-                return `${p.bg} ${pct.toFixed(1)}%`;
-            });
-            colorGradientStrip.style.background = `linear-gradient(to right, ${stops.join(', ')})`;
-
-            return palettesByHue;
+        // Build the day-cycle gradient: dark blues → yellow → white → orange → dark blues
+        function buildColorGradient() {
+            // Static day-cycle gradient representing 00:00-24:00
+            colorGradientStrip.style.background = `linear-gradient(to right,
+                #0a0a2e 0%,
+                #0d0d35 4%,
+                #1a0a3e 8%,
+                #2a1555 12%,
+                #4a2060 16%,
+                #8b4a6b 20%,
+                #d4845a 24%,
+                #f0c040 28%,
+                #ffe066 32%,
+                #fff5c0 36%,
+                #fffdf0 40%,
+                #ffffff 48%,
+                #fffdf0 54%,
+                #fff0d0 58%,
+                #ffd080 62%,
+                #ff9e40 66%,
+                #e86a20 70%,
+                #c04020 74%,
+                #8b3060 78%,
+                #5a2050 82%,
+                #2a1545 86%,
+                #1a0a3e 90%,
+                #0d0d35 95%,
+                #0a0a2e 100%
+            )`;
+            return buildGradientPalettes();
         }
 
         let gradientPalettes = []; // Will be populated when gradient is shown
@@ -14165,44 +14233,75 @@
 
             if (colorGradientActive) {
                 gradientPalettes = buildColorGradient();
-                // Save current palette filter state
-                savedFilterState = new Set(gridFilterState.palettes);
             } else {
-                // Restore original filter state
-                if (savedFilterState) {
-                    gridFilterState.palettes = savedFilterState;
-                    savedFilterState = null;
-                }
+                // Keep the current palette filter - don't restore saved state
                 colorGradientStrip.classList.remove('active');
                 colorGradientHint.classList.remove('visible');
+                colorGradientClock.classList.remove('visible');
+                colorGradientPaletteName.classList.remove('visible');
+                colorGradientSortTarget = null;
                 gridPage = 1;
                 renderGrid();
             }
         }
 
-        function getColorFromGradientPosition(percent) {
+        // Convert gradient position (0-100%) to clock time (0-24 hours)
+        function gradientPositionToHour(percent) {
+            return (percent / 100) * 24;
+        }
+
+        // Format hour number to clock string
+        function formatClockTime(hourNum) {
+            const h = Math.floor(hourNum) % 24;
+            const m = Math.floor((hourNum % 1) * 60);
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        }
+
+        // Get palettes closest to a given hour, sorted by proximity
+        function getPalettesNearHour(targetHour) {
             if (!gradientPalettes.length) return [];
-            const clampedPct = Math.max(0, Math.min(100, percent));
-            const idx = (clampedPct / 100) * (gradientPalettes.length - 1);
-
-            // Find the target hue at this position
-            const targetIdx = Math.round(idx);
-            const targetPalette = gradientPalettes[targetIdx];
-
-            // Find palettes with similar hue (within a range) or similar luminance for grays
-            const hueTolerance = 25;
-            const matchingPalettes = gradientPalettes.filter(p => {
-                // For low-saturation colors (grays), match by luminance
-                if (targetPalette.s < 15 && p.s < 15) {
-                    return Math.abs(p.l - targetPalette.l) < 20;
-                }
-                // For saturated colors, match by hue
-                const hueDiff = Math.abs(p.h - targetPalette.h);
-                const circularDiff = Math.min(hueDiff, 360 - hueDiff);
-                return circularDiff < hueTolerance && p.s > 10;
+            const timeTolerance = 2.5; // hours
+            const matching = gradientPalettes.filter(p => {
+                let diff = Math.abs(p.hour - targetHour);
+                if (diff > 12) diff = 24 - diff; // wrap around midnight
+                return diff <= timeTolerance;
             });
+            // Sort by proximity to target hour
+            matching.sort((a, b) => {
+                let diffA = Math.abs(a.hour - targetHour);
+                if (diffA > 12) diffA = 24 - diffA;
+                let diffB = Math.abs(b.hour - targetHour);
+                if (diffB > 12) diffB = 24 - diffB;
+                return diffA - diffB;
+            });
+            return matching;
+        }
 
-            return matchingPalettes.map(p => p.name);
+        // Get the single closest palette to a given hour
+        function getClosestPalette(targetHour) {
+            if (!gradientPalettes.length) return null;
+            let closest = null;
+            let closestDiff = Infinity;
+            gradientPalettes.forEach(p => {
+                let diff = Math.abs(p.hour - targetHour);
+                if (diff > 12) diff = 24 - diff;
+                if (diff < closestDiff) {
+                    closestDiff = diff;
+                    closest = p;
+                }
+            });
+            return closest;
+        }
+
+        // Color distance for sorting results by proximity to a target bg color
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            return { r: parseInt(hex.substr(0, 2), 16), g: parseInt(hex.substr(2, 2), 16), b: parseInt(hex.substr(4, 2), 16) };
+        }
+
+        function colorDistance(hex1, hex2) {
+            const c1 = hexToRgb(hex1), c2 = hexToRgb(hex2);
+            return Math.sqrt((c1.r - c2.r) ** 2 + (c1.g - c2.g) ** 2 + (c1.b - c2.b) ** 2);
         }
 
         function handleGradientInteraction(e) {
@@ -14214,13 +14313,30 @@
             colorGradientMarker.style.left = `${percent}%`;
             colorGradientStrip.classList.add('active');
 
-            // Get matching palette names
-            const matchingNames = getColorFromGradientPosition(percent);
+            // Map position to time
+            const targetHour = gradientPositionToHour(percent);
+            const clockStr = formatClockTime(targetHour);
 
-            // Temporarily override palette filter
+            // Show clock display
+            colorGradientClock.textContent = clockStr;
+            colorGradientClock.classList.add('visible');
+
+            // Get closest palette and show its name
+            const closest = getClosestPalette(targetHour);
+            if (closest) {
+                colorGradientPaletteName.textContent = closest.name;
+                colorGradientPaletteName.classList.add('visible');
+                colorGradientSortTarget = closest.bg;
+            }
+
+            // Get matching palette names near this time
+            const nearPalettes = getPalettesNearHour(targetHour);
+            const matchingNames = nearPalettes.map(p => p.name);
+
+            // Set palette filter
             gridFilterState.palettes = new Set(matchingNames.length > 0 ? matchingNames : ['__none__']);
 
-            // Check if few results and show hint
+            // Check result count
             const tokens = getGridFilteredTokens();
             if (tokens.length < 5 && tokens.length > 0) {
                 colorGradientHint.classList.add('visible');
@@ -14236,6 +14352,29 @@
 
             gridPage = 1;
             renderGrid();
+        }
+
+        // Handle hover preview (no click/drag, just visual)
+        function handleGradientHover(e) {
+            const rect = colorGradientStrip.getBoundingClientRect();
+            if (e.clientY < rect.top || e.clientY > rect.bottom || e.clientX < rect.left || e.clientX > rect.right) {
+                colorGradientClock.classList.remove('visible');
+                colorGradientPaletteName.classList.remove('visible');
+                return;
+            }
+            const x = e.clientX - rect.left;
+            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+            colorGradientMarker.style.left = `${percent}%`;
+
+            const targetHour = gradientPositionToHour(percent);
+            colorGradientClock.textContent = formatClockTime(targetHour);
+            colorGradientClock.classList.add('visible');
+
+            const closest = getClosestPalette(targetHour);
+            if (closest) {
+                colorGradientPaletteName.textContent = closest.name;
+                colorGradientPaletteName.classList.add('visible');
+            }
         }
 
         colorGradientToggle.addEventListener('click', (e) => {
@@ -14260,13 +14399,7 @@
         document.addEventListener('mousemove', (e) => {
             if (colorGradientDragging) handleGradientInteraction(e);
             else if (colorGradientActive && !colorGradientStrip.classList.contains('active')) {
-                // Hover preview of marker position
-                const rect = colorGradientStrip.getBoundingClientRect();
-                if (e.clientY >= rect.top && e.clientY <= rect.bottom && e.clientX >= rect.left && e.clientX <= rect.right) {
-                    const x = e.clientX - rect.left;
-                    const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
-                    colorGradientMarker.style.left = `${percent}%`;
-                }
+                handleGradientHover(e);
             }
         });
         document.addEventListener('touchmove', (e) => {
@@ -14283,10 +14416,10 @@
                 colorGradientBar.classList.remove('open');
                 colorGradientStrip.classList.remove('active');
                 colorGradientHint.classList.remove('visible');
-                if (savedFilterState) {
-                    gridFilterState.palettes = savedFilterState;
-                    savedFilterState = null;
-                }
+                colorGradientClock.classList.remove('visible');
+                colorGradientPaletteName.classList.remove('visible');
+                // Don't restore saved filter state - keep the filtered palettes
+                colorGradientSortTarget = null;
             }
         }
 
@@ -14382,6 +14515,16 @@
                 const waterVal = (traits['Water Feature'] || '').toLowerCase();
                 if (waterFilter && (!waterVal || waterVal === 'none' || waterVal === 'no')) continue;
                 tokens.push(i);
+            }
+            // When gradient is active with a target color, sort by color proximity
+            if (colorGradientActive && colorGradientSortTarget) {
+                return tokens.sort((a, b) => {
+                    const palA = tokenTraits[a]?.['Palette'] || '';
+                    const palB = tokenTraits[b]?.['Palette'] || '';
+                    const bgA = PALETTE_DATA[palA]?.bg || '#000000';
+                    const bgB = PALETTE_DATA[palB]?.bg || '#000000';
+                    return colorDistance(bgA, colorGradientSortTarget) - colorDistance(bgB, colorGradientSortTarget);
+                });
             }
             // Sort by mint order: desc = newest first (high ID), asc = oldest first (low ID)
             return gridSortOrder === 'desc' ? tokens.sort((a, b) => b - a) : tokens.sort((a, b) => a - b);
@@ -15116,7 +15259,8 @@
         }
 
         function renderColorSorted(tokens) {
-            const sorted = [...tokens].sort((a, b) => {
+            // If gradient is active with a color target, tokens are already sorted by proximity
+            const sorted = (colorGradientActive && colorGradientSortTarget) ? tokens : [...tokens].sort((a, b) => {
                 const paletteA = tokenTraits[a]?.['Palette'] || '';
                 const paletteB = tokenTraits[b]?.['Palette'] || '';
                 return getColorSortValue(paletteA) - getColorSortValue(paletteB);
