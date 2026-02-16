@@ -4478,11 +4478,12 @@
                 <div class="print-inquiry-field">
                     <label>Size</label>
                     <div class="print-inquiry-sizes">
-                        <div class="print-inquiry-size-option" data-size="9x16" data-price="50" data-signed="false" data-framed="false">
-                            <div class="size-dims">9 × 16"</div>
-                            <div class="size-cm">23 × 41 cm</div>
+                        <div class="print-inquiry-size-option" data-size="10x17" data-price="50" data-signed="false" data-framed="false">
+                            <div class="size-dims">10 × 17"</div>
+                            <div class="size-cm">25 × 43 cm</div>
                             <div class="size-price">$50</div>
                             <div class="size-price-converted"></div>
+                            <div class="size-label">mini print</div>
                         </div>
                         <div class="print-inquiry-size-option active" data-size="18x32" data-price="250" data-signed="true" data-framed="false">
                             <div class="size-dims">18 × 32"</div>
@@ -4505,8 +4506,13 @@
                 </div>
 
                 <div class="print-inquiry-field" id="printInquiryEmailField" style="display: none;">
-                    <label>Email Address</label>
+                    <label>Your Email</label>
                     <input type="email" id="printInquiryEmail" placeholder="your@email.com">
+                </div>
+
+                <div class="print-inquiry-field" id="printInquiryNameField" style="display: none;">
+                    <label>Name</label>
+                    <input type="text" id="printInquiryName" placeholder="Your name">
                 </div>
 
                 <button class="print-inquiry-details-toggle" id="printInquiryDetailsToggle" style="display: none;">
@@ -4523,10 +4529,10 @@
                     </div>
                 </div>
 
-                <div class="print-inquiry-type-note">Signed prints for <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank">City owners</a> · Mini prints at <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank">Efdot Studio Shop</a></div>
+                <div class="print-inquiry-type-note" id="printInquiryTypeNote">Signed prints for <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank">Cities collectors</a> · Mini prints at <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank">Efdot Studio Shop</a></div>
 
                 <div class="print-inquiry-actions">
-                    <button class="print-inquiry-btn primary" id="printInquirySend" style="flex: 2;">Check out in Efdot Shop</button>
+                    <button class="print-inquiry-btn primary" id="printInquirySend" style="flex: 2;">Shop Mini Prints</button>
                     <button class="print-inquiry-btn secondary" id="printInquiryCancel">Cancel</button>
                 </div>
             </div>
@@ -8526,10 +8532,13 @@
             // Set title based on active selection
             const titleEl = document.getElementById('printInquiryTitle');
             if (titleEl && activeSize) {
-                if (activeSize.dataset.size === '9x16') titleEl.textContent = 'Get a Mini Print';
+                if (activeSize.dataset.size === '10x17') titleEl.textContent = 'Get a Mini Print';
                 else if (activeSize.dataset.framed === 'true') titleEl.textContent = 'Get a Framed Print';
                 else titleEl.textContent = 'Get a Print';
             }
+
+            // Update flow for correct CTA and fields
+            if (typeof updatePrintInquiryFlow === 'function') updatePrintInquiryFlow();
 
             if (modal) modal.classList.add('open');
         }
@@ -8872,6 +8881,35 @@
             // Size toggle
             let printInquirySize = '18x32';
             let printInquiryPrice = 250;
+            function updatePrintInquiryFlow() {
+                const isSigned = document.querySelector('.print-inquiry-size-option.active')?.dataset.signed === 'true';
+                const isFramed = document.querySelector('.print-inquiry-size-option.active')?.dataset.framed === 'true';
+                const isMini = document.querySelector('.print-inquiry-size-option.active')?.dataset.size === '10x17';
+                const emailField = document.getElementById('printInquiryEmailField');
+                const nameField = document.getElementById('printInquiryNameField');
+                const detailsToggle = document.getElementById('printInquiryDetailsToggle');
+                const sendBtn = document.getElementById('printInquirySend');
+                const typeNote = document.getElementById('printInquiryTypeNote');
+
+                if (isSigned) {
+                    // Signed/framed prints: show inquiry form fields
+                    if (emailField) emailField.style.display = '';
+                    if (nameField) nameField.style.display = '';
+                    if (detailsToggle) detailsToggle.style.display = '';
+                    if (sendBtn) sendBtn.textContent = isFramed ? 'Request Framed Print' : 'Request Signed Print';
+                    if (typeNote) typeNote.innerHTML = 'Signed prints are exclusive to <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank">Cities collectors</a>. Eric will follow up with details.';
+                } else {
+                    // Mini prints: hide inquiry fields, link to shop
+                    if (emailField) emailField.style.display = 'none';
+                    if (nameField) nameField.style.display = 'none';
+                    if (detailsToggle) detailsToggle.style.display = 'none';
+                    document.getElementById('printInquiryDetailsExtra')?.classList.remove('open');
+                    detailsToggle?.classList.remove('open');
+                    if (sendBtn) sendBtn.textContent = 'Shop Mini Prints';
+                    if (typeNote) typeNote.innerHTML = 'Available to everyone at the <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank">Efdot Studio Shop</a>';
+                }
+            }
+
             document.querySelectorAll('.print-inquiry-size-option').forEach(opt => {
                 opt.addEventListener('click', () => {
                     document.querySelectorAll('.print-inquiry-size-option').forEach(o => o.classList.remove('active'));
@@ -8889,10 +8927,12 @@
                     // Update title based on selected product
                     const titleEl = document.getElementById('printInquiryTitle');
                     if (titleEl) {
-                        if (opt.dataset.size === '9x16') titleEl.textContent = 'Get a Mini Print';
+                        if (opt.dataset.size === '10x17') titleEl.textContent = 'Get a Mini Print';
                         else if (opt.dataset.framed === 'true') titleEl.textContent = 'Get a Framed Print';
                         else titleEl.textContent = 'Get a Print';
                     }
+                    // Update flow (show/hide inquiry fields, change CTA)
+                    updatePrintInquiryFlow();
                 });
             });
 
@@ -8971,6 +9011,7 @@
                 document.getElementById('printInquiryForm').style.display = 'block';
                 document.getElementById('printInquirySuccess').style.display = 'none';
                 document.getElementById('printInquiryEmail').value = '';
+                document.getElementById('printInquiryName').value = '';
                 document.getElementById('printInquiryCountry').value = 'United States';
                 document.getElementById('printInquiryNotes').value = '';
                 // Reset size toggle to default (signed print, index 1)
@@ -8988,14 +9029,71 @@
                 if (mf) mf.classList.add('frameless');
                 if (fc) fc.style.display = 'none';
                 if (wt) wt.style.display = 'none';
+                // Reset flow fields
+                if (typeof updatePrintInquiryFlow === 'function') updatePrintInquiryFlow();
             });
 
             document.getElementById('printInquirySend')?.addEventListener('click', () => {
-                // Open Efdot Shop in a new tab
-                window.open('https://shop.efdotstudio.com/collections/cities-collection', '_blank');
+                const activeSize = document.querySelector('.print-inquiry-size-option.active');
+                const isSigned = activeSize?.dataset.signed === 'true';
 
-                // Close the print inquiry modal
-                document.getElementById('printInquiryModal').classList.remove('open');
+                if (!isSigned) {
+                    // Mini prints: open Efdot Shop
+                    window.open('https://shop.efdotstudio.com/collections/cities-collection', '_blank');
+                    document.getElementById('printInquiryModal').classList.remove('open');
+                    return;
+                }
+
+                // Signed/framed prints: submit inquiry to Eric
+                const email = document.getElementById('printInquiryEmail')?.value?.trim();
+                if (!email) {
+                    document.getElementById('printInquiryEmail')?.focus();
+                    return;
+                }
+
+                const name = document.getElementById('printInquiryName')?.value?.trim() || '';
+                const country = document.getElementById('printInquiryCountry')?.value?.trim() || '';
+                const notes = document.getElementById('printInquiryNotes')?.value?.trim() || '';
+                const isFramed = activeSize?.dataset.framed === 'true';
+                const previewCity = printInquirySelectedCities[printInquiryPreviewIndex] || printInquirySelectedCities[0];
+                const sizeLabel = isFramed ? '18×32" Signed + Framed ($500)' : '18×32" Hand-Signed ($250)';
+                const frameLabel = isFramed ? `Frame: ${printInquiryFrameColor}` : '';
+
+                const body = [
+                    `Print Inquiry from Cities Explorer`,
+                    ``,
+                    `City: #${previewCity}`,
+                    `Size: ${sizeLabel}`,
+                    frameLabel,
+                    ``,
+                    name ? `Name: ${name}` : '',
+                    `Email: ${email}`,
+                    country ? `Country: ${country}` : '',
+                    notes ? `Notes: ${notes}` : '',
+                ].filter(Boolean).join('\n');
+
+                // Submit via FormSubmit
+                const formData = new FormData();
+                formData.append('email', 'eric@efdotstudio.com');
+                formData.append('_subject', `Print Inquiry: City #${previewCity} — ${sizeLabel}`);
+                formData.append('message', body);
+                formData.append('_replyto', email);
+                formData.append('_template', 'table');
+
+                fetch('https://formsubmit.co/ajax/eric@efdotstudio.com', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData
+                }).then(r => r.json()).then(() => {
+                    document.getElementById('printInquiryForm').style.display = 'none';
+                    document.getElementById('printInquirySuccess').style.display = 'block';
+                }).catch(() => {
+                    // Fallback: open mailto
+                    const subject = encodeURIComponent(`Print Inquiry: City #${previewCity}`);
+                    const mailBody = encodeURIComponent(body);
+                    window.open(`mailto:eric@efdotstudio.com?subject=${subject}&body=${mailBody}`, '_blank');
+                    document.getElementById('printInquiryModal').classList.remove('open');
+                });
             });
 
             // Close modal on backdrop click
