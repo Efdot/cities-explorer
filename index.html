@@ -3644,7 +3644,7 @@
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
             <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
-            <button class="icon-btn compare-btn" id="compareBtn" title="Compare two cities" aria-label="Compare cities"><svg width="15" height="14" viewBox="0 0 15 14" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="5" height="12" rx="1"/><rect x="9" y="1" width="5" height="12" rx="1"/></svg></button>
+            <button class="icon-btn compare-btn" id="compareBtn" onclick="if(window.startCompare)window.startCompare()" title="Compare two cities" aria-label="Compare cities"><svg width="15" height="14" viewBox="0 0 15 14" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="5" height="12" rx="1"/><rect x="9" y="1" width="5" height="12" rx="1"/></svg></button>
         </div>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
@@ -18166,28 +18166,30 @@
             compareA = idA;
             compareB = idB;
 
-            // Load images
-            const imgA = document.getElementById('compareImgA');
-            const imgB = document.getElementById('compareImgB');
-            imgA.classList.remove('loaded');
-            imgB.classList.remove('loaded');
-            imgA.onload = () => imgA.classList.add('loaded');
-            imgB.onload = () => imgB.classList.add('loaded');
-            imgA.src = getPreviewUrl(idA);
-            imgB.src = getPreviewUrl(idB);
-
-            document.getElementById('compareLabelA').textContent = '#' + idA;
-            document.getElementById('compareLabelB').textContent = '#' + idB;
-
-            // Set input values
-            const inputA = document.getElementById('compareInputA');
-            const inputB = document.getElementById('compareInputB');
-            if (inputA) inputA.value = idA;
-            if (inputB) inputB.value = idB;
-
-            // Build diff
-            buildCompareDiff(idA, idB);
+            // Show overlay first so it's visible even if image loading has issues
             overlay.classList.add('open');
+
+            try {
+                // Load images
+                const imgA = document.getElementById('compareImgA');
+                const imgB = document.getElementById('compareImgB');
+                if (imgA) { imgA.classList.remove('loaded'); imgA.onload = () => imgA.classList.add('loaded'); imgA.src = getPreviewUrl(idA); }
+                if (imgB) { imgB.classList.remove('loaded'); imgB.onload = () => imgB.classList.add('loaded'); imgB.src = getPreviewUrl(idB); }
+
+                const labelA = document.getElementById('compareLabelA');
+                const labelB = document.getElementById('compareLabelB');
+                if (labelA) labelA.textContent = '#' + idA;
+                if (labelB) labelB.textContent = '#' + idB;
+
+                const inputA = document.getElementById('compareInputA');
+                const inputB = document.getElementById('compareInputB');
+                if (inputA) inputA.value = idA;
+                if (inputB) inputB.value = idB;
+
+                buildCompareDiff(idA, idB);
+            } catch (err) {
+                console.error('Compare mode error:', err);
+            }
         }
 
         function closeCompare() {
