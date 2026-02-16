@@ -1964,13 +1964,13 @@
         .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; background: var(--bg-panel); pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center; border-radius: 0; }
         .grid-color-gradient-bar.open { opacity: 1; pointer-events: auto; }
         .grid-color-gradient-inner { padding: 6px 0; width: 100%; display: flex; flex-direction: column; gap: 3px; }
-        .grid-color-gradient-strip { height: 32px; border-radius: 0; cursor: pointer; position: relative; touch-action: none; }
+        .grid-color-gradient-strip { height: 56px; border-radius: 0; cursor: pointer; position: relative; touch-action: none; }
         .grid-color-gradient-strip::after { content: ''; position: absolute; inset: 0; border-radius: 0; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), inset 0 -1px 2px rgba(0,0,0,0.1); pointer-events: none; }
         .grid-color-gradient-marker { position: absolute; width: 18px; height: 18px; background: #fff; border-radius: 50%; top: 50%; transform: translate(-50%, -50%); box-shadow: 0 1px 4px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9); opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 3; }
         .grid-color-gradient-marker::before { content: ''; position: absolute; left: 50%; top: -20px; bottom: -20px; width: 1px; background: rgba(255,255,255,0.5); transform: translateX(-50%); pointer-events: none; }
         .grid-color-gradient-strip:hover .grid-color-gradient-marker, .grid-color-gradient-strip.active .grid-color-gradient-marker { opacity: 1; }
         .grid-color-gradient-meta { display: flex; justify-content: space-between; align-items: center; padding: 0 12px; }
-        .grid-color-gradient-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+        .grid-color-gradient-label { font-size: 7px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); opacity: 0.35; }
         .grid-color-gradient-close { background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.6; transition: opacity 0.2s; }
         .grid-color-gradient-close:hover { opacity: 1; color: var(--text); }
         .grid-color-gradient-hint { font-size: 8px; color: var(--orange); opacity: 0; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; pointer-events: none; white-space: nowrap; }
@@ -14006,6 +14006,8 @@
                 // Show current state as button label
                 gridAllFavBtn.textContent = showingFavoritesOnly ? 'FAVS' : 'ALL';
                 gridAllFavBtn.classList.toggle('favorites-active', showingFavoritesOnly);
+                // Close gradient when switching to favs
+                if (typeof deactivateColorGradient === 'function') deactivateColorGradient();
                 gridPage = 1;
                 renderGrid();
             });
