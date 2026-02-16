@@ -13850,6 +13850,11 @@
 
                 // Auto-open gradient when entering "BY COLOR" mode
                 if (btn.id === 'paletteColorToggle' && paletteColorState === 'color' && !colorGradientActive) {
+                    // Ensure filter bar is open so gradient bar (inside it) is visible
+                    if (!gridFilterBar.classList.contains('open')) {
+                        gridFilterBar.classList.add('open');
+                        filterToggleBar.classList.add('open');
+                    }
                     if (typeof toggleColorGradient === 'function') toggleColorGradient();
                 }
             });
