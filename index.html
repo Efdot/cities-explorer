@@ -1200,9 +1200,7 @@
         }
         .frame-mockup-close { position: absolute; top: 24px; right: 24px; width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 20px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; }
         .frame-mockup-close:hover { background: #333; color: #fff; transform: scale(1.05); }
-        .frame-mockup-download { position: absolute; top: 24px; right: 80px; width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 20px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: bold; }
-        .frame-mockup-download:hover { background: var(--teal); color: #000; transform: scale(1.05); }
-        .frame-mockup-order { position: absolute; top: 24px; right: 136px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border-radius: 22px; padding: 0 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; text-decoration: none; white-space: nowrap; }
+        .frame-mockup-order { position: absolute; top: 24px; right: 80px; height: 44px; border: none; background: rgba(255,255,255,0.95); color: #555; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; border-radius: 22px; padding: 0 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; text-decoration: none; white-space: nowrap; }
         .frame-mockup-order:hover { background: var(--warm); color: #000; transform: scale(1.05); }
         /* Frame mockup navigation */
         .frame-mockup-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.9); color: #555; font-size: 18px; cursor: pointer; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 10; }
@@ -1219,8 +1217,8 @@
         .frame-mockup.dark-mode::before { background: radial-gradient(ellipse 80% 60% at 25% 25%, rgba(255,255,255,0.03) 0%, transparent 50%), radial-gradient(ellipse 70% 50% at 80% 85%, rgba(0,0,0,0.2) 0%, transparent 40%); }
         .frame-mockup.dark-mode .frame-wrapper { background: #1a1a1a; box-shadow: 8px 12px 30px rgba(0,0,0,0.5), 15px 20px 50px rgba(0,0,0,0.4), 3px 4px 10px rgba(0,0,0,0.3); }
         .frame-mockup.dark-mode .frame-inner { background: #e8e6e2; }
-        .frame-mockup.dark-mode .frame-mockup-close, .frame-mockup.dark-mode .frame-mockup-download, .frame-mockup.dark-mode .frame-mockup-nav, .frame-mockup.dark-mode .frame-mockup-mode, .frame-mockup.dark-mode .frame-mockup-order { background: rgba(30,30,30,0.9); color: #888; }
-        .frame-mockup.dark-mode .frame-mockup-close:hover, .frame-mockup.dark-mode .frame-mockup-download:hover, .frame-mockup.dark-mode .frame-mockup-nav:hover, .frame-mockup.dark-mode .frame-mockup-mode:hover, .frame-mockup.dark-mode .frame-mockup-order:hover { background: #fff; color: #000; }
+        .frame-mockup.dark-mode .frame-mockup-close, .frame-mockup.dark-mode .frame-mockup-nav, .frame-mockup.dark-mode .frame-mockup-mode, .frame-mockup.dark-mode .frame-mockup-order { background: rgba(30,30,30,0.9); color: #888; }
+        .frame-mockup.dark-mode .frame-mockup-close:hover, .frame-mockup.dark-mode .frame-mockup-nav:hover, .frame-mockup.dark-mode .frame-mockup-mode:hover, .frame-mockup.dark-mode .frame-mockup-order:hover { background: #fff; color: #000; }
         .frame-mockup.dark-mode .frame-mockup-mode { background: rgba(255,255,255,0.1); color: #c9a227; }
         /* Frame color picker */
         .frame-mockup-colors { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; background: rgba(255,255,255,0.6); padding: 4px 10px; border-radius: 10px 10px 0 0; box-shadow: none; }
@@ -1251,8 +1249,7 @@
             .frame-inner { padding: 2px; }
             .frame-inner img { max-height: calc(70vh - 24px); }
             .frame-mockup-close { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 18px; }
-            .frame-mockup-download { top: 12px; right: 56px; width: 36px; height: 36px; font-size: 16px; }
-            .frame-mockup-order { top: 12px; right: 100px; height: 36px; font-size: 9px; padding: 0 14px; border-radius: 18px; }
+            .frame-mockup-order { top: 12px; right: 56px; height: 36px; font-size: 9px; padding: 0 14px; border-radius: 18px; }
             .frame-mockup-mode { top: 12px; left: 12px; width: 36px; height: 36px; font-size: 14px; }
             .frame-mockup-nav { width: 36px; height: 36px; font-size: 16px; }
             .frame-mockup-nav.prev { left: 12px; }
@@ -1264,7 +1261,6 @@
         }
         @media (max-width: 480px) {
             .frame-mockup-order { display: none; }
-            .frame-mockup-download { right: 56px; }
         }
 
         /* Timeline Framed View - starts in dark mode */
@@ -4195,7 +4191,6 @@
         <button class="frame-mockup-mode" id="frameMockupMode" title="Toggle dark mode">☾</button>
         <button class="frame-mockup-nav prev" id="frameMockupPrev" title="Previous city">‹</button>
         <button class="frame-mockup-nav next" id="frameMockupNext" title="Next city">›</button>
-        <button class="frame-mockup-download" id="downloadFramed" title="Download framed image">↓</button>
         <button class="frame-mockup-order" id="orderPrint" title="Order a print">Order a Print</button>
         <button class="frame-mockup-close" id="closeFrameMockup">×</button>
         <div class="frame-mockup-colors">
@@ -10880,126 +10875,6 @@
             }
         }
 
-        async function downloadFramedImage() {
-            const frameImage = document.getElementById('frameMockupImage');
-
-            // Wait for image to be loaded
-            if (!frameImage.complete) {
-                showStatus('LOADING...');
-                await new Promise(resolve => frameImage.onload = resolve);
-            }
-
-            try {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-
-                // 4:5 aspect ratio canvas (like Instagram portrait)
-                const canvasWidth = 1600;
-                const canvasHeight = 2000;
-                canvas.width = canvasWidth;
-                canvas.height = canvasHeight;
-
-                // Light gray/white background
-                ctx.fillStyle = '#f5f5f5';
-                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-                // Load the image
-                const img = new Image();
-                img.crossOrigin = 'anonymous';
-
-                await new Promise((resolve, reject) => {
-                    img.onload = resolve;
-                    img.onerror = reject;
-                    img.src = frameImage.src;
-                });
-
-                // Calculate framed image size to fit nicely in 4:5 with margins
-                const imgAspect = img.naturalWidth / img.naturalHeight;
-                const maxFrameWidth = canvasWidth * 0.7;
-                const maxFrameHeight = canvasHeight * 0.75;
-
-                let frameWidth, frameHeight;
-                if (imgAspect > maxFrameWidth / maxFrameHeight) {
-                    frameWidth = maxFrameWidth;
-                    frameHeight = frameWidth / imgAspect;
-                } else {
-                    frameHeight = maxFrameHeight;
-                    frameWidth = frameHeight * imgAspect;
-                }
-
-                // Frame dimensions
-                const frameThickness = 24;
-                const matThickness = 8;
-                const totalFrameWidth = frameWidth + (frameThickness + matThickness) * 2;
-                const totalFrameHeight = frameHeight + (frameThickness + matThickness) * 2;
-
-                // Center the frame
-                const frameX = (canvasWidth - totalFrameWidth) / 2;
-                const frameY = (canvasHeight - totalFrameHeight) / 2;
-
-                // Use currently selected frame color
-                const dlFrameColors = typeof frameColorMap !== 'undefined' ? frameColorMap : {
-                    'light-wood': { frame: '#c4a47a', inner: '#a88b62' },
-                    'white': { frame: '#faf9f7', inner: '#4a4846' },
-                    'black': { frame: '#1a1a1a', inner: '#0a0a0a' },
-                    'dark-wood': { frame: '#5a3d2b', inner: '#3d2a1c' }
-                };
-                const dlColor = dlFrameColors[typeof currentFrameColor !== 'undefined' ? currentFrameColor : 'light-wood'] || dlFrameColors['light-wood'];
-
-                // Draw shadow
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
-                ctx.shadowBlur = 40;
-                ctx.shadowOffsetX = 8;
-                ctx.shadowOffsetY = 12;
-
-                // Draw outer frame (uses selected color)
-                ctx.fillStyle = dlColor.frame;
-                ctx.fillRect(frameX, frameY, totalFrameWidth, totalFrameHeight);
-
-                // Reset shadow
-                ctx.shadowColor = 'transparent';
-                ctx.shadowBlur = 0;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 0;
-
-                // Draw inner mat/border
-                ctx.fillStyle = dlColor.inner;
-                ctx.fillRect(
-                    frameX + frameThickness,
-                    frameY + frameThickness,
-                    totalFrameWidth - frameThickness * 2,
-                    totalFrameHeight - frameThickness * 2
-                );
-
-                // Draw the artwork
-                ctx.drawImage(img,
-                    frameX + frameThickness + matThickness,
-                    frameY + frameThickness + matThickness,
-                    frameWidth, frameHeight);
-
-                // Download
-                canvas.toBlob((blob) => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `Cities-by-Efdot-x-Diid-${currentTokenId}-framed.jpg`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    showStatus('FRAMED IMAGE SAVED');
-                }, 'image/jpeg', 0.95);
-
-            } catch (e) {
-                console.error('Frame download error:', e);
-                showStatus('DOWNLOAD FAILED');
-            }
-        }
-
-        document.getElementById('downloadFramed').addEventListener('click', (e) => {
-            e.stopPropagation();
-            downloadFramedImage();
-        });
 
         // Frame mockup navigation
         document.getElementById('frameMockupPrev')?.addEventListener('click', (e) => {
