@@ -1598,9 +1598,13 @@
         .traits-display .palette-row .palette-swatches span:first-child { border-radius: 2px 0 0 2px; }
         .traits-display .palette-row .palette-swatches span:last-child { border-radius: 0 2px 2px 0; }
         .traits-display .digital-clock { font-family: 'Courier New', monospace; font-size: 11px; font-weight: 700; color: var(--text); background: var(--bg-input); padding: 3px 8px; border-radius: 4px; margin-left: 6px; letter-spacing: 0.05em; }
-        .traits-display .energy-icon { font-size: 14px; margin-left: 6px; filter: grayscale(100%) brightness(1.2); flex-shrink: 0; }
-        .traits-display .trait-rarity { font-size: 7px; color: var(--text-muted); background: var(--bg-card); padding: 2px 5px; border-radius: 3px; flex-shrink: 0; }
+        .traits-display .energy-icon { display: none; }
+        .traits-display .trait-rarity { font-size: 7px; color: var(--text-muted); background: var(--bg-card); padding: 2px 5px; border-radius: 3px; flex-shrink: 0; display: none; }
         .traits-display .trait-rarity.rare { color: var(--orange); background: rgba(255, 140, 66, 0.15); }
+        .traits-display.show-rarity .trait-rarity { display: inline-block; }
+        .rarity-pct-toggle { background: none; border: none; color: var(--text-dim); font-size: 8px; font-weight: 700; cursor: pointer; padding: 1px 4px; margin-left: auto; margin-right: 4px; opacity: 0.4; transition: all 0.2s ease; font-family: inherit; line-height: 1; }
+        .rarity-pct-toggle:hover { opacity: 0.7; }
+        .rarity-pct-toggle.active { opacity: 1; color: var(--warm); }
 
         .collection-link { display: block; text-align: center; padding: 14px 20px; background: var(--bg-input); border-radius: 50px; color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; transition: all 0.3s ease; }
         .collection-link:hover { background: var(--bg-card); color: var(--teal); }
@@ -1956,10 +1960,10 @@
         .top-50-dot { background: #C0C0C0; }
         .top-100-dot { background: #CD7F32; }
         /* Color gradient slider for grid view */
-        .grid-color-gradient-toggle { padding: 10px 12px; background: var(--bg-input); border: none; border-radius: 50px; font-size: 0; font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0; white-space: nowrap; line-height: 0; }
-        .grid-color-gradient-toggle:hover { background: var(--bg-card); }
-        .grid-color-gradient-toggle .color-dot { width: 12px; height: 12px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; }
-        .grid-color-gradient-toggle.active { background: rgba(0,229,204,0.15); }
+        .grid-color-gradient-toggle { padding: 0; background: none; border: none; border-radius: 0; font-size: 0; font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0; white-space: nowrap; line-height: 0; }
+        .grid-color-gradient-toggle:hover { opacity: 0.8; }
+        .grid-color-gradient-toggle .color-dot { width: 16px; height: 16px; border-radius: 50%; background: conic-gradient(#ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #ff6b6b); flex-shrink: 0; }
+        .grid-color-gradient-toggle.active { background: none; }
         .grid-color-gradient-toggle.active .color-dot { background: conic-gradient(#00e5cc, #00b8a9, #00e5cc); }
         .grid-color-gradient-bar { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; z-index: 100; background: var(--bg-panel); pointer-events: none; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center; border-radius: 0; }
         .grid-color-gradient-bar.open { opacity: 1; pointer-events: auto; }
@@ -2666,6 +2670,8 @@
             .grid-filter-bar { order: 11; position: fixed; bottom: 50px; left: 0; right: 0; z-index: 159; border-radius: 0; overflow-y: auto; max-height: 50vh; }
             .grid-filter-bar.open { display: flex; padding: 16px; }
             .grid-content { order: 5; padding-bottom: 90px; }
+            /* Filter dropdowns pop upward on mobile since filter bar is at bottom */
+            .grid-filter-bar .multi-select-dropdown { top: auto; bottom: 100%; margin-top: 0; margin-bottom: 4px; }
             /* Collector banner: center name above artworks on mobile */
             .collector-banner { flex-direction: column; gap: 6px; padding: 10px 48px; align-items: center; text-align: center; }
             .collector-banner-left { flex-direction: column; align-items: center; gap: 4px; }
@@ -3524,6 +3530,7 @@
         <div class="metadata-section collapsed" id="metadataSection">
             <div class="metadata-toggle" id="metadataToggle">
                 <span>METADATA</span>
+                <button class="rarity-pct-toggle" id="rarityPctToggle" title="Show rarity percentages">%</button>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="metadata-content">
@@ -11750,9 +11757,18 @@
         });
 
         // Metadata toggle - toggles open/close
-        document.getElementById('metadataToggle').addEventListener('click', () => {
+        document.getElementById('metadataToggle').addEventListener('click', (e) => {
+            if (e.target.closest('.rarity-pct-toggle')) return; // Don't toggle section when clicking %
             const section = document.getElementById('metadataSection');
             section.classList.toggle('collapsed');
+        });
+
+        // Rarity % toggle - show/hide rarity percentages in metadata
+        document.getElementById('rarityPctToggle').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const btn = e.currentTarget;
+            btn.classList.toggle('active');
+            document.getElementById('traitsDisplay').classList.toggle('show-rarity');
         });
 
         function updateBackgroundColors(passedTraits) {
@@ -13823,11 +13839,6 @@
                 // Close color gradient slider when switching modes (unless entering color mode)
                 if (typeof deactivateColorGradient === 'function' && paletteColorState !== 'color') deactivateColorGradient();
 
-                // Auto-open gradient when entering "BY COLOR" mode (follows "BY PALETTE")
-                if (btn.id === 'paletteColorToggle' && paletteColorState === 'color' && !colorGradientActive) {
-                    setTimeout(() => { if (typeof toggleColorGradient === 'function') toggleColorGradient(); }, 100);
-                }
-
                 // Clear collector filter when switching modes (hide the banner)
                 if (currentCollectorFilter) {
                     currentCollectorFilter = null;
@@ -13836,6 +13847,11 @@
                 }
 
                 renderGrid();
+
+                // Auto-open gradient when entering "BY COLOR" mode
+                if (btn.id === 'paletteColorToggle' && paletteColorState === 'color' && !colorGradientActive) {
+                    if (typeof toggleColorGradient === 'function') toggleColorGradient();
+                }
             });
         });
 
@@ -14435,6 +14451,21 @@
         }, { passive: true });
         document.addEventListener('mouseup', () => { colorGradientDragging = false; });
         document.addEventListener('touchend', () => { colorGradientDragging = false; });
+
+        // ESC key: close gradient bar first, then filter bar
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && colorGradientActive) {
+                e.stopImmediatePropagation();
+                toggleColorGradient();
+                return;
+            }
+            if (e.key === 'Escape' && gridFilterBar && gridFilterBar.classList.contains('open')) {
+                e.stopImmediatePropagation();
+                gridFilterBar.classList.remove('open');
+                if (filterToggleBar) filterToggleBar.classList.remove('open');
+                return;
+            }
+        });
 
         // Also close gradient when grid mode changes
         function deactivateColorGradient() {
