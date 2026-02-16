@@ -10695,7 +10695,7 @@
         function getOpenSeaUrl(tokenId) { return `https://opensea.io/assets/ethereum/${CONTRACT}/${tokenId}`; }
         function openFullView() {
             const url = getOpenSeaUrl(currentTokenId);
-            if (confirm('You are about to leave Cities Explorer and go to OpenSea. Continue?')) {
+            if (confirm('taking a detour to opensea.io, continue?')) {
                 window.open(url, '_blank');
             }
         }
