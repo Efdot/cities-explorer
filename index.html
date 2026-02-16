@@ -314,6 +314,9 @@
         .filters-section.collapsed .filters-toggle .toggle-icon { transform: rotate(-90deg); }
         .filters-section.collapsed .filters-content { display: none; }
         .filters-section { margin-bottom: 6px; }
+        /* Hide filters & match count in single-city view — only relevant in grid */
+        body:not(.grid-open) .filters-section,
+        body:not(.grid-open) .match-count { display: none; }
 
         /* Metadata section collapsible */
         .metadata-section { margin-bottom: 4px; }
@@ -1401,7 +1404,7 @@
         .same-palette-label .expand-icon { font-size: 6px; transition: transform 0.2s ease; filter: grayscale(100%); }
         .same-palette-section.collapsed .same-palette-grid { display: none; }
         .same-palette-section:not(.collapsed) .same-palette-label .expand-icon { transform: rotate(90deg); }
-        .same-palette-grid { display: flex; gap: 6px; flex-wrap: wrap; }
+        .same-palette-grid { display: flex; gap: 6px; flex-wrap: wrap; max-height: 64px; overflow: hidden; }
         .same-palette-item { width: 36px; height: 64px; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; position: relative; }
         .same-palette-item:hover { transform: scale(1.08); }
         .same-palette-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: opacity 0.2s ease; }
