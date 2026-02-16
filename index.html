@@ -4240,7 +4240,7 @@
             <!-- Step 4: Digital + Physical -->
             <div class="collector-guide-step" data-step="4">
                 <div class="collector-guide-title">Put it on your wall</div>
-                <div class="collector-guide-desc">Owners can order hand&#8209;signed prints. Posters available to everyone at the Efdot Studio&nbsp;Shop.</div>
+                <div class="collector-guide-desc">Owners can order hand&#8209;signed prints. Mini prints are available to everyone at the Efdot Studio&nbsp;Shop.</div>
                 <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank" class="collector-guide-pill-btn">
                     Shop Prints
                 </a>
@@ -4523,7 +4523,7 @@
                     </div>
                 </div>
 
-                <div class="print-inquiry-type-note">Signed prints for <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank">City owners</a> · Posters at <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank">Efdot Studio Shop</a></div>
+                <div class="print-inquiry-type-note">Signed prints for <a href="https://opensea.io/collection/cities-by-efdot-x-diid" target="_blank">City owners</a> · Mini prints at <a href="https://shop.efdotstudio.com/collections/cities-collection" target="_blank">Efdot Studio Shop</a></div>
 
                 <div class="print-inquiry-actions">
                     <button class="print-inquiry-btn primary" id="printInquirySend" style="flex: 2;">Check out in Efdot Shop</button>
@@ -8526,7 +8526,7 @@
             // Set title based on active selection
             const titleEl = document.getElementById('printInquiryTitle');
             if (titleEl && activeSize) {
-                if (activeSize.dataset.size === '9x16') titleEl.textContent = 'Get a Poster';
+                if (activeSize.dataset.size === '9x16') titleEl.textContent = 'Get a Mini Print';
                 else if (activeSize.dataset.framed === 'true') titleEl.textContent = 'Get a Framed Print';
                 else titleEl.textContent = 'Get a Print';
             }
@@ -8889,7 +8889,7 @@
                     // Update title based on selected product
                     const titleEl = document.getElementById('printInquiryTitle');
                     if (titleEl) {
-                        if (opt.dataset.size === '9x16') titleEl.textContent = 'Get a Poster';
+                        if (opt.dataset.size === '9x16') titleEl.textContent = 'Get a Mini Print';
                         else if (opt.dataset.framed === 'true') titleEl.textContent = 'Get a Framed Print';
                         else titleEl.textContent = 'Get a Print';
                     }
@@ -10341,16 +10341,20 @@
                 removeTempCity(tokenId, artwork);
             });
 
-            // Click frame to view this city's single output (skip if clicking buttons)
-            frame.addEventListener('click', (e) => {
-                if (e.target.closest('.temp-city-actions') || e.target.closest('.temp-city-remove')) return;
+            // Click or double-click frame to view this city's single output
+            function goToOutput(e) {
+                if (e.target.closest('.temp-city-actions') || e.target.closest('.temp-city-remove') || e.target.closest('.temp-city-badge')) return;
+                if (isDragSwapping) return;
                 e.stopPropagation();
+                e.preventDefault();
                 wallWasOpenForOutput = true;
                 const wallModal = document.getElementById('wallViewModal');
                 if (wallModal) wallModal.style.display = 'none';
                 document.body.style.overflow = '';
                 loadOutput(tokenId, true);
-            });
+            }
+            frame.addEventListener('click', goToOutput);
+            frame.addEventListener('dblclick', goToOutput);
 
             inner.appendChild(frameImg);
             mat.appendChild(inner);
@@ -19014,7 +19018,7 @@
                     const remainingText = printInfo.remaining ? ` · ${printInfo.remaining} left` : '';
                     timelineZoomPrint.innerHTML = `✎ Signed Edition${remainingText}`;
                 } else {
-                    timelineZoomPrint.innerHTML = '🖼 Poster Available';
+                    timelineZoomPrint.innerHTML = '🖼 Mini Print Available';
                 }
                 timelineZoomPrint.classList.add('visible');
             } else {
