@@ -10665,6 +10665,7 @@
                 lineBtn.innerHTML = '<span class="line-icon">⊞</span> GRID';
             }
 
+            modal.style.display = '';
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
 
@@ -10749,6 +10750,7 @@
             const wrapper = document.getElementById('wallViewWrapper');
             if (wrapper) wrapper.style.transform = `translate(0px, 0px) scale(${wallViewZoom})`;
 
+            modal.style.display = '';
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
 
@@ -11314,6 +11316,7 @@
 
         function closeWallView() {
             const modal = document.getElementById('wallViewModal');
+            modal.style.display = '';
             modal.classList.remove('open', 'haunted-active');
             if (window.hauntedTimer) clearTimeout(window.hauntedTimer);
             document.body.style.overflow = '';
@@ -14740,26 +14743,44 @@
             }
         });
 
-        // Jump to a specific palette in grid view
+        // Jump to a specific palette in grid view — filter to just that palette
         function jumpToPalette(paletteName) {
-            // Make sure we're in "by palette" mode
-            document.querySelector('.grid-mode-btn[data-mode="palette"]')?.click();
+            // Switch to flat "ALL" mode so filtered results show as a clean grid
+            document.querySelectorAll('.grid-mode-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.grid-mode-btn[data-mode="grid"]')?.classList.add('active');
+            gridMode = 'grid';
 
-            // Open grid view if not already open
+            // Open grid view (populates filters with all values selected)
             if (!gridPanel.classList.contains('open')) {
                 openGridView();
+            } else {
+                populateGridFilters();
             }
 
-            // Wait for render, then scroll to the palette
-            setTimeout(() => {
-                const paletteGroup = gridContent.querySelector(`.grid-group[data-palette="${paletteName}"]`);
-                if (paletteGroup) {
-                    // Expand if collapsed
-                    paletteGroup.classList.remove('collapsed');
-                    // Scroll into view
-                    paletteGroup.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Now set palette filter to just the selected palette
+            gridFilterState.palettes = new Set([paletteName]);
+
+            // Update the palette multi-select UI to reflect the filter
+            const paletteContainer = document.getElementById('paletteMultiSelect');
+            if (paletteContainer) {
+                const checkboxes = paletteContainer.querySelectorAll('.multi-select-item:not(.select-all) input');
+                checkboxes.forEach(cb => {
+                    cb.checked = (cb.value === paletteName);
+                });
+                const selectAll = paletteContainer.querySelector('.select-all input');
+                if (selectAll) selectAll.checked = false;
+                const selectAllText = paletteContainer.querySelector('.select-all-text');
+                if (selectAllText) selectAllText.textContent = 'SELECT ALL';
+                const btn = paletteContainer.querySelector('.multi-select-btn');
+                if (btn) {
+                    btn.innerHTML = `1 PALETTE <span class="arrow">▼</span>`;
+                    btn.classList.add('has-selection');
                 }
-            }, 100);
+            }
+
+            // Re-render with filter applied
+            gridPage = 1;
+            renderGrid();
         }
 
         // Mobile filter toggle
@@ -16135,8 +16156,8 @@
                     if (collectorData && collectorData.tokens && collectorData.tokens.length > 0) {
                         const wallFn = window.openWallView || openWallViewFn;
                         if (typeof wallFn === 'function') {
+                            closeGridView();
                             wallFn(collectorName, collectorData.tokens);
-                            // Set dark mode
                             setTimeout(() => {
                                 const modal = document.getElementById('wallViewModal');
                                 if (modal) {
@@ -16263,16 +16284,12 @@
                     e.stopPropagation();
                     const collectorName = btn.dataset.collector;
                     const tokensStr = btn.dataset.tokens;
-                    if (!tokensStr) {
-                        console.error('No tokens data for', collectorName);
-                        return;
-                    }
-                    const tokenIds = tokensStr.split(',').map(id => parseInt(id)).filter(id => !isNaN(id) && id > 0);
-                    console.log('Opening wall for', collectorName, 'with', tokenIds.length, 'tokens');
+                    if (!tokensStr) return;
+                    const tokenIds = tokensStr.split(',').map(id => parseInt(id)).filter(id => !isNaN(id) && id >= 0);
                     const wallFn = window.openWallView || openWallViewFn;
                     if (tokenIds.length > 0 && typeof wallFn === 'function') {
+                        closeGridView();
                         wallFn(collectorName, tokenIds);
-                        // Ensure dark/black mode
                         setTimeout(() => {
                             const modal = document.getElementById('wallViewModal');
                             if (modal) {
@@ -16281,8 +16298,6 @@
                                 currentWallColor = 'black';
                             }
                         }, 50);
-                    } else {
-                        console.error('Cannot open wall view - function not available or no tokens');
                     }
                 });
             });
