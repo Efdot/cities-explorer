@@ -3051,7 +3051,8 @@
         .playground-download-option { padding: 8px 16px; font-size: 10px; color: var(--text-muted); cursor: pointer; transition: all 0.15s ease; }
         .playground-download-option:hover { background: var(--bg-input); color: var(--text); }
         /* Sidebar Footer - Clean icon row */
-        .sidebar-footer { position: fixed; bottom: 0; left: 0; width: 300px; padding: 10px 20px 14px; background: linear-gradient(to top, var(--bg-panel) 80%, transparent); z-index: 150; box-sizing: border-box; pointer-events: auto; }
+        .sidebar-footer { position: fixed; bottom: 0; left: 0; width: 300px; padding: 10px 20px 14px; background: linear-gradient(to top, var(--bg-panel) 80%, transparent); z-index: 150; box-sizing: border-box; pointer-events: none; }
+        .sidebar-footer-row { pointer-events: auto; }
         @media (max-width: 768px) { .sidebar-footer { display: none; } .sidebar.open .sidebar-footer { display: block; } }
         .sidebar-footer-row { display: flex; justify-content: center; gap: 8px; }
         .sidebar-footer-btn { width: 32px; height: 32px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); font-size: 13px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; position: relative; }
@@ -18130,7 +18131,8 @@
     let _compareB = null;
 
     function startCompare() {
-        if (window.innerWidth <= 768) return;
+        const ov = document.getElementById('compareOverlay');
+        if (!ov) { alert('Compare overlay not found'); return; }
         const idA = currentTokenId;
         const idB = _getDefaultCompareB(idA);
         openCompare(idA, idB);
