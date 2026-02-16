@@ -461,6 +461,31 @@
         .omage-inquiry-submit:hover { background: #f0c87d; transform: translateY(-1px); }
         .omage-inquiry-success { text-align: center; padding: 20px; color: var(--teal); font-size: 14px; }
 
+        /* Trade Inquiry Modal */
+        .trade-inquiry-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.95); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(20px); padding: 20px; }
+        .trade-inquiry-modal.open { display: flex; }
+        .trade-inquiry-content { background: var(--bg-panel); border-radius: 16px; max-width: 420px; width: 100%; padding: 24px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .trade-inquiry-close { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s ease; }
+        .trade-inquiry-close:hover { background: var(--bg-input); color: var(--text); }
+        .trade-inquiry-header { text-align: center; margin-bottom: 20px; }
+        .trade-inquiry-title { font-size: 16px; font-weight: 700; color: var(--warm); margin-bottom: 4px; }
+        .trade-inquiry-subtitle { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .trade-inquiry-city { display: flex; align-items: center; gap: 14px; background: var(--bg-input); border-radius: 10px; padding: 12px; margin-bottom: 20px; }
+        .trade-inquiry-city img { width: 64px; height: 64px; border-radius: 6px; object-fit: cover; }
+        .trade-inquiry-city-info { flex: 1; }
+        .trade-inquiry-city-id { font-size: 14px; font-weight: 700; color: var(--text); }
+        .trade-inquiry-city-meta { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .trade-inquiry-city-owner { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
+        .trade-inquiry-form { display: flex; flex-direction: column; gap: 12px; }
+        .trade-inquiry-input { background: var(--bg-input); border: none; border-radius: 8px; padding: 12px 16px; color: var(--text); font-size: 14px; font-family: inherit; }
+        .trade-inquiry-input::placeholder { color: var(--text-muted); }
+        .trade-inquiry-input:focus { outline: none; box-shadow: 0 0 0 2px rgba(232, 184, 109, 0.3); }
+        .trade-inquiry-textarea { min-height: 80px; resize: vertical; }
+        .trade-inquiry-submit { background: var(--warm); border: none; border-radius: 8px; padding: 14px; color: #000; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s ease; }
+        .trade-inquiry-submit:hover { background: #f0c87d; transform: translateY(-1px); }
+        .trade-inquiry-success { text-align: center; padding: 20px; color: var(--teal); font-size: 14px; }
+        .trade-inquiry-hint { font-size: 10px; color: var(--text-muted); text-align: center; line-height: 1.5; }
+
         /* OpenSea Warning Modal */
         .opensea-warning-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.95); z-index: 3100; display: none; align-items: center; justify-content: center; backdrop-filter: blur(20px); padding: 20px; }
         .opensea-warning-modal.open { display: flex; }
@@ -6747,6 +6772,127 @@
             }
         };
 
+        // ========== TRADE INQUIRY ==========
+        window.openTradeInquiry = function(tokenId) {
+            let modal = document.getElementById('tradeInquiryModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'tradeInquiryModal';
+                modal.className = 'trade-inquiry-modal';
+                modal.onclick = function(e) { if (e.target === modal) closeTradeInquiry(); };
+                document.body.appendChild(modal);
+            }
+
+            const traits = tokenTraits[tokenId];
+            const paletteName = traits?.['Palette'] || '';
+            const energy = traits?.['Energy'] || '';
+            const owner = COLLECTORS_DATA?.find(c => c.tokens && c.tokens.includes(tokenId));
+            const ownerName = owner ? formatCollectorName(owner.name) : 'Unknown';
+
+            // Get the current wall collector context (the person browsing)
+            const wallCollectorName = currentCollectorFilter?.name || '';
+            const wallDisplayName = wallCollectorName ? formatCollectorName(wallCollectorName) : '';
+
+            modal.innerHTML = `
+                <div class="trade-inquiry-content">
+                    <button class="trade-inquiry-close" onclick="closeTradeInquiry()">\u00d7</button>
+                    <div class="trade-inquiry-header">
+                        <div class="trade-inquiry-title">Propose a Trade</div>
+                        <div class="trade-inquiry-subtitle">Efdot will facilitate the exchange</div>
+                    </div>
+                    <div class="trade-inquiry-city">
+                        <img src="${getThumbnailUrl(tokenId)}" alt="City #${tokenId}">
+                        <div class="trade-inquiry-city-info">
+                            <div class="trade-inquiry-city-id">City #${tokenId}</div>
+                            <div class="trade-inquiry-city-meta">${paletteName}${energy ? ' \u00b7 ' + energy : ''}</div>
+                            <div class="trade-inquiry-city-owner">Owned by ${ownerName}</div>
+                        </div>
+                    </div>
+                    <div class="trade-inquiry-form">
+                        <input type="text" id="tradeInquiryName" placeholder="Your name${wallDisplayName ? '' : ' or ENS'}" value="${wallDisplayName}" class="trade-inquiry-input">
+                        <input type="email" id="tradeInquiryEmail" placeholder="Your email" class="trade-inquiry-input">
+                        <textarea id="tradeInquiryMessage" placeholder="What are you offering? (e.g. City #42, ETH, or describe your proposal)" class="trade-inquiry-input trade-inquiry-textarea"></textarea>
+                        <button class="trade-inquiry-submit" onclick="submitTradeInquiry(${tokenId})">Send Proposal</button>
+                    </div>
+                    <div class="trade-inquiry-success" id="tradeInquirySuccess" style="display: none;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">\u2713</div>
+                        <div>Proposal sent! Efdot will be in touch.</div>
+                    </div>
+                    <div class="trade-inquiry-hint">Trades are facilitated by Efdot. You'll be contacted to coordinate the swap.</div>
+                </div>
+            `;
+
+            modal.classList.add('open');
+        };
+
+        window.closeTradeInquiry = function() {
+            const modal = document.getElementById('tradeInquiryModal');
+            if (modal) modal.classList.remove('open');
+        };
+
+        window.submitTradeInquiry = async function(tokenId) {
+            const name = document.getElementById('tradeInquiryName').value.trim();
+            const email = document.getElementById('tradeInquiryEmail').value.trim();
+            const message = document.getElementById('tradeInquiryMessage').value.trim();
+
+            if (!name || !email) {
+                alert('Please enter your name and email.');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            const owner = COLLECTORS_DATA?.find(c => c.tokens && c.tokens.includes(tokenId));
+            const ownerName = owner ? formatCollectorName(owner.name) : 'Unknown';
+            const traits = tokenTraits[tokenId];
+            const paletteName = traits?.['Palette'] || '';
+            const energy = traits?.['Energy'] || '';
+
+            const submitBtn = document.querySelector('.trade-inquiry-submit');
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('https://formsubmit.co/ajax/eric@efdotstudio.com', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        message: `TRADE PROPOSAL\n\nWants: City #${tokenId} (${paletteName}, ${energy})\nOwned by: ${ownerName}\n\nOffering: ${message || '(not specified)'}`,
+                        _subject: `Cities Trade Proposal: #${tokenId} from ${name}`,
+                        _replyto: email,
+                        _template: 'table',
+                        _captcha: 'false'
+                    })
+                });
+
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    document.querySelector('.trade-inquiry-form').style.display = 'none';
+                    document.getElementById('tradeInquirySuccess').style.display = 'block';
+                    setTimeout(() => {
+                        closeTradeInquiry();
+                        document.querySelector('.trade-inquiry-form').style.display = 'block';
+                        document.getElementById('tradeInquirySuccess').style.display = 'none';
+                        submitBtn.textContent = 'Send Proposal';
+                        submitBtn.disabled = false;
+                    }, 2500);
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (e) {
+                console.error('Trade inquiry error:', e);
+                const subject = encodeURIComponent(`Cities Trade Proposal: #${tokenId}`);
+                const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nWants: City #${tokenId} (${paletteName}, ${energy})\nOwned by: ${ownerName}\n\nOffering: ${message || '(not specified)'}`);
+                window.location.href = `mailto:eric@efdotstudio.com?subject=${subject}&body=${body}`;
+                submitBtn.textContent = 'Send Proposal';
+                submitBtn.disabled = false;
+            }
+        };
+
         window.submitSayHey = async function(btn) {
             var container = btn.closest('.say-hey-form').parentElement;
             var form = container.querySelector('.say-hey-form');
@@ -10173,6 +10319,16 @@
                 }
             });
 
+            // Offer button — propose a trade for this city
+            const offerBtn = document.createElement('button');
+            offerBtn.className = 'temp-city-action offer';
+            offerBtn.textContent = 'Offer';
+            offerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openTradeInquiry(tokenId);
+            });
+
+            actions.appendChild(offerBtn);
             actions.appendChild(changeBtn);
             actions.appendChild(addAnotherBtn);
 
@@ -10942,8 +11098,15 @@
                         <div class="suggestion-option-desc">See how it looks in the collection</div>
                     </div>
                 </div>
+                <div class="suggestion-option" data-action="offer">
+                    <span class="suggestion-option-icon">\u21C4</span>
+                    <div class="suggestion-option-text">
+                        <div class="suggestion-option-title">Propose a trade</div>
+                        <div class="suggestion-option-desc">Offer a swap for this city</div>
+                    </div>
+                </div>
                 <div class="suggestion-option" data-action="mint">
-                    <span class="suggestion-option-icon">✦</span>
+                    <span class="suggestion-option-icon">\u2726</span>
                     <div class="suggestion-option-text">
                         <div class="suggestion-option-title">Get a new city</div>
                         <div class="suggestion-option-desc">Get a new one on Art Blocks</div>
@@ -10970,6 +11133,9 @@
                     if (action === 'try') {
                         // Add to grid
                         addTempCity(tokenId);
+                    } else if (action === 'offer') {
+                        // Open trade inquiry
+                        openTradeInquiry(tokenId);
                     } else if (action === 'mint') {
                         // Open Art Blocks mint page
                         window.open('https://www.artblocks.io/collection/cities-by-efdot-x-diid', '_blank');
