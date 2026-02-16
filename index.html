@@ -15323,30 +15323,7 @@
                 return a - b;
             });
 
-            // Group by traffic level for section headers
-            const groups = {};
-            sorted.forEach(id => {
-                const traffic = tokenTraits[id]?.['Traffic'] || 'Unknown';
-                if (!groups[traffic]) groups[traffic] = [];
-                groups[traffic].push(id);
-            });
-
-            const orderedKeys = Object.keys(groups).sort((a, b) => (trafficOrder[a] ?? 5) - (trafficOrder[b] ?? 5));
-
-            let html = orderedKeys.map(traffic => {
-                const ids = groups[traffic];
-                const count = ids.length;
-                return `<div class="grid-group" data-palette="${traffic}">
-                    <div class="grid-group-header" onclick="this.parentElement.classList.toggle('collapsed')">
-                        <div class="grid-group-title">${traffic}</div>
-                        <span class="grid-group-count">${count}</span>
-                        <span class="grid-group-arrow">▾</span>
-                    </div>
-                    <div class="grid-items grid-${gridSize}">${ids.map(id => generateGridItem(id)).join('')}</div>
-                </div>`;
-            }).join('');
-
-            gridContent.innerHTML = html;
+            gridContent.innerHTML = `<div class="grid-items grid-${gridSize}">${sorted.map(id => generateGridItem(id)).join('')}</div>`;
             document.getElementById('gridPagination').style.display = 'none';
 
             gridContent.querySelectorAll('.grid-item-fav').forEach(btn => {
