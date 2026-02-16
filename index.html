@@ -8656,15 +8656,18 @@
         function initSpotlight() {
             if (COLLECTORS_DATA.length === 0) return;
 
-            // Filter to collectors with 2+ cities AND have a proper name (not just wallet address)
-            // A proper name is either an ENS (.eth) or a display name (not starting with 0x)
+            // Filter to collectors with 2+ cities AND have a real name (not wallet address)
             const multiCollectors = COLLECTORS_DATA.filter(c => {
                 if (c.count < 2 || !c.tokens || c.tokens.length < 2) return false;
                 const name = c.name || '';
-                // Exclude if name looks like a wallet address (starts with 0x and is 42+ chars)
-                if (name.startsWith('0x') && name.length >= 40) return false;
-                // Must have a name
                 if (!name || name.trim() === '') return false;
+                // Exclude full wallet addresses (0x + 40 hex chars)
+                if (name.startsWith('0x') && name.length >= 40) return false;
+                // Exclude shortened wallet addresses (0x1234...abcd format)
+                if (name.startsWith('0x') && name.includes('...')) return false;
+                // Exclude anything that's just hex-like (starts with 0x)
+                if (name.startsWith('0x')) return false;
+                // Prefer collectors with real display names
                 return true;
             });
             if (multiCollectors.length === 0) return;
@@ -8717,7 +8720,13 @@
 
             // Show collector name (prominent)
             const collectorName = collector.name || collector.address.slice(0, 8) + '...';
-            document.getElementById('featureCollector').textContent = collectorName;
+            const featureCollectorEl = document.getElementById('featureCollector');
+            featureCollectorEl.innerHTML = `<a href="#" class="collector-link-inline" style="color: var(--warm); text-decoration: none; border-bottom: 1px dashed rgba(255,179,71,0.4); cursor: pointer;">${collectorName}</a>`;
+            featureCollectorEl.querySelector('a')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                fetchCollectorTokens(collector.name || collector.address);
+            });
 
             // Show cities as horizontal crops with token numbers and palette names underneath each
             document.getElementById('featureCities').innerHTML = bestPair.map((t, idx) => {
@@ -17679,10 +17688,19 @@
                     return;
                 }
 
-                // Priority 5: Close timeline view entirely
+                // Priority 5: Close timeline view and return to grid
                 if (timelineView?.classList.contains('open')) {
                     timelineView.classList.remove('open');
                     document.body.style.overflow = '';
+                    // Return to grid view
+                    const gp = document.getElementById('gridPanel');
+                    if (gp && !gp.classList.contains('open')) {
+                        gp.classList.add('open');
+                        document.body.classList.add('grid-open');
+                        const vtb = document.getElementById('viewToggleBtn');
+                        if (vtb) vtb.classList.add('grid-open');
+                        if (typeof renderGrid === 'function') renderGrid();
+                    }
                     return;
                 }
             }
