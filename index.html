@@ -2270,7 +2270,7 @@
         /* Temporary city indicator - uses dynamic palette color via inline style */
         .wall-view-frame.temp-city { position: relative; cursor: pointer; }
         .wall-view-frame.temp-city .temp-city-badge { position: absolute; top: 6px; left: 6px; background: var(--badge-bg, #c9a227); color: var(--badge-text, #000); font-size: 0; font-weight: 700; padding: 0; width: 6px; height: 6px; border-radius: 50%; letter-spacing: 0.05em; z-index: 10; text-transform: uppercase; transition: all 0.15s ease; }
-        .wall-view-frame.temp-city:hover .temp-city-badge { font-size: 7px; padding: 3px 6px; width: auto; height: auto; border-radius: 2px; }
+        .wall-view-frame.temp-city:hover .temp-city-badge { font-size: 7px; padding: 3px 6px; width: auto; height: auto; border-radius: 2px; max-width: calc(100% - 12px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .wall-view-frame.temp-city .wall-view-frame-mat { opacity: 0.9; }
         /* Temp city action buttons on hover */
         .temp-city-actions { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: none; gap: 4px; z-index: 15; flex-wrap: wrap; justify-content: center; max-width: 95%; }
@@ -4361,7 +4361,7 @@
                 <button class="wall-view-wall-toggle" id="wallViewWallToggle" title="Toggle wall color" aria-label="Toggle light/dark wall"></button>
                 <button class="wall-view-layout-toggle" id="wallViewLayoutToggle" title="Toggle wide/tall layout">⊞</button>
                 <button class="wall-view-hide-empty" id="wallViewHideEmpty" title="Toggle grid/line view"><span class="line-icon">⊞</span> GRID</button>
-                <button class="wall-view-try-mode" id="wallViewTryMode" title="Try adding cities to your grid">✦ TRY</button>
+                <button class="wall-view-try-mode" id="wallViewTryMode" title="Add cities to your grid">✦ ADD</button>
 
                 <div class="collect-btn-wrapper">
                     <button class="about-mint-btn wall-view-mint-btn" id="wallViewMintBtn" onclick="toggleCollectPopover(this)"><span class="collect-seg cs-1"></span><span class="collect-seg cs-2"></span><span class="collect-seg cs-3"></span><span class="collect-seg cs-4"></span><span class="collect-seg cs-5"></span></button>
@@ -10045,7 +10045,7 @@
 
             const emptyFrame = document.createElement('div');
             emptyFrame.className = 'wall-view-empty-frame';
-            emptyFrame.innerHTML = '<span class="slot-plus">+</span><span class="slot-label"><span class="slot-grid-icon">▦</span> try</span>';
+            emptyFrame.innerHTML = '<span class="slot-plus">+</span><span class="slot-label"><span class="slot-grid-icon">▦</span> add</span>';
             emptyFrame.addEventListener('click', (e) => {
                 e.stopPropagation();
                 showEmptySlotOptions(e, artwork);
@@ -10118,10 +10118,11 @@
             frameImg.src = `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png`;
             frameImg.alt = `City #${tokenId} (Preview)`;
 
-            // TRY badge
+            // Owner badge - show collector name who owns this city
             const badge = document.createElement('div');
             badge.className = 'temp-city-badge';
-            badge.textContent = 'TRY';
+            const owner = COLLECTORS_DATA?.find(c => c.tokens && c.tokens.includes(tokenId));
+            badge.textContent = owner ? formatCollectorName(owner.name).toUpperCase() : `#${tokenId}`;
 
             // Action buttons (show on hover)
             const actions = document.createElement('div');
@@ -10926,7 +10927,7 @@
                 <div class="suggestion-option" data-action="try">
                     <span class="suggestion-option-icon">+</span>
                     <div class="suggestion-option-text">
-                        <div class="suggestion-option-title">Add to TRY grid</div>
+                        <div class="suggestion-option-title">Add to grid</div>
                         <div class="suggestion-option-desc">See how it looks in the collection</div>
                     </div>
                 </div>
@@ -10956,7 +10957,7 @@
                     dropdown.remove();
 
                     if (action === 'try') {
-                        // Add to TRY grid
+                        // Add to grid
                         addTempCity(tokenId);
                     } else if (action === 'mint') {
                         // Open Art Blocks mint page
