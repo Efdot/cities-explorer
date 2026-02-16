@@ -2630,6 +2630,56 @@
             .perfect-sets-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
             .perfect-set-card { padding: 10px; border-radius: 10px; }
         }
+        /* Set Detail Modal - individual energy set view */
+        .set-detail-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 9, 16, 0.98); z-index: 2650; display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 20px 80px; cursor: pointer; opacity: 0; transition: opacity 0.2s ease; }
+        .set-detail-modal.open { display: flex; opacity: 1; }
+        .set-detail-content { max-width: 900px; width: 100%; cursor: default; }
+        .set-detail-header { text-align: center; margin-bottom: 32px; position: relative; padding-top: 20px; }
+        .set-detail-back { position: absolute; top: 16px; left: 0; background: none; border: 1px solid rgba(255,255,255,0.12); color: #888; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
+        .set-detail-back:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.25); color: #fff; }
+        .set-detail-close { position: absolute; top: 16px; right: 0; width: 32px; height: 32px; border-radius: 50%; background: none; border: 1px solid rgba(255,255,255,0.12); color: #666; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .set-detail-close:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: #fff; }
+        .set-detail-energy-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px; }
+        .set-detail-collector-label { font-size: 10px; color: #666; letter-spacing: 0.04em; }
+        .set-detail-collector-name { color: #aaa; font-weight: 600; cursor: pointer; transition: color 0.2s; }
+        .set-detail-collector-name:hover { color: #fff; }
+        .set-detail-section { margin-bottom: 40px; }
+        .set-detail-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #555; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .set-detail-cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+        .set-detail-city { position: relative; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: all 0.25s ease; }
+        .set-detail-city:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .set-detail-city img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+        .set-detail-city-info { padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; }
+        .set-detail-city-id { font-size: 10px; font-weight: 700; color: #ccc; letter-spacing: 0.04em; }
+        .set-detail-city-palette { font-size: 8px; color: #555; letter-spacing: 0.03em; max-width: 60%; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .set-detail-city.featured { border-color: rgba(255,255,255,0.12); }
+        .set-detail-city.featured .set-detail-city-id { color: #fff; }
+        .set-detail-explore-section { margin-top: 48px; }
+        .set-detail-explore-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #555; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px; }
+        .set-detail-explore-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+        .set-detail-explore-city { position: relative; border-radius: 8px; overflow: hidden; background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: all 0.25s ease; opacity: 0.8; }
+        .set-detail-explore-city:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.25); opacity: 1; }
+        .set-detail-explore-city img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+        .set-detail-explore-city-info { padding: 6px 8px; display: flex; align-items: center; justify-content: space-between; }
+        .set-detail-explore-city-id { font-size: 9px; font-weight: 600; color: #999; }
+        .set-detail-explore-city-collector { font-size: 7px; color: #444; max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .set-detail-energy-rising .set-detail-energy-label { color: #ffb347; }
+        .set-detail-energy-living .set-detail-energy-label { color: #87ceeb; }
+        .set-detail-energy-fading .set-detail-energy-label { color: #dda0dd; }
+        .set-detail-energy-resting .set-detail-energy-label { color: #6b7280; }
+        .set-detail-energy-rising .set-detail-section-title, .set-detail-energy-rising .set-detail-explore-title { color: rgba(255,179,71,0.6); border-bottom-color: rgba(255,179,71,0.12); }
+        .set-detail-energy-living .set-detail-section-title, .set-detail-energy-living .set-detail-explore-title { color: rgba(135,206,235,0.6); border-bottom-color: rgba(135,206,235,0.12); }
+        .set-detail-energy-fading .set-detail-section-title, .set-detail-energy-fading .set-detail-explore-title { color: rgba(221,160,221,0.6); border-bottom-color: rgba(221,160,221,0.12); }
+        .set-detail-energy-resting .set-detail-section-title, .set-detail-energy-resting .set-detail-explore-title { color: rgba(107,114,128,0.6); border-bottom-color: rgba(107,114,128,0.12); }
+        @media (max-width: 768px) {
+            .set-detail-modal { padding: 20px 12px 60px; }
+            .set-detail-cities-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+            .set-detail-explore-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+        }
+        @media (max-width: 480px) {
+            .set-detail-cities-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .set-detail-explore-grid { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        }
         /* Haunted wall view effect for The Lost Cities */
         .wall-view-haunted-effect { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 2s ease; z-index: 15; }
         .wall-view-modal.wall-black.haunted-active .wall-view-haunted-effect { opacity: 1; }
@@ -4518,6 +4568,11 @@
             </div>
             <div id="perfectSetsBody"></div>
         </div>
+    </div>
+
+    <!-- Set Detail View - individual energy set -->
+    <div class="set-detail-modal" id="setDetailModal" onclick="if(event.target === this) closeSetDetail()">
+        <div class="set-detail-content" id="setDetailContent"></div>
     </div>
 
     <div class="palette-inspector" id="paletteInspector">
@@ -11378,6 +11433,7 @@
         let perfectSetsWasOpen = false;
         let wallFromPerfectSets = false;
         let wallWasOpenForOutput = false;
+        let setDetailWasOpen = false;
 
         // Grid navigation: ordered list of tokens from the grid the user clicked from
         // When set, prev/next follows this order instead of default minted order
@@ -11391,6 +11447,9 @@
                 if (wallWasOpenForOutput) {
                     backBtn.style.display = 'block';
                     backBtn.textContent = '↩ Back to Wall';
+                } else if (setDetailWasOpen) {
+                    backBtn.style.display = 'block';
+                    backBtn.textContent = '↩ Back to Set';
                 } else if (perfectSetsWasOpen) {
                     backBtn.style.display = 'block';
                     backBtn.textContent = '↩ Back to Sets';
@@ -13211,6 +13270,7 @@
         document.getElementById('goToWallBtn')?.addEventListener('click', () => {
             if (currentCollectorFilter && currentCollectorFilter.tokens && currentCollectorFilter.tokens.length > 0) {
                 wallWasOpenForOutput = false;
+                setDetailWasOpen = false;
                 openWallView(currentCollectorFilter.name, currentCollectorFilter.tokens);
                 setTimeout(() => {
                     const modal = document.getElementById('wallViewModal');
@@ -13231,6 +13291,13 @@
                 if (wallModal) { wallModal.style.display = ''; wallModal.classList.add('open'); }
                 document.body.style.overflow = 'hidden';
                 updateBackButton();
+                return;
+            }
+            if (setDetailWasOpen) {
+                setDetailWasOpen = false;
+                const modal = document.getElementById('setDetailModal');
+                if (modal) { modal.style.display = ''; modal.classList.add('open'); }
+                document.body.style.overflow = 'hidden';
                 return;
             }
             if (perfectSetsWasOpen) {
@@ -19828,6 +19895,7 @@
             perfectSetsWasOpen = true;
             wallFromPerfectSets = false;
             wallWasOpenForOutput = false;
+            setDetailWasOpen = false;
 
             // Helper: get palette bg for a token
             function getTokenPaletteBg(tokenId) {
@@ -19962,9 +20030,9 @@
                         const chipText = contrastText(chipBg);
                         // Take first 4 tokens for the quad display
                         const quadTokens = set.tokens.slice(0, 4);
-                        html += `<div class="perfect-set-card">`;
+                        html += `<div class="perfect-set-card" data-energy="${energy}" data-all-tokens="${set.tokens.join(',')}">`;
                         html += `<div class="perfect-set-card-header">`;
-                        html += `<span class="perfect-set-collector" data-collector-name="${set.name}" title="View ${displayName}'s wall" style="background:${chipBg};color:${chipText};padding:3px 8px;border-radius:4px;">${displayName}</span>`;
+                        html += `<span class="perfect-set-collector" data-collector-name="${set.name}" title="View ${displayName}'s ${energy} set" style="background:${chipBg};color:${chipText};padding:3px 8px;border-radius:4px;">${displayName}</span>`;
                         html += `<span class="perfect-set-count">${set.tokens.length} cities</span>`;
                         html += `</div>`;
                         html += `<div class="perfect-set-quad">`;
@@ -20010,19 +20078,36 @@
                 setTimeout(() => openWallView(collector.name, orderedTokens), 150);
             }
 
+            // Click handler: open set detail for energy sets, wall view for full energy sets
+            function handleSetCardClick(card) {
+                if (!card) return;
+                const energy = card.dataset.energy;
+                if (energy) {
+                    // Single-energy set card -> open set detail view
+                    const collectorEl = card.querySelector('.perfect-set-collector');
+                    const collectorName = collectorEl?.dataset.collectorName;
+                    if (!collectorName) return;
+                    const allTokens = (card.dataset.allTokens || '').split(',').map(Number).filter(id => !isNaN(id));
+                    openSetDetail(energy, collectorName, allTokens);
+                } else {
+                    // Full energy set card -> open wall view
+                    openWallFromSets(card);
+                }
+            }
+
             // Add click handlers for collector names
             body.querySelectorAll('.perfect-set-collector').forEach(el => {
                 el.addEventListener('click', () => {
                     const card = el.closest('.perfect-set-card');
-                    if (card) openWallFromSets(card);
+                    handleSetCardClick(card);
                 });
             });
 
-            // Add click handlers for individual city cells -> open collector wall view
+            // Add click handlers for individual city cells
             body.querySelectorAll('.perfect-set-cell').forEach(el => {
                 el.addEventListener('click', () => {
                     const card = el.closest('.perfect-set-card');
-                    if (card) openWallFromSets(card);
+                    handleSetCardClick(card);
                 });
             });
 
@@ -20046,6 +20131,7 @@
                 perfectSetsWasOpen = false;
                 wallFromPerfectSets = false;
                 wallWasOpenForOutput = false;
+                setDetailWasOpen = false;
                 openEnergyQuadrant();
             }
         }
@@ -20054,6 +20140,162 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && document.getElementById('perfectSetsModal')?.classList.contains('open')) {
                 closePerfectSets();
+            }
+        });
+
+        // ========== SET DETAIL VIEW ==========
+        // Opens a focused view for a single energy set, with neighboring cities to explore
+
+        function openSetDetail(energy, collectorName, setTokens) {
+            const modal = document.getElementById('setDetailModal');
+            const content = document.getElementById('setDetailContent');
+            if (!modal || !content || !COLLECTORS_DATA) return;
+
+            // Close perfect sets first (navigating away)
+            closePerfectSets(true);
+            setDetailWasOpen = true;
+
+            const energyEmoji = { Rising: '\u2600\uFE0F', Living: '\uD83C\uDFD9\uFE0F', Fading: '\uD83C\uDF06', Resting: '\uD83C\uDF03' };
+            const displayName = formatCollectorName(collectorName).toUpperCase();
+
+            // Helper: get palette info for a token
+            function getTokenPaletteInfo(tokenId) {
+                const traits = tokenTraits[tokenId];
+                if (traits && traits['Palette']) {
+                    return { name: traits['Palette'], bg: PALETTE_DATA[traits['Palette']]?.bg || '#333' };
+                }
+                return { name: '', bg: '#333' };
+            }
+
+            // Build the set's cities HTML
+            let html = `<div class="set-detail-header set-detail-energy-${energy.toLowerCase()}">`;
+            html += `<button class="set-detail-back" onclick="closeSetDetail()">\u2190 Back to Sets</button>`;
+            html += `<button class="set-detail-close" onclick="closeSetDetail()">&times;</button>`;
+            html += `<div class="set-detail-energy-label">${energyEmoji[energy]} ${energy} City Set</div>`;
+            html += `<div class="set-detail-collector-label">collected by <span class="set-detail-collector-name" data-collector-name="${collectorName}">${displayName}</span></div>`;
+            html += `</div>`;
+
+            // The collector's set cities
+            html += `<div class="set-detail-section set-detail-energy-${energy.toLowerCase()}">`;
+            html += `<div class="set-detail-section-title">${setTokens.length} ${energy} Cities in This Set</div>`;
+            html += `<div class="set-detail-cities-grid">`;
+            setTokens.forEach(tokenId => {
+                const palette = getTokenPaletteInfo(tokenId);
+                html += `<div class="set-detail-city featured" data-token-id="${tokenId}">`;
+                html += `<img src="${getThumbnailUrl(tokenId)}" alt="#${tokenId}" loading="lazy">`;
+                html += `<div class="set-detail-city-info">`;
+                html += `<span class="set-detail-city-id">#${tokenId}</span>`;
+                html += `<span class="set-detail-city-palette">${palette.name}</span>`;
+                html += `</div></div>`;
+            });
+            html += `</div></div>`;
+
+            // Gather neighboring cities: other cities with the same energy, from other collectors
+            const LOST_CITIES_PREFIX_SD = '0xcf22';
+            const neighborCities = [];
+            const setTokenSet = new Set(setTokens.map(Number));
+
+            COLLECTORS_DATA.forEach(collector => {
+                if (!collector.tokens || collector.tokens.length === 0) return;
+                if (collector.name === 'The Lost Cities' ||
+                    (collector.address && collector.address.toLowerCase().startsWith(LOST_CITIES_PREFIX_SD))) return;
+                if (collector.name === collectorName) return; // Skip the current collector
+
+                collector.tokens.forEach(tokenId => {
+                    const traits = tokenTraits[tokenId];
+                    if (traits && traits['Energy'] === energy && !setTokenSet.has(tokenId)) {
+                        neighborCities.push({
+                            tokenId,
+                            collectorName: collector.name,
+                            palette: traits['Palette'] || ''
+                        });
+                    }
+                });
+            });
+
+            // Shuffle and limit to a reasonable number for display
+            for (let i = neighborCities.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [neighborCities[i], neighborCities[j]] = [neighborCities[j], neighborCities[i]];
+            }
+            const displayNeighbors = neighborCities.slice(0, 24);
+
+            if (displayNeighbors.length > 0) {
+                html += `<div class="set-detail-explore-section set-detail-energy-${energy.toLowerCase()}">`;
+                html += `<div class="set-detail-explore-title">${energyEmoji[energy]} More ${energy} Cities to Explore</div>`;
+                html += `<div class="set-detail-explore-grid">`;
+                displayNeighbors.forEach(city => {
+                    const ownerDisplay = formatCollectorName(city.collectorName);
+                    html += `<div class="set-detail-explore-city" data-token-id="${city.tokenId}">`;
+                    html += `<img src="${getSmallThumbnailUrl(city.tokenId)}" alt="#${city.tokenId}" loading="lazy">`;
+                    html += `<div class="set-detail-explore-city-info">`;
+                    html += `<span class="set-detail-explore-city-id">#${city.tokenId}</span>`;
+                    html += `<span class="set-detail-explore-city-collector">${ownerDisplay}</span>`;
+                    html += `</div></div>`;
+                });
+                html += `</div></div>`;
+            }
+
+            content.innerHTML = html;
+
+            // Click handlers for set cities -> open single city view
+            content.querySelectorAll('.set-detail-city').forEach(el => {
+                el.addEventListener('click', () => {
+                    const tokenId = parseInt(el.dataset.tokenId);
+                    if (!isNaN(tokenId)) {
+                        modal.style.display = 'none';
+                        modal.classList.remove('open');
+                        document.body.style.overflow = '';
+                        loadOutput(tokenId, true);
+                    }
+                });
+            });
+
+            // Click handlers for explore cities -> open single city view
+            content.querySelectorAll('.set-detail-explore-city').forEach(el => {
+                el.addEventListener('click', () => {
+                    const tokenId = parseInt(el.dataset.tokenId);
+                    if (!isNaN(tokenId)) {
+                        modal.style.display = 'none';
+                        modal.classList.remove('open');
+                        document.body.style.overflow = '';
+                        loadOutput(tokenId, true);
+                    }
+                });
+            });
+
+            // Click handler for collector name -> open their wall
+            content.querySelectorAll('.set-detail-collector-name').forEach(el => {
+                el.addEventListener('click', () => {
+                    const name = el.dataset.collectorName;
+                    const collector = COLLECTORS_DATA.find(c => c.name === name);
+                    if (collector && collector.tokens) {
+                        closeSetDetail(true);
+                        setTimeout(() => openWallView(collector.name, collector.tokens), 150);
+                    }
+                });
+            });
+
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSetDetail(navigatingAway) {
+            const modal = document.getElementById('setDetailModal');
+            if (modal) { modal.classList.remove('open'); modal.style.display = ''; }
+            document.body.style.overflow = '';
+            if (!navigatingAway) {
+                setDetailWasOpen = false;
+                // Return to perfect sets
+                openPerfectSets();
+            }
+        }
+        window.closeSetDetail = closeSetDetail;
+
+        // Close Set Detail on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('setDetailModal')?.classList.contains('open')) {
+                closeSetDetail();
             }
         });
 
