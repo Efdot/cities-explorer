@@ -4019,7 +4019,7 @@
                 <div class="spinner"></div>
                 <div class="loading-text">Cities</div>
             </div>
-            <img id="preview-image" class="preview-image" alt="Cities Preview">
+            <img id="preview-image" class="preview-image" alt="Cities Preview" decoding="async">
             <div class="click-to-view" id="clickToView">VIEW DETAILS</div>
             <button class="explore-fullscreen-btn" id="exploreFullscreenBtn" title="Enter Fullscreen" aria-label="Enter fullscreen mode">⛶</button>
         </div>
@@ -5399,6 +5399,7 @@
         let MAX_TOKEN = 320; // Max token ID (321 minted, 0-indexed) - will be updated from API
         const CACHE_VERSION = 'v1';
         const TRAITS_CACHE_KEY = `cities-traits-${CACHE_VERSION}`;
+        const COLLECTORS_CACHE_KEY = `cities-collectors-${CACHE_VERSION}`;
         const CACHE_EXPIRY = 24 * 60 * 60 * 1000;
 
         const SIZES = { small: { width: 337, height: 600 }, medium: { width: 450, height: 800 }, large: { width: 540, height: 960 } };
@@ -6069,6 +6070,21 @@
 
         function saveCachedTraits() {
             try { localStorage.setItem(TRAITS_CACHE_KEY, JSON.stringify({ data: tokenTraits, timestamp: Date.now() })); } catch (e) {}
+        }
+
+        function loadCachedCollectors() {
+            try {
+                const cached = localStorage.getItem(COLLECTORS_CACHE_KEY);
+                if (cached) {
+                    const { data, timestamp } = JSON.parse(cached);
+                    if (Date.now() - timestamp < CACHE_EXPIRY && data.length > 0) { return data; }
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        function saveCachedCollectors() {
+            try { localStorage.setItem(COLLECTORS_CACHE_KEY, JSON.stringify({ data: COLLECTORS_DATA, timestamp: Date.now() })); } catch (e) {}
         }
 
         function getTokenRarityRank(tokenId) {
@@ -7988,6 +8004,17 @@
         }
 
         async function fetchCollectorsData() {
+            // Load cached collectors instantly while fetching fresh data
+            const cachedCollectors = loadCachedCollectors();
+            if (cachedCollectors) {
+                COLLECTORS_DATA = cachedCollectors;
+                renderCollectorsPills();
+                renderLeaderboard();
+                renderTopCollectors();
+                initSpotlight();
+                console.log(`Loaded ${cachedCollectors.length} collectors from cache`);
+            }
+
             try {
                 // Fetch all tokens with their owners from Art Blocks API
                 const query = `{
@@ -8190,6 +8217,9 @@
                         const bPatron = isFoundingPatron(b.name) ? 1 : 0;
                         return bPatron - aPatron;
                     });
+
+                    // Cache collectors for instant load on next visit
+                    saveCachedCollectors();
 
                     // Update stats
                     const totalCollectors = COLLECTORS_DATA.length;
@@ -10289,11 +10319,13 @@
                 const inner = document.createElement('div');
                 inner.className = 'wall-view-frame-inner';
 
-                // Use thumbnail first, then load full size
+                // Use small thumbnail first for instant display, then upgrade
+                const thumbWidth = count > 12 ? 50 : count > 6 ? 100 : 200;
                 const frameImg = document.createElement('img');
-                frameImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png?width=200`;
+                frameImg.src = `${MEDIA_BASE}/${CONTRACT}/${item.id}.png?width=${thumbWidth}`;
                 frameImg.alt = `City #${item.id}`;
                 frameImg.style.transition = 'opacity 0.3s ease';
+                frameImg.decoding = 'async';
 
                 // Load full resolution after thumbnail
                 const fullImg = new Image();
