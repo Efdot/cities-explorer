@@ -3424,6 +3424,48 @@
             .print-inquiry-frame-color { width: 18px; height: 18px; }
         }
 
+        /* Compare Mode */
+        @media (max-width: 768px) {
+            .compare-btn { display: none !important; }
+        }
+        .compare-overlay { display: none; position: fixed; inset: 0; z-index: 10000; background: var(--bg-deep, #0a0a0a); flex-direction: column; overflow-y: auto; }
+        .compare-overlay.open { display: flex; }
+        .compare-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px 8px; flex-shrink: 0; }
+        .compare-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); }
+        .compare-close { background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; padding: 0 4px; line-height: 1; }
+        .compare-close:hover { color: var(--text); }
+        .compare-body { display: flex; flex: 1; gap: 0; padding: 8px 24px 24px; min-height: 0; }
+        .compare-col { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+        .compare-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; padding: 8px; }
+        .compare-img { max-height: calc(100vh - 160px); max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 6px; opacity: 0; transition: opacity 0.3s ease; }
+        .compare-img.loaded { opacity: 1; }
+        .compare-city-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; }
+        .compare-diff { width: 280px; flex-shrink: 0; padding: 12px 16px; display: flex; flex-direction: column; gap: 0; overflow-y: auto; align-self: center; }
+        .compare-diff-section { margin-bottom: 10px; }
+        .compare-diff-section-title { font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 6px; opacity: 0.5; }
+        .compare-diff-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 10px; gap: 8px; }
+        .compare-diff-row:last-child { border-bottom: none; }
+        .compare-diff-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); flex-shrink: 0; width: 50px; text-align: center; }
+        .compare-diff-val { font-weight: 600; color: var(--text); font-size: 9px; min-width: 0; text-align: center; flex: 1; }
+        .compare-diff-val.left { text-align: right; }
+        .compare-diff-val.right { text-align: left; }
+        .compare-diff-match { background: rgba(100, 255, 100, 0.06); border-radius: 4px; }
+        .compare-diff-differ { background: rgba(255, 200, 100, 0.04); border-radius: 4px; }
+        .compare-palette-swatches { display: flex; gap: 2px; justify-content: center; }
+        .compare-palette-swatches span { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+        .compare-shared-colors { display: flex; gap: 2px; justify-content: center; flex-wrap: wrap; }
+        .compare-shared-colors span { width: 12px; height: 12px; border-radius: 2px; display: inline-block; border: 1px solid rgba(255,255,255,0.1); }
+        .compare-badge { font-size: 7px; padding: 1px 5px; border-radius: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .compare-badge.match { background: rgba(100, 255, 100, 0.12); color: #8f8; }
+        .compare-badge.differ { background: rgba(255, 200, 100, 0.08); color: #da6; }
+        .compare-pick-prompt { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--bg-card, #1a1a1a); border: 1px solid var(--border, #333); border-radius: 10px; padding: 10px 20px; font-size: 11px; color: var(--text-muted); z-index: 10001; display: none; align-items: center; gap: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .compare-pick-prompt.visible { display: flex; }
+        .compare-pick-prompt input { background: var(--bg-input, #222); border: 1px solid var(--border, #333); border-radius: 6px; padding: 5px 10px; font-size: 12px; color: var(--text); width: 80px; text-align: center; font-family: inherit; }
+        .compare-pick-prompt input::placeholder { color: var(--text-muted); opacity: 0.5; }
+        .compare-pick-prompt .compare-pick-go { background: var(--pink, #e85d75); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 10px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
+        .compare-pick-cancel { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 10px; opacity: 0.5; }
+        .compare-pick-cancel:hover { opacity: 1; }
+
     </style>
 </head>
 <body class="grid-open">
@@ -3602,6 +3644,7 @@
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
             <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
+            <button class="icon-btn text-btn compare-btn" id="compareBtn" title="Compare two cities (Shift+click a neighbor)" aria-label="Compare cities">compare</button>
         </div>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
@@ -18072,9 +18115,249 @@
         })();
 
 
+    // ─── Compare Mode ─────────────────────────────────────────────
+    (function() {
+        let compareA = null;
+        let compareB = null;
+        let pickingB = false;
+
+        const overlay = document.getElementById('compareOverlay');
+        const pickPrompt = document.getElementById('comparePickPrompt');
+        const pickInput = document.getElementById('comparePickInput');
+        const pickA = document.getElementById('comparePickA');
+
+        function isValidToken(id) {
+            return id >= 0 && tokenTraits[id];
+        }
+
+        // Enter compare mode: lock current city as A, prompt for B
+        function startCompare() {
+            if (window.innerWidth <= 768) return;
+            compareA = currentTokenId;
+            pickingB = true;
+            pickA.textContent = '#' + compareA;
+            pickInput.value = '';
+            pickPrompt.classList.add('visible');
+            pickInput.focus();
+        }
+
+        // Open the full comparison overlay
+        function openCompare(idA, idB) {
+            pickingB = false;
+            pickPrompt.classList.remove('visible');
+            compareA = idA;
+            compareB = idB;
+
+            // Load images
+            const imgA = document.getElementById('compareImgA');
+            const imgB = document.getElementById('compareImgB');
+            imgA.classList.remove('loaded');
+            imgB.classList.remove('loaded');
+            imgA.onload = () => imgA.classList.add('loaded');
+            imgB.onload = () => imgB.classList.add('loaded');
+            imgA.src = getPreviewUrl(idA);
+            imgB.src = getPreviewUrl(idB);
+
+            document.getElementById('compareLabelA').textContent = '#' + idA;
+            document.getElementById('compareLabelB').textContent = '#' + idB;
+
+            // Build diff
+            buildCompareDiff(idA, idB);
+            overlay.classList.add('open');
+        }
+
+        function closeCompare() {
+            overlay.classList.remove('open');
+            pickPrompt.classList.remove('visible');
+            pickingB = false;
+            compareA = null;
+            compareB = null;
+        }
+
+        function buildCompareDiff(idA, idB) {
+            const tA = tokenTraits[idA];
+            const tB = tokenTraits[idB];
+            const diff = document.getElementById('compareDiff');
+            if (!tA || !tB) { diff.innerHTML = '<div style="color:var(--text-muted);font-size:10px;">Trait data unavailable</div>'; return; }
+
+            const displayValue = (key, value) => key === 'Line' && value === 'Lighter' ? 'Chisel' : value;
+            let html = '';
+
+            // Palette section
+            const palA = tA['Palette'], palB = tB['Palette'];
+            const pdA = PALETTE_DATA[palA], pdB = PALETTE_DATA[palB];
+            const palMatch = palA === palB;
+            html += `<div class="compare-diff-section">`;
+            html += `<div class="compare-diff-section-title">Palette</div>`;
+            html += `<div class="compare-diff-row ${palMatch ? 'compare-diff-match' : 'compare-diff-differ'}">`;
+            html += `<div class="compare-diff-val left" style="flex:1;"><div style="font-size:9px;font-weight:700;margin-bottom:4px;">${palA ? palA.toUpperCase() : '—'}</div>`;
+            if (pdA) html += `<div class="compare-palette-swatches">${pdA.colors.slice(0,6).map(c => `<span style="background:${c}"></span>`).join('')}</div>`;
+            html += `</div>`;
+            html += `<div class="compare-diff-label"><span class="compare-badge ${palMatch ? 'match' : 'differ'}">${palMatch ? 'same' : 'diff'}</span></div>`;
+            html += `<div class="compare-diff-val right" style="flex:1;"><div style="font-size:9px;font-weight:700;margin-bottom:4px;">${palB ? palB.toUpperCase() : '—'}</div>`;
+            if (pdB) html += `<div class="compare-palette-swatches">${pdB.colors.slice(0,6).map(c => `<span style="background:${c}"></span>`).join('')}</div>`;
+            html += `</div></div>`;
+
+            // Shared colors between palettes
+            if (pdA && pdB && !palMatch) {
+                const normalize = c => c.toLowerCase().replace(/\s/g, '');
+                const setA = new Set(pdA.colors.map(normalize));
+                const shared = pdB.colors.filter(c => setA.has(normalize(c)));
+                if (shared.length > 0) {
+                    html += `<div class="compare-diff-row"><div class="compare-diff-label" style="width:auto;font-size:7px;opacity:0.5;">shared colors</div>`;
+                    html += `<div class="compare-shared-colors">${shared.map(c => `<span style="background:${c}" title="${c}"></span>`).join('')}</div></div>`;
+                }
+            }
+            html += `</div>`;
+
+            // Time & Energy section
+            html += `<div class="compare-diff-section">`;
+            html += `<div class="compare-diff-section-title">Time &amp; Energy</div>`;
+            const metaA = PALETTE_META[palA], metaB = PALETTE_META[palB];
+            // Hour
+            const hourA = metaA?.hour || '—', hourB = metaB?.hour || '—';
+            const hourMatch = hourA === hourB;
+            html += `<div class="compare-diff-row ${hourMatch ? 'compare-diff-match' : ''}">`;
+            html += `<div class="compare-diff-val left">${hourA}</div>`;
+            html += `<div class="compare-diff-label">Hour</div>`;
+            html += `<div class="compare-diff-val right">${hourB}</div></div>`;
+
+            // Time of Day
+            ['Time of Day', 'Energy'].forEach(key => {
+                const vA = tA[key] || '—', vB = tB[key] || '—';
+                const match = vA === vB;
+                const label = key === 'Time of Day' ? 'Time' : key;
+                html += `<div class="compare-diff-row ${match ? 'compare-diff-match' : ''}">`;
+                html += `<div class="compare-diff-val left">${vA.toUpperCase()}</div>`;
+                html += `<div class="compare-diff-label">${label}</div>`;
+                html += `<div class="compare-diff-val right">${vB.toUpperCase()}</div></div>`;
+            });
+            html += `</div>`;
+
+            // Other traits
+            const skip = ['Palette', 'Time of Day', 'Energy'];
+            const allKeys = new Set([...Object.keys(tA), ...Object.keys(tB)]);
+            const otherKeys = [...allKeys].filter(k => !skip.includes(k));
+            if (otherKeys.length > 0) {
+                html += `<div class="compare-diff-section">`;
+                html += `<div class="compare-diff-section-title">Traits</div>`;
+                otherKeys.forEach(key => {
+                    const vA = tA[key] ? displayValue(key, tA[key]) : '—';
+                    const vB = tB[key] ? displayValue(key, tB[key]) : '—';
+                    const match = vA === vB;
+                    html += `<div class="compare-diff-row ${match ? 'compare-diff-match' : ''}">`;
+                    html += `<div class="compare-diff-val left">${vA.toUpperCase()}</div>`;
+                    html += `<div class="compare-diff-label">${key.replace('Water Feature', 'Water')}</div>`;
+                    html += `<div class="compare-diff-val right">${vB.toUpperCase()}</div></div>`;
+                });
+                html += `</div>`;
+            }
+
+            // Summary line
+            const totalTraits = skip.length + otherKeys.length;
+            let matchCount = 0;
+            [...skip, ...otherKeys].forEach(k => {
+                const vA = tA[k] || '', vB = tB[k] || '';
+                if (vA === vB) matchCount++;
+            });
+            html += `<div style="text-align:center;font-size:8px;color:var(--text-muted);margin-top:8px;opacity:0.5;">${matchCount}/${totalTraits} traits shared</div>`;
+
+            diff.innerHTML = html;
+        }
+
+        // Submit city B from the pick prompt
+        function submitPickB() {
+            const raw = pickInput.value.replace('#', '').trim();
+            const id = parseInt(raw, 10);
+            if (!isNaN(id) && isValidToken(id) && id !== compareA) {
+                openCompare(compareA, id);
+            } else {
+                pickInput.style.outline = '1px solid #e85d75';
+                setTimeout(() => pickInput.style.outline = '', 600);
+            }
+        }
+
+        // Button click
+        document.getElementById('compareBtn')?.addEventListener('click', startCompare);
+
+        // Pick prompt handlers
+        document.getElementById('comparePickGo')?.addEventListener('click', submitPickB);
+        pickInput?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') submitPickB();
+            if (e.key === 'Escape') { closeCompare(); e.stopPropagation(); }
+        });
+        document.getElementById('comparePickCancel')?.addEventListener('click', closeCompare);
+
+        // Close overlay
+        document.getElementById('compareClose')?.addEventListener('click', closeCompare);
+
+        // ESC to close overlay
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('open')) {
+                e.stopImmediatePropagation();
+                closeCompare();
+            }
+        });
+
+        // Shift+click on neighbor / pairs-well-with items → compare instead of navigate
+        document.addEventListener('click', (e) => {
+            if (!e.shiftKey || window.innerWidth <= 768) return;
+            const item = e.target.closest('.same-palette-item, .pairs-well-item');
+            if (item) {
+                e.preventDefault();
+                e.stopPropagation();
+                const tokenB = parseInt(item.dataset.token, 10);
+                if (!isNaN(tokenB) && isValidToken(tokenB)) {
+                    openCompare(currentTokenId, tokenB);
+                }
+            }
+        }, true); // capture phase to beat the normal click handler
+
+        // Keyboard hint
+        const hintsEl = document.getElementById('keyboardHints');
+        if (hintsEl && window.innerWidth > 768) {
+            const hintRow = document.createElement('div');
+            hintRow.className = 'hint-row';
+            hintRow.innerHTML = '<span>COMPARE</span><kbd>shift+click</kbd>';
+            hintsEl.appendChild(hintRow);
+        }
+
+        // Expose for external use
+        window.openCompare = openCompare;
+        window.startCompare = startCompare;
+    })();
+
+
     </script>
 
     <a href="https://shop.efdotstudio.com/collections/cities-collection/Cities" target="_blank" title="Shop Cities Prints"><img src="ef-logo.png" alt="Efdot" class="efdot-shop-fixed"></a>
+
+    <!-- Compare Mode - Pick City B prompt -->
+    <div class="compare-pick-prompt" id="comparePickPrompt">
+        <span>Comparing <strong id="comparePickA">#—</strong> with…</span>
+        <input type="text" id="comparePickInput" placeholder="#id" maxlength="6">
+        <button class="compare-pick-go" id="comparePickGo">Go</button>
+        <button class="compare-pick-cancel" id="comparePickCancel">cancel</button>
+    </div>
+
+    <!-- Compare Mode Overlay -->
+    <div class="compare-overlay" id="compareOverlay">
+        <div class="compare-header">
+            <div class="compare-title">Compare</div>
+            <button class="compare-close" id="compareClose">&times;</button>
+        </div>
+        <div class="compare-body">
+            <div class="compare-col compare-col-a">
+                <div class="compare-img-wrap"><img class="compare-img" id="compareImgA" alt="City A"></div>
+                <div class="compare-city-label" id="compareLabelA"></div>
+            </div>
+            <div class="compare-diff" id="compareDiff"></div>
+            <div class="compare-col compare-col-b">
+                <div class="compare-img-wrap"><img class="compare-img" id="compareImgB" alt="City B"></div>
+                <div class="compare-city-label" id="compareLabelB"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Drift Mode - Meditative Gallery -->
     <div class="drift-mode dark" id="driftMode">
