@@ -1776,6 +1776,9 @@
         .leaderboard-list { list-style: none; contain: content; }
         .leaderboard-btn.back-btn { margin-bottom: 24px; }
         /* Become a Collector */
+        .collectors-panel-actions { display: flex; gap: 8px; margin: 12px 0; }
+        .collectors-action-btn { flex: 1; padding: 10px 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-muted); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .collectors-action-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(255,179,71,0.05); }
         .become-collector-btn { display: block; width: 100%; padding: 12px 16px; margin-bottom: 16px; background: transparent; border: 1px dashed var(--border); color: var(--text-muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
         .become-collector-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(255,179,71,0.05); }
         .not-collector-link { display: block; width: 100%; padding: 8px 0; margin-bottom: 12px; background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; }
@@ -3790,6 +3793,10 @@
             <div class="collectors-stats"><span id="collectorCountStats">164</span> collectors · <span id="citiesCountStats">321</span> cities</div>
             <div class="top-collectors-highlight" id="topCollectorsHighlight"></div>
             <div class="collectors-pills" id="collectorsPills"></div>
+            <div class="collectors-panel-actions">
+                <button class="collectors-action-btn" id="dreamBubbleBtn" title="Try building your dream grid">🫧 Dream</button>
+                <button class="collectors-action-btn" id="energySetBtn" title="View energy set progress">⚡ Energy Set</button>
+            </div>
             <button class="become-collector-btn" id="becomeCollectorBtn">✦ Join the Movement</button>
         </div>
         <!-- Citizen Guide View - Step-by-step onboarding -->
@@ -3890,6 +3897,7 @@
                 <button class="grid-mode-btn active" data-mode="palette" data-emoji="🎨" id="paletteColorToggle" title="Sort by Palette">BY PALETTE <span class="palette-sort-arrow">↓</span></button>
                 <button class="grid-mode-btn origins-btn" data-mode="origins" data-emoji="📍" id="gridOriginsBtn" title="Origins">ORIGINS</button>
                 <button class="grid-mode-btn collectors-btn" data-emoji="👤" id="gridCollectorsBtn" title="Collectors">COLLECTORS</button>
+                <button class="grid-energy-clock" id="gridEnergyToggle" title="Energy"></button>
             </div>
         </div>
         <div class="filter-toggle-bar" id="filterToggleBar"><span>FILTERS</span><span class="arrow">▼</span></div>
@@ -12180,6 +12188,30 @@
                 }
             });
         }
+
+        // Dream bubble button - opens wall view in try mode with blank grid
+        document.getElementById('dreamBubbleBtn')?.addEventListener('click', () => {
+            closeCollectorsPanel();
+            const fn = window.openWallView;
+            if (fn) {
+                fn('Your Dream Grid', []);
+                // Auto-activate try mode after wall opens
+                setTimeout(() => {
+                    const tryBtn = document.getElementById('wallViewTryMode');
+                    if (tryBtn && !tryBtn.classList.contains('active')) {
+                        tryBtn.click();
+                    }
+                }, 300);
+            }
+        });
+
+        // Energy set button - opens collection planner showing energy sets
+        document.getElementById('energySetBtn')?.addEventListener('click', () => {
+            closeCollectorsPanel();
+            if (typeof window.openCollectionPlanner === 'function') {
+                window.openCollectionPlanner();
+            }
+        });
 
         // Swipe/drag to close panels
         function setupPanelSwipe(panel, direction = 'right') {
