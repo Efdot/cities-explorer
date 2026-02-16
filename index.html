@@ -11417,14 +11417,25 @@
             const ctv = document.getElementById('clickToView');
             if (ctv) ctv.classList.remove('visible');
 
-            // Fade out current image
+            // Load low-res thumbnail instantly, then swap to full resolution
             previewImage.classList.add('fade-out');
-            previewImage.classList.remove('loaded'); // Remove loaded state for fullscreen transition
+            previewImage.classList.remove('loaded');
             loadingOverlay.classList.remove('hidden');
 
+            const targetToken = currentTokenId;
             setTimeout(() => {
                 previewImage.style.display = 'block';
-                previewImage.src = getPreviewUrl(currentTokenId);
+                // Show low-res immediately for instant perceived load
+                previewImage.src = getThumbnailUrl(targetToken);
+                // Load full resolution in background and swap when ready
+                const fullRes = new Image();
+                fullRes.onload = () => {
+                    // Only swap if we're still viewing the same token
+                    if (currentTokenId === targetToken) {
+                        previewImage.src = fullRes.src;
+                    }
+                };
+                fullRes.src = getPreviewUrl(targetToken);
             }, 150);
 
             closeMobileMenu();
@@ -12767,6 +12778,9 @@
             const nextToken = currentIndex < matches.length - 1 ? matches[currentIndex + 1] : matches[0];
             [prevToken, nextToken].forEach(tokenId => {
                 if (tokenId !== undefined) {
+                    // Preload both thumbnail (for instant display) and full res
+                    const thumb = new Image();
+                    thumb.src = getThumbnailUrl(tokenId);
                     const img = new Image();
                     img.src = getPreviewUrl(tokenId);
                 }
@@ -17744,10 +17758,13 @@
             if (currentIndex === -1) return;
             const prevId = currentIndex > 0 ? mintedTokens[currentIndex - 1] : mintedTokens[mintedTokens.length - 1];
             const nextId = currentIndex < mintedTokens.length - 1 ? mintedTokens[currentIndex + 1] : mintedTokens[0];
-            const prevImg = new Image();
-            prevImg.src = getPreviewUrl(prevId);
-            const nextImg = new Image();
-            nextImg.src = getPreviewUrl(nextId);
+            [prevId, nextId].forEach(id => {
+                // Preload both thumbnail (for instant display) and full res
+                const thumb = new Image();
+                thumb.src = getThumbnailUrl(id);
+                const full = new Image();
+                full.src = getPreviewUrl(id);
+            });
         }
 
         // Mobile bottom bar controls
