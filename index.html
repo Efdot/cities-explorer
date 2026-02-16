@@ -1753,6 +1753,26 @@
         .energy-complete-name { font-size: 11px; font-weight: 600; color: var(--text); flex: 1; }
         .energy-complete-dots { display: flex; gap: 4px; }
         .energy-complete-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .energy-set-section { margin-bottom: 14px; }
+        .energy-set-section-header { display: flex; align-items: center; gap: 8px; padding: 8px 0; transition: opacity 0.2s; }
+        .energy-set-section-header:hover { opacity: 0.8; }
+        .energy-set-section-pills { padding: 0 0 4px; }
+        .energy-set-detail-overlay { position: fixed; inset: 0; background: var(--bg-deep); z-index: 2600; display: none; overflow-y: auto; }
+        .energy-set-detail-overlay.open { display: block; }
+        .energy-set-detail-close { position: fixed; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 32px; cursor: pointer; z-index: 2700; transition: color 0.2s; }
+        .energy-set-detail-close:hover { color: var(--text); }
+        .energy-set-detail-inner { max-width: 800px; margin: 0 auto; padding: 60px 40px; }
+        .energy-set-detail-title { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; text-align: center; }
+        .energy-set-detail-sub { font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 40px; }
+        .energy-set-detail-collector { margin-bottom: 32px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; }
+        .energy-set-detail-collector-name { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; cursor: pointer; transition: color 0.2s; }
+        .energy-set-detail-collector-name:hover { color: var(--warm); }
+        .energy-set-detail-cities { display: flex; gap: 8px; flex-wrap: wrap; }
+        .energy-set-detail-city { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .energy-set-detail-city img { width: 80px; height: 80px; border-radius: 6px; object-fit: cover; }
+        .energy-set-detail-city-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+        .energy-set-detail-city-id { font-size: 8px; color: var(--text-dim); }
+        .energy-set-detail-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 12px; opacity: 0.5; }
         .energy-group { margin-bottom: 20px; }
         .energy-group-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
         .energy-group-icon { font-size: 16px; }
@@ -3902,6 +3922,12 @@
             <div class="energy-complete-sets" id="energyCompleteSets"></div>
             <div class="energy-groups-content" id="energyGroupsContent"></div>
         </div>
+    </div>
+
+    <!-- Energy Set Detail Fullscreen -->
+    <div class="energy-set-detail-overlay" id="energySetDetailOverlay">
+        <button class="energy-set-detail-close" id="energySetDetailClose">&times;</button>
+        <div class="energy-set-detail-inner" id="energySetDetailInner"></div>
     </div>
 
     <!-- Energy Board Fullscreen -->
@@ -6980,6 +7006,7 @@
 
         let currentCollectorFilter = null;
         let enteredCollectorFromTimeline = false;
+        let enteredCollectorFromEnergy = false;
 
         async function fetchCollectorTokens(collectorName, fromTimeline = false) {
             enteredCollectorFromTimeline = fromTimeline;
@@ -7293,14 +7320,24 @@
 
         function clearCollectorFilter(returnToTimeline = false) {
             const wasFromTimeline = enteredCollectorFromTimeline;
+            const wasFromEnergy = enteredCollectorFromEnergy;
             currentCollectorFilter = null;
             enteredCollectorFromTimeline = false;
+            enteredCollectorFromEnergy = false;
             document.getElementById('collectorBanner').classList.remove('visible');
 
             // If came from timeline and escape is pressed, return to timeline
             if (returnToTimeline && wasFromTimeline) {
                 closeGridView();
                 openTimeline();
+                return;
+            }
+            // If came from energy view, return to energy view
+            if (wasFromEnergy) {
+                const cp = document.getElementById('collectorsPanel');
+                if (cp) { cp.classList.add('open'); document.body.classList.add('collectors-open'); }
+                showEnergyGroupsView();
+                renderGrid();
                 return;
             }
             renderGrid();
@@ -12302,19 +12339,27 @@
             const overlay = document.getElementById('energyFullscreenOverlay');
             if (!overlay) return;
             const data = buildEnergyData();
-            document.getElementById('energyFullscreenCompleteSets').innerHTML = renderCompleteSetsHtml(data.completeSets);
+            document.getElementById('energyFullscreenCompleteSets').innerHTML = renderCompleteSetsHtml(data.completeSets, data.energyTypeSets);
             document.getElementById('energyFullscreenContent').innerHTML = renderEnergyGroupsHtml(data.groups);
             overlay.classList.add('open');
             document.body.style.overflow = 'hidden';
             // Wire up clicks
             overlay.onclick = (e) => {
+                const setHeader = e.target.closest('.energy-set-section-header');
+                if (setHeader) {
+                    const energy = setHeader.dataset.energy;
+                    if (energy) openEnergySetDetail(energy, data);
+                    return;
+                }
                 const pill = e.target.closest('.energy-group-pill');
                 const completePill = e.target.closest('.energy-complete-collector');
                 if (pill) {
+                    enteredCollectorFromEnergy = true;
                     overlay.classList.remove('open');
                     document.body.style.overflow = '';
                     fetchCollectorTokens(pill.dataset.collector);
                 } else if (completePill) {
+                    enteredCollectorFromEnergy = true;
                     overlay.classList.remove('open');
                     document.body.style.overflow = '';
                     fetchCollectorTokens(completePill.dataset.collector);
@@ -12347,6 +12392,8 @@
                 Resting: { ...ENERGY_META.Resting, collectors: [] }
             };
             const completeSets = [];
+            // Per-energy-type sets: collectors with 4+ of the same type
+            const energyTypeSets = { Rising: [], Living: [], Fading: [], Resting: [] };
 
             COLLECTORS_DATA.forEach(collector => {
                 if (!collector.tokens || collector.tokens.length === 0) return;
@@ -12359,19 +12406,31 @@
                     if (energy && byEnergy[energy]) byEnergy[energy].push(id);
                 });
 
-                // Check for complete set (at least 1 of each)
+                // Check for spectrum set (at least 1 of each)
                 const hasAll = byEnergy.Rising.length > 0 && byEnergy.Living.length > 0 &&
                                byEnergy.Fading.length > 0 && byEnergy.Resting.length > 0;
                 if (hasAll) {
                     completeSets.push({
                         name: collector.name,
                         count: collector.count,
+                        byEnergy,
                         tokens: { Rising: byEnergy.Rising[0], Living: byEnergy.Living[0], Fading: byEnergy.Fading[0], Resting: byEnergy.Resting[0] }
                     });
                 }
 
+                // Per-energy-type sets: 4+ of one energy type
+                for (const [energy, ids] of Object.entries(byEnergy)) {
+                    if (ids.length >= 4) {
+                        energyTypeSets[energy].push({
+                            name: collector.name,
+                            energyCount: ids.length,
+                            totalCount: collector.count,
+                            tokenIds: ids
+                        });
+                    }
+                }
+
                 // Place collector in EACH energy group where they have cities
-                // Use the most recently collected (highest token ID) for color
                 for (const [energy, ids] of Object.entries(byEnergy)) {
                     if (ids.length === 0) continue;
                     const representativeId = Math.max(...ids);
@@ -12379,8 +12438,6 @@
                     const paletteName = traits?.['Palette'];
                     const paletteInfo = PALETTE_DATA[paletteName];
                     const bg = paletteInfo?.bg || '#333';
-                    const colors = paletteInfo?.colors || [];
-                    // Pick text color that contrasts with bg
                     const bgHex = bg.replace('#', '');
                     const bgLum = (0.299 * parseInt(bgHex.substr(0,2),16) + 0.587 * parseInt(bgHex.substr(2,2),16) + 0.114 * parseInt(bgHex.substr(4,2),16)) / 255;
                     const textColor = bgLum > 0.5 ? '#111' : '#eee';
@@ -12395,28 +12452,76 @@
                 }
             });
 
-            // Sort each group by count desc
             for (const g of Object.values(groups)) {
                 g.collectors.sort((a, b) => b.count - a.count);
             }
+            for (const s of Object.values(energyTypeSets)) {
+                s.sort((a, b) => b.energyCount - a.energyCount);
+            }
             completeSets.sort((a, b) => b.count - a.count);
 
-            return { groups, completeSets };
+            return { groups, completeSets, energyTypeSets };
         }
 
-        function renderCompleteSetsHtml(completeSets) {
-            if (completeSets.length === 0) return '';
-            let html = '<div class="energy-complete-label">⚡ Complete Energy Sets</div>';
-            completeSets.forEach(c => {
-                const dots = ['Rising', 'Living', 'Fading', 'Resting'].map(e => {
-                    return `<div class="energy-complete-dot" style="background: ${ENERGY_META[e].color};"></div>`;
-                }).join('');
-                html += `<div class="energy-complete-collector" data-collector="${c.name}">
-                    <span class="energy-complete-name">${c.name}</span>
-                    <div class="energy-complete-dots">${dots}</div>
-                    <span style="font-size:9px;color:var(--text-muted);">×${c.count}</span>
-                </div>`;
+        function renderCompleteSetsHtml(completeSets, energyTypeSets) {
+            let html = '';
+
+            // Per-energy-type sets: collectors with 4+ of the same energy
+            // Order: types with collectors first, empty ones last
+            const orderedTypes = ['Fading', 'Resting', 'Rising', 'Living'];
+            const withSets = orderedTypes.filter(e => (energyTypeSets?.[e] || []).length > 0);
+            const withoutSets = orderedTypes.filter(e => (energyTypeSets?.[e] || []).length === 0);
+            const sortedTypes = [...withSets, ...withoutSets];
+
+            sortedTypes.forEach(energy => {
+                const m = ENERGY_META[energy];
+                const collectors = energyTypeSets?.[energy] || [];
+                html += `<div class="energy-set-section">
+                    <div class="energy-set-section-header" data-energy="${energy}" style="cursor:pointer;">
+                        <span class="energy-group-icon">${m.icon}</span>
+                        <span class="energy-group-name ${energy.toLowerCase()}">${energy} Set</span>
+                        <span class="energy-group-count">${collectors.length}</span>
+                        <span style="font-size:10px;color:var(--text-muted);margin-left:auto;opacity:0.5;">→</span>
+                    </div>`;
+                if (collectors.length > 0) {
+                    html += `<div class="energy-set-section-pills">`;
+                    collectors.slice(0, 5).forEach(c => {
+                        html += `<span class="energy-complete-collector" data-collector="${c.name}" style="border-color:${m.color}33;">
+                            <span class="energy-complete-name">${c.name}</span>
+                            <span style="font-size:9px;color:${m.color};">×${c.energyCount}</span>
+                        </span>`;
+                    });
+                    if (collectors.length > 5) html += `<span style="font-size:9px;color:var(--text-muted);padding:4px 0;">+${collectors.length - 5} more</span>`;
+                    html += `</div>`;
+                } else {
+                    html += `<div style="font-size:9px;color:var(--text-muted);opacity:0.5;padding:4px 0 8px;">No complete sets yet</div>`;
+                }
+                html += `</div>`;
             });
+
+            // Complete spectrum sets (all 4 types)
+            if (completeSets.length > 0) {
+                html += `<div class="energy-set-section">
+                    <div class="energy-set-section-header" data-energy="Spectrum" style="cursor:pointer;">
+                        <span class="energy-group-icon">⚡</span>
+                        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warm);">Spectrum Set</span>
+                        <span class="energy-group-count">${completeSets.length}</span>
+                        <span style="font-size:10px;color:var(--text-muted);margin-left:auto;opacity:0.5;">→</span>
+                    </div>
+                    <div class="energy-set-section-pills">`;
+                completeSets.forEach(c => {
+                    const dots = ['Rising', 'Living', 'Fading', 'Resting'].map(e => {
+                        return `<div class="energy-complete-dot" style="background: ${ENERGY_META[e].color};"></div>`;
+                    }).join('');
+                    html += `<span class="energy-complete-collector" data-collector="${c.name}">
+                        <span class="energy-complete-name">${c.name}</span>
+                        <div class="energy-complete-dots">${dots}</div>
+                        <span style="font-size:9px;color:var(--text-muted);">×${c.count}</span>
+                    </span>`;
+                });
+                html += `</div></div>`;
+            }
+
             return html;
         }
 
@@ -12443,14 +12548,22 @@
             const data = buildEnergyData();
             const setsContainer = document.getElementById('energyCompleteSets');
             const groupsContainer = document.getElementById('energyGroupsContent');
-            if (setsContainer) setsContainer.innerHTML = renderCompleteSetsHtml(data.completeSets);
+            if (setsContainer) setsContainer.innerHTML = renderCompleteSetsHtml(data.completeSets, data.energyTypeSets);
             if (groupsContainer) groupsContainer.innerHTML = renderEnergyGroupsHtml(data.groups);
 
             // Click handlers
             const handler = (e) => {
+                // Check if clicking a set header (opens fullscreen detail)
+                const setHeader = e.target.closest('.energy-set-section-header');
+                if (setHeader) {
+                    const energy = setHeader.dataset.energy;
+                    if (energy) openEnergySetDetail(energy, data);
+                    return;
+                }
                 const pill = e.target.closest('.energy-group-pill');
                 const completePill = e.target.closest('.energy-complete-collector');
                 if (pill || completePill) {
+                    enteredCollectorFromEnergy = true;
                     document.getElementById('energyGroupsView')?.classList.remove('active');
                     showPillsView();
                     fetchCollectorTokens((pill || completePill).dataset.collector);
@@ -12459,6 +12572,92 @@
             if (groupsContainer) groupsContainer.onclick = handler;
             if (setsContainer) setsContainer.onclick = handler;
         }
+
+        // Energy set detail fullscreen
+        function openEnergySetDetail(energyType, data) {
+            const overlay = document.getElementById('energySetDetailOverlay');
+            const inner = document.getElementById('energySetDetailInner');
+            if (!overlay || !inner) return;
+
+            let collectors, title, sub, color;
+            if (energyType === 'Spectrum') {
+                collectors = data.completeSets;
+                title = '⚡ Spectrum Set';
+                sub = 'Collectors with at least one city of each energy type';
+                color = 'var(--warm)';
+            } else {
+                const m = ENERGY_META[energyType];
+                collectors = (data.energyTypeSets?.[energyType] || []);
+                title = `${m.icon} ${energyType} Set`;
+                sub = `Collectors with 4+ ${energyType.toLowerCase()} energy cities`;
+                color = m.color;
+            }
+
+            let html = `<div class="energy-set-detail-title" style="color:${color};">${title}</div>`;
+            html += `<div class="energy-set-detail-sub">${sub}</div>`;
+
+            if (collectors.length === 0) {
+                html += `<div class="energy-set-detail-empty">No complete ${energyType.toLowerCase()} sets yet. Be the first!</div>`;
+            } else {
+                collectors.forEach(c => {
+                    html += `<div class="energy-set-detail-collector">`;
+                    html += `<div class="energy-set-detail-collector-name" data-collector="${c.name}" style="color:${color};">${c.name}</div>`;
+                    html += `<div class="energy-set-detail-cities">`;
+
+                    if (energyType === 'Spectrum') {
+                        // Show one city per energy type
+                        ['Rising', 'Living', 'Fading', 'Resting'].forEach(e => {
+                            const tokenId = c.tokens?.[e];
+                            if (tokenId) {
+                                const m = ENERGY_META[e];
+                                html += `<div class="energy-set-detail-city">
+                                    <img src="${MEDIA_BASE}/${CONTRACT}/${tokenId}.png?width=200" alt="#${tokenId}">
+                                    <div class="energy-set-detail-city-label" style="color:${m.color};">${e}</div>
+                                    <div class="energy-set-detail-city-id">#${tokenId}</div>
+                                </div>`;
+                            }
+                        });
+                    } else {
+                        // Show all cities of this energy type
+                        const ids = c.tokenIds || [];
+                        ids.slice(0, 8).forEach(tokenId => {
+                            html += `<div class="energy-set-detail-city">
+                                <img src="${MEDIA_BASE}/${CONTRACT}/${tokenId}.png?width=200" alt="#${tokenId}">
+                                <div class="energy-set-detail-city-id">#${tokenId}</div>
+                            </div>`;
+                        });
+                        if (ids.length > 8) html += `<div style="font-size:9px;color:var(--text-muted);display:flex;align-items:center;">+${ids.length - 8} more</div>`;
+                    }
+
+                    html += `</div></div>`;
+                });
+            }
+
+            inner.innerHTML = html;
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            // Wire up collector name clicks
+            inner.querySelectorAll('.energy-set-detail-collector-name').forEach(el => {
+                el.addEventListener('click', () => {
+                    overlay.classList.remove('open');
+                    document.body.style.overflow = '';
+                    enteredCollectorFromEnergy = true;
+                    fetchCollectorTokens(el.dataset.collector);
+                });
+            });
+        }
+
+        document.getElementById('energySetDetailClose')?.addEventListener('click', () => {
+            document.getElementById('energySetDetailOverlay')?.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('energySetDetailOverlay')?.classList.contains('open')) {
+                document.getElementById('energySetDetailOverlay').classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
 
         // Swipe/drag to close panels
         function setupPanelSwipe(panel, direction = 'right') {
