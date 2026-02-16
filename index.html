@@ -16438,31 +16438,23 @@
         }
 
         function renderTrafficSorted(tokens) {
-            // Group tokens by Traffic trait, then sort groups by busyness
-            const trafficOrder = ['Rush Hour', 'Heavy', 'Moderate', 'Light', 'Quiet', 'Empty'];
-            const groups = {};
-            tokens.forEach(id => {
-                const traits = tokenTraits[id];
-                const traffic = traits?.['Traffic'] || 'Unknown';
-                if (!groups[traffic]) groups[traffic] = [];
-                groups[traffic].push(id);
+            // Single continuous grid sorted by complexity:
+            // Traffic busyness (Rush Hour first → Empty last), then zoom level (far/zoomed out first → close last)
+            const trafficOrder = { 'Rush Hour': 0, 'Heavy': 1, 'Moderate': 2, 'Light': 3, 'Quiet': 4, 'Empty': 5 };
+            const zoomOrder = { 'Very Far': 0, 'Far': 1, 'Medium': 2, 'Standard': 3, 'Close': 4, 'Very Close': 5 };
+
+            const sorted = [...tokens].sort((a, b) => {
+                const ta = tokenTraits[a];
+                const tb = tokenTraits[b];
+                const trafficA = trafficOrder[ta?.['Traffic']] ?? 99;
+                const trafficB = trafficOrder[tb?.['Traffic']] ?? 99;
+                if (trafficA !== trafficB) return trafficA - trafficB;
+                const zoomA = zoomOrder[ta?.['Zoom']] ?? 3;
+                const zoomB = zoomOrder[tb?.['Zoom']] ?? 3;
+                return zoomA - zoomB;
             });
 
-            // Sort groups by traffic order
-            const sortedKeys = Object.keys(groups).sort((a, b) => {
-                const ai = trafficOrder.indexOf(a);
-                const bi = trafficOrder.indexOf(b);
-                return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
-            });
-
-            let html = '';
-            sortedKeys.forEach(traffic => {
-                const ids = groups[traffic];
-                html += `<div class="palette-group-label"><span class="palette-group-name">${traffic.toUpperCase()}</span> <span class="palette-group-count">${ids.length}</span></div>`;
-                html += `<div class="grid-items grid-${gridSize}">${ids.map(id => generateGridItem(id)).join('')}</div>`;
-            });
-
-            gridContent.innerHTML = html;
+            gridContent.innerHTML = `<div class="grid-items grid-${gridSize}">${sorted.map(id => generateGridItem(id)).join('')}</div>`;
             document.getElementById('gridPagination').style.display = 'none';
 
             gridContent.querySelectorAll('.grid-item-fav').forEach(btn => {
