@@ -3458,11 +3458,11 @@
         .compare-badge { font-size: 7px; padding: 1px 5px; border-radius: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         .compare-badge.match { background: rgba(100, 255, 100, 0.12); color: #8f8; }
         .compare-badge.differ { background: rgba(255, 200, 100, 0.08); color: #da6; }
-        .compare-pick-prompt { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--bg-card, #1a1a1a); border: 1px solid var(--border, #333); border-radius: 10px; padding: 10px 20px; font-size: 11px; color: var(--text-muted); z-index: 10001; display: none; align-items: center; gap: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .compare-pick-prompt.visible { display: flex; }
-        .compare-pick-prompt input { background: var(--bg-input, #222); border: 1px solid var(--border, #333); border-radius: 6px; padding: 5px 10px; font-size: 12px; color: var(--text); width: 80px; text-align: center; font-family: inherit; }
-        .compare-pick-prompt input::placeholder { color: var(--text-muted); opacity: 0.5; }
-        .compare-pick-prompt .compare-pick-go { background: var(--pink, #e85d75); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 10px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
+        .compare-header-inputs { display: flex; align-items: center; gap: 8px; }
+        .compare-id-input { background: var(--bg-input, #222); border: 1px solid var(--border, #333); border-radius: 6px; padding: 4px 8px; font-size: 11px; color: var(--text); width: 48px; text-align: center; font-family: inherit; }
+        .compare-id-input::placeholder { color: var(--text-muted); opacity: 0.5; }
+        .compare-swap-btn { background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; padding: 2px 4px; line-height: 1; transition: color 0.2s; }
+        .compare-swap-btn:hover { color: var(--text); }
         .compare-pick-cancel { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 10px; opacity: 0.5; }
         .compare-pick-cancel:hover { opacity: 1; }
 
@@ -5086,18 +5086,14 @@
         <a href="#" target="_blank" class="origins-lightbox-btn" id="originsLightboxBtn">View on SuperRare</a>
     </div>
 
-    <!-- Compare Mode - Pick City B prompt -->
-    <div class="compare-pick-prompt" id="comparePickPrompt">
-        <span>Comparing <strong id="comparePickA">#—</strong> with…</span>
-        <input type="text" id="comparePickInput" placeholder="#id" maxlength="6">
-        <button class="compare-pick-go" id="comparePickGo">Go</button>
-        <button class="compare-pick-cancel" id="comparePickCancel">cancel</button>
-    </div>
-
     <!-- Compare Mode Overlay -->
     <div class="compare-overlay" id="compareOverlay">
         <div class="compare-header">
-            <div class="compare-title">Compare</div>
+            <div class="compare-header-inputs">
+                <input type="text" class="compare-id-input" id="compareInputA" placeholder="#id" maxlength="4" title="Type a city ID and press Enter">
+                <button class="compare-swap-btn" id="compareSwap" title="Swap cities">⇄</button>
+                <input type="text" class="compare-id-input" id="compareInputB" placeholder="#id" maxlength="4" title="Type a city ID and press Enter">
+            </div>
             <button class="compare-close" id="compareClose">&times;</button>
         </div>
         <div class="compare-body">
@@ -18133,32 +18129,40 @@
     (function() {
         let compareA = null;
         let compareB = null;
-        let pickingB = false;
 
         const overlay = document.getElementById('compareOverlay');
-        const pickPrompt = document.getElementById('comparePickPrompt');
-        const pickInput = document.getElementById('comparePickInput');
-        const pickA = document.getElementById('comparePickA');
 
         function isValidToken(id) {
             return id >= 0 && tokenTraits[id];
         }
 
-        // Enter compare mode: lock current city as A, prompt for B
+        // Find a default B city: first same-palette neighbor, else next token
+        function getDefaultB(idA) {
+            const traits = tokenTraits[idA];
+            if (traits && traits['Palette']) {
+                const pal = traits['Palette'];
+                for (let i = 0; i <= MAX_TOKEN; i++) {
+                    if (i === idA) continue;
+                    const t = tokenTraits[i];
+                    if (t && t['Palette'] === pal) return i;
+                }
+            }
+            // Fallback: next valid token
+            const minted = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
+            for (const t of minted) { if (t !== idA) return t; }
+            return idA; // shouldn't happen
+        }
+
+        // Enter compare mode: directly open overlay with current city + default neighbor
         function startCompare() {
             if (window.innerWidth <= 768) return;
-            compareA = currentTokenId;
-            pickingB = true;
-            pickA.textContent = '#' + compareA;
-            pickInput.value = '';
-            pickPrompt.classList.add('visible');
-            pickInput.focus();
+            const idA = currentTokenId;
+            const idB = getDefaultB(idA);
+            openCompare(idA, idB);
         }
 
         // Open the full comparison overlay
         function openCompare(idA, idB) {
-            pickingB = false;
-            pickPrompt.classList.remove('visible');
             compareA = idA;
             compareB = idB;
 
@@ -18175,6 +18179,12 @@
             document.getElementById('compareLabelA').textContent = '#' + idA;
             document.getElementById('compareLabelB').textContent = '#' + idB;
 
+            // Set input values
+            const inputA = document.getElementById('compareInputA');
+            const inputB = document.getElementById('compareInputB');
+            if (inputA) inputA.value = idA;
+            if (inputB) inputB.value = idB;
+
             // Build diff
             buildCompareDiff(idA, idB);
             overlay.classList.add('open');
@@ -18182,10 +18192,29 @@
 
         function closeCompare() {
             overlay.classList.remove('open');
-            pickPrompt.classList.remove('visible');
-            pickingB = false;
             compareA = null;
             compareB = null;
+        }
+
+        // Swap city A and B
+        function swapCompare() {
+            if (compareA !== null && compareB !== null) {
+                openCompare(compareB, compareA);
+            }
+        }
+
+        // Update one side from input
+        function updateSide(side) {
+            const input = document.getElementById(side === 'A' ? 'compareInputA' : 'compareInputB');
+            if (!input) return;
+            const id = parseInt(input.value.replace('#', '').trim(), 10);
+            if (!isNaN(id) && isValidToken(id)) {
+                if (side === 'A') openCompare(id, compareB);
+                else openCompare(compareA, id);
+            } else {
+                input.style.outline = '1px solid #e85d75';
+                setTimeout(() => input.style.outline = '', 600);
+            }
         }
 
         function buildCompareDiff(idA, idB) {
@@ -18279,28 +18308,19 @@
             diff.innerHTML = html;
         }
 
-        // Submit city B from the pick prompt
-        function submitPickB() {
-            const raw = pickInput.value.replace('#', '').trim();
-            const id = parseInt(raw, 10);
-            if (!isNaN(id) && isValidToken(id) && id !== compareA) {
-                openCompare(compareA, id);
-            } else {
-                pickInput.style.outline = '1px solid #e85d75';
-                setTimeout(() => pickInput.style.outline = '', 600);
-            }
-        }
-
         // Button click
         document.getElementById('compareBtn')?.addEventListener('click', startCompare);
 
-        // Pick prompt handlers
-        document.getElementById('comparePickGo')?.addEventListener('click', submitPickB);
-        pickInput?.addEventListener('keydown', e => {
-            if (e.key === 'Enter') submitPickB();
-            if (e.key === 'Escape') { closeCompare(); e.stopPropagation(); }
+        // Overlay input handlers — change city by typing an ID and pressing Enter
+        document.getElementById('compareInputA')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { updateSide('A'); e.preventDefault(); }
         });
-        document.getElementById('comparePickCancel')?.addEventListener('click', closeCompare);
+        document.getElementById('compareInputB')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { updateSide('B'); e.preventDefault(); }
+        });
+
+        // Swap button
+        document.getElementById('compareSwap')?.addEventListener('click', swapCompare);
 
         // Close overlay
         document.getElementById('compareClose')?.addEventListener('click', closeCompare);
@@ -18312,29 +18332,6 @@
                 closeCompare();
             }
         });
-
-        // Shift+click on neighbor / pairs-well-with items → compare instead of navigate
-        document.addEventListener('click', (e) => {
-            if (!e.shiftKey || window.innerWidth <= 768) return;
-            const item = e.target.closest('.same-palette-item, .pairs-well-item');
-            if (item) {
-                e.preventDefault();
-                e.stopPropagation();
-                const tokenB = parseInt(item.dataset.token, 10);
-                if (!isNaN(tokenB) && isValidToken(tokenB)) {
-                    openCompare(currentTokenId, tokenB);
-                }
-            }
-        }, true); // capture phase to beat the normal click handler
-
-        // Keyboard hint
-        const hintsEl = document.getElementById('keyboardHints');
-        if (hintsEl && window.innerWidth > 768) {
-            const hintRow = document.createElement('div');
-            hintRow.className = 'hint-row';
-            hintRow.innerHTML = '<span>COMPARE</span><kbd>shift+click</kbd>';
-            hintsEl.appendChild(hintRow);
-        }
 
         // Expose for external use
         window.openCompare = openCompare;
