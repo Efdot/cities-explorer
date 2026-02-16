@@ -28,7 +28,7 @@
     <link rel="preconnect" href="https://media-proxy.artblocks.io" crossorigin>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌆</text></svg>">
     <link rel="apple-touch-icon" href="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
 
     <!-- PWA Manifest -->
@@ -1741,6 +1741,21 @@
         .back-btn:hover { background: var(--bg-card); color: var(--text); box-shadow: none; }
         .leaderboard-view { display: none; opacity: 0; }
         .leaderboard-view.active { display: block; opacity: 1; animation: fadeInFast 0.15s ease-out; }
+        .energy-groups-view { display: none; opacity: 0; }
+        .energy-groups-view.active { display: block; opacity: 1; animation: fadeInFast 0.15s ease-out; }
+        .energy-group { margin-bottom: 20px; }
+        .energy-group-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .energy-group-icon { font-size: 16px; }
+        .energy-group-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+        .energy-group-count { font-size: 9px; color: var(--text-muted); margin-left: auto; }
+        .energy-group-name.rising { color: #FFB347; }
+        .energy-group-name.living { color: #87ceeb; }
+        .energy-group-name.fading { color: #DDA0DD; }
+        .energy-group-name.resting { color: #B19CD9; }
+        .energy-group-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+        .energy-group-pill { padding: 6px 12px; border-radius: 16px; font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; border: 1px solid transparent; }
+        .energy-group-pill:hover { transform: scale(1.04); }
+        .energy-group-pill .pill-count { opacity: 0.6; margin-left: 3px; font-size: 9px; }
         .pills-view { display: block; }
         .pills-view.hidden { display: none; }
         @keyframes fadeInFast { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -3859,6 +3874,10 @@
         <div class="leaderboard-view" id="leaderboardView">
             <button class="leaderboard-btn back-btn" id="backToPills">← BACK TO ALL COLLECTORS</button>
             <ul class="leaderboard-list" id="leaderboardList"></ul>
+        </div>
+        <div class="energy-groups-view" id="energyGroupsView">
+            <button class="leaderboard-btn back-btn" id="backFromEnergy">← BACK TO ALL COLLECTORS</button>
+            <div class="energy-groups-content" id="energyGroupsContent"></div>
         </div>
     </div>
 
@@ -12205,13 +12224,78 @@
             }
         });
 
-        // Energy set button - opens collection planner showing energy sets
+        // Energy set button - shows collectors grouped by energy
         document.getElementById('energySetBtn')?.addEventListener('click', () => {
-            closeCollectorsPanel();
-            if (typeof window.openCollectionPlanner === 'function') {
-                window.openCollectionPlanner();
-            }
+            showEnergyGroupsView();
         });
+        document.getElementById('backFromEnergy')?.addEventListener('click', () => {
+            document.getElementById('energyGroupsView')?.classList.remove('active');
+            showPillsView();
+        });
+
+        function showEnergyGroupsView() {
+            document.getElementById('pillsView')?.classList.add('hidden');
+            document.getElementById('leaderboardView')?.classList.remove('active');
+            document.getElementById('collectorGuideView')?.classList.remove('active');
+            const view = document.getElementById('energyGroupsView');
+            view?.classList.add('active');
+            renderEnergyGroups();
+        }
+
+        function renderEnergyGroups() {
+            const container = document.getElementById('energyGroupsContent');
+            if (!container) return;
+
+            const groups = {
+                Rising: { icon: '🌅', color: '#FFB347', collectors: [] },
+                Living: { icon: '☀️', color: '#87ceeb', collectors: [] },
+                Fading: { icon: '🌆', color: '#DDA0DD', collectors: [] },
+                Resting: { icon: '🌙', color: '#B19CD9', collectors: [] }
+            };
+
+            COLLECTORS_DATA.forEach(collector => {
+                if (!collector.tokens || collector.tokens.length === 0) return;
+                const counts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                collector.tokens.forEach(id => {
+                    const energy = tokenTraits[id]?.Energy;
+                    if (energy && counts[energy] !== undefined) counts[energy]++;
+                });
+                // Assign to dominant energy group
+                let max = 0, dominant = 'Living';
+                for (const [e, c] of Object.entries(counts)) {
+                    if (c > max) { max = c; dominant = e; }
+                }
+                if (max > 0) groups[dominant].collectors.push({ name: collector.name, count: collector.count, energyCount: max });
+            });
+
+            let html = '';
+            for (const [energy, group] of Object.entries(groups)) {
+                group.collectors.sort((a, b) => b.energyCount - a.energyCount);
+                const cls = energy.toLowerCase();
+                html += `<div class="energy-group">
+                    <div class="energy-group-header">
+                        <span class="energy-group-icon">${group.icon}</span>
+                        <span class="energy-group-name ${cls}">${energy}</span>
+                        <span class="energy-group-count">${group.collectors.length} collectors</span>
+                    </div>
+                    <div class="energy-group-pills">`;
+                group.collectors.forEach(c => {
+                    html += `<span class="energy-group-pill" data-collector="${c.name}" style="background: ${group.color}22; border-color: ${group.color}44; color: ${group.color};">${c.name}<span class="pill-count">×${c.count}</span></span>`;
+                });
+                html += `</div></div>`;
+            }
+            container.innerHTML = html;
+
+            // Click handler for pills
+            container.onclick = (e) => {
+                const pill = e.target.closest('.energy-group-pill');
+                if (pill) {
+                    document.getElementById('energyGroupsView')?.classList.remove('active');
+                    showPillsView();
+                    fetchCollectorTokens(pill.dataset.collector);
+                }
+            };
+        }
 
         // Swipe/drag to close panels
         function setupPanelSwipe(panel, direction = 'right') {
