@@ -1743,6 +1743,16 @@
         .leaderboard-view.active { display: block; opacity: 1; animation: fadeInFast 0.15s ease-out; }
         .energy-groups-view { display: none; opacity: 0; }
         .energy-groups-view.active { display: block; opacity: 1; animation: fadeInFast 0.15s ease-out; }
+        .energy-groups-view .energy-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .energy-fullscreen-btn { background: none; border: 1px solid var(--border); border-radius: 50%; width: 28px; height: 28px; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+        .energy-fullscreen-btn:hover { border-color: var(--text); color: var(--text); }
+        .energy-complete-sets { margin-bottom: 20px; }
+        .energy-complete-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); margin-bottom: 10px; }
+        .energy-complete-collector { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: rgba(232,184,109,0.06); border: 1px solid rgba(232,184,109,0.15); border-radius: 10px; margin-bottom: 6px; cursor: pointer; transition: all 0.2s ease; }
+        .energy-complete-collector:hover { background: rgba(232,184,109,0.12); border-color: rgba(232,184,109,0.3); }
+        .energy-complete-name { font-size: 11px; font-weight: 600; color: var(--text); flex: 1; }
+        .energy-complete-dots { display: flex; gap: 4px; }
+        .energy-complete-dot { width: 10px; height: 10px; border-radius: 50%; }
         .energy-group { margin-bottom: 20px; }
         .energy-group-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
         .energy-group-icon { font-size: 16px; }
@@ -1753,9 +1763,21 @@
         .energy-group-name.fading { color: #DDA0DD; }
         .energy-group-name.resting { color: #B19CD9; }
         .energy-group-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-        .energy-group-pill { padding: 6px 12px; border-radius: 16px; font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; border: 1px solid transparent; }
-        .energy-group-pill:hover { transform: scale(1.04); }
-        .energy-group-pill .pill-count { opacity: 0.6; margin-left: 3px; font-size: 9px; }
+        .energy-group-pill { padding: 5px 10px; border-radius: 14px; font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; border: 1px solid transparent; }
+        .energy-group-pill:hover { transform: scale(1.05); }
+        .energy-group-pill .eg-count { opacity: 0.5; margin-left: 3px; font-size: 9px; }
+        .energy-group-pill .eg-thumb { width: 16px; height: 16px; border-radius: 3px; object-fit: cover; margin-right: 4px; vertical-align: middle; display: inline-block; }
+        /* Energy fullscreen overlay */
+        .energy-fullscreen-overlay { position: fixed; inset: 0; background: var(--bg-deep); z-index: 2500; display: none; overflow-y: auto; padding: 60px 40px; }
+        .energy-fullscreen-overlay.open { display: block; }
+        .energy-fullscreen-close { position: fixed; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 32px; cursor: pointer; z-index: 2600; transition: color 0.2s; }
+        .energy-fullscreen-close:hover { color: var(--text); }
+        .energy-fullscreen-inner { max-width: 900px; margin: 0 auto; }
+        .energy-fullscreen-title { font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); margin-bottom: 8px; text-align: center; }
+        .energy-fullscreen-sub { font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 32px; }
+        .energy-fullscreen-overlay .energy-group { margin-bottom: 32px; }
+        .energy-fullscreen-overlay .energy-group-pills { gap: 8px; }
+        .energy-fullscreen-overlay .energy-group-pill { padding: 6px 12px; font-size: 11px; }
         .pills-view { display: block; }
         .pills-view.hidden { display: none; }
         @keyframes fadeInFast { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -1791,9 +1813,8 @@
         .leaderboard-list { list-style: none; contain: content; }
         .leaderboard-btn.back-btn { margin-bottom: 24px; }
         /* Become a Collector */
-        .collectors-panel-actions { display: flex; gap: 8px; margin: 12px 0; }
-        .collectors-action-btn { flex: 1; padding: 10px 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-muted); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
-        .collectors-action-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(255,179,71,0.05); }
+        .collectors-icon-btn { width: 28px; height: 28px; background: none; border: 1px solid var(--border); border-radius: 50%; font-size: 13px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; padding: 0; }
+        .collectors-icon-btn:hover { border-color: var(--warm); background: rgba(255,179,71,0.08); transform: scale(1.1); }
         .become-collector-btn { display: block; width: 100%; padding: 12px 16px; margin-bottom: 16px; background: transparent; border: 1px dashed var(--border); color: var(--text-muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
         .become-collector-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(255,179,71,0.05); }
         .not-collector-link { display: block; width: 100%; padding: 8px 0; margin-bottom: 12px; background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; }
@@ -3780,6 +3801,8 @@
             <h2 id="collectorsTitle" style="cursor: pointer;"><span class="collectors-title-text">COLLECTORS</span> <span class="collapse-arrow">›››</span></h2>
             <div class="collectors-header-actions">
                 <button class="leaderboard-btn" id="showLeaderboard">LEADERBOARD</button>
+                <button class="collectors-icon-btn" id="energySetBtn" title="Energy groups">⚡</button>
+                <button class="collectors-icon-btn" id="dreamBubbleBtn" title="Dream grid">🫧</button>
                 <button class="collectors-close" id="closeCollectors">&times;</button>
             </div>
         </div>
@@ -3808,10 +3831,6 @@
             <div class="collectors-stats"><span id="collectorCountStats">164</span> collectors · <span id="citiesCountStats">321</span> cities</div>
             <div class="top-collectors-highlight" id="topCollectorsHighlight"></div>
             <div class="collectors-pills" id="collectorsPills"></div>
-            <div class="collectors-panel-actions">
-                <button class="collectors-action-btn" id="dreamBubbleBtn" title="Try building your dream grid">🫧 Dream</button>
-                <button class="collectors-action-btn" id="energySetBtn" title="View energy set progress">⚡ Energy Set</button>
-            </div>
             <button class="become-collector-btn" id="becomeCollectorBtn">✦ Join the Movement</button>
         </div>
         <!-- Citizen Guide View - Step-by-step onboarding -->
@@ -3876,8 +3895,23 @@
             <ul class="leaderboard-list" id="leaderboardList"></ul>
         </div>
         <div class="energy-groups-view" id="energyGroupsView">
-            <button class="leaderboard-btn back-btn" id="backFromEnergy">← BACK TO ALL COLLECTORS</button>
+            <div class="energy-header-row">
+                <button class="leaderboard-btn back-btn" id="backFromEnergy">← BACK</button>
+                <button class="energy-fullscreen-btn" id="energyFullscreenBtn" title="Fullscreen">⛶</button>
+            </div>
+            <div class="energy-complete-sets" id="energyCompleteSets"></div>
             <div class="energy-groups-content" id="energyGroupsContent"></div>
+        </div>
+    </div>
+
+    <!-- Energy Board Fullscreen -->
+    <div class="energy-fullscreen-overlay" id="energyFullscreenOverlay">
+        <button class="energy-fullscreen-close" id="energyFullscreenClose">&times;</button>
+        <div class="energy-fullscreen-inner">
+            <div class="energy-fullscreen-title">Energy Grid</div>
+            <div class="energy-fullscreen-sub">Collectors grouped by energy type</div>
+            <div class="energy-complete-sets" id="energyFullscreenCompleteSets"></div>
+            <div class="energy-groups-content" id="energyFullscreenContent"></div>
         </div>
     </div>
 
@@ -12232,6 +12266,19 @@
             document.getElementById('energyGroupsView')?.classList.remove('active');
             showPillsView();
         });
+        document.getElementById('energyFullscreenBtn')?.addEventListener('click', () => {
+            openEnergyFullscreen();
+        });
+        document.getElementById('energyFullscreenClose')?.addEventListener('click', () => {
+            document.getElementById('energyFullscreenOverlay')?.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('energyFullscreenOverlay')?.classList.contains('open')) {
+                document.getElementById('energyFullscreenOverlay').classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
 
         function showEnergyGroupsView() {
             document.getElementById('pillsView')?.classList.add('hidden');
@@ -12242,59 +12289,166 @@
             renderEnergyGroups();
         }
 
-        function renderEnergyGroups() {
-            const container = document.getElementById('energyGroupsContent');
-            if (!container) return;
-
-            const groups = {
-                Rising: { icon: '🌅', color: '#FFB347', collectors: [] },
-                Living: { icon: '☀️', color: '#87ceeb', collectors: [] },
-                Fading: { icon: '🌆', color: '#DDA0DD', collectors: [] },
-                Resting: { icon: '🌙', color: '#B19CD9', collectors: [] }
+        function openEnergyFullscreen() {
+            const overlay = document.getElementById('energyFullscreenOverlay');
+            if (!overlay) return;
+            const data = buildEnergyData();
+            document.getElementById('energyFullscreenCompleteSets').innerHTML = renderCompleteSetsHtml(data.completeSets);
+            document.getElementById('energyFullscreenContent').innerHTML = renderEnergyGroupsHtml(data.groups);
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            // Wire up clicks
+            overlay.onclick = (e) => {
+                const pill = e.target.closest('.energy-group-pill');
+                const completePill = e.target.closest('.energy-complete-collector');
+                if (pill) {
+                    overlay.classList.remove('open');
+                    document.body.style.overflow = '';
+                    fetchCollectorTokens(pill.dataset.collector);
+                } else if (completePill) {
+                    overlay.classList.remove('open');
+                    document.body.style.overflow = '';
+                    fetchCollectorTokens(completePill.dataset.collector);
+                }
             };
+        }
+
+        const ENERGY_META = {
+            Rising: { icon: '🌅', color: '#FFB347' },
+            Living: { icon: '☀️', color: '#87ceeb' },
+            Fading: { icon: '🌆', color: '#DDA0DD' },
+            Resting: { icon: '🌙', color: '#B19CD9' }
+        };
+        const LOST_CITIES_PREFIX_E = '0xcf22';
+        const EXCLUDE_NAMES_E = ['efdot', 'efdot x diid', 'efdotxdiid'];
+
+        function isExcludedCollector(c) {
+            if (c.name === 'The Lost Cities') return true;
+            if (c.address && c.address.toLowerCase().startsWith(LOST_CITIES_PREFIX_E)) return true;
+            const lower = c.name.toLowerCase();
+            if (EXCLUDE_NAMES_E.some(ex => lower.includes(ex))) return true;
+            return false;
+        }
+
+        function buildEnergyData() {
+            const groups = {
+                Rising: { ...ENERGY_META.Rising, collectors: [] },
+                Living: { ...ENERGY_META.Living, collectors: [] },
+                Fading: { ...ENERGY_META.Fading, collectors: [] },
+                Resting: { ...ENERGY_META.Resting, collectors: [] }
+            };
+            const completeSets = [];
 
             COLLECTORS_DATA.forEach(collector => {
                 if (!collector.tokens || collector.tokens.length === 0) return;
-                const counts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                if (isExcludedCollector(collector)) return;
+
+                // Bucket tokens by energy, tracking token IDs
+                const byEnergy = { Rising: [], Living: [], Fading: [], Resting: [] };
                 collector.tokens.forEach(id => {
                     const energy = tokenTraits[id]?.Energy;
-                    if (energy && counts[energy] !== undefined) counts[energy]++;
+                    if (energy && byEnergy[energy]) byEnergy[energy].push(id);
                 });
-                // Assign to dominant energy group
-                let max = 0, dominant = 'Living';
-                for (const [e, c] of Object.entries(counts)) {
-                    if (c > max) { max = c; dominant = e; }
+
+                // Check for complete set (at least 1 of each)
+                const hasAll = byEnergy.Rising.length > 0 && byEnergy.Living.length > 0 &&
+                               byEnergy.Fading.length > 0 && byEnergy.Resting.length > 0;
+                if (hasAll) {
+                    completeSets.push({
+                        name: collector.name,
+                        count: collector.count,
+                        tokens: { Rising: byEnergy.Rising[0], Living: byEnergy.Living[0], Fading: byEnergy.Fading[0], Resting: byEnergy.Resting[0] }
+                    });
                 }
-                if (max > 0) groups[dominant].collectors.push({ name: collector.name, count: collector.count, energyCount: max });
+
+                // Place collector in EACH energy group where they have cities
+                // Use the most recently collected (highest token ID) for color
+                for (const [energy, ids] of Object.entries(byEnergy)) {
+                    if (ids.length === 0) continue;
+                    const representativeId = Math.max(...ids);
+                    const traits = tokenTraits[representativeId];
+                    const paletteName = traits?.['Palette'];
+                    const paletteInfo = PALETTE_DATA[paletteName];
+                    const bg = paletteInfo?.bg || '#333';
+                    const colors = paletteInfo?.colors || [];
+                    // Pick text color that contrasts with bg
+                    const bgHex = bg.replace('#', '');
+                    const bgLum = (0.299 * parseInt(bgHex.substr(0,2),16) + 0.587 * parseInt(bgHex.substr(2,2),16) + 0.114 * parseInt(bgHex.substr(4,2),16)) / 255;
+                    const textColor = bgLum > 0.5 ? '#111' : '#eee';
+
+                    groups[energy].collectors.push({
+                        name: collector.name,
+                        count: ids.length,
+                        totalCount: collector.count,
+                        tokenId: representativeId,
+                        bg, textColor
+                    });
+                }
             });
 
+            // Sort each group by count desc
+            for (const g of Object.values(groups)) {
+                g.collectors.sort((a, b) => b.count - a.count);
+            }
+            completeSets.sort((a, b) => b.count - a.count);
+
+            return { groups, completeSets };
+        }
+
+        function renderCompleteSetsHtml(completeSets) {
+            if (completeSets.length === 0) return '';
+            let html = '<div class="energy-complete-label">⚡ Complete Energy Sets</div>';
+            completeSets.forEach(c => {
+                const dots = ['Rising', 'Living', 'Fading', 'Resting'].map(e => {
+                    return `<div class="energy-complete-dot" style="background: ${ENERGY_META[e].color};"></div>`;
+                }).join('');
+                html += `<div class="energy-complete-collector" data-collector="${c.name}">
+                    <span class="energy-complete-name">${c.name}</span>
+                    <div class="energy-complete-dots">${dots}</div>
+                    <span style="font-size:9px;color:var(--text-muted);">×${c.count}</span>
+                </div>`;
+            });
+            return html;
+        }
+
+        function renderEnergyGroupsHtml(groups) {
             let html = '';
             for (const [energy, group] of Object.entries(groups)) {
-                group.collectors.sort((a, b) => b.energyCount - a.energyCount);
                 const cls = energy.toLowerCase();
                 html += `<div class="energy-group">
                     <div class="energy-group-header">
                         <span class="energy-group-icon">${group.icon}</span>
                         <span class="energy-group-name ${cls}">${energy}</span>
-                        <span class="energy-group-count">${group.collectors.length} collectors</span>
+                        <span class="energy-group-count">${group.collectors.length}</span>
                     </div>
                     <div class="energy-group-pills">`;
                 group.collectors.forEach(c => {
-                    html += `<span class="energy-group-pill" data-collector="${c.name}" style="background: ${group.color}22; border-color: ${group.color}44; color: ${group.color};">${c.name}<span class="pill-count">×${c.count}</span></span>`;
+                    html += `<span class="energy-group-pill" data-collector="${c.name}" style="background: ${c.bg}; color: ${c.textColor};">${c.name}<span class="eg-count">×${c.count}</span></span>`;
                 });
                 html += `</div></div>`;
             }
-            container.innerHTML = html;
+            return html;
+        }
 
-            // Click handler for pills
-            container.onclick = (e) => {
+        function renderEnergyGroups() {
+            const data = buildEnergyData();
+            const setsContainer = document.getElementById('energyCompleteSets');
+            const groupsContainer = document.getElementById('energyGroupsContent');
+            if (setsContainer) setsContainer.innerHTML = renderCompleteSetsHtml(data.completeSets);
+            if (groupsContainer) groupsContainer.innerHTML = renderEnergyGroupsHtml(data.groups);
+
+            // Click handlers
+            const handler = (e) => {
                 const pill = e.target.closest('.energy-group-pill');
-                if (pill) {
+                const completePill = e.target.closest('.energy-complete-collector');
+                if (pill || completePill) {
                     document.getElementById('energyGroupsView')?.classList.remove('active');
                     showPillsView();
-                    fetchCollectorTokens(pill.dataset.collector);
+                    fetchCollectorTokens((pill || completePill).dataset.collector);
                 }
             };
+            if (groupsContainer) groupsContainer.onclick = handler;
+            if (setsContainer) setsContainer.onclick = handler;
         }
 
         // Swipe/drag to close panels
