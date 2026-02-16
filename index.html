@@ -3644,7 +3644,7 @@
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
             <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
-            <button class="icon-btn compare-btn" id="compareBtn" onclick="if(window.startCompare)window.startCompare()" title="Compare two cities" aria-label="Compare cities"><svg width="15" height="14" viewBox="0 0 15 14" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="5" height="12" rx="1"/><rect x="9" y="1" width="5" height="12" rx="1"/></svg></button>
+            <button class="icon-btn compare-btn" id="compareBtn" onclick="startCompare()" title="Compare two cities" aria-label="Compare cities"><svg width="15" height="14" viewBox="0 0 15 14" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="5" height="12" rx="1"/><rect x="9" y="1" width="5" height="12" rx="1"/></svg></button>
         </div>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
@@ -18126,219 +18126,183 @@
 
 
     // ─── Compare Mode ─────────────────────────────────────────────
-    (function() {
-        let compareA = null;
-        let compareB = null;
+    let _compareA = null;
+    let _compareB = null;
 
-        const overlay = document.getElementById('compareOverlay');
+    function startCompare() {
+        if (window.innerWidth <= 768) return;
+        const idA = currentTokenId;
+        const idB = _getDefaultCompareB(idA);
+        openCompare(idA, idB);
+    }
 
-        function isValidToken(id) {
-            return id >= 0 && tokenTraits[id];
-        }
-
-        // Find a default B city: first same-palette neighbor, else next token
-        function getDefaultB(idA) {
-            const traits = tokenTraits[idA];
-            if (traits && traits['Palette']) {
-                const pal = traits['Palette'];
-                for (let i = 0; i <= MAX_TOKEN; i++) {
-                    if (i === idA) continue;
-                    const t = tokenTraits[i];
-                    if (t && t['Palette'] === pal) return i;
-                }
-            }
-            // Fallback: next valid token
-            const minted = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
-            for (const t of minted) { if (t !== idA) return t; }
-            return idA; // shouldn't happen
-        }
-
-        // Enter compare mode: directly open overlay with current city + default neighbor
-        function startCompare() {
-            if (window.innerWidth <= 768) return;
-            const idA = currentTokenId;
-            const idB = getDefaultB(idA);
-            openCompare(idA, idB);
-        }
-
-        // Open the full comparison overlay
-        function openCompare(idA, idB) {
-            compareA = idA;
-            compareB = idB;
-
-            // Show overlay first so it's visible even if image loading has issues
-            overlay.classList.add('open');
-
-            try {
-                // Load images
-                const imgA = document.getElementById('compareImgA');
-                const imgB = document.getElementById('compareImgB');
-                if (imgA) { imgA.classList.remove('loaded'); imgA.onload = () => imgA.classList.add('loaded'); imgA.src = getPreviewUrl(idA); }
-                if (imgB) { imgB.classList.remove('loaded'); imgB.onload = () => imgB.classList.add('loaded'); imgB.src = getPreviewUrl(idB); }
-
-                const labelA = document.getElementById('compareLabelA');
-                const labelB = document.getElementById('compareLabelB');
-                if (labelA) labelA.textContent = '#' + idA;
-                if (labelB) labelB.textContent = '#' + idB;
-
-                const inputA = document.getElementById('compareInputA');
-                const inputB = document.getElementById('compareInputB');
-                if (inputA) inputA.value = idA;
-                if (inputB) inputB.value = idB;
-
-                buildCompareDiff(idA, idB);
-            } catch (err) {
-                console.error('Compare mode error:', err);
+    function _getDefaultCompareB(idA) {
+        const traits = tokenTraits[idA];
+        if (traits && traits['Palette']) {
+            const pal = traits['Palette'];
+            for (let i = 0; i <= MAX_TOKEN; i++) {
+                if (i === idA) continue;
+                const t = tokenTraits[i];
+                if (t && t['Palette'] === pal) return i;
             }
         }
+        const minted = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
+        for (const t of minted) { if (t !== idA) return t; }
+        return idA;
+    }
 
-        function closeCompare() {
-            overlay.classList.remove('open');
-            compareA = null;
-            compareB = null;
+    function openCompare(idA, idB) {
+        _compareA = idA;
+        _compareB = idB;
+
+        const ov = document.getElementById('compareOverlay');
+        if (!ov) return;
+        ov.classList.add('open');
+
+        const imgA = document.getElementById('compareImgA');
+        const imgB = document.getElementById('compareImgB');
+        if (imgA) { imgA.classList.remove('loaded'); imgA.onload = () => imgA.classList.add('loaded'); imgA.src = getPreviewUrl(idA); }
+        if (imgB) { imgB.classList.remove('loaded'); imgB.onload = () => imgB.classList.add('loaded'); imgB.src = getPreviewUrl(idB); }
+
+        const labelA = document.getElementById('compareLabelA');
+        const labelB = document.getElementById('compareLabelB');
+        if (labelA) labelA.textContent = '#' + idA;
+        if (labelB) labelB.textContent = '#' + idB;
+
+        const inputA = document.getElementById('compareInputA');
+        const inputB = document.getElementById('compareInputB');
+        if (inputA) inputA.value = idA;
+        if (inputB) inputB.value = idB;
+
+        _buildCompareDiff(idA, idB);
+    }
+
+    function closeCompare() {
+        const ov = document.getElementById('compareOverlay');
+        if (ov) ov.classList.remove('open');
+        _compareA = null;
+        _compareB = null;
+    }
+
+    function _swapCompare() {
+        if (_compareA !== null && _compareB !== null) openCompare(_compareB, _compareA);
+    }
+
+    function _updateCompareSide(side) {
+        const input = document.getElementById(side === 'A' ? 'compareInputA' : 'compareInputB');
+        if (!input) return;
+        const id = parseInt(input.value.replace('#', '').trim(), 10);
+        if (!isNaN(id) && id >= 0 && tokenTraits[id]) {
+            if (side === 'A') openCompare(id, _compareB);
+            else openCompare(_compareA, id);
+        } else {
+            input.style.outline = '1px solid #e85d75';
+            setTimeout(() => input.style.outline = '', 600);
         }
+    }
 
-        // Swap city A and B
-        function swapCompare() {
-            if (compareA !== null && compareB !== null) {
-                openCompare(compareB, compareA);
+    function _buildCompareDiff(idA, idB) {
+        const tA = tokenTraits[idA];
+        const tB = tokenTraits[idB];
+        const diff = document.getElementById('compareDiff');
+        if (!diff) return;
+        if (!tA || !tB) { diff.innerHTML = '<div style="color:var(--text-muted);font-size:10px;">Trait data unavailable</div>'; return; }
+
+        const displayValue = (key, value) => key === 'Line' && value === 'Lighter' ? 'Chisel' : value;
+        let html = '';
+
+        // Palette section
+        const palA = tA['Palette'], palB = tB['Palette'];
+        const pdA = PALETTE_DATA[palA], pdB = PALETTE_DATA[palB];
+        const palMatch = palA === palB;
+        html += `<div class="compare-diff-section">`;
+        html += `<div class="compare-diff-section-title">Palette</div>`;
+        html += `<div class="compare-diff-row ${palMatch ? 'compare-diff-match' : 'compare-diff-differ'}">`;
+        html += `<div class="compare-diff-val left" style="flex:1;"><div style="font-size:9px;font-weight:700;margin-bottom:4px;">${palA ? palA.toUpperCase() : '—'}</div>`;
+        if (pdA) html += `<div class="compare-palette-swatches">${pdA.colors.slice(0,6).map(c => `<span style="background:${c}"></span>`).join('')}</div>`;
+        html += `</div>`;
+        html += `<div class="compare-diff-label"><span class="compare-badge ${palMatch ? 'match' : 'differ'}">${palMatch ? 'same' : 'diff'}</span></div>`;
+        html += `<div class="compare-diff-val right" style="flex:1;"><div style="font-size:9px;font-weight:700;margin-bottom:4px;">${palB ? palB.toUpperCase() : '—'}</div>`;
+        if (pdB) html += `<div class="compare-palette-swatches">${pdB.colors.slice(0,6).map(c => `<span style="background:${c}"></span>`).join('')}</div>`;
+        html += `</div></div>`;
+
+        // Shared colors between palettes
+        if (pdA && pdB && !palMatch) {
+            const normalize = c => c.toLowerCase().replace(/\s/g, '');
+            const setA = new Set(pdA.colors.map(normalize));
+            const shared = pdB.colors.filter(c => setA.has(normalize(c)));
+            if (shared.length > 0) {
+                html += `<div class="compare-diff-row"><div class="compare-diff-label" style="width:auto;font-size:7px;opacity:0.5;">shared colors</div>`;
+                html += `<div class="compare-shared-colors">${shared.map(c => `<span style="background:${c}" title="${c}"></span>`).join('')}</div></div>`;
             }
         }
+        html += `</div>`;
 
-        // Update one side from input
-        function updateSide(side) {
-            const input = document.getElementById(side === 'A' ? 'compareInputA' : 'compareInputB');
-            if (!input) return;
-            const id = parseInt(input.value.replace('#', '').trim(), 10);
-            if (!isNaN(id) && isValidToken(id)) {
-                if (side === 'A') openCompare(id, compareB);
-                else openCompare(compareA, id);
-            } else {
-                input.style.outline = '1px solid #e85d75';
-                setTimeout(() => input.style.outline = '', 600);
-            }
-        }
+        // Time & Energy section
+        html += `<div class="compare-diff-section">`;
+        html += `<div class="compare-diff-section-title">Time &amp; Energy</div>`;
+        const metaA = PALETTE_META[palA], metaB = PALETTE_META[palB];
+        const hourA = metaA?.hour || '—', hourB = metaB?.hour || '—';
+        const hourMatch = hourA === hourB;
+        html += `<div class="compare-diff-row ${hourMatch ? 'compare-diff-match' : ''}">`;
+        html += `<div class="compare-diff-val left">${hourA}</div>`;
+        html += `<div class="compare-diff-label">Hour</div>`;
+        html += `<div class="compare-diff-val right">${hourB}</div></div>`;
 
-        function buildCompareDiff(idA, idB) {
-            const tA = tokenTraits[idA];
-            const tB = tokenTraits[idB];
-            const diff = document.getElementById('compareDiff');
-            if (!tA || !tB) { diff.innerHTML = '<div style="color:var(--text-muted);font-size:10px;">Trait data unavailable</div>'; return; }
+        ['Time of Day', 'Energy'].forEach(key => {
+            const vA = tA[key] || '—', vB = tB[key] || '—';
+            const match = vA === vB;
+            const label = key === 'Time of Day' ? 'Time' : key;
+            html += `<div class="compare-diff-row ${match ? 'compare-diff-match' : ''}">`;
+            html += `<div class="compare-diff-val left">${vA.toUpperCase()}</div>`;
+            html += `<div class="compare-diff-label">${label}</div>`;
+            html += `<div class="compare-diff-val right">${vB.toUpperCase()}</div></div>`;
+        });
+        html += `</div>`;
 
-            const displayValue = (key, value) => key === 'Line' && value === 'Lighter' ? 'Chisel' : value;
-            let html = '';
-
-            // Palette section
-            const palA = tA['Palette'], palB = tB['Palette'];
-            const pdA = PALETTE_DATA[palA], pdB = PALETTE_DATA[palB];
-            const palMatch = palA === palB;
+        // Other traits
+        const skip = ['Palette', 'Time of Day', 'Energy'];
+        const allKeys = new Set([...Object.keys(tA), ...Object.keys(tB)]);
+        const otherKeys = [...allKeys].filter(k => !skip.includes(k));
+        if (otherKeys.length > 0) {
             html += `<div class="compare-diff-section">`;
-            html += `<div class="compare-diff-section-title">Palette</div>`;
-            html += `<div class="compare-diff-row ${palMatch ? 'compare-diff-match' : 'compare-diff-differ'}">`;
-            html += `<div class="compare-diff-val left" style="flex:1;"><div style="font-size:9px;font-weight:700;margin-bottom:4px;">${palA ? palA.toUpperCase() : '—'}</div>`;
-            if (pdA) html += `<div class="compare-palette-swatches">${pdA.colors.slice(0,6).map(c => `<span style="background:${c}"></span>`).join('')}</div>`;
-            html += `</div>`;
-            html += `<div class="compare-diff-label"><span class="compare-badge ${palMatch ? 'match' : 'differ'}">${palMatch ? 'same' : 'diff'}</span></div>`;
-            html += `<div class="compare-diff-val right" style="flex:1;"><div style="font-size:9px;font-weight:700;margin-bottom:4px;">${palB ? palB.toUpperCase() : '—'}</div>`;
-            if (pdB) html += `<div class="compare-palette-swatches">${pdB.colors.slice(0,6).map(c => `<span style="background:${c}"></span>`).join('')}</div>`;
-            html += `</div></div>`;
-
-            // Shared colors between palettes
-            if (pdA && pdB && !palMatch) {
-                const normalize = c => c.toLowerCase().replace(/\s/g, '');
-                const setA = new Set(pdA.colors.map(normalize));
-                const shared = pdB.colors.filter(c => setA.has(normalize(c)));
-                if (shared.length > 0) {
-                    html += `<div class="compare-diff-row"><div class="compare-diff-label" style="width:auto;font-size:7px;opacity:0.5;">shared colors</div>`;
-                    html += `<div class="compare-shared-colors">${shared.map(c => `<span style="background:${c}" title="${c}"></span>`).join('')}</div></div>`;
-                }
-            }
-            html += `</div>`;
-
-            // Time & Energy section
-            html += `<div class="compare-diff-section">`;
-            html += `<div class="compare-diff-section-title">Time &amp; Energy</div>`;
-            const metaA = PALETTE_META[palA], metaB = PALETTE_META[palB];
-            // Hour
-            const hourA = metaA?.hour || '—', hourB = metaB?.hour || '—';
-            const hourMatch = hourA === hourB;
-            html += `<div class="compare-diff-row ${hourMatch ? 'compare-diff-match' : ''}">`;
-            html += `<div class="compare-diff-val left">${hourA}</div>`;
-            html += `<div class="compare-diff-label">Hour</div>`;
-            html += `<div class="compare-diff-val right">${hourB}</div></div>`;
-
-            // Time of Day
-            ['Time of Day', 'Energy'].forEach(key => {
-                const vA = tA[key] || '—', vB = tB[key] || '—';
+            html += `<div class="compare-diff-section-title">Traits</div>`;
+            otherKeys.forEach(key => {
+                const vA = tA[key] ? displayValue(key, tA[key]) : '—';
+                const vB = tB[key] ? displayValue(key, tB[key]) : '—';
                 const match = vA === vB;
-                const label = key === 'Time of Day' ? 'Time' : key;
                 html += `<div class="compare-diff-row ${match ? 'compare-diff-match' : ''}">`;
                 html += `<div class="compare-diff-val left">${vA.toUpperCase()}</div>`;
-                html += `<div class="compare-diff-label">${label}</div>`;
+                html += `<div class="compare-diff-label">${key.replace('Water Feature', 'Water')}</div>`;
                 html += `<div class="compare-diff-val right">${vB.toUpperCase()}</div></div>`;
             });
             html += `</div>`;
-
-            // Other traits
-            const skip = ['Palette', 'Time of Day', 'Energy'];
-            const allKeys = new Set([...Object.keys(tA), ...Object.keys(tB)]);
-            const otherKeys = [...allKeys].filter(k => !skip.includes(k));
-            if (otherKeys.length > 0) {
-                html += `<div class="compare-diff-section">`;
-                html += `<div class="compare-diff-section-title">Traits</div>`;
-                otherKeys.forEach(key => {
-                    const vA = tA[key] ? displayValue(key, tA[key]) : '—';
-                    const vB = tB[key] ? displayValue(key, tB[key]) : '—';
-                    const match = vA === vB;
-                    html += `<div class="compare-diff-row ${match ? 'compare-diff-match' : ''}">`;
-                    html += `<div class="compare-diff-val left">${vA.toUpperCase()}</div>`;
-                    html += `<div class="compare-diff-label">${key.replace('Water Feature', 'Water')}</div>`;
-                    html += `<div class="compare-diff-val right">${vB.toUpperCase()}</div></div>`;
-                });
-                html += `</div>`;
-            }
-
-            // Summary line
-            const totalTraits = skip.length + otherKeys.length;
-            let matchCount = 0;
-            [...skip, ...otherKeys].forEach(k => {
-                const vA = tA[k] || '', vB = tB[k] || '';
-                if (vA === vB) matchCount++;
-            });
-            html += `<div style="text-align:center;font-size:8px;color:var(--text-muted);margin-top:8px;opacity:0.5;">${matchCount}/${totalTraits} traits shared</div>`;
-
-            diff.innerHTML = html;
         }
 
-        // Button click
-        document.getElementById('compareBtn')?.addEventListener('click', startCompare);
-
-        // Overlay input handlers — change city by typing an ID and pressing Enter
-        document.getElementById('compareInputA')?.addEventListener('keydown', e => {
-            if (e.key === 'Enter') { updateSide('A'); e.preventDefault(); }
+        const totalTraits = skip.length + otherKeys.length;
+        let matchCount = 0;
+        [...skip, ...otherKeys].forEach(k => {
+            const vA = tA[k] || '', vB = tB[k] || '';
+            if (vA === vB) matchCount++;
         });
-        document.getElementById('compareInputB')?.addEventListener('keydown', e => {
-            if (e.key === 'Enter') { updateSide('B'); e.preventDefault(); }
-        });
+        html += `<div style="text-align:center;font-size:8px;color:var(--text-muted);margin-top:8px;opacity:0.5;">${matchCount}/${totalTraits} traits shared</div>`;
 
-        // Swap button
-        document.getElementById('compareSwap')?.addEventListener('click', swapCompare);
+        diff.innerHTML = html;
+    }
 
-        // Close overlay
-        document.getElementById('compareClose')?.addEventListener('click', closeCompare);
-
-        // ESC to close overlay
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && overlay.classList.contains('open')) {
-                e.stopImmediatePropagation();
-                closeCompare();
-            }
-        });
-
-        // Expose for external use
-        window.openCompare = openCompare;
-        window.startCompare = startCompare;
-    })();
+    // Compare mode event listeners
+    document.getElementById('compareBtn')?.addEventListener('click', startCompare);
+    document.getElementById('compareInputA')?.addEventListener('keydown', e => { if (e.key === 'Enter') { _updateCompareSide('A'); e.preventDefault(); } });
+    document.getElementById('compareInputB')?.addEventListener('keydown', e => { if (e.key === 'Enter') { _updateCompareSide('B'); e.preventDefault(); } });
+    document.getElementById('compareSwap')?.addEventListener('click', _swapCompare);
+    document.getElementById('compareClose')?.addEventListener('click', closeCompare);
+    document.addEventListener('keydown', (e) => {
+        const ov = document.getElementById('compareOverlay');
+        if (e.key === 'Escape' && ov && ov.classList.contains('open')) {
+            e.stopImmediatePropagation();
+            closeCompare();
+        }
+    });
 
 
     </script>
