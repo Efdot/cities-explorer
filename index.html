@@ -2406,10 +2406,6 @@
         .print-inquiry-modal.dark .print-inquiry-btn.secondary { background: #1a1a1a; }
         .print-inquiry-modal.dark .print-inquiry-details-toggle { color: #444; }
         .print-inquiry-modal.dark .print-inquiry-details-toggle:hover { color: #666; }
-        .wall-view-download { background: none; border: 1px solid #ddd; color: #888; padding: 5px 10px; font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
-        .wall-view-download:hover { background: #333; border-color: #333; color: #fff; }
-        .wall-view-modal.dark-mode .wall-view-download, .wall-view-modal.wall-black .wall-view-download { border-color: #333; color: #666; }
-        .wall-view-modal.dark-mode .wall-view-download:hover, .wall-view-modal.wall-black .wall-view-download:hover { background: #fff; border-color: #fff; color: #000; }
         /* Haunted wall view effect for The Lost Cities */
         .wall-view-haunted-effect { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 2s ease; z-index: 15; }
         .wall-view-modal.wall-black.haunted-active .wall-view-haunted-effect { opacity: 1; }
@@ -2915,43 +2911,7 @@
         .grid-items.grid-1-col, .grid-group-items.grid-1-col { grid-template-columns: 1fr; gap: 20px; max-width: 500px; margin: 0 auto; }
         .grid-1-col .grid-item { aspect-ratio: 9/16; border-radius: 12px; }
 
-        /* Comparison Mode */
-        .comparison-mode { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; z-index: 2500; display: none; flex-direction: column; }
-        .comparison-mode.open { display: flex; }
-        .comparison-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--bg-panel); }
-        .comparison-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
-        .comparison-actions { display: flex; gap: 8px; align-items: center; }
-        .comparison-add-btn { padding: 8px 16px; background: var(--bg-input); border: 1px dashed var(--border); border-radius: 20px; color: var(--text-muted); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
-        .comparison-add-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(232, 184, 109, 0.1); }
-        .comparison-share-btn { padding: 8px 16px; background: transparent; border: 1px solid var(--border); border-radius: 20px; color: var(--text-muted); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease; }
-        .comparison-share-btn:hover { border-color: var(--text); color: var(--text); }
-        .comparison-close { width: 32px; height: 32px; background: none; border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
-        .comparison-close:hover { background: var(--text); color: var(--bg-deep); }
-        .comparison-content { flex: 1; display: flex; align-items: stretch; overflow: hidden; background: #000; }
-        .comparison-item { flex: 1; display: flex; flex-direction: column; border-right: 1px solid rgba(255,255,255,0.1); position: relative; cursor: pointer; transition: flex 0.3s ease; }
-        .comparison-item:last-child { border-right: none; }
-        .comparison-item.expanded { flex: 2.5; }
-        .comparison-item:not(.expanded) { flex: 1; }
-        .comparison-item-image { flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; min-height: 0; background: #0a0a0c; }
-        .comparison-item-image img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; transition: transform 0.3s ease; }
-        .comparison-item.expanded .comparison-item-image img { transform: scale(1.02); }
-        .comparison-item-info { padding: 12px 16px; background: var(--bg-panel); border-top: 1px solid var(--border); }
-        .comparison-item-id { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-        .comparison-item-traits { display: flex; flex-direction: column; gap: 3px; }
-        .comparison-trait { display: flex; justify-content: space-between; font-size: 8px; }
-        .comparison-trait-name { color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-        .comparison-trait-value { color: var(--text); font-weight: 600; }
-        .comparison-trait-value.highlight { color: var(--warm); }
-        .comparison-item-remove { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; background: rgba(0,0,0,0.7); border: none; border-radius: 50%; color: #888; font-size: 14px; cursor: pointer; opacity: 0; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; z-index: 5; }
-        .comparison-item:hover .comparison-item-remove { opacity: 1; }
-        .comparison-item-remove:hover { background: #fff; color: #000; }
-        .comparison-empty { flex: 1; display: flex; align-items: center; justify-content: center; border: 2px dashed rgba(255,255,255,0.15); margin: 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; background: rgba(255,255,255,0.02); }
-        .comparison-empty:hover { border-color: var(--warm); background: rgba(232, 184, 109, 0.05); }
-        .comparison-empty-text { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
-        /* Comparison mode selection in grid */
-        .grid-item.compare-selected { outline: 3px solid var(--warm); outline-offset: 2px; }
-        .grid-item .compare-check { position: absolute; top: 6px; left: 6px; width: 20px; height: 20px; background: var(--warm); border-radius: 50%; color: #000; font-size: 12px; font-weight: 700; display: none; align-items: center; justify-content: center; z-index: 3; pointer-events: none; }
-        .grid-item.compare-selected .compare-check { display: flex; }
+
 
         /* Immersive Gallery Room - simplified, just art */
         .gallery-room { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #08070d; z-index: 10000; display: none; overflow: hidden; }
@@ -2996,7 +2956,7 @@
         .more-controls-menu.open { display: flex; }
         .more-controls-menu button { width: 100%; padding: 10px 14px; background: transparent; border: none; border-radius: 8px; color: var(--text-muted); font-size: 11px; font-weight: 600; text-align: left; cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; gap: 8px; }
         .more-controls-menu button:hover { background: var(--bg-input); color: var(--text); }
-        .gallery-room-toggle, .compare-mode-toggle, .heatmap-toggle, .grid-originals-btn { font-size: 12px; }
+        .gallery-room-toggle, .heatmap-toggle, .grid-originals-btn { font-size: 12px; }
         .heatmap-toggle.active { color: var(--warm); }
         /* Leave Your Mark */
         .playground-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0910; z-index: 2000; display: none; flex-direction: column; }
@@ -3425,47 +3385,6 @@
             .print-inquiry-frame-color { width: 18px; height: 18px; }
         }
 
-        /* Compare Mode */
-        @media (max-width: 768px) {
-            .compare-btn { display: none !important; }
-        }
-        .compare-overlay { display: none; position: fixed; inset: 0; z-index: 10000; background: var(--bg-deep, #0a0a0a); flex-direction: column; overflow-y: auto; }
-        .compare-overlay.open { display: flex; }
-        .compare-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px 8px; flex-shrink: 0; }
-        .compare-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); }
-        .compare-close { background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; padding: 0 4px; line-height: 1; }
-        .compare-close:hover { color: var(--text); }
-        .compare-body { display: flex; flex: 1; gap: 0; padding: 8px 24px 24px; min-height: 0; }
-        .compare-col { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; }
-        .compare-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; padding: 8px; }
-        .compare-img { max-height: calc(100vh - 160px); max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 6px; opacity: 0; transition: opacity 0.3s ease; }
-        .compare-img.loaded { opacity: 1; }
-        .compare-city-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; }
-        .compare-diff { width: 280px; flex-shrink: 0; padding: 12px 16px; display: flex; flex-direction: column; gap: 0; overflow-y: auto; align-self: center; }
-        .compare-diff-section { margin-bottom: 10px; }
-        .compare-diff-section-title { font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 6px; opacity: 0.5; }
-        .compare-diff-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 10px; gap: 8px; }
-        .compare-diff-row:last-child { border-bottom: none; }
-        .compare-diff-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); flex-shrink: 0; width: 50px; text-align: center; }
-        .compare-diff-val { font-weight: 600; color: var(--text); font-size: 9px; min-width: 0; text-align: center; flex: 1; }
-        .compare-diff-val.left { text-align: right; }
-        .compare-diff-val.right { text-align: left; }
-        .compare-diff-match { background: rgba(100, 255, 100, 0.06); border-radius: 4px; }
-        .compare-diff-differ { background: rgba(255, 200, 100, 0.04); border-radius: 4px; }
-        .compare-palette-swatches { display: flex; gap: 2px; justify-content: center; }
-        .compare-palette-swatches span { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-        .compare-shared-colors { display: flex; gap: 2px; justify-content: center; flex-wrap: wrap; }
-        .compare-shared-colors span { width: 12px; height: 12px; border-radius: 2px; display: inline-block; border: 1px solid rgba(255,255,255,0.1); }
-        .compare-badge { font-size: 7px; padding: 1px 5px; border-radius: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-        .compare-badge.match { background: rgba(100, 255, 100, 0.12); color: #8f8; }
-        .compare-badge.differ { background: rgba(255, 200, 100, 0.08); color: #da6; }
-        .compare-header-inputs { display: flex; align-items: center; gap: 8px; }
-        .compare-id-input { background: var(--bg-input, #222); border: 1px solid var(--border, #333); border-radius: 6px; padding: 4px 8px; font-size: 11px; color: var(--text); width: 48px; text-align: center; font-family: inherit; }
-        .compare-id-input::placeholder { color: var(--text-muted); opacity: 0.5; }
-        .compare-swap-btn { background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; padding: 2px 4px; line-height: 1; transition: color 0.2s; }
-        .compare-swap-btn:hover { color: var(--text); }
-        .compare-pick-cancel { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 10px; opacity: 0.5; }
-        .compare-pick-cancel:hover { opacity: 1; }
 
     </style>
 </head>
@@ -3645,22 +3564,7 @@
             <button class="icon-btn" id="frameViewBtn" title="View framed mockup" aria-label="View framed on wall">▣</button>
             <button class="icon-btn" id="downloadPng" title="Download for Stories (1080x1920)" aria-label="Download JPG for Instagram/X Stories">↓</button>
             <button class="icon-btn" id="sidebarOrderPrint" title="Order a print" aria-label="Order a print"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
-            <button class="icon-btn compare-btn" id="compareBtn" title="Compare two cities" aria-label="Compare cities"><svg width="15" height="14" viewBox="0 0 15 14" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="5" height="12" rx="1"/><rect x="9" y="1" width="5" height="12" rx="1"/></svg></button>
         </div>
-        <script>
-        (function(){
-            var btn = document.getElementById('compareBtn');
-            if (btn) {
-                btn.addEventListener('click', function() {
-                    var ov = document.getElementById('compareOverlay');
-                    if (ov) { ov.classList.add('open'); ov.style.display = 'flex'; }
-                    else { alert('DEBUG: compareOverlay element not found in DOM'); }
-                });
-            } else {
-                console.error('DEBUG: compareBtn not found');
-            }
-        })();
-        </script>
         <div class="saved-note" id="savedNote">Saved to your favorites<span class="saved-dots"></span></div>
 
         <div class="mint-countdown" id="mintCountdown">
@@ -5101,28 +5005,6 @@
         <a href="#" target="_blank" class="origins-lightbox-btn" id="originsLightboxBtn">View on SuperRare</a>
     </div>
 
-    <!-- Compare Mode Overlay -->
-    <div class="compare-overlay" id="compareOverlay">
-        <div class="compare-header">
-            <div class="compare-header-inputs">
-                <input type="text" class="compare-id-input" id="compareInputA" placeholder="#id" maxlength="4" title="Type a city ID and press Enter">
-                <button class="compare-swap-btn" id="compareSwap" title="Swap cities">⇄</button>
-                <input type="text" class="compare-id-input" id="compareInputB" placeholder="#id" maxlength="4" title="Type a city ID and press Enter">
-            </div>
-            <button class="compare-close" id="compareClose">&times;</button>
-        </div>
-        <div class="compare-body">
-            <div class="compare-col compare-col-a">
-                <div class="compare-img-wrap"><img class="compare-img" id="compareImgA" alt="City A"></div>
-                <div class="compare-city-label" id="compareLabelA"></div>
-            </div>
-            <div class="compare-diff" id="compareDiff"></div>
-            <div class="compare-col compare-col-b">
-                <div class="compare-img-wrap"><img class="compare-img" id="compareImgB" alt="City B"></div>
-                <div class="compare-city-label" id="compareLabelB"></div>
-            </div>
-        </div>
-    </div>
 
     <script>
         const CONTRACT = '0x7c78f67700e700b4005c8a3d920a1a99e6004800';
@@ -5968,16 +5850,6 @@
             e && e.stopPropagation();
             if (window.openGalleryRoom) window.openGalleryRoom();
         };
-        window.openCompareModeGlobal = function(e) {
-            e && e.stopPropagation();
-            // Open grid first, then enable comparison select mode
-            var gp = document.getElementById('gridPanel');
-            if (gp && !gp.classList.contains('open')) {
-                gp.classList.add('open');
-                document.body.classList.add('grid-open');
-            }
-            if (window.showComparisonSelectUI) window.showComparisonSelectUI();
-        };
         window.openPlaygroundGlobal = function(e) {
             e && e.stopPropagation();
             if (window.openPlayground) window.openPlayground();
@@ -6043,7 +5915,6 @@
             return `
                 <div class="grid-item" data-token="${id}" onclick="handleGridItemClick(event, ${id})" style="background:${bgColor}; --spot-color:${spotColor}; --spot-text:${spotTextColor};">
                     <button class="grid-item-fav ${isCityFavorited(id) ? 'favorited' : ''}" data-token="${id}">♥</button>
-                    <div class="compare-check">✓</div>
                     <img src="${getSmallThumbnailUrl(id)}" alt="City ${id}" loading="${loadingAttr}" decoding="async">
                     <div class="grid-item-label">#${id}</div>
                     ${showRank && rank ? `<div class="grid-item-rank">#${rank}</div>` : ''}
@@ -8165,10 +8036,6 @@
             document.getElementById('wallViewPrev')?.addEventListener('click', navigateToPrevCollector);
             document.getElementById('wallViewNext')?.addEventListener('click', navigateToNextCollector);
 
-            // Download button - directly downloads with current wall color
-            document.getElementById('wallViewDownloadBtn')?.addEventListener('click', () => {
-                downloadWallView(currentWallColor);
-            });
 
             // Wall color options
             document.querySelectorAll('.wall-view-wall-color').forEach(btn => {
@@ -8729,159 +8596,6 @@
             }
         }
 
-        async function downloadWallView(type) {
-            const collectorName = document.getElementById('wallViewCollectorName').textContent;
-
-            // Wall color backgrounds - only gray and black now
-            const wallColors = {
-                'gray': { bg: '#e8e4e0', floor: ['#ddd8d2', '#ccc8c2'], frame: '#d8d4cc', mat: '#ffffff', text: '#666' },
-                'black': { bg: '#0f0f0f', floor: ['#0a0a0a', '#050505'], frame: '#1a1a1a', mat: '#0d0d0d', text: '#555' }
-            };
-            const colors = wallColors[type] || wallColors.gray;
-            const isDark = type === 'black';
-
-            // Show loading state
-            const downloadBtn = document.getElementById('wallViewDownloadBtn');
-            const originalText = downloadBtn.textContent;
-            downloadBtn.textContent = '⏳ LOADING...';
-
-            try {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-
-                const width = 1920;
-                const height = 1080;
-                canvas.width = width;
-                canvas.height = height;
-
-                // Background
-                ctx.fillStyle = colors.bg;
-                ctx.fillRect(0, 0, width, height);
-
-                // Floor
-                const floorHeight = 80;
-                const gradient = ctx.createLinearGradient(0, height - floorHeight, 0, height);
-                gradient.addColorStop(0, colors.floor[0]);
-                gradient.addColorStop(1, colors.floor[1]);
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, height - floorHeight, width, floorHeight);
-
-                // Use wallViewTokenIds for consistent image loading
-                // Filter out empty slots (they have NaN token IDs)
-                const validTokenIds = wallViewTokenIds.filter(id => !isNaN(id) && id !== null && id !== undefined);
-                const imageCount = validTokenIds.length;
-                if (imageCount === 0) {
-                    throw new Error('No images to export');
-                }
-
-                // Calculate frame size based on count - max 2 rows
-                let cols = imageCount <= 2 ? imageCount :
-                           imageCount <= 4 ? 2 :
-                           imageCount <= 6 ? 3 :
-                           imageCount <= 8 ? 4 :
-                           imageCount <= 10 ? 5 : 6;
-                let rows = Math.ceil(imageCount / cols);
-
-                let frameHeight = rows === 1 ? 320 : 240;
-                if (imageCount > 8) frameHeight = 180;
-                else if (imageCount > 6) frameHeight = 200;
-                const frameWidth = Math.round(frameHeight * 9 / 16);
-
-                const gapX = 30;
-                const gapY = 25;
-                const frameOuterW = frameWidth + 20;
-                const frameOuterH = frameHeight + 24;
-                const totalWidth = cols * frameOuterW + (cols - 1) * gapX;
-                const totalHeight = rows * frameOuterH + (rows - 1) * gapY;
-                const startX = (width - totalWidth) / 2;
-                const startY = (height - floorHeight - totalHeight) / 2 - 30;
-
-                // Get images from the wall view DOM (already loaded) - only valid tokens
-                const loadedImages = await Promise.all(
-                    validTokenIds.map((tokenId, i) => {
-                        return new Promise((resolve) => {
-                            const newImg = new Image();
-                            newImg.crossOrigin = 'anonymous';
-                            newImg.onload = () => resolve(newImg);
-                            newImg.onerror = () => {
-                                console.warn(`Failed to load image for token ${tokenId}`);
-                                resolve(null);
-                            };
-                            // Try the full res URL
-                            newImg.src = `${MEDIA_BASE}/${CONTRACT}/${tokenId}.png`;
-                        });
-                    })
-                );
-
-                // Check if any images loaded
-                const validImages = loadedImages.filter(img => img !== null);
-                if (validImages.length === 0) {
-                    throw new Error('Could not load images for export');
-                }
-
-                loadedImages.forEach((img, i) => {
-                    if (!img) return;
-                    const col = i % cols;
-                    const row = Math.floor(i / cols);
-                    const x = startX + col * (frameOuterW + gapX);
-                    const y = startY + row * (frameOuterH + gapY);
-
-                    // Frame shadow
-                    ctx.shadowColor = isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.15)';
-                    ctx.shadowBlur = 20;
-                    ctx.shadowOffsetY = 8;
-
-                    // Frame (outer)
-                    ctx.fillStyle = colors.frame;
-                    ctx.fillRect(x, y, frameOuterW, frameOuterH);
-
-                    // Mat
-                    ctx.shadowColor = 'transparent';
-                    ctx.fillStyle = colors.mat;
-                    ctx.fillRect(x + 4, y + 4, frameOuterW - 8, frameOuterH - 8);
-
-                    // Image
-                    ctx.drawImage(img, x + 10, y + 8, frameWidth, frameHeight);
-                });
-
-                // Collector name - simple, one place only
-                ctx.fillStyle = colors.text;
-                ctx.font = '500 12px Helvetica, Arial, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText(`${collectorName.toUpperCase()}`, width/2, height - floorHeight - 25);
-
-                // City numbers below collector name
-                const cityNumbers = wallViewTokenIds.map(id => `#${id}`).join('  ');
-                ctx.font = '400 10px Helvetica, Arial, sans-serif';
-                ctx.fillStyle = isDark ? '#555' : '#aaa';
-                ctx.fillText(cityNumbers, width/2, height - floorHeight - 10);
-
-                // Try to download - may fail due to CORS
-                try {
-                    const link = document.createElement('a');
-                    link.download = `cities-${collectorName.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${type}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                } catch (corsErr) {
-                    // CORS blocked - show screenshot instructions
-                    showStatus('📸 Take a screenshot to save this wall view');
-                    throw new Error('CORS restriction');
-                }
-
-                downloadBtn.textContent = originalText;
-
-            } catch (err) {
-                console.error('Download failed:', err);
-                if (err.message === 'CORS restriction') {
-                    showStatus('That didn\'t work. Try a screenshot instead.');
-                } else if (err.message === 'Could not load images for export') {
-                    showStatus('That didn\'t work. Try a screenshot instead.');
-                } else {
-                    showStatus('That didn\'t work. Try a screenshot instead.');
-                }
-                downloadBtn.textContent = originalText;
-            }
-        }
 
         // Daily Collector Feature - picks a collector with best palette pairing
         function initSpotlight() {
@@ -15315,8 +15029,6 @@
             readyToReveal = true;
             updateWelcomeProgress(100);
             setTimeout(() => welcomeScreen.classList.add('hidden'), 400);
-            // Check for comparison URL parameter
-            if (typeof checkComparisonUrl === 'function') setTimeout(checkComparisonUrl, 500);
         }
 
         // Preload the first visible city image
@@ -15757,7 +15469,6 @@
             }, 100);
         }
 
-        // Compare mode toggle - handler registered after comparison variables are defined (see line ~11294)
 
         // ========== LEAVE YOUR MARK ==========
         let playgroundCanvas, playgroundCtx;
@@ -17883,11 +17594,6 @@
             else if (typeof openTimeline === 'function') openTimeline();
         });
 
-        document.getElementById('gridCompareBtn')?.addEventListener('click', function() {
-            console.log('Compare button clicked');
-            if (window.showComparisonSelectUI) window.showComparisonSelectUI();
-            else if (typeof showComparisonSelectUI === 'function') showComparisonSelectUI();
-        });
 
         document.getElementById('gridGalleryBtn')?.addEventListener('click', function() {
             console.log('Gallery button clicked');
@@ -18140,185 +17846,7 @@
         })();
 
 
-    // ─── Compare Mode ─────────────────────────────────────────────
-    let _compareA = null;
-    let _compareB = null;
 
-    function startCompare() {
-        const ov = document.getElementById('compareOverlay');
-        if (!ov) { alert('Compare overlay not found'); return; }
-        const idA = currentTokenId;
-        const idB = _getDefaultCompareB(idA);
-        openCompare(idA, idB);
-    }
-
-    function _getDefaultCompareB(idA) {
-        const traits = tokenTraits[idA];
-        if (traits && traits['Palette']) {
-            const pal = traits['Palette'];
-            for (let i = 0; i <= MAX_TOKEN; i++) {
-                if (i === idA) continue;
-                const t = tokenTraits[i];
-                if (t && t['Palette'] === pal) return i;
-            }
-        }
-        const minted = Object.keys(tokenTraits).map(Number).sort((a, b) => a - b);
-        for (const t of minted) { if (t !== idA) return t; }
-        return idA;
-    }
-
-    function openCompare(idA, idB) {
-        _compareA = idA;
-        _compareB = idB;
-
-        const ov = document.getElementById('compareOverlay');
-        if (!ov) return;
-        ov.classList.add('open');
-
-        const imgA = document.getElementById('compareImgA');
-        const imgB = document.getElementById('compareImgB');
-        if (imgA) { imgA.classList.remove('loaded'); imgA.onload = () => imgA.classList.add('loaded'); imgA.src = getPreviewUrl(idA); }
-        if (imgB) { imgB.classList.remove('loaded'); imgB.onload = () => imgB.classList.add('loaded'); imgB.src = getPreviewUrl(idB); }
-
-        const labelA = document.getElementById('compareLabelA');
-        const labelB = document.getElementById('compareLabelB');
-        if (labelA) labelA.textContent = '#' + idA;
-        if (labelB) labelB.textContent = '#' + idB;
-
-        const inputA = document.getElementById('compareInputA');
-        const inputB = document.getElementById('compareInputB');
-        if (inputA) inputA.value = idA;
-        if (inputB) inputB.value = idB;
-
-        _buildCompareDiff(idA, idB);
-    }
-
-    function closeCompare() {
-        const ov = document.getElementById('compareOverlay');
-        if (ov) ov.classList.remove('open');
-        _compareA = null;
-        _compareB = null;
-    }
-
-    function _swapCompare() {
-        if (_compareA !== null && _compareB !== null) openCompare(_compareB, _compareA);
-    }
-
-    function _updateCompareSide(side) {
-        const input = document.getElementById(side === 'A' ? 'compareInputA' : 'compareInputB');
-        if (!input) return;
-        const id = parseInt(input.value.replace('#', '').trim(), 10);
-        if (!isNaN(id) && id >= 0 && tokenTraits[id]) {
-            if (side === 'A') openCompare(id, _compareB);
-            else openCompare(_compareA, id);
-        } else {
-            input.style.outline = '1px solid #e85d75';
-            setTimeout(() => input.style.outline = '', 600);
-        }
-    }
-
-    function _buildCompareDiff(idA, idB) {
-        const tA = tokenTraits[idA];
-        const tB = tokenTraits[idB];
-        const diff = document.getElementById('compareDiff');
-        if (!diff) return;
-        if (!tA || !tB) { diff.innerHTML = '<div style="color:var(--text-muted);font-size:10px;">Trait data unavailable</div>'; return; }
-
-        const displayValue = (key, value) => key === 'Line' && value === 'Lighter' ? 'Chisel' : value;
-        let html = '';
-
-        // Palette section
-        const palA = tA['Palette'], palB = tB['Palette'];
-        const pdA = PALETTE_DATA[palA], pdB = PALETTE_DATA[palB];
-        const palMatch = palA === palB;
-        html += `<div class="compare-diff-section">`;
-        html += `<div class="compare-diff-section-title">Palette</div>`;
-        html += `<div class="compare-diff-row ${palMatch ? 'compare-diff-match' : 'compare-diff-differ'}">`;
-        html += `<div class="compare-diff-val left" style="flex:1;"><div style="font-size:9px;font-weight:700;margin-bottom:4px;">${palA ? palA.toUpperCase() : '—'}</div>`;
-        if (pdA) html += `<div class="compare-palette-swatches">${pdA.colors.slice(0,6).map(c => `<span style="background:${c}"></span>`).join('')}</div>`;
-        html += `</div>`;
-        html += `<div class="compare-diff-label"><span class="compare-badge ${palMatch ? 'match' : 'differ'}">${palMatch ? 'same' : 'diff'}</span></div>`;
-        html += `<div class="compare-diff-val right" style="flex:1;"><div style="font-size:9px;font-weight:700;margin-bottom:4px;">${palB ? palB.toUpperCase() : '—'}</div>`;
-        if (pdB) html += `<div class="compare-palette-swatches">${pdB.colors.slice(0,6).map(c => `<span style="background:${c}"></span>`).join('')}</div>`;
-        html += `</div></div>`;
-
-        // Shared colors between palettes
-        if (pdA && pdB && !palMatch) {
-            const normalize = c => c.toLowerCase().replace(/\s/g, '');
-            const setA = new Set(pdA.colors.map(normalize));
-            const shared = pdB.colors.filter(c => setA.has(normalize(c)));
-            if (shared.length > 0) {
-                html += `<div class="compare-diff-row"><div class="compare-diff-label" style="width:auto;font-size:7px;opacity:0.5;">shared colors</div>`;
-                html += `<div class="compare-shared-colors">${shared.map(c => `<span style="background:${c}" title="${c}"></span>`).join('')}</div></div>`;
-            }
-        }
-        html += `</div>`;
-
-        // Time & Energy section
-        html += `<div class="compare-diff-section">`;
-        html += `<div class="compare-diff-section-title">Time &amp; Energy</div>`;
-        const metaA = PALETTE_META[palA], metaB = PALETTE_META[palB];
-        const hourA = metaA?.hour || '—', hourB = metaB?.hour || '—';
-        const hourMatch = hourA === hourB;
-        html += `<div class="compare-diff-row ${hourMatch ? 'compare-diff-match' : ''}">`;
-        html += `<div class="compare-diff-val left">${hourA}</div>`;
-        html += `<div class="compare-diff-label">Hour</div>`;
-        html += `<div class="compare-diff-val right">${hourB}</div></div>`;
-
-        ['Time of Day', 'Energy'].forEach(key => {
-            const vA = tA[key] || '—', vB = tB[key] || '—';
-            const match = vA === vB;
-            const label = key === 'Time of Day' ? 'Time' : key;
-            html += `<div class="compare-diff-row ${match ? 'compare-diff-match' : ''}">`;
-            html += `<div class="compare-diff-val left">${vA.toUpperCase()}</div>`;
-            html += `<div class="compare-diff-label">${label}</div>`;
-            html += `<div class="compare-diff-val right">${vB.toUpperCase()}</div></div>`;
-        });
-        html += `</div>`;
-
-        // Other traits
-        const skip = ['Palette', 'Time of Day', 'Energy'];
-        const allKeys = new Set([...Object.keys(tA), ...Object.keys(tB)]);
-        const otherKeys = [...allKeys].filter(k => !skip.includes(k));
-        if (otherKeys.length > 0) {
-            html += `<div class="compare-diff-section">`;
-            html += `<div class="compare-diff-section-title">Traits</div>`;
-            otherKeys.forEach(key => {
-                const vA = tA[key] ? displayValue(key, tA[key]) : '—';
-                const vB = tB[key] ? displayValue(key, tB[key]) : '—';
-                const match = vA === vB;
-                html += `<div class="compare-diff-row ${match ? 'compare-diff-match' : ''}">`;
-                html += `<div class="compare-diff-val left">${vA.toUpperCase()}</div>`;
-                html += `<div class="compare-diff-label">${key.replace('Water Feature', 'Water')}</div>`;
-                html += `<div class="compare-diff-val right">${vB.toUpperCase()}</div></div>`;
-            });
-            html += `</div>`;
-        }
-
-        const totalTraits = skip.length + otherKeys.length;
-        let matchCount = 0;
-        [...skip, ...otherKeys].forEach(k => {
-            const vA = tA[k] || '', vB = tB[k] || '';
-            if (vA === vB) matchCount++;
-        });
-        html += `<div style="text-align:center;font-size:8px;color:var(--text-muted);margin-top:8px;opacity:0.5;">${matchCount}/${totalTraits} traits shared</div>`;
-
-        diff.innerHTML = html;
-    }
-
-    // Compare mode event listeners
-    document.getElementById('compareBtn')?.addEventListener('click', startCompare);
-    document.getElementById('compareInputA')?.addEventListener('keydown', e => { if (e.key === 'Enter') { _updateCompareSide('A'); e.preventDefault(); } });
-    document.getElementById('compareInputB')?.addEventListener('keydown', e => { if (e.key === 'Enter') { _updateCompareSide('B'); e.preventDefault(); } });
-    document.getElementById('compareSwap')?.addEventListener('click', _swapCompare);
-    document.getElementById('compareClose')?.addEventListener('click', closeCompare);
-    document.addEventListener('keydown', (e) => {
-        const ov = document.getElementById('compareOverlay');
-        if (e.key === 'Escape' && ov && ov.classList.contains('open')) {
-            e.stopImmediatePropagation();
-            closeCompare();
-        }
-    });
 
 
     </script>
