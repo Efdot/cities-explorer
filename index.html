@@ -1812,19 +1812,11 @@
         .leaderboard-grid-wrap.has-complete .leaderboard-grid-cell:not([style*="opacity"]) { filter: brightness(1.15); }
         .leaderboard-grid-multiplier { font-size: 7px; font-weight: 800; color: var(--warm); margin-left: 2px; line-height: 1; }
         /* Achievement badges */
-        .achievement-badges { display: inline-flex; gap: 3px; margin-left: 6px; align-items: center; }
-        .achievement-badge { font-size: 10px; opacity: 0.7; cursor: default; line-height: 1; }
-        .achievement-badge.og { font-size: 7px; font-weight: 600; color: var(--text-muted); opacity: 0.4; letter-spacing: 0.03em; }
-        .achievement-badge.grid { display: inline-flex; align-items: center; gap: 1px; }
-        .grid-icon-mini { display: inline-grid; grid-template-columns: repeat(2, 3px); grid-template-rows: repeat(2, 5px); gap: 1px; opacity: 0.6; }
-        .grid-icon-mini b { display: block; background: currentColor; border-radius: 0.5px; }
-        .grid-multiplier { font-size: 7px; opacity: 0.5; font-weight: 600; }
-        .achievement-badge.spectrum { filter: saturate(0.7); opacity: 0.65; }
-        .achievement-badge.rising-set, .achievement-badge.living-set, .achievement-badge.fading-set { font-size: 10px; opacity: 0.65; }
-        .achievement-badge.resting-set { display: inline-flex; align-items: center; gap: 2px; opacity: 0.7; cursor: default; animation: restingSetAppear 0.35s ease-out; }
-        .achievement-badge.resting-set:hover { transform: scale(1.35); opacity: 1; }
-        .resting-set-grid { display: inline-grid; grid-template-columns: repeat(2, 3px); grid-template-rows: repeat(2, 5px); gap: 1px; }
-        .resting-set-grid b { display: block; background: #1a2332; border-radius: 1px; border: 0.5px solid #e8c547; }
+        .achievement-badges { display: inline-flex; gap: 4px; margin-left: 6px; align-items: center; }
+        .achievement-badge { display: inline-flex; align-items: center; gap: 2px; font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.5; cursor: default; line-height: 1; color: var(--text-muted); }
+        .achievement-badge.og { color: var(--text-dim); }
+        .achievement-badge .badge-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+        .achievement-badge .badge-count { font-size: 7px; opacity: 0.7; }
         .resting-set-multiplier { font-size: 7px; opacity: 0.6; font-weight: 600; }
         @keyframes restingSetAppear { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 0.7; } }
         /* Leaderboard alternating rows */
@@ -7394,33 +7386,27 @@
                 // Grid badge (4+ cities)
                 if (totalCities >= 4) {
                     const gridCount = Math.floor(totalCities / 4);
-                    const multiplier = gridCount > 1 ? `<span class="grid-multiplier">x${gridCount}</span>` : '';
-                    badges.push(`<span class="achievement-badge grid" title="Grid (${totalCities} cities)"><span class="grid-icon-mini"><b></b><b></b><b></b><b></b></span>${multiplier}</span>`);
+                    badges.push(`<span class="achievement-badge grid" title="Grid (${totalCities} cities)">⊞${gridCount > 1 ? '<span class="badge-count">x' + gridCount + '</span>' : ''}</span>`);
                 }
 
                 // Spectrum badge (one of each energy)
                 if (rising >= 1 && living >= 1 && fading >= 1 && resting >= 1) {
-                    badges.push('<span class="achievement-badge spectrum" title="Spectrum City Set · one of each energy">🌈</span>');
+                    badges.push(`<span class="achievement-badge spectrum" title="Spectrum Set"><span class="badge-dot" style="background:#FFB347;"></span><span class="badge-dot" style="background:#87ceeb;"></span><span class="badge-dot" style="background:#DDA0DD;"></span><span class="badge-dot" style="background:#B19CD9;"></span></span>`);
                 }
 
                 // Mono set badges (4+ of same energy)
-                if (rising >= 4) {
-                    const count = Math.floor(rising / 4);
-                    badges.push(`<span class="achievement-badge rising-set" title="Rising Set (${rising} rising energy)">☀️${count > 1 ? count : ''}</span>`);
-                }
-                if (living >= 4) {
-                    const count = Math.floor(living / 4);
-                    badges.push(`<span class="achievement-badge living-set" title="Living Set (${living} living energy)">🏙️${count > 1 ? count : ''}</span>`);
-                }
-                if (fading >= 4) {
-                    const count = Math.floor(fading / 4);
-                    badges.push(`<span class="achievement-badge fading-set" title="Fading Set (${fading} fading energy)">🌆${count > 1 ? count : ''}</span>`);
-                }
-                if (resting >= 4) {
-                    const count = Math.floor(resting / 4);
-                    const multiplier = count > 1 ? `<span class="resting-set-multiplier">x${count}</span>` : '';
-                    badges.push(`<span class="achievement-badge resting-set" title="Resting City Set · ${resting} resting energy cities"><span class="resting-set-grid"><b></b><b></b><b></b><b></b></span>${multiplier}</span>`);
-                }
+                const energySets = [
+                    { count: rising, energy: 'Rising', color: '#FFB347' },
+                    { count: living, energy: 'Living', color: '#87ceeb' },
+                    { count: fading, energy: 'Fading', color: '#DDA0DD' },
+                    { count: resting, energy: 'Resting', color: '#B19CD9' }
+                ];
+                energySets.forEach(({ count, energy, color }) => {
+                    if (count >= 4) {
+                        const sets = Math.floor(count / 4);
+                        badges.push(`<span class="achievement-badge" title="${energy} Set (${count})"><span class="badge-dot" style="background:${color};"></span>${sets > 1 ? '<span class="badge-count">x' + sets + '</span>' : ''}</span>`);
+                    }
+                });
 
                 return badges.length > 0 ? `<span class="achievement-badges">${badges.join('')}</span>` : '';
             }
