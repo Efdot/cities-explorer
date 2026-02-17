@@ -1663,10 +1663,10 @@
         .collectors-close { background: var(--bg-input); border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
         .collectors-close:hover { background: var(--bg-card); color: var(--text); }
         .collectors-header-actions { display: flex; gap: 8px; align-items: center; }
-        .collectors-icon-bar { display: flex; gap: 6px; align-items: center; justify-content: center; margin-bottom: 10px; padding: 6px 0; }
-        .collectors-icon-bar .collectors-icon-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--bg-input); opacity: 0.7; }
-        .collectors-icon-bar .collectors-icon-btn:hover { opacity: 1; background: var(--bg-card); }
-        .collectors-icon-bar .collectors-icon-btn.active { opacity: 1; background: rgba(232,184,109,0.15); color: var(--warm); }
+        .collectors-icon-bar { display: flex; gap: 12px; align-items: center; justify-content: center; margin-bottom: 8px; padding: 2px 0; }
+        .collectors-icon-bar .collectors-icon-btn { width: 24px; height: 24px; opacity: 0.4; }
+        .collectors-icon-bar .collectors-icon-btn:hover { opacity: 0.9; }
+        .collectors-icon-bar .collectors-icon-btn.active { opacity: 1; color: var(--warm); }
 
         .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 16px; padding: 10px 18px; background: var(--bg-input); border-radius: 50px; }
         .collectors-stats strong { color: var(--teal); }
@@ -2490,6 +2490,7 @@
         .feature-content { position: relative; z-index: 1; }
         /* Collector name - prominent, all caps */
         .feature-collector { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px; letter-spacing: 0.08em; text-transform: uppercase; }
+        .feature-otd-label { font-size: 9px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; opacity: 0.6; }
         .feature-collector-label { font-size: 8px; font-weight: 500; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
         /* Horizontal crop of cities */
         .feature-cities { display: flex; gap: 8px; overflow: hidden; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -3833,6 +3834,7 @@
                 <div class="feature-expanded-content">
                     <div class="feature-palette-blend" id="featurePaletteBlend"></div>
                     <div class="feature-content">
+                        <div class="feature-otd-label">Featured Cities of the Day</div>
                         <div class="feature-collector-label">Collected by</div>
                         <div class="feature-collector" id="featureCollector"></div>
                         <div class="feature-cities" id="featureCities"></div>
@@ -3911,6 +3913,7 @@
                 <button class="leaderboard-btn back-btn" id="backFromEnergy">← BACK</button>
                 <button class="energy-fullscreen-btn" id="energyFullscreenBtn" title="Fullscreen">⛶</button>
             </div>
+            <div style="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text);margin-bottom:6px;">Collector Sets</div>
             <div class="energy-explanation" style="font-size:10px;color:var(--text-muted);padding:0 0 12px;line-height:1.5;opacity:0.7;letter-spacing:0.02em;">Each of the 112 palettes carries one of four energies: Rising, Living, Fading, or Resting, reflecting the arc of a day across the collection. Collecting one of each energy completes a grid.</div>
             <div class="energy-complete-sets" id="energyCompleteSets"></div>
             <div class="energy-groups-content" id="energyGroupsContent"></div>
@@ -12578,17 +12581,21 @@
                     </div>`;
                 if (collectors.length > 0) {
                     html += `<div class="energy-set-section-pills">`;
+                    const baseColor = m.color;
+                    const shades = [baseColor, baseColor + 'cc', baseColor + '99', baseColor + '66'];
                     collectors.slice(0, 8).forEach(c => {
                         const gridIds = (c.tokenIds || []).slice(0, 4);
                         const gridHtml = gridIds.length >= 4 ? `<div class="energy-set-art-grid">${gridIds.map(id =>
                             `<img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=200" loading="lazy" alt="#${id}">`
                         ).join('')}</div>` : '';
+                        const dots = shades.map(s => `<div class="energy-complete-dot" style="background:${s};"></div>`).join('');
                         html += `<span class="energy-complete-collector" data-collector="${c.name}" style="border-color:${m.color}33;">
                             ${gridHtml}
                             <div class="energy-complete-meta">
                                 <span class="energy-complete-name">${c.name}</span>
                                 <span style="font-size:9px;color:${m.color};flex-shrink:0;">×${c.energyCount}</span>
                             </div>
+                            <div class="energy-complete-dots">${dots}</div>
                         </span>`;
                     });
                     if (collectors.length > 8) html += `<span style="font-size:9px;color:var(--text-muted);padding:4px 0;text-align:center;">+${collectors.length - 8} more</span>`;
