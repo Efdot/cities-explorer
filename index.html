@@ -1656,7 +1656,7 @@
         .gallery-panel::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 80px; background: var(--border); border-radius: 0 4px 4px 0; cursor: ew-resize; transition: background 0.2s, width 0.2s, opacity 0.2s; opacity: 0; pointer-events: none; }
         .gallery-panel.open::before { opacity: 1; pointer-events: auto; }
         .gallery-panel.open:hover::before, .gallery-panel.dragging::before { background: var(--pink); width: 8px; }
-        .collectors-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; margin-top: 40px; }
+        .collectors-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; margin-top: 28px; }
         .collectors-header h2 { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #fff; display: flex; align-items: center; gap: 6px; }
         .collectors-header .collapse-arrow { font-size: 12px; letter-spacing: -3px; opacity: 0.35; transition: all 0.2s ease; color: var(--warm); }
         .collectors-header h2:hover .collapse-arrow { opacity: 1; letter-spacing: -1px; }
@@ -1664,7 +1664,7 @@
         .collectors-close:hover { background: var(--bg-card); color: var(--text); }
         .collectors-header-actions { display: flex; gap: 8px; align-items: center; }
 
-        .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 20px; padding: 12px 18px; background: var(--bg-input); border-radius: 50px; }
+        .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 14px; padding: 10px 18px; background: var(--bg-input); border-radius: 50px; }
         .collectors-stats strong { color: var(--teal); }
         .top-collectors-highlight { display: none; margin-bottom: 16px; padding: 0 2px; }
         .top-collectors-highlight.visible { display: block; }
@@ -1833,7 +1833,7 @@
         .collectors-icon-btn svg { width: 18px; height: 18px; }
         .become-collector-btn { display: block; width: 100%; padding: 12px 16px; margin-bottom: 16px; background: transparent; border: 1px dashed var(--border); color: var(--text-muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
         .become-collector-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(255,179,71,0.05); }
-        .not-collector-link { display: block; width: 100%; padding: 8px 0; margin-bottom: 12px; background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; }
+        .not-collector-link { display: block; width: 100%; padding: 6px 0; margin-bottom: 6px; background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; }
         .not-collector-link:hover { opacity: 1; color: var(--warm); }
         /* Citizen Guide View - Clean onboarding */
         .collector-guide-view { display: none; }
@@ -2478,7 +2478,7 @@
         /* Single Piece Framed Overlay */
 
         /* Collector Feature - Subtle Dark Style */
-        .collector-feature { display: none; position: relative; margin: -16px -16px 16px -16px; border-radius: 0 0 16px 16px; overflow: hidden; background: transparent; }
+        .collector-feature { display: none; position: relative; margin: -16px -16px 10px -16px; border-radius: 0 0 16px 16px; overflow: hidden; background: transparent; }
         .collector-feature.visible { display: block; }
         /* Collapsed state - just the label */
         .feature-collapsed-label { display: flex; align-items: center; gap: 8px; padding: 12px 16px; cursor: pointer; }
@@ -12350,7 +12350,13 @@
                 return;
             }
             if (energyBtn) {
-                showEnergyGroupsView();
+                const energyView = document.getElementById('energyGroupsView');
+                if (energyView?.classList.contains('active')) {
+                    energyView.classList.remove('active');
+                    showPillsView();
+                } else {
+                    showEnergyGroupsView();
+                }
                 return;
             }
         });
