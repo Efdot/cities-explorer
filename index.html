@@ -5893,6 +5893,10 @@
                 if (vtb) vtb.classList.remove('grid-open');
                 document.body.classList.remove('grid-open');
 
+                // Clear energy-by mode if active
+                currentEnergyFilter = null;
+                enteredGridFromEnergy = null;
+
                 // Clear sidebar filters so navigation works through all cities
                 if (typeof clearFilters === 'function') {
                     clearFilters();
@@ -7018,6 +7022,7 @@
         let enteredCollectorFromTimeline = false;
         let enteredCollectorFromEnergy = false;
         let enteredCollectorFromPanel = false;
+        let enteredGridFromEnergy = null; // Track energy type when entering grid from "Explore X cities" link
 
         async function fetchCollectorTokens(collectorName, fromTimeline = false) {
             enteredCollectorFromTimeline = fromTimeline;
@@ -12418,13 +12423,15 @@
                     e.preventDefault();
                     const energy = exploreLink.dataset.exploreEnergy;
                     if (energy) {
+                        // Track that we entered grid from energy explore
+                        enteredGridFromEnergy = energy;
                         overlay.classList.remove('open');
                         document.body.style.overflow = '';
                         closeCollectorsPanel();
-                        filterEnergy.value = energy;
-                        filterEnergy.dispatchEvent(new Event('change'));
+                        // Set energy filter on the grid and open grid view
+                        currentEnergyFilter = energy;
                         gridPage = 1;
-                        renderGrid();
+                        openGridView();
                     }
                     return;
                 }
@@ -12663,15 +12670,16 @@
                     e.preventDefault();
                     const energy = exploreLink.dataset.exploreEnergy;
                     if (energy) {
+                        // Track that we entered grid from energy explore
+                        enteredGridFromEnergy = energy;
                         // Close energy view and collectors panel
                         document.getElementById('energyGroupsView')?.classList.remove('active');
                         showPillsView();
                         closeCollectorsPanel();
-                        // Set energy filter and refresh grid
-                        filterEnergy.value = energy;
-                        filterEnergy.dispatchEvent(new Event('change'));
+                        // Set energy filter on the grid and open grid view
+                        currentEnergyFilter = energy;
                         gridPage = 1;
-                        renderGrid();
+                        openGridView();
                     }
                     return;
                 }
@@ -13453,7 +13461,15 @@
                     }
                     // Priority 6: In grid view
                     else if (gridPanel.classList.contains('open')) {
-                        if (currentCollectorFilter && enteredCollectorFromTimeline) {
+                        if (enteredGridFromEnergy) {
+                            // Return to energy grid on collector palette
+                            currentEnergyFilter = null;
+                            enteredGridFromEnergy = null;
+                            closeGridView();
+                            const cp = document.getElementById('collectorsPanel');
+                            if (cp) { cp.classList.add('open'); document.body.classList.add('collectors-open'); }
+                            showEnergyGroupsView();
+                        } else if (currentCollectorFilter && enteredCollectorFromTimeline) {
                             clearCollectorFilter(true);
                         } else if (currentCollectorFilter) {
                             // Clear collector filter to show all cities
@@ -13808,6 +13824,9 @@
             gridPanel.classList.remove('open');
             viewToggleBtn.classList.remove('grid-open');
             document.body.classList.remove('grid-open');
+            // Clear energy-by mode if active
+            currentEnergyFilter = null;
+            enteredGridFromEnergy = null;
             // Save collector context so we can restore it when re-opening
             if (currentCollectorFilter) {
                 sessionStorage.setItem('cities-gallery-context', JSON.stringify(currentCollectorFilter));
