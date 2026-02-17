@@ -7013,9 +7013,11 @@
         let currentCollectorFilter = null;
         let enteredCollectorFromTimeline = false;
         let enteredCollectorFromEnergy = false;
+        let enteredCollectorFromPanel = false;
 
         async function fetchCollectorTokens(collectorName, fromTimeline = false) {
             enteredCollectorFromTimeline = fromTimeline;
+            enteredCollectorFromPanel = !fromTimeline && !enteredCollectorFromEnergy && collectorsPanel?.classList.contains('open');
             // Show loading state
             const banner = document.getElementById('collectorBanner');
             const bannerNameEl = document.getElementById('collectorBannerName');
@@ -7327,9 +7329,11 @@
         function clearCollectorFilter(returnToTimeline = false) {
             const wasFromTimeline = enteredCollectorFromTimeline;
             const wasFromEnergy = enteredCollectorFromEnergy;
+            const wasFromPanel = enteredCollectorFromPanel;
             currentCollectorFilter = null;
             enteredCollectorFromTimeline = false;
             enteredCollectorFromEnergy = false;
+            enteredCollectorFromPanel = false;
             document.getElementById('collectorBanner').classList.remove('visible');
 
             // If came from timeline and escape is pressed, return to timeline
@@ -7345,6 +7349,11 @@
                 showEnergyGroupsView();
                 renderGrid();
                 return;
+            }
+            // If came from collectors panel, reopen it
+            if (wasFromPanel) {
+                const cp = document.getElementById('collectorsPanel');
+                if (cp) { cp.classList.add('open'); document.body.classList.add('collectors-open'); }
             }
             renderGrid();
         }
