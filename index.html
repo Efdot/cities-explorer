@@ -1740,15 +1740,18 @@
         .energy-fullscreen-btn:hover { border-color: var(--text); color: var(--text); }
         .energy-complete-sets { margin-bottom: 20px; }
         .energy-complete-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm); margin-bottom: 10px; }
-        .energy-complete-collector { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: rgba(232,184,109,0.06); border: 1px solid rgba(232,184,109,0.15); border-radius: 10px; margin-bottom: 6px; cursor: pointer; transition: all 0.2s ease; }
-        .energy-complete-collector:hover { background: rgba(232,184,109,0.12); border-color: rgba(232,184,109,0.3); }
-        .energy-complete-name { font-size: 11px; font-weight: 600; color: var(--text); flex: 1; text-transform: uppercase; letter-spacing: 0.04em; }
+        .energy-complete-collector { display: flex; flex-direction: column; align-items: stretch; gap: 6px; padding: 8px; background: rgba(232,184,109,0.06); border: 1px solid rgba(232,184,109,0.15); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .energy-complete-collector:hover { background: rgba(232,184,109,0.12); border-color: rgba(232,184,109,0.3); transform: translateY(-2px); }
+        .energy-complete-name { font-size: 10px; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .energy-complete-meta { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
         .energy-complete-dots { display: flex; gap: 4px; }
-        .energy-complete-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .energy-complete-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .energy-set-art-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: 6px; overflow: hidden; }
+        .energy-set-art-grid img { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; display: block; }
         .energy-set-section { margin-bottom: 14px; }
         .energy-set-section-header { display: flex; align-items: center; gap: 8px; padding: 8px 0; transition: opacity 0.2s; }
         .energy-set-section-header:hover { opacity: 0.8; }
-        .energy-set-section-pills { padding: 0 0 4px; }
+        .energy-set-section-pills { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; padding: 0 0 4px; }
         .energy-set-detail-overlay { position: fixed; inset: 0; background: var(--bg-deep); z-index: 2600; display: none; overflow-y: auto; }
         .energy-set-detail-overlay.open { display: block; }
         .energy-set-detail-close { position: fixed; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 32px; cursor: pointer; z-index: 2700; transition: color 0.2s; }
@@ -1761,7 +1764,7 @@
         .energy-set-detail-collector-name:hover { color: var(--warm); }
         .energy-set-detail-cities { display: flex; gap: 8px; flex-wrap: wrap; }
         .energy-set-detail-city { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .energy-set-detail-city img { width: 80px; height: 80px; border-radius: 6px; object-fit: cover; }
+        .energy-set-detail-city img { width: 80px; aspect-ratio: 9 / 16; border-radius: 6px; object-fit: cover; }
         .energy-set-detail-city-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
         .energy-set-detail-city-id { font-size: 8px; color: var(--text-dim); }
         .energy-set-detail-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 12px; opacity: 0.5; }
@@ -12388,6 +12391,22 @@
             document.body.style.overflow = 'hidden';
             // Wire up clicks
             overlay.onclick = (e) => {
+                // Explore link: navigate to filtered grid
+                const exploreLink = e.target.closest('.energy-explore-link');
+                if (exploreLink) {
+                    e.preventDefault();
+                    const energy = exploreLink.dataset.exploreEnergy;
+                    if (energy) {
+                        overlay.classList.remove('open');
+                        document.body.style.overflow = '';
+                        closeCollectorsPanel();
+                        filterEnergy.value = energy;
+                        filterEnergy.dispatchEvent(new Event('change'));
+                        gridPage = 1;
+                        renderGrid();
+                    }
+                    return;
+                }
                 const setHeader = e.target.closest('.energy-set-section-header');
                 if (setHeader) {
                     const energy = setHeader.dataset.energy;
@@ -12509,8 +12528,37 @@
         function renderCompleteSetsHtml(completeSets, energyTypeSets) {
             let html = '';
 
-            // Per-energy-type sets: collectors with 4+ of the same energy
-            // Order: types with collectors first, empty ones last
+            // 1. Spectrum sets on top (collectors with at least one of each energy type)
+            if (completeSets.length > 0) {
+                html += `<div class="energy-set-section">
+                    <div class="energy-set-section-header" data-energy="Spectrum" style="cursor:pointer;">
+                        <span class="energy-group-icon">⚡</span>
+                        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warm);">Spectrum Set</span>
+                        <span class="energy-group-count">${completeSets.length}</span>
+                        <span style="font-size:10px;color:var(--text-muted);margin-left:auto;opacity:0.5;">→</span>
+                    </div>
+                    <div class="energy-set-section-pills">`;
+                completeSets.forEach(c => {
+                    const gridIds = ['Rising', 'Living', 'Fading', 'Resting'].map(e => c.tokens?.[e]).filter(Boolean);
+                    const gridHtml = gridIds.length >= 4 ? `<div class="energy-set-art-grid">${gridIds.map(id =>
+                        `<img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=200" loading="lazy" alt="#${id}">`
+                    ).join('')}</div>` : '';
+                    const dots = ['Rising', 'Living', 'Fading', 'Resting'].map(e => {
+                        return `<div class="energy-complete-dot" style="background: ${ENERGY_META[e].color};"></div>`;
+                    }).join('');
+                    html += `<span class="energy-complete-collector" data-collector="${c.name}">
+                        ${gridHtml}
+                        <div class="energy-complete-meta">
+                            <span class="energy-complete-name">${c.name}</span>
+                            <span style="font-size:9px;color:var(--text-muted);flex-shrink:0;">×${c.count}</span>
+                        </div>
+                        <div class="energy-complete-dots">${dots}</div>
+                    </span>`;
+                });
+                html += `</div></div>`;
+            }
+
+            // 2. Per-energy-type sets: types with collectors first, empty ones last
             const orderedTypes = ['Fading', 'Resting', 'Rising', 'Living'];
             const withSets = orderedTypes.filter(e => (energyTypeSets?.[e] || []).length > 0);
             const withoutSets = orderedTypes.filter(e => (energyTypeSets?.[e] || []).length === 0);
@@ -12528,42 +12576,30 @@
                     </div>`;
                 if (collectors.length > 0) {
                     html += `<div class="energy-set-section-pills">`;
-                    collectors.slice(0, 5).forEach(c => {
+                    collectors.slice(0, 8).forEach(c => {
+                        const gridIds = (c.tokenIds || []).slice(0, 4);
+                        const gridHtml = gridIds.length >= 4 ? `<div class="energy-set-art-grid">${gridIds.map(id =>
+                            `<img src="${MEDIA_BASE}/${CONTRACT}/${id}.png?width=200" loading="lazy" alt="#${id}">`
+                        ).join('')}</div>` : '';
                         html += `<span class="energy-complete-collector" data-collector="${c.name}" style="border-color:${m.color}33;">
-                            <span class="energy-complete-name">${c.name}</span>
-                            <span style="font-size:9px;color:${m.color};">×${c.energyCount}</span>
+                            ${gridHtml}
+                            <div class="energy-complete-meta">
+                                <span class="energy-complete-name">${c.name}</span>
+                                <span style="font-size:9px;color:${m.color};flex-shrink:0;">×${c.energyCount}</span>
+                            </div>
                         </span>`;
                     });
-                    if (collectors.length > 5) html += `<span style="font-size:9px;color:var(--text-muted);padding:4px 0;">+${collectors.length - 5} more</span>`;
+                    if (collectors.length > 8) html += `<span style="font-size:9px;color:var(--text-muted);padding:4px 0;text-align:center;">+${collectors.length - 8} more</span>`;
                     html += `</div>`;
                 } else {
-                    html += `<div style="font-size:9px;color:var(--text-muted);opacity:0.5;padding:4px 0 8px;">No complete sets yet</div>`;
+                    html += `<div style="padding:6px 0 10px;">
+                        <div style="font-size:9px;color:var(--text-muted);opacity:0.5;margin-bottom:6px;">No complete sets yet</div>
+                        <a href="#" class="energy-explore-link" data-explore-energy="${energy}" style="font-size:10px;color:${m.color};opacity:0.8;text-decoration:none;transition:opacity 0.2s;"
+                           onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Explore ${energy.toLowerCase()} cities →</a>
+                    </div>`;
                 }
                 html += `</div>`;
             });
-
-            // Complete spectrum sets (all 4 types)
-            if (completeSets.length > 0) {
-                html += `<div class="energy-set-section">
-                    <div class="energy-set-section-header" data-energy="Spectrum" style="cursor:pointer;">
-                        <span class="energy-group-icon">⚡</span>
-                        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warm);">Spectrum Set</span>
-                        <span class="energy-group-count">${completeSets.length}</span>
-                        <span style="font-size:10px;color:var(--text-muted);margin-left:auto;opacity:0.5;">→</span>
-                    </div>
-                    <div class="energy-set-section-pills">`;
-                completeSets.forEach(c => {
-                    const dots = ['Rising', 'Living', 'Fading', 'Resting'].map(e => {
-                        return `<div class="energy-complete-dot" style="background: ${ENERGY_META[e].color};"></div>`;
-                    }).join('');
-                    html += `<span class="energy-complete-collector" data-collector="${c.name}">
-                        <span class="energy-complete-name">${c.name}</span>
-                        <div class="energy-complete-dots">${dots}</div>
-                        <span style="font-size:9px;color:var(--text-muted);">×${c.count}</span>
-                    </span>`;
-                });
-                html += `</div></div>`;
-            }
 
             return html;
         }
@@ -12596,6 +12632,24 @@
 
             // Click handlers
             const handler = (e) => {
+                // Check if clicking an explore link (navigates to filtered grid)
+                const exploreLink = e.target.closest('.energy-explore-link');
+                if (exploreLink) {
+                    e.preventDefault();
+                    const energy = exploreLink.dataset.exploreEnergy;
+                    if (energy) {
+                        // Close energy view and collectors panel
+                        document.getElementById('energyGroupsView')?.classList.remove('active');
+                        showPillsView();
+                        closeCollectorsPanel();
+                        // Set energy filter and refresh grid
+                        filterEnergy.value = energy;
+                        filterEnergy.dispatchEvent(new Event('change'));
+                        gridPage = 1;
+                        renderGrid();
+                    }
+                    return;
+                }
                 // Check if clicking a set header (opens fullscreen detail)
                 const setHeader = e.target.closest('.energy-set-section-header');
                 if (setHeader) {
