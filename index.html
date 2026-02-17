@@ -6682,6 +6682,9 @@
                 matchCount.textContent = 'LOADING FROM CACHE...';
                 tokenDataReady = true;
                 extractTraitValues(); populateFilters(); updateMatchCount();
+                // Re-update sidebar sections now that all trait data is available
+                updateSamePaletteCities();
+                updatePairsWellWith();
                 // Always open grid on load
                 openGridOnLoad();
                 // Fetch any missing tokens in background
@@ -6756,6 +6759,9 @@
             saveCachedTraits();
             tokenDataReady = true;
             extractTraitValues(); populateFilters(); updateMatchCount();
+            // Re-update sidebar sections now that all trait data is available
+            updateSamePaletteCities();
+            updatePairsWellWith();
             // Always open grid on load
             openGridOnLoad();
         }
