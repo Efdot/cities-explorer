@@ -1663,10 +1663,11 @@
         .collectors-close { background: var(--bg-input); border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
         .collectors-close:hover { background: var(--bg-card); color: var(--text); }
         .collectors-header-actions { display: flex; gap: 8px; align-items: center; }
-        .collectors-icon-bar { display: flex; gap: 12px; align-items: center; justify-content: center; margin-bottom: 8px; padding: 2px 0; }
+        .collectors-icon-bar { display: flex; gap: 10px; align-items: center; justify-content: flex-start; margin-bottom: 10px; padding: 2px 0; }
         .collectors-icon-bar .collectors-icon-btn { width: 24px; height: 24px; opacity: 0.4; }
         .collectors-icon-bar .collectors-icon-btn:hover { opacity: 0.9; }
         .collectors-icon-bar .collectors-icon-btn.active { opacity: 1; color: var(--warm); }
+        .collectors-icon-bar .not-collector-link { margin-left: auto; margin-bottom: 0; padding: 0; width: auto; }
 
         .collectors-stats { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 16px; padding: 10px 18px; background: var(--bg-input); border-radius: 50px; }
         .collectors-stats strong { color: var(--teal); }
@@ -3826,8 +3827,8 @@
             <button class="collectors-icon-btn" id="showLeaderboard" title="Leaderboard"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="4" height="8" rx="1"/><rect x="8" y="4" width="4" height="14" rx="1"/><rect x="14" y="7" width="4" height="11" rx="1"/></svg></button>
             <button class="collectors-icon-btn" id="energySetBtn" title="Energy groups"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11,2 7,10 12,10 8,18"/></svg></button>
             <button class="collectors-icon-btn" id="dreamBubbleBtn" title="Dream grid"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="3" x2="3" y2="9"/><line x1="3" y1="11" x2="3" y2="17"/><line x1="0" y1="6" x2="6" y2="6"/><line x1="0" y1="14" x2="6" y2="14"/><line x1="11" y1="3" x2="11" y2="9"/><line x1="11" y1="11" x2="11" y2="17"/><line x1="8" y1="6" x2="14" y2="6"/><line x1="8" y1="14" x2="14" y2="14"/></svg></button>
+            <button class="not-collector-link" id="notCollectorTop">Not a collector yet? ✦</button>
         </div>
-        <button class="not-collector-link" id="notCollectorTop">Not a collector yet? ✦</button>
         <div class="pills-view" id="pillsView">
             <!-- Daily Collector Feature - toggled by icon button -->
             <div class="collector-feature collapsed" id="collectorFeature">
