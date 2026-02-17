@@ -1756,12 +1756,12 @@
         .energy-set-section { margin-bottom: 14px; }
         .energy-set-section-header { display: flex; align-items: center; gap: 8px; padding: 8px 0; transition: opacity 0.2s; }
         .energy-set-section-header:hover { opacity: 0.8; }
-        .energy-set-section-pills { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; padding: 0 0 4px; }
+        .energy-set-section-pills { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 0 0 4px; }
         .energy-set-detail-overlay { position: fixed; inset: 0; background: var(--bg-deep); z-index: 2600; display: none; overflow-y: auto; }
         .energy-set-detail-overlay.open { display: block; }
         .energy-set-detail-close { position: fixed; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 32px; cursor: pointer; z-index: 2700; transition: color 0.2s; }
         .energy-set-detail-close:hover { color: var(--text); }
-        .energy-set-detail-inner { max-width: 800px; margin: 0 auto; padding: 60px 40px; }
+        .energy-set-detail-inner { max-width: 1400px; margin: 0 auto; padding: 40px 24px; width: 100%; }
         .energy-set-detail-title { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; text-align: center; }
         .energy-set-detail-sub { font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 40px; }
         .energy-set-detail-collector { margin-bottom: 32px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; }
@@ -1769,7 +1769,7 @@
         .energy-set-detail-collector-name:hover { color: var(--warm); }
         .energy-set-detail-cities { display: flex; gap: 8px; flex-wrap: wrap; }
         .energy-set-detail-city { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .energy-set-detail-city img { width: 80px; aspect-ratio: 9 / 16; border-radius: 6px; object-fit: cover; }
+        .energy-set-detail-city img { width: 100px; aspect-ratio: 9 / 16; border-radius: 6px; object-fit: cover; }
         .energy-set-detail-city-label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
         .energy-set-detail-city-id { font-size: 8px; color: var(--text-dim); }
         .energy-set-detail-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 12px; opacity: 0.5; }
@@ -1788,16 +1788,17 @@
         .energy-group-pill .eg-count { opacity: 0.5; margin-left: 3px; font-size: 9px; }
         .energy-group-pill .eg-thumb { width: 16px; height: 16px; border-radius: 3px; object-fit: cover; margin-right: 4px; vertical-align: middle; display: inline-block; }
         /* Energy fullscreen overlay */
-        .energy-fullscreen-overlay { position: fixed; inset: 0; background: var(--bg-deep); z-index: 2500; display: none; overflow-y: auto; padding: 60px 40px; }
+        .energy-fullscreen-overlay { position: fixed; inset: 0; background: var(--bg-deep); z-index: 2500; display: none; overflow-y: auto; padding: 40px 24px; }
         .energy-fullscreen-overlay.open { display: block; }
         .energy-fullscreen-close { position: fixed; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 32px; cursor: pointer; z-index: 2600; transition: color 0.2s; }
         .energy-fullscreen-close:hover { color: var(--text); }
-        .energy-fullscreen-inner { max-width: 900px; margin: 0 auto; }
+        .energy-fullscreen-inner { max-width: 1400px; margin: 0 auto; width: 100%; }
         .energy-fullscreen-title { font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); margin-bottom: 8px; text-align: center; }
         .energy-fullscreen-sub { font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 32px; }
         .energy-fullscreen-overlay .energy-group { margin-bottom: 32px; }
-        .energy-fullscreen-overlay .energy-group-pills { gap: 8px; }
+        .energy-fullscreen-overlay .energy-group-pills { gap: 10px; }
         .energy-fullscreen-overlay .energy-group-pill { padding: 6px 12px; font-size: 11px; }
+        .energy-fullscreen-overlay .energy-set-section-pills { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
         .pills-view { display: block; }
         .pills-view.hidden { display: none; }
         @keyframes fadeInFast { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -14622,7 +14623,7 @@
                 if (currentEnergyFilter) {
                     collectorTokens = collectorTokens.filter(id => {
                         const traits = tokenTraits[id];
-                        return traits && traits['Time of Day'] === currentEnergyFilter;
+                        return traits && traits['Energy'] === currentEnergyFilter;
                     });
                 }
                 return gridSortOrder === 'desc' ? collectorTokens.sort((a, b) => b - a) : collectorTokens.sort((a, b) => a - b);
@@ -14635,8 +14636,8 @@
                 if (!traits) continue;
                 // Favorites filter: if showing favorites only, skip non-favorited cities
                 if (showingFavoritesOnly && !isCityFavorited(i)) continue;
-                // Energy filter: filter by time of day
-                if (currentEnergyFilter && traits['Time of Day'] !== currentEnergyFilter) continue;
+                // Energy filter: filter by energy type
+                if (currentEnergyFilter && traits['Energy'] !== currentEnergyFilter) continue;
                 // Multi-select filters: if none selected, show none; if value not in set, skip
                 if (gridFilterState.palettes.size > 0 && !gridFilterState.palettes.has(traits['Palette'])) continue;
                 if (gridFilterState.times.size > 0 && !gridFilterState.times.has(traits['Time of Day'])) continue;
