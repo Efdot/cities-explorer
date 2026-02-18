@@ -4106,10 +4106,10 @@
         <!-- Energy badge - 2x2 grid showing collector's energy sets -->
         <button class="wall-view-tips-toggle" id="wallViewTipsToggle" title="Collection tips">
             <span class="tips-icon" id="wallViewEnergyGrid">
-                <span class="energy-cell" data-energy="Rising" style="color:#FFB347;">🏙</span>
-                <span class="energy-cell" data-energy="Living" style="color:#64B5F6;">🏙</span>
-                <span class="energy-cell" data-energy="Fading" style="color:#DDA0DD;">🏙</span>
-                <span class="energy-cell" data-energy="Resting" style="color:#9575CD;">🏙</span>
+                <span class="energy-cell" data-energy="Rising" style="color:#FFB347;">🌅</span>
+                <span class="energy-cell" data-energy="Living" style="color:#64B5F6;">☀️</span>
+                <span class="energy-cell" data-energy="Fading" style="color:#DDA0DD;">🌆</span>
+                <span class="energy-cell" data-energy="Resting" style="color:#9575CD;">🌙</span>
             </span>
         </button>
         <!-- Collector pairing suggestion -->
@@ -10030,6 +10030,45 @@
             if (suggestionEl.classList.contains('visible')) {
                 suggestionEl.classList.remove('visible');
             } else if (tipsToggle.dataset.ready === 'true') {
+                suggestionEl.classList.add('visible');
+            } else {
+                // Always show a message about the collector's energy sets/grids
+                const wall = document.getElementById('wallViewWall');
+                const frames = wall?.querySelectorAll('.wall-view-frame:not(.empty-slot)') || [];
+                const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                frames.forEach(frame => {
+                    const id = frame.dataset.tokenId;
+                    const traits = tokenTraits[id];
+                    if (traits?.Energy) {
+                        energyCounts[traits.Energy] = (energyCounts[traits.Energy] || 0) + 1;
+                    }
+                });
+
+                const totalCities = frames.length;
+                const energyLines = ALL_ENERGIES.map(e => {
+                    const count = energyCounts[e] || 0;
+                    const icon = ENERGY_META[e].icon;
+                    const sets = Math.floor(count / 4);
+                    const setsLabel = sets > 0 ? ` · ${sets} ${sets === 1 ? 'set' : 'sets'}` : '';
+                    return `${icon} <strong>${e}</strong>: ${count} ${count === 1 ? 'city' : 'cities'}${setsLabel}`;
+                }).join('<br>');
+
+                const completeSets = Math.min(...Object.values(energyCounts));
+                const spectrumNote = completeSets > 0
+                    ? `<br><br>🌈 <strong>${completeSets} Spectrum ${completeSets === 1 ? 'Set' : 'Sets'}</strong> (one of each energy)`
+                    : '';
+
+                // Determine grid dimensions
+                const layout = getOptimalGridLayout(totalCities);
+                const gridLabel = `${layout.cols}×${layout.rows}`;
+                const gridNote = `<br>📐 Grid: <strong>${gridLabel}</strong> (${totalCities} ${totalCities === 1 ? 'city' : 'cities'})`;
+
+                const textEl = document.getElementById('suggestionText');
+                const labelEl = document.getElementById('suggestionLabel');
+                const citiesEl = document.getElementById('suggestionCities');
+                if (labelEl) labelEl.textContent = 'Collection Overview';
+                if (textEl) textEl.innerHTML = energyLines + spectrumNote + gridNote;
+                if (citiesEl) citiesEl.innerHTML = '';
                 suggestionEl.classList.add('visible');
             }
         });
