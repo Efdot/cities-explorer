@@ -2204,7 +2204,11 @@
         .wall-view-suggestion { position: fixed; bottom: 80px; right: 24px; background: rgba(30,30,35,0.95); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px 24px; display: none; flex-direction: column; gap: 12px; z-index: 24; backdrop-filter: blur(12px); max-width: 340px; text-align: center; transform: none; left: auto; }
         .wall-view-suggestion.visible { display: flex; }
         .wall-view-suggestion-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.5); }
-        .wall-view-suggestion-text { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.5; }
+        .wall-view-suggestion-text { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.5; text-align: left; }
+        .wall-view-suggestion-text .suggestion-insights { display: block; margin-bottom: 10px; color: rgba(255,255,255,0.9); line-height: 1.6; }
+        .wall-view-suggestion-text .suggestion-prompt { display: block; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.55); font-size: 11px; font-style: italic; }
+        .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-suggestion-text .suggestion-insights { color: rgba(0,0,0,0.8); }
+        .wall-view-modal:not(.dark-mode):not(.wall-black) .wall-view-suggestion-text .suggestion-prompt { border-top-color: rgba(0,0,0,0.08); color: rgba(0,0,0,0.45); }
         .wall-view-suggestion-cities { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
         .wall-view-suggestion-city { width: 48px; height: 60px; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent; }
         .wall-view-suggestion-city:hover { transform: scale(1.08); border-color: rgba(255,255,255,0.3); }
@@ -9858,6 +9862,85 @@
         // Suggestion engine - suggests cities based on what collector has
         const ALL_ENERGIES = ['Rising', 'Living', 'Fading', 'Resting'];
 
+        // Generate personalized insights about a collector's existing cities
+        function generateCollectionInsights(tokenIds) {
+            if (!tokenIds || tokenIds.length === 0) return '';
+
+            const count = tokenIds.length;
+            const energies = [], palettes = [], times = [], zooms = [], traffics = [], waters = [];
+            tokenIds.forEach(id => {
+                const traits = tokenTraits[id];
+                if (traits) {
+                    if (traits['Energy']) energies.push(traits['Energy']);
+                    if (traits['Palette']) palettes.push(traits['Palette']);
+                    if (traits['Time of Day']) times.push(traits['Time of Day']);
+                    if (traits['Zoom']) zooms.push(traits['Zoom']);
+                    if (traits['Traffic']) traffics.push(traits['Traffic']);
+                    if (traits['Water']) waters.push(traits['Water']);
+                }
+            });
+
+            const insights = [];
+
+            // Energy insights
+            const uniqueEnergies = [...new Set(energies)];
+            const energyCounts = {};
+            energies.forEach(e => { energyCounts[e] = (energyCounts[e] || 0) + 1; });
+
+            if (count === 1 && uniqueEnergies.length === 1) {
+                const e = uniqueEnergies[0];
+                const icon = ENERGY_META[e]?.icon || '';
+                const desc = { Rising: 'the city waking up, full of potential', Living: 'the city at its most alive', Fading: 'the city exhaling into stillness', Resting: 'the city in its quietest hours' };
+                insights.push(`This city carries <strong>${e}</strong> energy ${icon} — ${desc[e] || 'a unique rhythm'}.`);
+            } else if (uniqueEnergies.length === 1 && count > 1) {
+                const e = uniqueEnergies[0];
+                const icon = ENERGY_META[e]?.icon || '';
+                insights.push(`Every city here pulses with <strong>${e}</strong> energy ${icon} — a focused collection with one rhythm.`);
+            } else if (uniqueEnergies.length === 4) {
+                insights.push('All four energies are here — Rising, Living, Fading, and Resting. The full pulse of the city.');
+            } else if (uniqueEnergies.length > 1) {
+                const energyList = uniqueEnergies.map(e => `<strong>${e}</strong>`).join(' and ');
+                insights.push(`${energyList} energy — ${uniqueEnergies.length} of the city's 4 rhythms, side by side.`);
+            }
+
+            // Palette insights
+            const uniquePalettes = [...new Set(palettes)];
+            if (uniquePalettes.length === 1 && count > 1) {
+                insights.push(`All cities share the <strong>${uniquePalettes[0]}</strong> palette — a deeply intentional color story.`);
+            } else if (uniquePalettes.length === count && count > 1 && count <= 4) {
+                insights.push(`${count} cities, ${count} different palettes — each one its own color world.`);
+            } else if (count === 1 && uniquePalettes.length === 1) {
+                insights.push(`Painted in <strong>${uniquePalettes[0]}</strong> — a palette that sets the mood.`);
+            }
+
+            // Time of day insights
+            const uniqueTimes = [...new Set(times)];
+            const dominantTime = getMostCommon(times);
+            if (uniqueTimes.length === 1 && count > 1) {
+                const timeDesc = { Night: 'under the same night sky', Dawn: 'in the same early light', Day: 'in the bright of day', Dusk: 'in the same golden fade' };
+                insights.push(`Every city captured ${timeDesc[dominantTime] || `at ${dominantTime.toLowerCase()}`}.`);
+            } else if (uniqueTimes.length >= 3 && count >= 3) {
+                insights.push('From dawn to dusk and beyond — this collection spans the full arc of a day.');
+            }
+
+            // Traffic insights
+            const rushHourCount = traffics.filter(t => t === 'Rush Hour').length;
+            if (rushHourCount === count && count > 1) {
+                insights.push('Every city caught in Rush Hour. Maximum density, maximum energy.');
+            } else if (rushHourCount > 1) {
+                insights.push(`${rushHourCount} of ${count} cities buzzing with Rush Hour traffic.`);
+            }
+
+            // Water insight
+            const waterYes = waters.filter(w => w === 'Yes' || w === 'River' || w === 'Canal' || w === 'Bay' || w === 'Ocean' || w === 'Lake').length;
+            if (waterYes === count && count > 1) {
+                insights.push('Water runs through every city — a collection drawn to the waterfront.');
+            }
+
+            // Return up to 2 of the most relevant insights
+            return insights.slice(0, 2).join(' ');
+        }
+
         function showCollectorSuggestions(ownedItems, collector) {
             const suggestionEl = document.getElementById('wallViewSuggestion');
             const citiesEl = document.getElementById('suggestionCities');
@@ -9884,9 +9967,13 @@
             const collectorLabelEl = document.getElementById('wallViewCollectorLabel');
             const collectorName = collectorLabelEl?.dataset.rawName || collectorLabelEl?.textContent || 'This collector';
 
+            // Generate collection insights first
+            const tokenIds = ownedItems.map(i => i.id);
+            const insightsHtml = generateCollectionInsights(tokenIds);
+
             // Determine suggestion strategy
             let suggestions = [];
-            let messageHtml = '';
+            let suggestionHtml = '';
             let label = '';
             const ownedIds = new Set(ownedItems.map(i => parseInt(i.id)));
 
@@ -9897,7 +9984,7 @@
             if (hasDuplicates && ownedEnergies.length === 1) {
                 // They have multiple of the same energy (e.g., 2 Fading)
                 // Suggest: either complete a same-energy grid OR diversify
-                label = 'Expand the collection';
+                label = 'This collection';
 
                 const energy = dominantEnergy[0];
                 const count = dominantEnergy[1];
@@ -9943,11 +10030,11 @@
                 ].slice(0, 4);
 
                 const neededForGrid = 4 - count; // Need 4 for a 2x2 grid
-                messageHtml = `${collectorName} has <strong>${count} ${energy}</strong> cities. Add ${neededForGrid} more for a <strong>${energy} grid</strong>, or diversify with other energies.`;
+                suggestionHtml = `Add ${neededForGrid} more for a <strong>${energy} grid</strong>, or diversify with other energies. Keep building the set.`;
 
             } else if (missingEnergies.length > 0 && missingEnergies.length < 4) {
                 // They have some variety but not complete set
-                label = 'Complete the energy set';
+                label = 'This collection';
 
                 for (let i = 0; i <= MAX_TOKEN; i++) {
                     if (ownedIds.has(i)) continue;
@@ -9975,14 +10062,10 @@
                 }
                 suggestions = topSuggestions;
 
-                const ownedList = ownedEnergies.map(e => {
-                    const count = energyCounts[e];
-                    return `${count} ${e}`;
-                }).join(' & ');
                 const missingList = missingEnergies.join(' & ');
                 const missingCount = missingEnergies.length;
 
-                messageHtml = `${collectorName} has <strong>${ownedList}</strong> ${ownedEnergies.length === 1 && energyCounts[ownedEnergies[0]] === 1 ? 'city' : 'cities'}. Add <strong>${missingList}</strong> (${missingCount} ${missingCount === 1 ? 'city' : 'cities'}) for a complete energy set.`;
+                suggestionHtml = `Add <strong>${missingList}</strong> (${missingCount} ${missingCount === 1 ? 'city' : 'cities'}) for a complete energy set. Keep building.`;
 
             } else {
                 suggestionEl.classList.remove('visible');
@@ -9993,6 +10076,13 @@
                 suggestionEl.classList.remove('visible');
                 return;
             }
+
+            // Compose final message: insights first, then acquisition prompt
+            let messageHtml = '';
+            if (insightsHtml) {
+                messageHtml += `<span class="suggestion-insights">${insightsHtml}</span>`;
+            }
+            messageHtml += `<span class="suggestion-prompt">${suggestionHtml}</span>`;
 
             if (labelEl) labelEl.textContent = label;
             textEl.innerHTML = messageHtml;
@@ -10032,12 +10122,14 @@
             } else if (tipsToggle.dataset.ready === 'true') {
                 suggestionEl.classList.add('visible');
             } else {
-                // Always show a message about the collector's energy sets/grids
+                // Show insights about the collector's cities, then energy overview + keep building
                 const wall = document.getElementById('wallViewWall');
                 const frames = wall?.querySelectorAll('.wall-view-frame:not(.empty-slot)') || [];
                 const energyCounts = { Rising: 0, Living: 0, Fading: 0, Resting: 0 };
+                const tokenIds = [];
                 frames.forEach(frame => {
                     const id = frame.dataset.tokenId;
+                    tokenIds.push(id);
                     const traits = tokenTraits[id];
                     if (traits?.Energy) {
                         energyCounts[traits.Energy] = (energyCounts[traits.Energy] || 0) + 1;
@@ -10045,6 +10137,10 @@
                 });
 
                 const totalCities = frames.length;
+
+                // Generate insights about what they already have
+                const insightsHtml = generateCollectionInsights(tokenIds);
+
                 const energyLines = ALL_ENERGIES.map(e => {
                     const count = energyCounts[e] || 0;
                     const icon = ENERGY_META[e].icon;
@@ -10063,15 +10159,50 @@
                 const gridLabel = `${layout.cols}×${layout.rows}`;
                 const gridNote = `<br>📐 Grid: <strong>${gridLabel}</strong> (${totalCities} ${totalCities === 1 ? 'city' : 'cities'})`;
 
+                // Encourage getting another city
+                const missingEnergies = ALL_ENERGIES.filter(e => energyCounts[e] === 0);
+                let keepBuildingHtml = '';
+                if (missingEnergies.length > 0) {
+                    keepBuildingHtml = `<br><br><span class="suggestion-prompt">Still missing <strong>${missingEnergies.join(' & ')}</strong>. Get another city and keep building the set.</span>`;
+                } else {
+                    // They have all four — encourage more sets
+                    const minSets = completeSets;
+                    const nextTarget = (minSets + 1) * 4;
+                    const lowestEnergy = ALL_ENERGIES.find(e => energyCounts[e] === Math.min(...Object.values(energyCounts)));
+                    keepBuildingHtml = `<br><br><span class="suggestion-prompt">Another <strong>${lowestEnergy}</strong> city gets you closer to ${minSets + 1} full Spectrum Sets. Keep building.</span>`;
+                }
+
                 const textEl = document.getElementById('suggestionText');
                 const labelEl = document.getElementById('suggestionLabel');
                 const citiesEl = document.getElementById('suggestionCities');
-                if (labelEl) labelEl.textContent = 'Collection Overview';
-                if (textEl) textEl.innerHTML = energyLines + spectrumNote + gridNote;
+                if (labelEl) labelEl.textContent = 'This collection';
+                let fullHtml = '';
+                if (insightsHtml) {
+                    fullHtml += `<span class="suggestion-insights">${insightsHtml}</span>`;
+                }
+                fullHtml += energyLines + spectrumNote + gridNote + keepBuildingHtml;
+                if (textEl) textEl.innerHTML = fullHtml;
                 if (citiesEl) citiesEl.innerHTML = '';
                 suggestionEl.classList.add('visible');
             }
         });
+
+        // Hover handler - show insights on hover too
+        (function() {
+            const tipsBtn = document.getElementById('wallViewTipsToggle');
+            if (!tipsBtn) return;
+            let hoverTimeout;
+            tipsBtn.addEventListener('mouseenter', () => {
+                const suggestionEl = document.getElementById('wallViewSuggestion');
+                if (suggestionEl.classList.contains('visible')) return;
+                hoverTimeout = setTimeout(() => {
+                    tipsBtn.click();
+                }, 400);
+            });
+            tipsBtn.addEventListener('mouseleave', () => {
+                clearTimeout(hoverTimeout);
+            });
+        })();
 
         // Show options when clicking a suggested city
         function showSuggestionOptions(e, tokenId, element) {
