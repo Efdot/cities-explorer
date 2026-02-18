@@ -1647,7 +1647,8 @@
         .supply-tracker.sold-out .supply-label { color: #fff; }
 
         .collectors-toggle { display: none; }
-        .collectors-panel { position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: var(--bg-panel); padding: 28px 24px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 550; pointer-events: none; will-change: transform; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+        .collectors-panel { position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: var(--bg-panel); padding: 28px 24px; overflow-y: auto; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 550; pointer-events: none; will-change: transform; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+        @media (min-width: 769px) { .collectors-panel:has(.energy-groups-view.active) { width: min(720px, 50vw); } }
         .collectors-panel.open { transform: translateX(0); pointer-events: auto; }
         .collectors-panel.dragging { transition: none; }
         .collectors-panel::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 80px; background: var(--border); border-radius: 0 4px 4px 0; cursor: ew-resize; transition: background 0.2s, width 0.2s, opacity 0.2s; opacity: 0; pointer-events: none; }
@@ -1761,7 +1762,7 @@
         .energy-set-detail-overlay.open { display: block; }
         .energy-set-detail-close { position: fixed; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 32px; cursor: pointer; z-index: 2700; transition: color 0.2s; }
         .energy-set-detail-close:hover { color: var(--text); }
-        .energy-set-detail-inner { max-width: 1400px; margin: 0 auto; padding: 40px 24px; width: 100%; }
+        .energy-set-detail-inner { max-width: 1800px; margin: 0 auto; padding: 40px 24px; width: 100%; }
         .energy-set-detail-title { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; text-align: center; }
         .energy-set-detail-sub { font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 40px; }
         .energy-set-detail-collector { margin-bottom: 32px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; }
@@ -1792,13 +1793,13 @@
         .energy-fullscreen-overlay.open { display: block; }
         .energy-fullscreen-close { position: fixed; top: 20px; right: 24px; background: none; border: none; color: var(--text-muted); font-size: 32px; cursor: pointer; z-index: 2600; transition: color 0.2s; }
         .energy-fullscreen-close:hover { color: var(--text); }
-        .energy-fullscreen-inner { max-width: 1400px; margin: 0 auto; width: 100%; }
+        .energy-fullscreen-inner { max-width: 1800px; margin: 0 auto; width: 100%; }
         .energy-fullscreen-title { font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); margin-bottom: 8px; text-align: center; }
         .energy-fullscreen-sub { font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 32px; }
         .energy-fullscreen-overlay .energy-group { margin-bottom: 32px; }
         .energy-fullscreen-overlay .energy-group-pills { gap: 10px; }
         .energy-fullscreen-overlay .energy-group-pill { padding: 6px 12px; font-size: 11px; }
-        .energy-fullscreen-overlay .energy-set-section-pills { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+        .energy-fullscreen-overlay .energy-set-section-pills { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
         .energy-fullscreen-overlay .energy-groups-content { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px; }
         .energy-fullscreen-overlay .energy-groups-content .energy-group { margin-bottom: 0; }
         @media (max-width: 768px) {
