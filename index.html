@@ -4106,10 +4106,10 @@
         <!-- Energy badge - 2x2 grid showing collector's energy sets -->
         <button class="wall-view-tips-toggle" id="wallViewTipsToggle" title="Collection tips">
             <span class="tips-icon" id="wallViewEnergyGrid">
-                <span class="energy-cell" data-energy="Rising" style="color:#FFB347;">🌅</span>
-                <span class="energy-cell" data-energy="Living" style="color:#64B5F6;">☀️</span>
+                <span class="energy-cell" data-energy="Rising" style="color:#FFB347;">🌉</span>
+                <span class="energy-cell" data-energy="Living" style="color:#64B5F6;">🏙️</span>
                 <span class="energy-cell" data-energy="Fading" style="color:#DDA0DD;">🌆</span>
-                <span class="energy-cell" data-energy="Resting" style="color:#9575CD;">🌙</span>
+                <span class="energy-cell" data-energy="Resting" style="color:#9575CD;">🌃</span>
             </span>
         </button>
         <!-- Collector pairing suggestion -->
@@ -10387,10 +10387,10 @@
 
             // Energy icons (B/W grayscale style)
             const energyIcons = {
-                'Rising': '\u2600',      // Sun for rising
-                'Living': '\u{1F6B6}',   // Walking person for living
-                'Fading': '\u26C5',      // Sun behind cloud for fading
-                'Resting': '\u{1F319}'   // Moon for resting
+                'Rising': '\u{1F309}',   // Bridge at night
+                'Living': '\u{1F3D9}\uFE0F',   // Cityscape
+                'Fading': '\u{1F306}',   // Cityscape at dusk
+                'Resting': '\u{1F303}'   // Night with stars
             };
             const energyIcon = energyIcons[energy] || '◐';
 
@@ -12487,10 +12487,10 @@
         }
 
         const ENERGY_META = {
-            Rising: { icon: '🌅', color: '#FFB347' },
-            Living: { icon: '☀️', color: '#64B5F6' },
+            Rising: { icon: '🌉', color: '#FFB347' },
+            Living: { icon: '🏙️', color: '#64B5F6' },
             Fading: { icon: '🌆', color: '#DDA0DD' },
-            Resting: { icon: '🌙', color: '#9575CD' }
+            Resting: { icon: '🌃', color: '#9575CD' }
         };
         const LOST_CITIES_PREFIX_E = '0xcf22';
         const EXCLUDE_NAMES_E = ['efdot', 'efdot x diid', 'efdotxdiid'];
@@ -14076,10 +14076,10 @@
         function getCurrentEnergy() {
             const hour = new Date().getHours();
             // 4 distinct icons for each energy state
-            if (hour >= 5 && hour < 9) return { name: 'Rising', icon: '\u{1F305}', iconColor: '#ffb347', className: 'energy-rising' };   // Dawn/sunrise
-            if (hour >= 9 && hour < 17) return { name: 'Living', icon: '\u2600', iconColor: '#64B5F6', className: 'energy-living' };  // Day/sun
-            if (hour >= 17 && hour < 21) return { name: 'Fading', icon: '\u{1F306}', iconColor: '#dda0dd', className: 'energy-fading' }; // Dusk/sunset
-            return { name: 'Resting', icon: '\u{1F319}', iconColor: '#4a5568', className: 'energy-resting' };                            // Night/moon
+            if (hour >= 5 && hour < 9) return { name: 'Rising', icon: '\u{1F309}', iconColor: '#ffb347', className: 'energy-rising' };   // Bridge at night
+            if (hour >= 9 && hour < 17) return { name: 'Living', icon: '\u{1F3D9}\uFE0F', iconColor: '#64B5F6', className: 'energy-living' };  // Cityscape
+            if (hour >= 17 && hour < 21) return { name: 'Fading', icon: '\u{1F306}', iconColor: '#dda0dd', className: 'energy-fading' }; // Cityscape at dusk
+            return { name: 'Resting', icon: '\u{1F303}', iconColor: '#4a5568', className: 'energy-resting' };                            // Night with stars
         }
 
         function updateEnergyClock() {
@@ -16670,7 +16670,7 @@
             const energySetSlots = document.getElementById('energySetSlots');
             const energySetStatus = document.getElementById('energySetStatus');
             const energyTypes = ['Dawn', 'Day', 'Dusk', 'Night']; // Maps to Rising, Living, Fading, Resting
-            const energyLabels = ['\u2600 Rising', '\u2600 Living', '\u2600 Fading', '\u263D Resting'];
+            const energyLabels = ['\u{1F309} Rising', '\u{1F3D9}\uFE0F Living', '\u{1F306} Fading', '\u{1F303} Resting'];
 
             // Find one city of each energy from favorites
             const energyCities = {};
