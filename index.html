@@ -1799,6 +1799,11 @@
         .energy-fullscreen-overlay .energy-group-pills { gap: 10px; }
         .energy-fullscreen-overlay .energy-group-pill { padding: 6px 12px; font-size: 11px; }
         .energy-fullscreen-overlay .energy-set-section-pills { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+        .energy-fullscreen-overlay .energy-groups-content { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px; }
+        .energy-fullscreen-overlay .energy-groups-content .energy-group { margin-bottom: 0; }
+        @media (max-width: 768px) {
+            .energy-fullscreen-overlay .energy-groups-content { grid-template-columns: 1fr; }
+        }
         .pills-view { display: block; }
         .pills-view.hidden { display: none; }
         @keyframes fadeInFast { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
