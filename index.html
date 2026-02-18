@@ -15139,7 +15139,7 @@
                             </div>
                             <div class="collector-originals-grid">
                                 ${collectorOriginals.map(o => `
-                                    <div class="collector-original-item" data-origin-id="${o.id}" onclick="scrollToOriginInTimeline('${o.id}')">
+                                    <div class="collector-original-item" data-origin-id="${o.id}" onclick="handleOriginItemClick('${o.id}')">
                                         <div class="collector-original-img" style="background-image: url('${getThumbUrl(o.img, 400)}')"></div>
                                         <div class="collector-original-arrow">↗</div>
                                         <div class="collector-original-info">
