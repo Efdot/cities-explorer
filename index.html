@@ -7414,7 +7414,7 @@
 
                 // Spectrum badge (one of each energy) — 2x2 grid
                 if (rising >= 1 && living >= 1 && fading >= 1 && resting >= 1) {
-                    badges.push(`<span class="achievement-badge spectrum" title="Spectrum Set"><span class="badge-grid-2x2"><span class="badge-dot" style="background:#FFB347;"></span><span class="badge-dot" style="background:#64B5F6;"></span><span class="badge-dot" style="background:#DDA0DD;"></span><span class="badge-dot" style="background:#9575CD;"></span></span></span>`);
+                    badges.push(`<span class="achievement-badge spectrum" title="Energy Set"><span class="badge-grid-2x2"><span class="badge-dot" style="background:#FFB347;"></span><span class="badge-dot" style="background:#64B5F6;"></span><span class="badge-dot" style="background:#DDA0DD;"></span><span class="badge-dot" style="background:#9575CD;"></span></span></span>`);
                 }
 
                 // Mono set badges (4+ of same energy)
@@ -12525,7 +12525,7 @@
                     if (energy && byEnergy[energy]) byEnergy[energy].push(id);
                 });
 
-                // Check for spectrum set (at least 1 of each)
+                // Check for energy set (at least 1 of each)
                 const hasAll = byEnergy.Rising.length > 0 && byEnergy.Living.length > 0 &&
                                byEnergy.Fading.length > 0 && byEnergy.Resting.length > 0;
                 if (hasAll) {
@@ -12585,12 +12585,12 @@
         function renderCompleteSetsHtml(completeSets, energyTypeSets) {
             let html = '';
 
-            // 1. Spectrum sets on top (collectors with at least one of each energy type)
+            // 1. Energy sets on top (collectors with at least one of each energy type)
             if (completeSets.length > 0) {
                 html += `<div class="energy-set-section">
                     <div class="energy-set-section-header" data-energy="Spectrum" style="cursor:pointer;">
                         <span class="energy-group-icon">⚡</span>
-                        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warm);">Spectrum Set</span>
+                        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warm);">Energy Set</span>
                         <span class="energy-group-count">${completeSets.length}</span>
                         <span style="font-size:10px;color:var(--text-muted);margin-left:auto;opacity:0.5;">→</span>
                     </div>
@@ -12741,7 +12741,7 @@
             let collectors, title, sub, color;
             if (energyType === 'Spectrum') {
                 collectors = data.completeSets;
-                title = '⚡ Spectrum Set';
+                title = '⚡ Energy Set';
                 sub = 'Collectors with at least one city of each energy type';
                 color = 'var(--warm)';
             } else {
