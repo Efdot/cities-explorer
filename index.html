@@ -10030,7 +10030,7 @@
                 ].slice(0, 4);
 
                 const neededForGrid = 4 - count; // Need 4 for a 2x2 grid
-                suggestionHtml = `Add ${neededForGrid} more for a <strong>${energy} grid</strong>, or diversify with other energies. Keep building the set.`;
+                suggestionHtml = `Add ${neededForGrid} more for a <strong>${energy} grid</strong>, or diversify with other energies.`;
 
             } else if (missingEnergies.length > 0 && missingEnergies.length < 4) {
                 // They have some variety but not complete set
@@ -10065,7 +10065,7 @@
                 const missingList = missingEnergies.join(' & ');
                 const missingCount = missingEnergies.length;
 
-                suggestionHtml = `Add <strong>${missingList}</strong> (${missingCount} ${missingCount === 1 ? 'city' : 'cities'}) for a complete energy set. Keep building.`;
+                suggestionHtml = `Add <strong>${missingList}</strong> (${missingCount} ${missingCount === 1 ? 'city' : 'cities'}) for a complete energy set.`;
 
             } else {
                 suggestionEl.classList.remove('visible');
@@ -10163,13 +10163,13 @@
                 const missingEnergies = ALL_ENERGIES.filter(e => energyCounts[e] === 0);
                 let keepBuildingHtml = '';
                 if (missingEnergies.length > 0) {
-                    keepBuildingHtml = `<br><br><span class="suggestion-prompt">Still missing <strong>${missingEnergies.join(' & ')}</strong>. Get another city and keep building the set.</span>`;
+                    keepBuildingHtml = `<br><br><span class="suggestion-prompt">Still missing <strong>${missingEnergies.join(' & ')}</strong>. Get another city to complete the set.</span>`;
                 } else {
                     // They have all four — encourage more sets
                     const minSets = completeSets;
                     const nextTarget = (minSets + 1) * 4;
                     const lowestEnergy = ALL_ENERGIES.find(e => energyCounts[e] === Math.min(...Object.values(energyCounts)));
-                    keepBuildingHtml = `<br><br><span class="suggestion-prompt">Another <strong>${lowestEnergy}</strong> city gets you closer to ${minSets + 1} full Spectrum Sets. Keep building.</span>`;
+                    keepBuildingHtml = `<br><br><span class="suggestion-prompt">Another <strong>${lowestEnergy}</strong> city gets you closer to ${minSets + 1} full Spectrum Sets.</span>`;
                 }
 
                 const textEl = document.getElementById('suggestionText');
@@ -15939,7 +15939,7 @@
 
         // Keyboard hint overlay - shows once then fades away
         const keyboardHintShown = localStorage.getItem('cities-keyboard-hint-shown');
-        if (!keyboardHintShown) {
+        if (!keyboardHintShown && !('ontouchstart' in window)) {
             setTimeout(() => {
                 const hint = document.getElementById('keyboardHintOverlay');
                 hint.classList.add('visible');
