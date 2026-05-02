@@ -26,6 +26,8 @@
     <link rel="preconnect" href="https://nft-cdn.alchemy.com" crossorigin>
     <link rel="preconnect" href="https://images.ninfa.io" crossorigin>
     <link rel="preconnect" href="https://media-proxy.artblocks.io" crossorigin>
+    <link rel="preconnect" href="https://wsrv.nl" crossorigin>
+    <link rel="preconnect" href="https://arweave.net" crossorigin>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://media-proxy.artblocks.io/1/0x7c78f67700e700b4005c8a3d920a1a99e6004800/0.png">
@@ -387,7 +389,7 @@
         .grid-mode-btn.origins-btn.active { background: rgba(232, 184, 109, 0.15); border-color: var(--warm); color: var(--warm); opacity: 1; }
 
         /* Origins grid items */
-        .origin-item { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; background: var(--bg-card); }
+        .origin-item { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; background: var(--bg-card); contain: layout style paint; content-visibility: auto; contain-intrinsic-size: 0 200px; }
         .origin-item:hover { transform: scale(1.02); box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 2; }
         .origin-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
         .origin-item:hover img { transform: scale(1.05); }
@@ -4484,14 +4486,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="about-countdown" id="aboutCountdown">
-                    <div class="countdown-cells">
-                        <div class="countdown-cell"><span class="countdown-value" id="countdownDays">49</span><span class="countdown-label">days</span></div>
-                        <div class="countdown-cell"><span class="countdown-value" id="countdownHours">06</span><span class="countdown-label">hrs</span></div>
-                        <div class="countdown-cell"><span class="countdown-value" id="countdownMins">51</span><span class="countdown-label">min</span></div>
-                        <div class="countdown-cell"><span class="countdown-value" id="countdownSecs">00</span><span class="countdown-label">sec</span></div>
-                    </div>
-                </div>
                 <div class="about-newsletter" style="margin-top: 24px;">
                     <script async data-uid="95cd1fc649" src="https://efdot-studio.kit.com/95cd1fc649/index.js"></script>
                 </div>
@@ -4529,17 +4523,17 @@
                     <div class="timeline-group-grid cols-3 murals-grid">
                         <div class="timeline-group-item mural-crop" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeihcmhw3utkt54cs4ewcdjvhouhcwce7irzltfnlq5sdjmoc7ubnpy" data-link="https://www.efdotstudio.com/murals" data-title="USA Network Mural" data-year="2019">
                             <div class="timeline-group-item-img">
-                                <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeihcmhw3utkt54cs4ewcdjvhouhcwce7irzltfnlq5sdjmoc7ubnpy" alt="USA Network Mural">
+                                <img loading="lazy" decoding="async" fetchpriority="low" alt="USA Network Mural" src="https://wsrv.nl/?url=ipfs.io%2Fipfs%2Fbafybeihcmhw3utkt54cs4ewcdjvhouhcwce7irzltfnlq5sdjmoc7ubnpy&w=800&output=webp&q=80" data-fb1="https://wsrv.nl/?url=cloudflare-ipfs.com%2Fipfs%2Fbafybeihcmhw3utkt54cs4ewcdjvhouhcwce7irzltfnlq5sdjmoc7ubnpy&w=800&output=webp&q=80" data-fb2="https://gateway.pinata.cloud/ipfs/bafybeihcmhw3utkt54cs4ewcdjvhouhcwce7irzltfnlq5sdjmoc7ubnpy" onerror="if(this.dataset.fb1){this.src=this.dataset.fb1;this.dataset.fb1='';return;}if(this.dataset.fb2){this.src=this.dataset.fb2;this.dataset.fb2='';return;}this.onerror=null;">
                             </div>
                         </div>
                         <div class="timeline-group-item mural-crop" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiejzkb765kebuqllnykyturac7mtt2l3i45te26srbkrjvjdm273y" data-link="https://www.efdotstudio.com/murals" data-title="The Hall Mural" data-year="2019">
                             <div class="timeline-group-item-img">
-                                <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiejzkb765kebuqllnykyturac7mtt2l3i45te26srbkrjvjdm273y" alt="The Hall Mural">
+                                <img loading="lazy" decoding="async" fetchpriority="low" alt="The Hall Mural" src="https://wsrv.nl/?url=ipfs.io%2Fipfs%2Fbafybeiejzkb765kebuqllnykyturac7mtt2l3i45te26srbkrjvjdm273y&w=800&output=webp&q=80" data-fb1="https://wsrv.nl/?url=cloudflare-ipfs.com%2Fipfs%2Fbafybeiejzkb765kebuqllnykyturac7mtt2l3i45te26srbkrjvjdm273y&w=800&output=webp&q=80" data-fb2="https://gateway.pinata.cloud/ipfs/bafybeiejzkb765kebuqllnykyturac7mtt2l3i45te26srbkrjvjdm273y" onerror="if(this.dataset.fb1){this.src=this.dataset.fb1;this.dataset.fb1='';return;}if(this.dataset.fb2){this.src=this.dataset.fb2;this.dataset.fb2='';return;}this.onerror=null;">
                             </div>
                         </div>
                         <div class="timeline-group-item mural-crop" data-img="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1578595775517-UEPOPTM1UYQAGIP68ADJ/muros-mural-web.jpg" data-link="https://www.efdotstudio.com/murals" data-title="SoNo Collection Mural" data-year="2019">
                             <div class="timeline-group-item-img">
-                                <img src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1578595775517-UEPOPTM1UYQAGIP68ADJ/muros-mural-web.jpg" alt="SoNo Collection Mural">
+                                <img loading="lazy" decoding="async" fetchpriority="low" alt="SoNo Collection Mural" src="https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1578595775517-UEPOPTM1UYQAGIP68ADJ/muros-mural-web.jpg?format=800w" onerror="this.onerror=null;this.src='https://images.squarespace-cdn.com/content/v1/54a5c373e4b02cb3ce08c96f/1578595775517-UEPOPTM1UYQAGIP68ADJ/muros-mural-web.jpg';">
                             </div>
                         </div>
                     </div>
@@ -4688,8 +4682,8 @@
                 <div class="timeline-story">Color pushing boundaries. Blue fogs, yellow traffic, purple&nbsp;rounds. Generative experiments begin with&nbsp;Diid.</div>
 
                 <!-- Luminosity -->
-                <div class="timeline-item featured" data-img="https://e7bvegr35i4w3uqygtu2op3rwjaglmdnrovpbvwg6j66wh2a7mvq.arweave.net/J8NSGjvqOW3SGDTppz9xskBlsG2LqvDWxvJ96x9A-ys" data-title="Luminosity" data-year="2023" data-link="https://foundation.app/mint/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/23">
-                    <img loading="lazy" src="https://e7bvegr35i4w3uqygtu2op3rwjaglmdnrovpbvwg6j66wh2a7mvq.arweave.net/J8NSGjvqOW3SGDTppz9xskBlsG2LqvDWxvJ96x9A-ys" alt="Luminosity">
+                <div class="timeline-item featured" data-img="https://arweave.net/J8NSGjvqOW3SGDTppz9xskBlsG2LqvDWxvJ96x9A-ys" data-title="Luminosity" data-year="2023" data-link="https://foundation.app/mint/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/23">
+                    <img loading="lazy" src="https://arweave.net/J8NSGjvqOW3SGDTppz9xskBlsG2LqvDWxvJ96x9A-ys" alt="Luminosity">
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Luminosity</span>
                         <span class="timeline-item-year">2023</span>
@@ -4862,8 +4856,8 @@
                 <!-- Desert Grid - Cities // Marfa (dynamic day/night states) -->
                 <div class="timeline-item desert-grid-dual" data-img="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeigq7rytbitvgnmil3i5h3tqvekqcw5f2z4zy5pzfjcbk5dtnbc2yy" data-title="Desert Grid" data-year="2025" data-link="https://opensea.io/item/ethereum/0x10abb881add1de70d4a9b2c712b9a8ac8853418b/4">
                     <div class="desert-grid-container">
-                        <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeigq7rytbitvgnmil3i5h3tqvekqcw5f2z4zy5pzfjcbk5dtnbc2yy" alt="Desert Grid (Day)" class="desert-day">
-                        <img src="https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeibnhgcanareovbbvcferkkwbgf7lb4y55tkbjev4lozqd5imhrfo4" alt="Desert Grid (Night)" class="desert-night">
+                        <img loading="lazy" decoding="async" fetchpriority="low" alt="Desert Grid (Day)" class="desert-day" src="https://wsrv.nl/?url=blush-worried-heron-358.mypinata.cloud%2Fipfs%2Fbafybeigq7rytbitvgnmil3i5h3tqvekqcw5f2z4zy5pzfjcbk5dtnbc2yy&w=900&output=webp&q=80" onerror="this.onerror=null;this.src='https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeigq7rytbitvgnmil3i5h3tqvekqcw5f2z4zy5pzfjcbk5dtnbc2yy';">
+                        <img loading="lazy" decoding="async" fetchpriority="low" alt="Desert Grid (Night)" class="desert-night" src="https://wsrv.nl/?url=blush-worried-heron-358.mypinata.cloud%2Fipfs%2Fbafybeibnhgcanareovbbvcferkkwbgf7lb4y55tkbjev4lozqd5imhrfo4&w=900&output=webp&q=80" onerror="this.onerror=null;this.src='https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeibnhgcanareovbbvcferkkwbgf7lb4y55tkbjev4lozqd5imhrfo4';">
                     </div>
                     <div class="timeline-item-info">
                         <span class="timeline-item-title">Desert Grid</span>
@@ -5982,10 +5976,10 @@
             { id: 'omage', title: 'O.M.A.G.E.', year: 2021, collection: 'O.M.A.G.E.', img: 'https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiek2l25mxxsd54ptgtmnlmr4gsd4tgtd7nnee3uckh4hn3zdb52ce', link: 'https://opensea.io/collection/efdot-openminds', desc: 'A major turning point. The first generative system.', colors: ['#E8B86D', '#FF8C42', '#D4A574'], energy: 'Rising', featured: true },
             { id: 'summer365', title: 'Summer 365', year: 2021, collection: 'O.M.A.G.E.', collector: '0x17Bf...072B', img: 'https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1/nft.jpg?auto=format%2Ccompress&q=90&cs=srgb&h=3000&w=3000&fnd_key=v1', link: 'https://foundation.app/mint/eth/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/1', desc: '365 days of summer on one canvas.', colors: ['#FFE135', '#FF6B35', '#F7B267'], energy: 'Living' },
             { id: 'winterplay', title: 'Winterplay', year: 2021, collection: 'O.M.A.G.E.', collector: 'Coinbilly', img: 'https://f8n-production-collection-assets.imgix.net/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2/nft.jpg?auto=format%2Ccompress&q=70&cs=srgb&h=1200&w=1200&fnd_key=v1', link: 'https://foundation.app/mint/eth/0xaE4b4f1Ec7fA311651Aa4DF1461b522F911F5Da2/2', desc: 'Cold gradients and warm corners.', colors: ['#A8DADC', '#457B9D', '#1D3557'], energy: 'Resting' },
-            { id: 'luminosity', title: 'Luminosity', year: 2023, collection: 'Cities // Efdot Originals', collector: '0x17Bf...072B', img: 'https://e7bvegr35i4w3uqygtu2op3rwjaglmdnrovpbvwg6j66wh2a7mvq.arweave.net/J8NSGjvqOW3SGDTppz9xskBlsG2LqvDWxvJ96x9A-ys', link: 'https://foundation.app/mint/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/23', desc: 'Light radiating from the city center.', colors: ['#FFE4B5', '#FFA500', '#FF8C00'], energy: 'Rising' },
+            { id: 'luminosity', title: 'Luminosity', year: 2023, collection: 'Cities // Efdot Originals', collector: '0x17Bf...072B', img: 'https://arweave.net/J8NSGjvqOW3SGDTppz9xskBlsG2LqvDWxvJ96x9A-ys', link: 'https://foundation.app/mint/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/23', desc: 'Light radiating from the city center.', colors: ['#FFE4B5', '#FFA500', '#FF8C00'], energy: 'Rising' },
 
             // Additional Efdot Originals owned by collectors (hideFromGrid: true means only shown in collector profiles, not in origins grid)
-            { id: 'inverted', title: 'Inverted Reality', year: 2021, collection: 'Cities // Efdot Originals', collector: 'WillEP', img: 'https://qld2vwvxjaq7lqoy36pbvgqnoipqegjl4xvl2kihw6vedyy3yb5a.arweave.net/gseq2rdIIfXB2N-eGpoNch8CGSvl6r0pB7eqQeMbwHo', link: 'https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/11', desc: 'The city flipped. A new perspective on the familiar grid.', colors: ['#1a1a2e', '#4a5568', '#E8B86D'], energy: 'Living', hideFromGrid: true },
+            { id: 'inverted', title: 'Inverted Reality', year: 2021, collection: 'Cities // Efdot Originals', collector: 'WillEP', img: 'https://arweave.net/gseq2rdIIfXB2N-eGpoNch8CGSvl6r0pB7eqQeMbwHo', link: 'https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/11', desc: 'The city flipped. A new perspective on the familiar grid.', colors: ['#1a1a2e', '#4a5568', '#E8B86D'], energy: 'Living', hideFromGrid: true },
 
             // 2022-2024 - Cities // Efdot Originals (SuperRare)
             { id: 'eye', title: 'Eye of the City', year: 2022, collection: 'Cities // Efdot Originals', collector: 'Reginald de la Grarbs', img: 'https://blush-worried-heron-358.mypinata.cloud/ipfs/bafybeiga6qzupgcz3joz3jdywwyk2fuzc2jukmohfij5tzs44rw5rzhqba', link: 'https://superrare.com/artwork/eth/0x822F1418072e15e1d1f07533138b35A72a8a0f55/22', desc: 'Urban observations frozen in motion. A reflection of simplicity and chaos. Created live at The Gateway, Miami during Art Basel 2022.', colors: ['#2D3047', '#93B7BE', '#E0CA3C'], energy: 'Living', featured: true },
@@ -6033,24 +6027,32 @@
         // Get optimized thumbnail URL - reduces image size for faster loading
         function getThumbUrl(url, size = 300) {
             if (!url) return '';
-            // Squarespace images - add format params
+            const sep = (u) => (u.includes('?') ? '&' : '?');
+
+            // Squarespace
             if (url.includes('squarespace-cdn.com')) {
-                return url + (url.includes('?') ? '&' : '?') + `format=auto&fit=crop&w=${size}&h=${size}`;
+                return url + sep(url) + `format=auto&fit=crop&w=${size}&h=${size}`;
             }
-            // Foundation images - already have imgix params, update them
+            // Foundation imgix - mutate existing h/w
             if (url.includes('f8n-production') && url.includes('imgix.net')) {
                 return url.replace(/h=\d+/, `h=${size}`).replace(/w=\d+/, `w=${size}`);
             }
-            // Ninfa images - use smaller variant (images.ninfa.io/nfts/original/)
+            // Ninfa
             if (url.includes('images.ninfa.io/nfts/')) {
-                // Ninfa supports resizing via query params
-                return url + (url.includes('?') ? '&' : '?') + `w=${size}&h=${size}&fit=cover`;
+                return url + sep(url) + `w=${size}&h=${size}&fit=cover`;
             }
-            // Alchemy NFT CDN - can add size
+            // Alchemy NFT CDN - documented params are width/height
             if (url.includes('nft-cdn.alchemy.com')) {
-                return url + `?w=${size}&h=${size}`;
+                return url + sep(url) + `width=${size}&height=${size}`;
             }
-            // For IPFS/arweave/pinata - no reliable resize, return original
+            // Pinata, arweave.net, ipfs.io - proxy through wsrv.nl for resize + webp transcode.
+            // Pinata's own image-optimization addon is paid/per-gateway, so wsrv is the
+            // universal path. wsrv handles HTTPS auto, caches aggressively.
+            if (url.includes('mypinata.cloud/ipfs/') || url.includes('://arweave.net/') || url.includes('://ipfs.io/ipfs/')) {
+                const stripped = url.replace(/^https?:\/\//, '');
+                return `https://wsrv.nl/?url=${encodeURIComponent(stripped)}&w=${size}&h=${size}&fit=cover&output=webp&q=80`;
+            }
+            // Fallback: return original
             return url;
         }
 
@@ -6063,7 +6065,7 @@
             const thumbUrl = getThumbUrl(origin.img, 300);
             return `
                 <div class="origin-item${availableClass}" data-origin="${origin.id}" onclick="handleOriginItemClick('${origin.id}')">
-                    <img src="${thumbUrl}" alt="${origin.title}" loading="lazy" decoding="async" width="300" height="300">
+                    <img src="${thumbUrl}" alt="${origin.title}" loading="lazy" decoding="async" fetchpriority="low" width="300" height="300" onerror="this.onerror=null;this.src=this.dataset.fallback||'${origin.img}';" data-fallback="${origin.img}">
                     <span class="origin-item-year">${origin.year}</span>
                     ${editionLabel}
                     <div class="origin-item-label">${origin.title}${origin.price ? ` · ${origin.price}` : ''}</div>
@@ -16655,29 +16657,7 @@
                 if (collectorCountEl && typeof COLLECTORS_DATA !== 'undefined') {
                     collectorCountEl.textContent = COLLECTORS_DATA.length;
                 }
-                // Start countdown timer
-                if (typeof updateMintCountdown === 'function') {
-                    updateMintCountdown();
-                } else {
-                    // Fallback - update countdown directly
-                    const now = Date.now();
-                    const deadline = new Date('2026-03-31T22:00:00Z').getTime();
-                    const remaining = deadline - now;
-                    if (remaining > 0) {
-                        const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-                        const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                        const secs = Math.floor((remaining % (1000 * 60)) / 1000);
-                        const daysEl = document.getElementById('countdownDays');
-                        const hoursEl = document.getElementById('countdownHours');
-                        const minsEl = document.getElementById('countdownMins');
-                        const secsEl = document.getElementById('countdownSecs');
-                        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
-                        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
-                        if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
-                        if (secsEl) secsEl.textContent = String(secs).padStart(2, '0');
-                    }
-                }
+                // About-page countdown removed.
             } else {
                 console.error('About modal not found');
             }
@@ -16685,51 +16665,8 @@
         // Expose to window for inline onclick
         window.openAboutModal = openAboutModal;
 
-        // Mint countdown timer - March 31, 2026 at 6:00 PM ET (10:00 PM UTC)
-        const MINT_DEADLINE = new Date('2026-03-31T22:00:00Z').getTime();
-        let countdownInterval = null;
-
-        function updateMintCountdown() {
-            const now = Date.now();
-            const remaining = MINT_DEADLINE - now;
-            const countdownEl = document.getElementById('aboutCountdown');
-
-            if (remaining <= 0) {
-                // Hide countdown when expired (already hidden by default)
-                if (countdownInterval) clearInterval(countdownInterval);
-                return;
-            }
-
-            // Show countdown only if there's time remaining
-            if (countdownEl) countdownEl.style.display = 'block';
-
-            const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-            const secs = Math.floor((remaining % (1000 * 60)) / 1000);
-
-            const daysEl = document.getElementById('countdownDays');
-            const hoursEl = document.getElementById('countdownHours');
-            const minsEl = document.getElementById('countdownMins');
-            const secsEl = document.getElementById('countdownSecs');
-
-            if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
-            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
-            if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
-            if (secsEl) secsEl.textContent = String(secs).padStart(2, '0');
-
-            // Update every second while modal is open
-            if (!countdownInterval) {
-                countdownInterval = setInterval(() => {
-                    if (document.getElementById('aboutModal')?.classList.contains('open')) {
-                        updateMintCountdown();
-                    }
-                }, 1000);
-            }
-        }
-
-        // Check countdown immediately on load to hide if expired
-        updateMintCountdown();
+        // About-page mint countdown removed. Stub kept so any external caller is a no-op.
+        function updateMintCountdown() { /* removed */ }
 
         function closeAboutModal() {
             const modal = document.getElementById('aboutModal');
